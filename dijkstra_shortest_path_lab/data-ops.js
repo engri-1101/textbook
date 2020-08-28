@@ -1,6 +1,6 @@
 //BFS through the whole graph, creating a "previous", data scructure.
 var graphtype = 1;
-var ff_enabled = true;
+var ff_enabled = false;
 var algo_state = AlgoStateEnum.Middle
 var test_iter = 0;
 var verify_eligible = false;
@@ -8,11 +8,11 @@ var verify_ready = false;
 var verify_arr = [];
 
 function recursive_animate(){
-    ffh.animate({opacity: 0} , 1200, function () {
-        algorithm_step(clickables.node[0]);
+    ffh.animate({opacity: 0} , 1500, function () {
+        algorithm_step(clickables.node[0],true);
         algorithm_step_pt2(true);
         if (clickables.node.length > 0){
-            recursive_animate()
+            if (ff_enabled == true) {recursive_animate()}
         }
     })
 }
@@ -59,14 +59,14 @@ function restart(){
     //Set tables and colors to be as in the beggining, algorithm state to start, clickables to nothing; start node = something else if neccessary
     restart_graph(value_map, previous_map);
     restart_algorithm();
-    ff_enabled = true;
+    ff_enabled = false;
     verify_eligible = false;
     verify_ready = false;
     verify_arr = [];
     //alert(clickables)
     //highlight_nodes(clickables["highlight"]) // Henry: added to un-highlight nodes
 }
-function algorithm_step(node_id) {
+function algorithm_step(node_id, is_ff) {
     //Update tables and
     node_in[node_id - 1] = 1;
     clickables = get_clickables(algo_state, node_id);
@@ -77,7 +77,9 @@ function algorithm_step(node_id) {
     // ffh.animate({opacity: 0} , 600, function () {
     //     highlight_nodes(clickables["highlight"]);
     // })
-    positiveText();
+    if (is_ff == false || ff_enabled) {
+        positiveText();
+    }
 
     if (clickables.node.length == 0){
         verify_eligible = true;
@@ -87,7 +89,9 @@ function algorithm_step(node_id) {
 function algorithm_step_pt2(is_ff){
     if (is_ff){
         ffh.animate({opacity: 0} , 600, function () {
-            highlight_nodes(clickables["highlight"]);
+            if (ff_enabled) {
+                highlight_nodes(clickables["highlight"]);
+            }
         })
     } else{
         highlight_nodes(clickables["highlight"]);
@@ -96,7 +100,7 @@ function algorithm_step_pt2(is_ff){
 function node_clicked(node) {
     var id = parseInt(node.data("id").replace("n", ""));
     if (algo_state = AlgoStateEnum.Start && id == start_node ){
-        algorithm_step(id);
+        algorithm_step(id,false);
         algorithm_step_pt2(false);
     } else {
         if (is_node_in(id, clickables.node)){
@@ -136,10 +140,8 @@ function inspect_clicked() {
 
 function ff_clicked() {
     // instructtxt.attr("text", "HERE!")
-    if (ff_enabled){
-        ff_enabled = false;
-        recursive_animate()
-    }
+    ff_enabled = true;
+    recursive_animate()
 }
 
 

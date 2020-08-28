@@ -345,7 +345,7 @@ let reset = function (){
 // //Not actually an visual animation, but rather a cycle fix when doing ff
 function recursive_animate(it){
     if (ffactive == false) {return}
-    primary_text.animate({fill: primary_text.attr("fill") }, 1000, function () {
+    primary_text.animate({fill: primary_text.attr("fill") }, 1500, function () {
         if (ffactive == false) {return}
          step_algorithm(it)
          if (clickables.length != 0){

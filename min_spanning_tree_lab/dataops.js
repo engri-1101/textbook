@@ -1,5 +1,5 @@
-/// <reference path="lab1-interactive-algorithms.js" />
-/// <reference path="lab10-animations.js"/>
+/// <reference path="./interactive-algorithms.js" />
+/// <reference path="./animations.js"/>
 var ffactive = false;
 var start_node = -1;
 var index = 0;
@@ -20,7 +20,7 @@ var max_clust_num = 0;
 //TODO: init/modify/len_in_map, and its usage
 //TODO: Fix all of the things below noted part
 //Put things in right order on index.html
-//TODO: fix reset to use proper intits, ... possibly refactor into utility 
+//TODO: fix reset to use proper intits, ... possibly refactor into utility
 //NUM NODES SHOULD NOT BE CONSTANT
 
 
@@ -39,21 +39,21 @@ let UTILITY = {
         } else {
             return lens[i - 1][j - 1]
         }
-    }, 
+    },
 
     len_map2 : function(len_str){
         var nodes = len_str.split("-")
         return UTILITY.len_map(parseInt(nodes[0]), parseInt(nodes[1]))
     },
-    
+
     init_node_in_map : function(num_of_nodes){
         node_in_map = new Array(num_of_nodes).fill(0)
     },
-    
+
     init_node_in_map_2 : function (num_of_nodes){
         node_in_map = new Array(num_of_nodes).fill(1)
     },
-    
+
     init_len_in_map_base : function(num_of_nodes, val_fill){
         len_in_map = new Array(num_of_nodes).fill(0).map(x => new Array(num_of_nodes).fill(-1))
         len_in_map.forEach(function(row, y_index, array) {
@@ -104,7 +104,7 @@ let node_hover = function(node, hitbox){
     hitbox.hover(function() {
          if (is_start == 1){
               select_node_visual(node)
-         } 
+         }
     },
     function(){
          if (is_start == 1){
@@ -182,6 +182,7 @@ let len_click_handle = function(len, hitbox){
 }
 
 let prims_clicked = function (){
+
     algo_type = AlgoTypeEnum["Prim"]
     text_event(TEXT_EVENT_ENUM.START_NODE)
 
@@ -198,6 +199,10 @@ let prims_clicked = function (){
     cost_text_event("X");
     algo_state = AlgoStateEnum["Start"]
     start_node = -1;
+
+    kruskals_button.attr({fill: "#8E8D8B"})
+    prims_button.attr({fill: "#DC8578"})
+    rkruskals_button.attr({fill: "#8E8D8B"})
 
 }
 let kruskals_clicked = function (){
@@ -224,24 +229,32 @@ let kruskals_clicked = function (){
     is_start = 0
     //alert(clickables)
     clust_num = 0
+
+    kruskals_button.attr({fill: "#DC8578"})
+    prims_button.attr({fill: "#8E8D8B"})
+    rkruskals_button.attr({fill: "#8E8D8B"})
 }
 let r_kruskals_clicked = function (){
     algo_state = AlgoStateEnum.Start
     algo_type = AlgoTypeEnum["Rev-Kruskal"];
     text_event(TEXT_EVENT_ENUM.START_EDGE)
-    
+
     UTILITY.init_node_in_map_2(num_nodes)
     UTILITY.init_len_in_map_2(num_nodes)
 
     is_start = 1;
     clickables = get_clickables(algo_state, algo_type, node_in_map, len_in_map, lens, UTILITY.len_map, UTILITY.value_map);
     is_start = 0;
-    
+
     select_all_nodes_visual(nodes);
     select_all_lens_visual(lens);
 
     cost = UTILITY.total_value_in_graph(num_nodes);
     cost_text_event(cost)
+
+    kruskals_button.attr({fill: "#8E8D8B"})
+    prims_button.attr({fill: "#8E8D8B"})
+    rkruskals_button.attr({fill: "#DC8578"})
 }
 //Start here
 let hint_clicked = function (){
@@ -258,7 +271,7 @@ let sensitivity_clicked = function(){
     var new_value;
     while(true){
         var val = prompt("What is the first node of the length you want to change?", "");
-        if (!isNaN(val) && parseInt(val) > 0 && parseInt(val) < 16){
+        if (!isNaN(val) && parseInt(val) > 0 && parseInt(val) < 17){
             node1 = parseInt(val);
             break;
         } else {
@@ -268,7 +281,7 @@ let sensitivity_clicked = function(){
     }
     while(true){
         var val = prompt("What is the second node of the length you want to change?", "");
-        if (!isNaN(val) && parseInt(val) > 0 && parseInt(val) < 16){
+        if (!isNaN(val) && parseInt(val) > 0 && parseInt(val) < 17){
             node2 = parseInt(val);
             break;
         } else {
@@ -312,7 +325,8 @@ let fast_foward_clicked = function (){
 }
 
 let restore_clicked = function (){
-    alert('something')
+    location.reload();
+    return false;
 }
 
 
@@ -330,7 +344,9 @@ let reset = function (){
 }
 // //Not actually an visual animation, but rather a cycle fix when doing ff
 function recursive_animate(it){
+    if (ffactive == false) {return}
     primary_text.animate({fill: primary_text.attr("fill") }, 1000, function () {
+        if (ffactive == false) {return}
          step_algorithm(it)
          if (clickables.length != 0){
               it = UTILITY.len_map2( clickables[0])
@@ -413,8 +429,8 @@ function step_algorithm(len) {
     // node_in_map[node1 - 1] = 1;
     // node_in_map[node2 - 1] = 1;
 
-         
-    update_node_in_maps(node1, node2) 
+
+    update_node_in_maps(node1, node2)
     // node_in_map = arr[0];
     // clust_num = arr[1];
 
@@ -422,7 +438,7 @@ function step_algorithm(len) {
     // len_in_map[node1][node2] = update_len_val;
     // len_in_map[node2][node1] = update_len_val;
     // colorize_nodes(algo_type, nodes, node_in_map, node1, node2)
-    
+
     clickables = get_clickables(algo_state, algo_type, node_in_map, len_in_map, lens, UTILITY.len_map, UTILITY.value_map);
     if (clickables == undefined || clickables.length == 0) {
          text_event(TEXT_EVENT_ENUM.END);

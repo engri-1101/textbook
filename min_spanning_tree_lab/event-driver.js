@@ -1,9 +1,12 @@
+var rsr
+var canvas
+
 window.onload = function (){
     var w = 400
     var h = 400
-    var rsr = new Raphael(document.getElementById('canvas_container'), 1500, 1500);
+    rsr = new Raphael(document.getElementById('canvas_container'), 1500, 1500);
     rsr.setViewBox(0, 0, w, h, true);
-    var canvas = document.getElementById('canvas_container');
+    canvas = document.getElementById('canvas_container');
 
     canvas.addEventListener(PART_1_EVENT_NAME, function(event) {
         part1(rsr, canvas)

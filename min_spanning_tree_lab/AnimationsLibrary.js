@@ -1,9 +1,10 @@
 let standard_hover = function(element){
     element.hover( function () {
-        this.attr("fill", "#000000");
-   }, 
+        this.attr("font-weight", 800);
+
+   },
    function () {
-        this.attr("fill", "#8e8d8a");
+        this.attr("font-weight", 400);
    });
 }
 let reject_length = function(element, is_selected){

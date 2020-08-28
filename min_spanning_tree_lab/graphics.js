@@ -6,7 +6,7 @@ var rkruskals_button;
 var hint_button;
 var fast_foward_button;
 var restart_button;
-var swap_graph_button;
+//var swap_graph_button;
 var sensitivity_button;
 var restore_button;
 
@@ -73,7 +73,7 @@ let Graph1 = function(rsr){
     len_data[2][14] = true
     len_data[1][14] = true
     len_data[3][11] = true
-    
+
     len_value = new Array(nodes_centers.length).fill([]).map(x => new Array(nodes_centers.length).fill(undefined));
     len_value[0][1] = 4
     len_value[1][2] = 12
@@ -104,8 +104,8 @@ let Graph1 = function(rsr){
     len_value[1][14] = 19
     len_value[3][11] = 18
 
-    
-    
+
+
     let obtain_graphics = function(rsr){
 
         //refactor below
@@ -143,14 +143,14 @@ let Graph1 = function(rsr){
 
 
         buttons = [
-            "Kruskal's",
             "Prim's",
+            "Kruskal's",
             "R-Kruskal's",
-            "Hint",
             "Fast Foward",
-            "Restart",
-            "Swap Graph",
+            "Hint",
+            //"Swap Graph",
             "Sensitivity",
+            "Restart",
             "Restore"
         ]
         next_graph = "Swap Graph"
@@ -188,22 +188,22 @@ let Graph1 = function(rsr){
     }
 
     let graphics = obtain_graphics(rsr).Data
-    
+
     let graph_graphics = graphics.Graph
 
     let controler_graphics = graphics.Controler
 
     line_texts = graph_graphics.LineTexts
 
-    kruskals_button = controler_graphics.ControlButtons[0]
-    prims_button = controler_graphics.ControlButtons[1]
+    prims_button = controler_graphics.ControlButtons[0]
+    kruskals_button = controler_graphics.ControlButtons[1]
     rkruskals_button = controler_graphics.ControlButtons[2]
-    hint_button = controler_graphics.ControlButtons[3]
-    fast_foward_button = controler_graphics.ControlButtons[4]
-    restart_button = controler_graphics.ControlButtons[5]
-    swap_graph_button = controler_graphics.ControlButtons[6]
-    sensitivity_button = controler_graphics.ControlButtons[7];
-    restore_button = controler_graphics.ControlButtons[8];
+    fast_foward_button = controler_graphics.ControlButtons[3]
+    hint_button = controler_graphics.ControlButtons[4]
+    sensitivity_button = controler_graphics.ControlButtons[5];
+    restart_button = controler_graphics.ControlButtons[6]
+    //swap_graph_button = controler_graphics.ControlButtons[6]
+    restore_button = controler_graphics.ControlButtons[7];
 
 
     nodes = graph_graphics.Nodes;

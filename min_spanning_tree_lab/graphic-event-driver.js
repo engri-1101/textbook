@@ -14,13 +14,14 @@ let lens_hitbox_function = function(x_index, y_index, len_h){
 }
 
 let basic = function(){
+
     standard_hover(kruskals_button);
     standard_hover(prims_button);
     standard_hover(rkruskals_button);
     standard_hover(hint_button);
     standard_hover(fast_foward_button);
     standard_hover(restart_button);
-    standard_hover(swap_graph_button);
+    //standard_hover(swap_graph_button);
     standard_hover(sensitivity_button);
     standard_hover(restore_button);
     reset();
@@ -32,7 +33,7 @@ let basic = function(){
             }
         })
     })
-    
+
     restart_button.click( function () {reset()})
     kruskals_button.click(kruskals_clicked)
     rkruskals_button.click(r_kruskals_clicked)

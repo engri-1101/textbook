@@ -27,7 +27,7 @@ var len_hitboxes;
 var len_text_ds;
 var node_texts;
 
-const direction_array = ['f', 'b', 'f', 'f', 'f', 'f', 'f', 'b', 'b', 'b', 'b'] 
+const direction_array = ['f', 'b', 'f', 'f', 'f', 'f', 'f', 'b', 'b', 'b', 'b']
 
 function verify_message(){
     instructtxt.attr("text", "You may mouse over lengths to verify the work!")
@@ -82,7 +82,7 @@ function setTable(value_map, prev_map) {
     var i;
     for (i = 0; i < num_nodes ; i++){
         labels_t2[i].attr("text", labels_t1[i].attr("text"));
-        prev_t2[i].attr("text", prev_t1[i].attr("text"));   
+        prev_t2[i].attr("text", prev_t1[i].attr("text"));
         labels_t1[i].attr("text", (value_map[i] == infinity ? "inf" : value_map[i].toString() + (node_in[i] == 1 ? "*" : "")));
         prev_t1[i].attr("text", (prev_map[i] == -1 ? "-" : prev_map[i].toString()));
         toptable.attr("text", "Table for iteration "+table_int)
@@ -94,7 +94,7 @@ function setLensAndNodes(visited){
         var i = element["node"]
         var j = element["prev"]
         var len = len_map(i, j);
-        
+
         if (len_in_map(i, j) == 1) {
             len.attr("stroke", "#000000");
             node_map(i).attr("fill", '#0677a1');
@@ -113,7 +113,7 @@ function highlight_nodes(highlight){
 
     highlight_cache = highlight_cache.concat(new_arr);
     highlight_cache = highlight_cache.filter(x => node_in[x - 1] == 0);
- 
+
     highlight_cache.forEach(element => {
         var node = node_map(element);
         node.attr("stroke", "#0677a1");
@@ -131,7 +131,9 @@ function restart_graph(value_map, prev_map){
     })
     nodes.forEach(element => {
         element.attr('fill', '#e98074')
+        element.attr('stroke', 'none')
     })
+    highlight_cache = []
     instructtxt.attr("text", "Select the first node to begin!");
     node_in = new Array(num_nodes).fill(0);
     setTable(value_map, prev_map);
@@ -148,7 +150,7 @@ function setVerify(str_array, visited){
     //     var i = element["node"]
 
     // })
-    
+
 }
 
 function flow_direction(){
@@ -164,7 +166,7 @@ function set_graph1(){
     set_len_values();
 }
 function set_len_values(){
-    len_value_ds = new Map(); 
+    len_value_ds = new Map();
     var i;
     for (i = 0; i < lens.length; i++){
         len_value_ds.set(lens[i], len_values[i])
@@ -244,7 +246,7 @@ function Graph1(rsr){
     var path94977 = rsr.path("m 124.31701,202.83179 -4.83059,-4.83059").attr({id: 'path949-7-7',parent: 'layer2',fill: 'none',stroke: '#8e8d8a',"stroke-width": '1.28',"stroke-linecap": 'butt',"stroke-linejoin": 'miter',"stroke-miterlimit": '4',"stroke-dasharray": 'none',"stroke-opacity": '1'}).transform("m0.87756773,0,0,0.87756773,13.819233,23.691555").data('id', 'path94977');
     verify.attr({'id': 'verify','style': 'display:inline','parent': 'layer2','name': 'verify'});
     verify.transform("m0.87756773,0,0,0.87756773,13.819233,23.691555");
-    
+
     var g4691 = rsr.set();
     var path537732 = rsr.path("m 45.817428,84.706654 c 52.117551,0 52.117551,0 52.117551,0").attr({id: 'path5377-3-2',parent: 'layer2',display: 'inline',opacity: '0.75',fill: 'none',stroke: '#000000',"stroke-width": '0.5',"stroke-linecap": 'butt',"stroke-linejoin": 'miter',"stroke-miterlimit": '4',"stroke-dasharray": 'none',"stroke-opacity": '1'}).transform("m1.0797791,0,0,1,173.43833,-25.161636").data('id', 'path537732');
     var path5377859 = rsr.path("m 97.934979,84.706654 c 96.529761,0 96.529761,0 96.529761,0").attr({id: 'path5377-8-5-9',parent: 'layer2',display: 'inline',opacity: '0.75',fill: 'none',stroke: '#000000',"stroke-width": '0.53',"stroke-linecap": 'butt',"stroke-linejoin": 'miter',"stroke-miterlimit": '4',"stroke-dasharray": 'none',"stroke-opacity": '1'}).transform("m1.0797791,0,0,1,173.43833,-25.161636").data('id', 'path5377859');
@@ -500,7 +502,7 @@ function Graph1(rsr){
     instructtxt = rsr.text(195.49885, 7.746574, 'Click node one to start!').attr({id: 'instruct-txt',parent: 'layer2',"font-style": 'normal',"font-variant": 'normal',"font-weight": 'normal',"font-stretch": 'normal',"font-size": '10.58333302px',"line-height": '1.25',"font-family": 'sans-serif',"-inkscape-font-specification": 'sans-serif, Normal',"font-variant-ligatures": 'normal',"font-variant-caps": 'normal',"font-variant-numeric": 'normal',"font-feature-settings": 'normal',"text-align": 'center',"letter-spacing": '0px',"word-spacing": '0px',"writing-mode": 'lr-tb',"text-anchor": 'middle',fill: '#8e8d8a',"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'}).data('id', 'instructtxt');
     // var text_durr = rsr.text(295.49885, 23.746574, 'Click node one to start!').attr({id: 'instruct-txt',parent: 'layer2',"font-style": 'normal',"font-variant": 'normal',"font-weight": 'normal',"font-stretch": 'normal',"font-size": '8.58333302px',"line-height": '1.25',"font-family": 'sans-serif',"-inkscape-font-specification": 'sans-serif, Normal',"font-variant-ligatures": 'normal',"font-variant-caps": 'normal',"font-variant-numeric": 'normal',"font-feature-settings": 'normal',"text-align": 'center',"letter-spacing": '0px',"word-spacing": '0px',"writing-mode": 'lr-tb',"text-anchor": 'middle',fill: '#8e8d8a',"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'}).data('id', 'instructtxt');
     // ///END TEST
-    
+
     lens = [v910 , v34 , v45 , v56 , v67 , v78 , v144 , v913 , v1314 , v79 , v89 , v147 , v145 , v137 , v143 , v214 , v1213 , v114 , v111 , v1112 , v112 , v12 , v212 , v23 , v123 , v1012 , v1011]
 
     len_texts = [v910txt,  v34txt, v45txt, v56txt, v67txt, v78txt, v144txt, v913txt, v1314txt, v79txt, v89txt, v147txt, v145txt, v137txt, v143txt, v214txt, v1213txt, v114txt, v111txt, v1112txt, v112txt, v12txt, v212txt, v23txt, v123txt, v1012txt, v1011txt]
@@ -509,9 +511,9 @@ function Graph1(rsr){
 
     len_hitboxes = [v910h , v34h , v45h , v56h , v67h , v78h , v144h , v913h , v1314h , v79h , v89h , v147h , v145h , v137h , v143h , v214h , v1213h , v114h , v111h , v1112h , v112h , v12h , v212h , v23h , v123h , v1012h , v1011h]
 
-    
+
     len_values.forEach(function (value, index, array) {
-        len_values[index] = Math.floor(Math.random() * 10) + 1; 
+        len_values[index] = Math.floor(Math.random() * 10) + 1;
     })
 
     len_values = [14, 3, 3, 4, 2, 3, 8, 5, 2, 6, 6, 5, 7, 5, 8, 14, 12, 17, 2, 5, 3, 2, 3, 18, 19, 3, 1]
@@ -533,16 +535,16 @@ function Graph1(rsr){
     q2.translate(-0.25, -0.2);
     q11.translate(0, -0.4);
 
-    
+
     set_len_values();
     // var i;
-    
+
 
     // for (i = 0; i < lens.length; i++){
     //     len_value_ds.set(lens[i], len_values[i])
     //     len_texts[i].attr("text", len_values[i].toString());
     // }
-       
+
     len_map_ds = new Map();
 
     lens.forEach(element => {
@@ -554,7 +556,7 @@ function Graph1(rsr){
     len_texts.forEach(element => {
         len_text_ds.set(element.data("id").replace("-txt", ""), element);
     })
-      
+
     swap = [path3119 , path3196 , path31967, path31192 , path31961 , path319676 ]
 
     //ad hoc fixes for things
@@ -614,7 +616,7 @@ function Graph1(rsr){
     var prev_map_dummy = new Array(num_nodes).fill(-1);
     setTable(val_map_dummy, prev_map_dummy);
     setTable(val_map_dummy, prev_map_dummy);
-    bottomtable.attr("text", "Table for iteration 0");
+    bottomtable.attr("text", "Table for iteration -1");
 
     verify.attr("opacity", "0");
     //TEST
@@ -624,7 +626,7 @@ function Graph1(rsr){
     })
     string = "";
     len_texts.forEach(function(element, index, array) {
-        var val; 
+        var val;
         val = element.data("id").replace("-txt","").replace("v", "");
         var nodes = val.split("-");
         var node1 = nodes[0]
@@ -635,7 +637,7 @@ function Graph1(rsr){
             node2 = temp;
         }
         var value = len_values[index]
-        string = string + "len_value[" + node2 + "]" + "[" + node1 + "] = " + value + "\n" 
+        string = string + "len_value[" + node2 + "]" + "[" + node1 + "] = " + value + "\n"
     })
     //prompt("hi", string)
 

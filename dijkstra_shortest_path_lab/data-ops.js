@@ -1,4 +1,4 @@
-//BFS through the whole graph, creating a "previous", data scructure. 
+//BFS through the whole graph, creating a "previous", data scructure.
 var graphtype = 1;
 var ff_enabled = true;
 var algo_state = AlgoStateEnum.Middle
@@ -11,9 +11,9 @@ function recursive_animate(){
     ffh.animate({opacity: 0} , 1200, function () {
         algorithm_step(clickables.node[0]);
         algorithm_step_pt2(true);
-        if (clickables.node.length == 0){
+        if (clickables.node.length > 0){
             recursive_animate()
-        } 
+        }
     })
 }
 function verify_work(){
@@ -45,7 +45,7 @@ function len_hovered(len_hitbox){
 
         }
     }
-}  
+}
 function is_node_in(node, set){
     var i;
     for (i =0; i < set.length; i++){
@@ -63,9 +63,11 @@ function restart(){
     verify_eligible = false;
     verify_ready = false;
     verify_arr = [];
+    //alert(clickables)
+    //highlight_nodes(clickables["highlight"]) // Henry: added to un-highlight nodes
 }
 function algorithm_step(node_id) {
-    //Update tables and 
+    //Update tables and
     node_in[node_id - 1] = 1;
     clickables = get_clickables(algo_state, node_id);
     increment_iteration()

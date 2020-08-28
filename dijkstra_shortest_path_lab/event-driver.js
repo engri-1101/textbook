@@ -17,7 +17,7 @@ window.onload = function () {
             de_color_node(element)
         })
     })
-    
+
     node_texts.forEach(element_in => {
         var node_in = node_map(parseInt(element_in.data("id").replace("q","")));
         element_in.click(function () {
@@ -59,31 +59,31 @@ window.onload = function () {
     })
     refreshh.hover(function () {
         color_non_node(refresh);
-        
+
     }, function () {
         de_color_non_node(refresh);
-        
+
     })
-    
+
     // verifyh.click(function (){
     //     inspect_clicked()
     // });
     // verifyh.hover(function () {
     //     color_non_node(verify);
-        
+
     // }, function () {
     //     de_color_non_node(verify);
-        
+
     // })
-    
+
     ffh.click(function (){
         ff_clicked();
     })
     ffh.hover(function () {
         color_non_node(ff);
-        
+
     }, function () {
         de_color_non_node(ff);
-        
+
     })
 }

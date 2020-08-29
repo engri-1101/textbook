@@ -8,7 +8,7 @@ var verify_ready = false;
 var verify_arr = [];
 
 function recursive_animate(){
-    ffh.animate({opacity: 0} , 500, function () {
+    ffh.animate({opacity: 0} , 1500, function () {
         algorithm_step(clickables.node[0],true);
         algorithm_step_pt2(true);
         if (clickables.node.length > 0){

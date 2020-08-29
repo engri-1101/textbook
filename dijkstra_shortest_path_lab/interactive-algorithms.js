@@ -6,7 +6,7 @@ var adjacency_map;
 var previous_map;
 const neg_infinity = -10e5
 var max_in;
-var visited_index;
+var visited_index = 0;
 var spy;
 var spy_block = true;
 
@@ -45,7 +45,7 @@ function heapify_down(array, i){
     var left = value_map[left_value - 1];
     var right = value_map[right_value - 1];
     var child = left > right ? right_value : left_value;
-    var child_index = left > right ? right_index(array, i) : left_index(array, i);   
+    var child_index = left > right ? right_index(array, i) : left_index(array, i);
     if ((left_value != -1 || right_value != -1) && (value_map[parent - 1] > value_map[child - 1])){
         var temp1 = index_map[child - 1];
         index_map[child - 1] = index_map[parent - 1];
@@ -125,7 +125,7 @@ function d_help(value){
     })
     return nodes_arr;
 }
-function dijkstra(curr_node){ 
+function dijkstra(curr_node){
     unvisited.delete(unvisited.heap, curr_node);
 
     var nodes = adjacency_map[curr_node - 1];
@@ -134,8 +134,8 @@ function dijkstra(curr_node){
     var cost = value_map[curr_node - 1]
     nodes.forEach(function (element, index, array) {
         var node = element["value"];
-        var cost2 = element["cost"];        
-        if (cost + cost2 < value_map[node - 1]){   
+        var cost2 = element["cost"];
+        if (cost + cost2 < value_map[node - 1]){
             unvisited.decreaseKey(unvisited.heap, node, cost + cost2);
             previous_map[node -1] = curr_node;
         }
@@ -235,7 +235,7 @@ function init_special(){
     value_map = [10,1,3,0]
 }
 function init_dijkstra(){
-    value_map[0] = 0;    
+    value_map[0] = 0;
     value_map[1] = infinity;
     value_map[2] = infinity;
     value_map[3] = infinity;
@@ -245,7 +245,7 @@ function init_dijkstra(){
     [{"value" : 1 , "cost": 1 }, {"value" : 3 , "cost": 50 }, {"value" : 4 , "cost": 4 }],
     [{"value" : 1 , "cost": 2 }, {"value" : 2 , "cost": 50 }, {"value" : 4 , "cost": 6 }],
     [{"value" : 1 , "cost": 40 }, {"value" : 2 , "cost": 4 }, {"value" : 3 , "cost": 6 }]]
-    var i; 
+    var i;
     for (i =0 ; i < num_nodes_test; i++){
         unvisited.insert(unvisited["heap"], i + 1);
     }

@@ -26,6 +26,7 @@ var clickables;
 var len_hitboxes;
 var len_text_ds;
 var node_texts;
+var TOTAL_GRAPHS = 2;
 
 const direction_array = ['f', 'b', 'f', 'f', 'f', 'f', 'f', 'b', 'b', 'b', 'b']
 
@@ -78,11 +79,18 @@ function node_map(i){
     return nodes[i - 1]
 }
 //TODO: finish these functions, make it compile with factored out items, finish verify
-function setTable(value_map, prev_map) {
+function setTable(value_map, prev_map, restart) {
     var i;
     for (i = 0; i < num_nodes ; i++){
-        labels_t2[i].attr("text", labels_t1[i].attr("text"));
-        prev_t2[i].attr("text", prev_t1[i].attr("text"));
+        if (restart) {
+            // set bottom table to given maps
+            labels_t2[i].attr("text", (value_map[i] == infinity ? "inf" : value_map[i].toString() + (node_in[i] == 1 ? "*" : "")));
+            prev_t2[i].attr("text", (prev_map[i] == -1 ? "-" : prev_map[i].toString()));
+        } else {
+            // set bottom table to previous top table
+            labels_t2[i].attr("text", labels_t1[i].attr("text"));
+            prev_t2[i].attr("text", prev_t1[i].attr("text"));
+        }
         labels_t1[i].attr("text", (value_map[i] == infinity ? "inf" : value_map[i].toString() + (node_in[i] == 1 ? "*" : "")));
         prev_t1[i].attr("text", (prev_map[i] == -1 ? "-" : prev_map[i].toString()));
         toptable.attr("text", "Table for iteration "+table_int)
@@ -136,7 +144,9 @@ function restart_graph(value_map, prev_map){
     highlight_cache = []
     instructtxt.attr("text", "Select the first node to begin!");
     node_in = new Array(num_nodes).fill(0);
-    setTable(value_map, prev_map);
+    var value_map = new Array(num_nodes).fill(infinity);
+    var prev_map = new Array(num_nodes).fill(-1);
+    setTable(value_map, prev_map, true);
 }
 
 function increment_iteration(){
@@ -157,22 +167,22 @@ function flow_direction(){
 
 }
 
-function set_graph2(){
-    len_values = [1,10,2,5,5,3,6,3,8,5,7,2,9,1,9,1,9,6,3,6,9,1,2,6,10,7,6]
-    set_len_values();
+function set_graph(i) {
+    len_values = [[14, 3, 3, 4, 2, 3, 8, 5, 2, 6, 6, 5, 7, 5, 8, 14, 12, 17, 2, 5, 3, 2, 3, 18, 19, 3, 1],
+                  [14, 3, 3, 4, 2, 3, 8, 5, 2, 6, 6, 5, 7, 5, 8, 14, 12, 17, 2, 5, 3, 2, 3, 18, 19, 3, 30]][i]
+    set_len_values(true);
 }
-function set_graph1(){
-    len_values = [4,2,5,6,1,9,4,3,4,6,4,5,2,10,4,10,7,5,9,4,10,8,9,6,1,1,7]
-    set_len_values();
-}
-function set_len_values(){
+
+function set_len_values(change){
     len_value_ds = new Map();
     var i;
     for (i = 0; i < lens.length; i++){
         len_value_ds.set(lens[i], len_values[i])
         len_texts[i].attr("text", len_values[i].toString());
-        len_texts[i].attr("stroke", "#8e8d8a")
-        len_texts[i].attr("fill", "#8e8d8a")
+        if (change) {
+            len_texts[i].attr("stroke", "#8e8d8a")
+            len_texts[i].attr("fill", "#8e8d8a")
+        }
     }
 }
 
@@ -536,7 +546,7 @@ function Graph1(rsr){
     q11.translate(0, -0.4);
 
 
-    set_len_values();
+    set_len_values(true);
     // var i;
 
 
@@ -614,8 +624,8 @@ function Graph1(rsr){
 
     var val_map_dummy = new Array(num_nodes).fill(infinity);
     var prev_map_dummy = new Array(num_nodes).fill(-1);
-    setTable(val_map_dummy, prev_map_dummy);
-    setTable(val_map_dummy, prev_map_dummy);
+    setTable(val_map_dummy, prev_map_dummy, false);
+    setTable(val_map_dummy, prev_map_dummy, false);
     bottomtable.attr("text", "Table for iteration -1");
 
     verify.attr("opacity", "0");

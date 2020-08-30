@@ -40,6 +40,7 @@ let hint_length = function(element){
                         element.animate({stroke: pre_val}, 10, "linear", callback.bind(null,n+1));
                     }
                 }
+                alert('done')
             });
         }
     }

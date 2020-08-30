@@ -258,12 +258,14 @@ let r_kruskals_clicked = function (){
 }
 //Start here
 let hint_clicked = function (){
-      if (is_start == 1){
-          return;
-      } else {
-          var data = get_hint(algo_type, node_in_map, len_in_map, lens, UTILITY.value_map);
-          hint_visual(data, UTILITY.len_map);
-      }
+    if (!ffactive) {
+        if (is_start == 1){
+            return;
+        } else {
+            var data = get_hint(algo_type, node_in_map, len_in_map, lens, UTILITY.value_map);
+            hint_visual(data, UTILITY.len_map);
+        }
+    }
 }
 let sensitivity_clicked = function(){
     var node1;
@@ -315,13 +317,14 @@ let sensitivity_clicked = function(){
 }
 
 let fast_foward_clicked = function (){
-    if (algo_type == AlgoTypeEnum.Prim && is_start == 1){
-        text_event(TEXT_EVENT_ENUM.FFFAIL);
-        return;
+    if (!ffactive) {
+        if (algo_type == AlgoTypeEnum.Prim && is_start == 1){
+            text_event(TEXT_EVENT_ENUM.FFFAIL);
+            return;
+        }
+        ffactive = true;
+        recursive_animate( UTILITY.len_map2(clickables[0]))
     }
-    ffactive = true;
-    recursive_animate( UTILITY.len_map2(clickables[0]))
-
 }
 
 let restore_clicked = function (){

@@ -9,6 +9,8 @@ var total_cost = 0;
 var old_index;
 var new_index;
 var node_history = [];
+var prev_toss;
+var was_part_2 = false;
 
 var cache;
 
@@ -56,6 +58,11 @@ function foward_clicked(){
                 text_event(text_event_type_enum.TWOOPTITER)
             }
         }
+    } else if (toss == mode_heur_type_enum.RANDOM & !is_end){
+        // Randomly generate tour
+        while (is_end == false) {
+            automatic()
+        }
     } else {
         automatic()
     }
@@ -64,6 +71,16 @@ function foward_clicked(){
 
 function restart_clicked(){
     restart_ops();
+}
+
+function two_opt_clicked(){
+    if (is_end){
+        text_event(text_event_type_enum.TWOOPTITER)
+        prev_toss = toss
+        toss = mode_heur_type_enum.TWOOPT
+    } else {
+        alert('Can only run 2-Opt once a tour has been found.')
+    }
 }
 
 // This function does the setup for starting a TSP heuristic
@@ -200,29 +217,35 @@ function opt_set_ops(){
 
 }
 function restart_ops(){
-    opt_mode = 0;
-    brenda_mode = false;
-    lens_and_nodes_graphics(nodes_in, len_function_type_enum.UNSELECT);
-    if (nodes_in.length > 2) {
-        start = nodes_in[0]
-        end = nodes_in[nodes_in.length - 1]
-        lens_and_nodes_graphics([start, end], len_function_type_enum.UNSELECT);
-    }
-    is_start = true;
-    is_end = false;
-    nodes_in = [];
-    total_cost = 0;
-    change_cost_graphic(total_cost)
-    // Travis:
-    // text_event(text_event_type_enum.NEW);
-    if (toss == mode_heur_type_enum.TWOOPT){
-        text_event(text_event_type_enum.TWOOPTSTART);
-    } else if (toss == mode_heur_type_enum.MANUAL){
-        text_event(text_event_type_enum.NEW);
+    if (toss == mode_heur_type_enum.TWOOPT && was_part_2) {
+        change_heur(prev_toss)
+        restart_ops()
+        start_automatic()
     } else {
-        text_event(text_event_type_enum.SELECT);
+        opt_mode = 0;
+        brenda_mode = false;
+        lens_and_nodes_graphics(nodes_in, len_function_type_enum.UNSELECT);
+        if (nodes_in.length > 2) {
+            start = nodes_in[0]
+            end = nodes_in[nodes_in.length - 1]
+            lens_and_nodes_graphics([start, end], len_function_type_enum.UNSELECT);
+        }
+        is_start = true;
+        is_end = false;
+        asked_2_opt = false;
+        nodes_in = [];
+        total_cost = 0;
+        change_cost_graphic(total_cost)
+        // Travis:
+        // text_event(text_event_type_enum.NEW);
+        if (toss == mode_heur_type_enum.TWOOPT){
+            text_event(text_event_type_enum.TWOOPTSTART);
+        } else if (toss == mode_heur_type_enum.MANUAL){
+            text_event(text_event_type_enum.NEW);
+        } else {
+            text_event(text_event_type_enum.SELECT);
+        }
     }
-
 }
 function accept(node){
     nodes_in.push(node)

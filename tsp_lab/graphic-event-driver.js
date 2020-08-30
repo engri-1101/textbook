@@ -13,6 +13,7 @@ function basic(){
 }
 
 function part2(rsr, canvas, x, y, norm, next_part_name){
+    was_part_2 = true;
     Graph_Grid(rsr, x, y, norm, mode_heur_type_enum.RANDOM, next_part_name);
     basic();
 
@@ -66,6 +67,16 @@ function part2a(rsr, canvas, metric){
         }));
     })
 
+    next_part.hover(function () {
+        this.attr({fill : "#DC8578"})
+    }, function () {
+        this.attr({fill : "#8E8D8B"})
+    })
+
+    two_opt_mode.click(function (){
+        two_opt_clicked();
+    })
+
     if (metric == metric_type_enum.MANHATTAN) {
         manhattan_mode.attr({fill: "#DC8578"})
     } else {
@@ -91,6 +102,12 @@ function part2b(rsr, canvas, metric){
         canvas.dispatchEvent(new CustomEvent(PART_3_EVENT_NAME, {
             detail : null
         }));
+    })
+
+    next_part.hover(function () {
+        this.attr({fill : "#DC8578"})
+    }, function () {
+        this.attr({fill : "#8E8D8B"})
     })
 
     if (metric == metric_type_enum.MANHATTAN) {
@@ -130,6 +147,12 @@ function part3(rsr, canvas){
             detail : null
         }));
     })
+
+    next_part.hover(function () {
+        this.attr({fill : "#DC8578"})
+    }, function () {
+        this.attr({fill : "#8E8D8B"})
+    })
 }
 
 function part1(rsr, canvas){
@@ -148,5 +171,11 @@ function part1(rsr, canvas){
         canvas.dispatchEvent(new CustomEvent(PART_2A_EVENT_NAME, {
             detail : {norm : metric_type_enum.EUCLIDIAN, x : 9, y : 9 }
         }));
+    })
+
+    next_part.hover(function () {
+        this.attr({fill : "#DC8578"})
+    }, function () {
+        this.attr({fill : "#8E8D8B"})
     })
 }

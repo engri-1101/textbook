@@ -58,6 +58,7 @@ var mode_heur_type_enum = {"RANDOM" : "rand",
 var costsofar;
 var costsofar_text = 'Cost So Far: '
 var back;
+var two_opt_mode;
 var nodes_hitbox_arr;
 var instructxt;
 var mode;
@@ -81,7 +82,6 @@ var usImg = new Image();
 function change_heur(heur){
     toss = heur;
 }
-
 
 function text_event(type){
     switch (type) {
@@ -433,9 +433,10 @@ function Graph_Grid(rsr, x, y, type, heuristic, part_name_next, special){
         nearest_neighbor_g = rsr.text(65, 225, "Nearest Neighbor").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
         nearest_insertion_g = rsr.text(65, 235, "Nearest Insertion").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
         furthest_insertion_g = rsr.text(65, 245, "Furthest Insertion").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
-        mode = rsr.text(135, 215, "Mode").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill:'#696969',"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
-        manhattan_mode = rsr.text(135, 225, "Manhattan").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
-        euclidian_mode = rsr.text(135, 235, "Euclidian").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
+        mode = rsr.text(135, 207, "Mode").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill:'#696969',"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
+        manhattan_mode = rsr.text(135, 217, "Manhattan").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
+        euclidian_mode = rsr.text(135, 227, "Euclidian").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
+        two_opt_mode = rsr.text(135, 242, "Do 2-Opt").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
     } else{
         inst1 = rsr.text(100, 220, "Press D to create a random tour.").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8.58333302px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})
         inst2 = rsr.text(100, 230, "Then, press D to run iterations of 2-Opt.").attr({id: 'part2',parent: 'layer1',"font-style": 'normal',"font-weight": 'normal',"font-size": '8.58333302px',"line-height": '1.25',"font-family": 'sans-serif',"letter-spacing": '0px',"word-spacing": '0px',fill: normal_stroke_color,"fill-opacity": '1',stroke: 'none','stroke-width':'1','stroke-opacity':'1',"stroke-width": '0.26'})

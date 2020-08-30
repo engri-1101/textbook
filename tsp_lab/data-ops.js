@@ -74,7 +74,9 @@ function restart_clicked(){
 }
 
 function two_opt_clicked(){
-    if (is_end){
+    if (toss == mode_heur_type_enum.TWOOPT) {
+        alert('You are already running 2-Opt.')
+    } else if (is_end){
         text_event(text_event_type_enum.TWOOPTITER)
         prev_toss = toss
         toss = mode_heur_type_enum.TWOOPT
@@ -194,6 +196,9 @@ function opt(){
         if (flag){
             text_event(text_event_type_enum.TWOOPT)
             is_end = true
+            if (toss == mode_heur_type_enum.TWOOPT && was_part_2) {
+                change_heur(prev_toss)
+            }
         }
         opt_set_ops();
         opt_mode = 0;
@@ -217,6 +222,9 @@ function opt_set_ops(){
 
 }
 function restart_ops(){
+    if (toss == mode_heur_type_enum.TWOOPT && opt_mode == 1) {
+        opt()
+    }
     if (toss == mode_heur_type_enum.TWOOPT && was_part_2) {
         change_heur(prev_toss)
         restart_ops()
@@ -245,6 +253,8 @@ function restart_ops(){
         } else {
             text_event(text_event_type_enum.SELECT);
         }
+        new_index = -2
+        old_index = -2
     }
 }
 function accept(node){

@@ -432,7 +432,6 @@ function step_algorithm(len) {
     // node_in_map[node1 - 1] = 1;
     // node_in_map[node2 - 1] = 1;
 
-
     update_node_in_maps(node1, node2)
     // node_in_map = arr[0];
     // clust_num = arr[1];

@@ -1,7 +1,7 @@
 //BFS through the whole graph, creating a "previous", data scructure.
 var graphtype = 0;
 var ff_enabled = false;
-var algo_state = AlgoStateEnum.Middle
+var algo_state = AlgoStateEnum.Start
 var test_iter = 0;
 var verify_eligible = false;
 var verify_ready = false;
@@ -60,6 +60,7 @@ function restart(){
     restart_graph(value_map, previous_map);
     restart_algorithm();
     set_graph(0);
+    algo_state = AlgoStateEnum.Start
     ff_enabled = false;
     verify_eligible = false;
     verify_ready = false;
@@ -99,7 +100,7 @@ function algorithm_step_pt2(is_ff){
 }
 function node_clicked(node) {
     var id = parseInt(node.data("id").replace("n", ""));
-    if (algo_state = AlgoStateEnum.Start && id == start_node ){
+    if (algo_state == AlgoStateEnum.Start && id == start_node ){
         algorithm_step(id,false);
         algorithm_step_pt2(false);
     } else {
@@ -107,7 +108,7 @@ function node_clicked(node) {
             algorithm_step(id,false);
             algorithm_step_pt2(false);
         } else{
-            reject(id);
+            reject(id)
         }
     }
 }

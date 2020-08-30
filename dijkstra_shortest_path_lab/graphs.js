@@ -188,17 +188,28 @@ function set_len_values(change){
 
 function reject(node_id){
     var l_node = node_map(node_id)
-    var color = l_node.attr("fill");
-    var ani = Raphael.animation({fill: "#FF0000"}, 200, "linear", function (){
-        if (node_in[node_id - 1] == 0) {
-            l_node.animate({fill: "#e98074"})
-        } else{
-            l_node.animate({fill: color});
+    callback(0);
+    function callback(n){
+        if (n<3){
+            l_node.animate({fill: "#FF0000"}, 190, "linear", function () {
+                if (node_in[node_id-1] == 0) {
+                    l_node.animate({fill: "#DC8578"}, 10, "linear", callback.bind(null,n+1));
+                } else {
+                    l_node.animate({fill:'#0677a1'}, 10, "linear", callback.bind(null,n+1));
+                }
+            });
+        } else {
+            if (node_in[node_id-1] == 0) {
+                l_node.attr({fill: "#DC8578"})
+            } else{
+                l_node.attr({fill:"#0677a1"});
+            }
         }
-    });
-   var ani2 = ani.repeat(3);
-   l_node.animate(ani2);
-   instructtxt.attr("text", "Try again! (ties broken arbitrarily)")
+    }
+
+//    var ani2 = ani.repeat(3);
+//    l_node.animate(ani2);
+//    instructtxt.attr("text", "Try again! (ties broken arbitrarily)")
 }
 
 function Graph1(rsr){

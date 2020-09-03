@@ -1,0 +1,38 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\tikzset{
+  a/.style={-{Stealth[scale=1.3,angle'=45]},semithick}
+}
+\begin{document}
+\begin{tikzpicture}[scale=0.8]
+	\node[draw,circle] (v1) at (0,1.2) {$0$};
+	\node[draw,circle] (v2) at (1.732,2.4) {$1$};
+	\node[draw,circle] (v3) at (1.732,0) {$2$};
+	\node[draw,circle] (v4) at (5.732,2.4) {$3$};
+	\node[draw,circle] (v5) at (5.732,0) {$4$};
+	\node[draw,circle] (v6) at (7.582,-.8732) {$5$};
+	\node[draw,circle] (v7) at (8.464,1.2) {$6$};
+	\draw [a] (v1) -- (v2);
+	\draw [a] (v1) -- (v3);
+	\draw [a] (v2) -- (v4);
+	\draw [a] (v2) -- (v5);
+	\draw [a] (v2) -- (v3);
+	\draw [a] (v3) -- (v5);
+	\draw [a] (v4) -- (v5);
+	\draw [a] (v4) -- (v7);
+	\draw [a] (v5) -- (v7);
+	\draw [a] (v5) -- (v6);
+	\draw [a] (v6) -- (v7);
+\end{tikzpicture}	
+	\hspace{.2in}
+\begin{tikzpicture}[scale=0.8]
+	\node[draw,circle] (v1) at (0,1.2) {$0$};
+	\node[draw,circle] (v2) at (1.732,2.4) {$1$};
+	\node[draw,circle] (v3) at (1.732,0) {$2$};
+	\node[draw,circle] (v4) at (5.732,2.4) {$3$};
+	\node[draw,circle] (v5) at (5.732,0) {$4$};
+	\node[draw,circle] (v6) at (7.582,-.8732) {$5$};
+	\node[draw,circle] (v7) at (8.464,1.2) {$6$};
+\end{tikzpicture}	
+\end{document}

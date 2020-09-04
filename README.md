@@ -3,7 +3,7 @@ ENGRI 1101 Labs
 
 **NOTE:** This git repo was created at the end of Summer 2020 after significant course development. All labs were replaced with a web-based or Jupyter Notebook equivalent. AMPL was replaced by Google's OR-Tools.
 
-This git repo serves as the standard for the ENGRI 1101 labs. Any updates or additional labs should be added here. Furthermore, this README contains a comprehensive list of labs as well as all necessary Python packages. They should be updated to reflect any changes made to the labs.
+This git repo serves as the standard for ENGRI 1101 lab software / files (while [Overleaf](https://www.overleaf.com/project/5ecf1b879f37710001f9f54d) serves as the standard for lab handouts). Any updates or additional labs should be added here. Furthermore, this README contains a comprehensive list of labs as well as all necessary Python packages. They should be updated to reflect any changes made to the labs.
 
 Lastly, the directory [public_html](public_html) contains the index.html for the course site ([http://engri1101.orie.cornell.edu/](http://engri1101.orie.cornell.edu/)). It links to the source code for the web-based labs contained in their respective folders. It also contains the [raphael](https://github.com/DmitryBaranovskiy/raphael) JavaScript vector library used by the web-based labs. This git repo is linked with the course site; Hence, any changes to the web-based labs will be reflected on the website in the next pull. For this reason, <ins> *exercise extra precaution when updating web-based labs!* </ins>
 

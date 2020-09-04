@@ -19,9 +19,9 @@ Lastly, the directory [public_html](public_html) contains the source code for th
 | 6     | Transportation I+II               | Jupyter Notebook | [transportation](transportation)                           | qz245            |
 | 6     | First-Year Writing Seminar        | Jupyter Notebook | [first_year_writing_seminar](first_year_writing_seminar)   | qz245            |
 | 7     | Simplex                           | Jupyter Notebook | [simplex](simplex)                                         | hwr26            |
-| 8     | LP Formulation -*WIP*-            |                  |                                                            |                  |
+| 8     | LP Formulation                    |                  | -*WIP*-                                                    |                  |
 | 9     | Seat Packing                      | Jupyter Notebook | [seat_packing](seat_packing)                               | qz245            |
-| 10    | Knapsack + Branch & Bound -*WIP*- |                  |                                                            |                  |
+| 10    | Knapsack + Branch & Bound         |                  | -*WIP*-                                                    |                  |
 | 11    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78            |
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.

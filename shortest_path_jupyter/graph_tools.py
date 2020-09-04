@@ -184,7 +184,7 @@ def plotTreeTompkins(dfn, dfl):
 
 
 
-def plotNetwork(nodes, links, title='Plot of Graph', target=None, on_map=False):
+def plotNetwork(nodes, links, title='Plot of Graph', targets=None, on_map=False):
     """
     Plots a static map of a network = (nodes, links).
     :param nodes: pandas df with 'name', 'x', 'y' cols
@@ -206,9 +206,9 @@ def plotNetwork(nodes, links, title='Plot of Graph', target=None, on_map=False):
     x = dfn.x.values.tolist()
     y = dfn.y.values.tolist()
     
-    if target != None:
+    if targets != None:
         # get a small dataframe of target nodes
-        dfp = dfn.loc[dfn['name'].isin(target)]
+        dfp = dfn.loc[dfn['name'].isin(targets)]
         
     # get plot boundaries
     min_x, max_x = min(dfn.x)+2000, max(dfn.x)-2000

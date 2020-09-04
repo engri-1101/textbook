@@ -1,1 +1,1 @@
-The source code for the travelling salesman problem lab is under [public_html/tsp_source](public_html/tsp_source)
+The source code for the travelling salesman problem lab is under [public_html/tsp_source](../public_html/tsp_source)

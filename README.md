@@ -3,24 +3,28 @@ ENGRI 1101 Labs
 
 **NOTE:** This git repo was created at the end of Summer 2020 after significant course development. All labs were replaced with a web-based or Jupyter Notebook equivalent. AMPL was replaced by Google's OR-Tools.
 
-This git repo serves as the standard for the ENGRI 1101 labs. Any updates or additional labs should be added here. Furthermore, this README contains a comprehensive list of labs as well as necessary Python packages. They should be updated to relfect any changes made to the labs.
+This git repo serves as the standard for the ENGRI 1101 labs. Any updates or additional labs should be added here. Furthermore, this README contains a comprehensive list of labs as well as all necessary Python packages. They should be updated to reflect any changes made to the labs.
+
+Lastly, the directory [public_html](public_html) contains the index.html for the course site ([http://engri1101.orie.cornell.edu/](http://engri1101.orie.cornell.edu/)). It links to the source code for the web-based labs contained in their respective folders. It also contains the [raphael](https://github.com/DmitryBaranovskiy/raphael) JavaScript vector library used by the web-based labs. This git repo is linked with the course site; Hence, any changes to the web-based labs will be reflected on the website in the next pull. For this reason, <ins> *exercise extra precaution when updating web-based labs!* </ins>
 
 ### Current Table of Labs
 
-| Lab # | Name                              | Mode             | Directory                                                  |
-|-------|-----------------------------------|------------------|------------------------------------------------------------|
-| 1     | Travelling Salesman Problem (TSP) | Web-based        | [travelling_salesman_problem](travelling_salesman_problem) |
-| 2     | Dijkstra's Shortest Path          | Web-based        | [dijkstras_shortest_path](dijkstras_shortest_path)         |
-| 3     | Minimum Spanning Tree (MST)       | Web-based        | [minimum_spanning_tree](minimum_spanning_tree)             |
-| 4     | Maximum Flow                      | Jupyter Notebook | [maximum_flow](maximum_flow)                               |
-| 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               |
-| 6     | Transportation I+II               | Jupyter Notebook | [transportation](transportation)                           |
-| 6     | First-Year Writing Seminar        | Jupyter Notebook | [first_year_writing_seminar](first_year_writing_seminar)   |
-| 7     | Simplex                           | Jupyter Notebook | [simplex](simplex)                                         |
-| 8     | LP Formulation -*WIP*-            |                  |                                                            |
-| 9     | Seat Packing                      | Jupyter Notebook | [seat_packing](seat_packing)                               |
-| 10    | Knapsack + Branch & Bound -*WIP*- |                  |                                                            |
-| 11    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 |
+| Lab # | Name                              | Mode             | Directory                                                  | Author(s) NetID* |
+|-------|-----------------------------------|------------------|------------------------------------------------------------|------------------|
+| 1     | Travelling Salesman Problem (TSP) | Web-based        | [travelling_salesman_problem](travelling_salesman_problem) | tw454 + hwr26    |
+| 2     | Dijkstra's Shortest Path          | Web-based        | [dijkstras_shortest_path](dijkstras_shortest_path)         | tw454 + hwr26    |
+| 3     | Minimum Spanning Tree (MST)       | Web-based        | [minimum_spanning_tree](minimum_spanning_tree)             | tw454 + hwr26    |
+| 4     | Maximum Flow                      | Jupyter Notebook | [maximum_flow](maximum_flow)                               | fms9             |
+| 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               | qz245            |
+| 6     | Transportation I+II               | Jupyter Notebook | [transportation](transportation)                           | qz245            |
+| 6     | First-Year Writing Seminar        | Jupyter Notebook | [first_year_writing_seminar](first_year_writing_seminar)   | qz245            |
+| 7     | Simplex                           | Jupyter Notebook | [simplex](simplex)                                         | hwr26            |
+| 8     | LP Formulation -*WIP*-            |                  |                                                            |                  |
+| 9     | Seat Packing                      | Jupyter Notebook | [seat_packing](seat_packing)                               | qz245            |
+| 10    | Knapsack + Branch & Bound -*WIP*- |                  |                                                            |                  |
+| 11    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78            |
+
+*Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.
 
 ### Comprehensive List of Python Packages
 

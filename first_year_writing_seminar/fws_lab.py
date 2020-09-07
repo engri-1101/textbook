@@ -1,4 +1,5 @@
 # same imports as in Jupyter Notebook
+import numpy as np
 import pandas as pd
 import math, itertools
 import matplotlib.pyplot as plt
@@ -88,6 +89,8 @@ def inputData(dataset):
     data = pd.read_csv(dataset)
     # list of students
     students = data['STUDENTS'].tolist()
+    # list of classes
+    classes = list(np.unique(data[['1','2','3','4','5']].values))
     # dictionary of edges
     edges = {}
     first = data['1']
@@ -96,12 +99,12 @@ def inputData(dataset):
     fourth = data['4']
     fifth = data['5']
     for s in students:
-        edges.update({(s,str(first[s-1])):1})
-        edges.update({(s,str(second[s-1])):2})
-        edges.update({(s,str(third[s-1])):3})
-        edges.update({(s,str(fourth[s-1])):4})
-        edges.update({(s,str(fifth[s-1])):5})
-    return students, edges
+        edges.update({(s,first[s-1]):1})
+        edges.update({(s,second[s-1]):2})
+        edges.update({(s,third[s-1]):3})
+        edges.update({(s,fourth[s-1]):4})
+        edges.update({(s,fifth[s-1]):5})
+    return students, classes, edges
 
 
 # show histogram of preferences

@@ -197,7 +197,7 @@ def ex_lab():
     locs = list()
     rotations = list()
 
-    crs = .5 # coarseness
+    crs = 1 # coarseness
 
     y_inc = 16
 

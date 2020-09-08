@@ -12,7 +12,7 @@ Lastly, the directory [public_html](public_html) contains the source code for th
 | Lab # | Name                              | Mode             | Directory                                                  | Author(s) NetID* |
 |-------|-----------------------------------|------------------|------------------------------------------------------------|------------------|
 | 1     | Travelling Salesman Problem (TSP) | Web-based        | [travelling_salesman_problem](travelling_salesman_problem) | tw454 + hwr26    |
-| 2     | Dijkstra's Shortest Path          | Web-based        | [shortest_path](shortest_path)         | tw454 + hwr26    |
+| 2     | Dijkstra's Shortest Path          | Web-based        | [shortest_path](shortest_path)         | sea78, tw454 + hwr26    |
 | 3     | Minimum Spanning Tree (MST)       | Web-based        | [minimum_spanning_tree](minimum_spanning_tree)             | tw454 + hwr26    |
 | 4     | Maximum Flow                      | Jupyter Notebook | [maximum_flow](maximum_flow)                               | fms9             |
 | 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               | qz245            |

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[7]:
-
 import pandas as pd
 import numpy as np
 import math
@@ -19,9 +17,6 @@ from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider
                           HoverTool, TapTool, EdgesAndLinkedNodes, NodesAndLinkedEdges,
                           ColumnDataSource, LabelSet, NodesOnly
                          )
-
-
-# In[1]:
 
 
 def getTree(out, dfl, targets=None):
@@ -64,125 +59,6 @@ def getTree(out, dfl, targets=None):
     return tree_dict
 
 
-# In[8]:
-
-
-def plotNetworkTompkins(nodes, links):
-    """
-    Plots an interactive map of a Tomkins network.
-    """
-    dfn = nodes
-    dfl = links
-    
-    # extract data
-    node_ids = dfn.name.values.tolist()
-    start = dfl.start.values.tolist()
-    end = dfl.end.values.tolist()
-    cost = dfl.cost.values.tolist()
-    x = dfn.x.values.tolist()
-    y = dfn.y.values.tolist()
-        
-    # set graph range
-    min_x, max_x = min(dfn.x)-1, max(dfn.x)+1
-    min_y, max_y = min(dfn.y)-1, max(dfn.y)+1
-    
-    plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
-                  title="A simple graph of Tomkins County",
-                  plot_width=800, plot_height=420
-                 )
-    
-    graph = GraphRenderer()
-    
-    plot.add_tools(HoverTool(tooltips=[('Node1', '@start'),('Node2', '@end'), ('cost','@cost')]),
-                   TapTool()
-                  )
-    
-
-    # define nodes
-    graph.node_renderer.data_source.add(node_ids, 'index')
-    graph.node_renderer.glyph = Circle(line_color='steelblue', line_width=2, fill_color='lightblue', size=10)
-    graph.node_renderer.hover_glyph = Circle(line_color='lightgreen', line_width=2, fill_color='yellow', size=10)
-    graph.node_renderer.selection_glyph = Circle(line_color='orange', line_width=2, fill_color='yellow', size=10)
-    # define edges
-    graph.edge_renderer.data_source.data = dict(start=start, end=end, cost=cost)
-    graph.edge_renderer.glyph = MultiLine(line_color='steelblue', line_alpha=1, line_width=5)
-    graph.edge_renderer.hover_glyph = MultiLine(line_color='lightgreen', line_alpha=1, line_width=5)
-    graph.edge_renderer.selection_glyph = MultiLine(line_color='orange', line_alpha=1, line_width=5)
-    # set node locations
-    graph_layout = dict(zip(node_ids, zip(x, y)))
-    graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
-    
-
-    # inspection policy
-    graph.inspection_policy = EdgesAndLinkedNodes()
-    # selection policy
-    graph.selection_policy = NodesAndLinkedEdges()
-
-    # labels
-    source = ColumnDataSource({'x':x,'y':y,'node':node_ids})
-    labels = LabelSet(x='x', y='y', text='node', level='glyph', x_offset=5, y_offset=5, source=source)
-    plot.add_layout(labels)
-
-    plot.renderers.append(graph)
-    
-    show(plot)
-
-
-# In[6]:
-
-
-def plotTreeTompkins(dfn, dfl):
-    """
-    plot a shortest path tree
-    """
-    # extract data
-    node_ids = dfn.name.values.tolist()
-    start = dfl.start.values.tolist()
-    end = dfl.end.values.tolist()
-    x = dfn.x.values.tolist()
-    y = dfn.y.values.tolist()
-
-    # graph range
-    min_x, max_x = min(dfn.x)-1, max(dfn.x)+1
-    min_y, max_y = min(dfn.y)-1, max(dfn.y)+1
-
-    plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
-                  title="A simple graph of Tompkins County", plot_width=800, plot_height=420) 
-
-    graph = GraphRenderer()
-
-    plot.add_tools(HoverTool(tooltips=[('Name', '@index'), ('cost','@cost')]))
-    
-    # load data
-    opacity = {1: 1, 0:0.1}
-    in_tree = dfl.in_tree.map(opacity).values.tolist()
-    label = dfn.label.values.tolist()
-    graph.node_renderer.data_source.data = dict(index=node_ids, cost=label)
-    graph.edge_renderer.data_source.data = dict(start=start, end=end, in_tree=in_tree)
-    graph_layout = dict(zip(node_ids, zip(x, y)))
-
-    # style nodes
-    graph.node_renderer.glyph = Circle(line_color='green', line_width=2, fill_color='lightgreen', size=10)
-    graph.node_renderer.hover_glyph = Circle(line_color='lightgreen', line_width=2, fill_color='yellow', size=10)
-    graph.node_renderer.selection_glyph = Circle(line_color='orange', line_width=2, fill_color='yellow', size=10)
-    # style edges
-    graph.edge_renderer.glyph = MultiLine(line_color='green', line_alpha='in_tree', line_width=5)
-    graph.edge_renderer.hover_glyph = MultiLine(line_color='lightgreen', line_alpha=1, line_width=5)
-    graph.edge_renderer.selection_glyph = MultiLine(line_color='orange', line_alpha=1, line_width=5)
-    # set node locations
-
-    graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
-
-    # inspection policy
-    graph.inspection_policy = NodesOnly()
-
-    plot.renderers.append(graph)
-
-    show(plot)
-
-
-
-
 
 def plotNetwork(nodes, links, title='Plot of Graph', targets=None, on_map=False):
     """
@@ -192,7 +68,7 @@ def plotNetwork(nodes, links, title='Plot of Graph', targets=None, on_map=False)
     :param links: pandas df with 'start' and 'end' cols
                   with entries matching nodes' names
     :param title: str of graph title
-    :param target: list of node names
+    :param targets: list of node names
     :param on_map: boolean for map background
     """
     
@@ -209,6 +85,7 @@ def plotNetwork(nodes, links, title='Plot of Graph', targets=None, on_map=False)
     if targets != None:
         # get a small dataframe of target nodes
         dfp = dfn.loc[dfn['name'].isin(targets)]
+        ri = dfn.loc[dfn['name'] == targets[0]]
         
     # get plot boundaries
     min_x, max_x = min(dfn.x)+2000, max(dfn.x)-2000
@@ -248,16 +125,19 @@ def plotNetwork(nodes, links, title='Plot of Graph', targets=None, on_map=False)
 
     # add POIS
     source = ColumnDataSource(dfp)
+    sourceri = ColumnDataSource(ri)
     poi = Circle(x="x", y="y", size=7, line_color='black',
                  fill_color="orange", line_width=1
                 )
+    pri = Circle(x="x", y="y", size=7, line_color='black',
+                 fill_color="red", line_width=1
+                )
     
     plot.add_glyph(source, poi)
+    plot.add_glyph(sourceri, pri)
     
     show(plot)
 
-
-# In[4]:
 
 
 def plotShortestPathTree(dfn, dfl, out, targets=None):
@@ -319,16 +199,14 @@ def plotShortestPathTree(dfn, dfl, out, targets=None):
     if targets != None:
         # get a small dataframe of pois only
         dfp = dfn.loc[dfn['name'].isin(targets)]
+        ri = dfn.loc[dfn['name'] == targets[0]]
         source = ColumnDataSource(dfp)
+        sourceri = ColumnDataSource(ri)
         pois = Circle(x="x", y="y", size=7, line_color='orange',
                       fill_color="yellow", line_width=1)
+        pri = Circle(x="x", y="y", size=7, line_color='orange',
+                      fill_color="red", line_width=1)
         plot.add_glyph(source, pois)
+        plot.add_glyph(sourceri, pri)
 
     show(plot)
-
-
-# In[ ]:
-
-
-
-

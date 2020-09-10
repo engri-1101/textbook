@@ -1,0 +1,43 @@
+start,end,cost
+Trumansburg,Enfield,25
+Trumansburg,West Hill,20
+Enfield,West Hill,9
+Enfield,Newfield,10
+Newfield,West Hill,10
+Newfield,The Commons,15
+Newfield,East Hill,15
+Newfield,Danby,18
+West Hill,Danby,17
+West Hill,The Commons,7
+The Commons,Cayuga Heights,7
+The Commons,Campus,5
+The Commons,East Hill,6
+Cayuga Heights,Lansing,5
+Cayuga Heights,Northeast,12
+Cayuga Heights,Fall Creek,5
+Lansing,Fall Creek,15
+Lansing,Groton,12
+Lansing,Freeville,10
+Lansing,Northeast,5
+East Hill,Fall Creek,10
+East Hill,Campus,6
+East Hill,Danby,6
+Danby,Campus,14
+Danby,Varna,18
+Danby,Slaterville,15
+Danby,Caroline,16
+Caroline,Slaterville,4
+Caroline,Dryden,25
+Campus,Varna,5
+Campus,Slaterville,6
+Campus,Northeast,10
+Campus,Fall Creek,10
+Northeast,Groton,17
+Northeast,Freeville,7
+Northeast,Dryden,8
+Northeast,Varna,10
+Varna,Freeville,8
+Varna,Dryden,10
+Varna,Slaterville,9
+Slaterville,Dryden,21
+Slaterville,Caroline,4

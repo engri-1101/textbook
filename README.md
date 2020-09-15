@@ -12,7 +12,7 @@ Lastly, the directory [public_html](public_html) contains the source code for th
 | Lab # | Name                              | Mode             | Directory                                                  | Author(s) NetID* |
 |-------|-----------------------------------|------------------|------------------------------------------------------------|------------------|
 | 1     | Travelling Salesman Problem (TSP) | Web-based        | [travelling_salesman_problem](travelling_salesman_problem) | tw454 + hwr26    |
-| 2     | Dijkstra's Shortest Path          | Web-based        | [shortest_path](shortest_path)         | sea78, tw454 + hwr26    |
+| 2     | Dijkstra's Shortest Path          | Web-based        | [shortest_path](shortest_path)                             | sea78, tw454 + hwr26    |
 | 3     | Minimum Spanning Tree (MST)       | Web-based        | [minimum_spanning_tree](minimum_spanning_tree)             | tw454 + hwr26    |
 | 4     | Maximum Flow                      | Jupyter Notebook | [maximum_flow](maximum_flow)                               | fms9             |
 | 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               | qz245            |
@@ -22,7 +22,8 @@ Lastly, the directory [public_html](public_html) contains the source code for th
 | 8     | LP Formulation                    | Jupyter Notebook | [lp_formulation](lp_formulation)                           | hwr26            |
 | 9     | TSP and Integer Programming       | Jupyter Notebook | [tsp_integer_programming](tsp_integer_programming)         | hwr26            |
 | 9     | Seat Packing                      | Jupyter Notebook | [seat_packing](seat_packing)                               | qz245            |
-| 10    | Knapsack + Branch & Bound         |                  | -*WIP*-                                                    |                  |
+| 10    | Knapsack                          | Web (Figma)      | [knapsack](knapsack)                                       | qz245            |
+| 10    | Branch and Bound                  |                  | *-WIP-*                                                    |                  |
 | 11    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78            |
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.

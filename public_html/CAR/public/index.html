@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>js-dos 6.22</title>
+  <script src="js-dos.js"></script>
+  <style>
+    canvas {
+      width: 900;
+      height: 575px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="jsdos"></canvas>
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    Dos(document.getElementById("jsdos")).ready((fs, main) => {
+      fs.extract("CAR.zip").then(() => {
+        main(["-c", "cd bestand\\bin", "-c", "STARTCAR"])
+      });
+    });
+  </script>
+</body>
+
+</html>

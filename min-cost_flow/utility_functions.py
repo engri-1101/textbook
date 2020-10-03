@@ -5,13 +5,12 @@ from gurobipy import *
 
 class Trip(object):
     """docstring for Trip"""
-    def __init__(self, start, end, start_time, trip_time, battery_cost, value, capacity):
+    def __init__(self, start, end, start_time, trip_time, value, capacity):
         self.start = start
         self.end = end
         self.start_time = start_time
         self.trip_time = trip_time
         self.end_time = start_time + trip_time
-        self.battery_cost = battery_cost  # TODO: Should be removed.
         self.value = value
         self.capacity = capacity
         self.price = None

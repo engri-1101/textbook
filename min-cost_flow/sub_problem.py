@@ -19,7 +19,7 @@ class BikeRouting(object):
         self.model = None
         self.arcs = None
         self.arc_names = None
-        self.flow = None
+        self.flow = dict()
         self.solution = None
         self.constrs = None
         self.objective = None
@@ -38,17 +38,21 @@ class BikeRouting(object):
 
     def setup_network(self):
         # Generate list of all nodes
-        nodes = list()
+        self.nodes = list()
         # Source Node
-        nodes.append('source')
+        self.nodes.append('source')
+        
+        print('start')
         # Location, Time
         for location in self.locations:
             for time in range(self.T_max + 1):
-                nodes.append(node_name(location, time))
+                self.nodes.append(node_name(location, time))
         # Sink Node
-        nodes.append('sink')
+        self.nodes.append('sink')
+              
+        print('finish')
 
-        for node in nodes:
+        for node in self.nodes:
             self.arcs_entering[node] = list()
             self.arcs_leaving[node] = list()
 
@@ -101,11 +105,12 @@ class BikeRouting(object):
         dictionary = {}
         for i in range(len(self.arcs)):
             dictionary[self.arcs[i]] = [capacity[i], obj[i], self.arc_names[i]]
+            self.flow[self.arcs[i]] = 0
 
         self.arcs, capacity, obj, self.arc_names = multidict(dictionary)
 
         inflow = {}
-        for node in nodes:
+        for node in self.nodes:
             if 'source' == node:
                 inflow[node] = self.num_bikes
             elif 'sink' == node:
@@ -115,49 +120,60 @@ class BikeRouting(object):
                 
         # Create a dictionary from node names to node indices
         self.nodes_to_index = {}
-        for i in range(len(nodes)):
-            self.nodes_to_index[nodes[i]] = i
+        for i in range(len(self.nodes)):
+            self.nodes_to_index[self.nodes[i]] = i
+            
+        print('define input for making ortools network.')
                     
         # Define four parallel arrays: start_nodes, end_nodes, capacities, and unit costs
-        start_nodes = []
-        end_nodes   = []
-        capacities  = []
-        unit_costs  = []
+        self.start_nodes = []
+        self.end_nodes   = []
+        self.capacities  = []
+        self.unit_costs  = []
         for arc in self.arcs:
-            start_nodes.append(self.nodes_to_index[arc[0]])
-            end_nodes.append(self.nodes_to_index[arc[1]])
-            capacities.append(capacity[arc])
-            unit_costs.append(obj[arc])
+            self.start_nodes.append(self.nodes_to_index[arc[0]])
+            self.end_nodes.append(self.nodes_to_index[arc[1]])
+            self.capacities.append(capacity[arc])
+            self.unit_costs.append(obj[arc])
             
         # Define an array of supplies at each node.
         supplies = list(inflow.values())
         
         # DEFINE NETWORK FOR ORTOOLS
+        
+        print('making ortools network.')
             
         # Instantiate a SimpleMinCostFlow solver.
         self.model = pywrapgraph.SimpleMinCostFlow()
 
         # Add each arc.
-        for i in range(0, len(start_nodes)):
-            self.model.AddArcWithCapacityAndUnitCost(start_nodes[i], end_nodes[i],
-                                                        capacities[i], unit_costs[i])
+        for i in range(0, len(self.start_nodes)):
+            self.model.AddArcWithCapacityAndUnitCost(self.start_nodes[i], 
+                                                     self.end_nodes[i],
+                                                     self.capacities[i], 
+                                                     self.unit_costs[i])
 
         # Add node supplies.
         for i in range(0, len(supplies)):
             self.model.SetNodeSupply(i, supplies[i])
             
-        # DEFINE NETWORK FOR NETWORKX
+        print('finished making ortools network.')
+            
+    
+    def draw_graph(self):  
         
-        self.G = nx.DiGraph()
+        G = nx.DiGraph()
         edgeList = []
         for i in range(len(self.arcs)):
-            edgeList.append((start_nodes[i], end_nodes[i], capacities[i]))
-        self.G.add_weighted_edges_from(edgeList, 'cap')   
-        for i, j in self.G.edges:
-            self.G.edges[i,j]['flow'] = 0
-       
-    
-    def draw_graph(self):        
+            edgeList.append((self.start_nodes[i], 
+                             self.end_nodes[i], 
+                             self.capacities[i]))
+        G.add_weighted_edges_from(edgeList, 'cap')   
+        for i, j in G.edges:
+            tail = self.nodes[i]
+            head = self.nodes[j]
+            G.edges[i,j]['flow'] = self.flow[tail,head]
+        
         loc_pos = list(np.linspace(0,1,2+len(self.locations))[1:-1])
         loc_pos.reverse()
         time_pos = np.linspace(0,1,2+self.T_max+1)[1:-1]
@@ -168,8 +184,8 @@ class BikeRouting(object):
                 pos.append((time_pos[j],loc_pos[i]))      
         pos.append((1,0.5))
         plt.figure(3,figsize=(9,6)) 
-        nx.draw_networkx(self.G,pos,node_size=500,node_color='lightblue')
-        nx.draw_networkx_edge_labels(self.G,pos,edge_labels=nx.get_edge_attributes(self.G,'flow'));
+        nx.draw_networkx(G,pos,node_size=500,node_color='lightblue')
+        nx.draw_networkx_edge_labels(G,pos,edge_labels=nx.get_edge_attributes(G,'flow'));
               
        
     def optimize(self):
@@ -177,13 +193,9 @@ class BikeRouting(object):
             print('Something went wrong.')
         self.objective = -self.model.OptimalCost()
         
-        # Update flow on networkx plot
+        # Update flow 
         for i in range(len(self.arcs)):
-            f = self.model.Flow(i)
-            arc = self.arcs[i]
-            tail = self.nodes_to_index[arc[0]]
-            head = self.nodes_to_index[arc[1]]
-            self.G.edges[tail,head]['flow'] = f
+            self.flow[self.arcs[i]] = self.model.Flow(i)
         
 #         self.get_solution()
 

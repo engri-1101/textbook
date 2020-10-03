@@ -6,6 +6,8 @@ import numpy as np
 
 class BikeRouting(object):
     """docstring for BikeRouting"""
+    
+    
     def __init__(self, problem):
         # Problem Parameters
         self.num_bikes = problem.num_bikes

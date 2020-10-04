@@ -25,6 +25,7 @@ Lastly, the directory [public_html](public_html) contains the source code for th
 | 10    | Knapsack                          | Web (Figma)      | [knapsack](knapsack)                                       | qz245            |
 | 10    | Branch and Bound                  |                  | *-WIP-*                                                    |                  |
 | 11    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78            |
+| 12    | Minimum-cost Flow                 | Jupyter Notebook | [min-cost_flow](min-cost_flow)                             | aaj54 + hwr26    |
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.
 

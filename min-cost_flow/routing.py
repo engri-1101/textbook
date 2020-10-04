@@ -7,13 +7,7 @@ import pandas as pd
 class TaxiRouting(object):
     """Maintain a min-cost representation of NYC taxi routing problem."""
     
-    def __init__(self, trips, arcs, 
-                 dataframes = False,
-                 nodes = None, 
-                 start_time = None, 
-                 end_time = None, 
-                 L = None,
-                 taxi_count = None):
+    def __init__(self, trips, nodes, arcs, start_time, end_time, taxi_count):
         """Create the min-cost representation of this instance.
         
         Args:
@@ -24,48 +18,19 @@ class TaxiRouting(object):
             end_time (float): Ending hour of interest.
             taxi_count (int): The number of taxis to service rides.
         """
-        if not dataframes:
-            self.trips_df = pd.DataFrame(columns=['start_node', 'end_node', 'start_time', 'trip_time'])
-            for trip in trips:
-                row = {}
-                row['start_node'] = trip[0]
-                row['end_node'] = trip[1]
-                row['start_time'] = trip[2]
-                row['trip_time'] = trip[3]
-                self.trips_df = self.trips_df.append(pd.DataFrame(row, index=[0]))
+        #Set dataframes
+        self.nodes_df = nodes
+        self.arcs_df = arcs
 
-            self.arcs_df = pd.DataFrame(columns=['start', 'end', 'delay5pm'])
-            for arc in arcs:
-                row = {}
-                row['start'] = arc[0]
-                row['end'] = arc[1]
-                row['delay5pm'] = arc[2]
-                self.arcs_df = self.arcs_df.append(pd.DataFrame(row, index=[0]))
+        # Filter trips by time window of interest
+        trips = trips[(trips.start_time >= start_time) & 
+                      (trips.start_time + trips.trip_time <= end_time)].copy()
+        trips.start_time = trips.start_time - start_time
+        self.trips_df = trips
 
-            self.T_max = max(self.trips_df.start_time+self.trips_df.trip_time)
-            self.L = L
-            self.B_max = taxi_count
-        else:
-            #Set dataframes
-            self.nodes_df = nodes.reset_index().rename(columns={'index' : 'id'})
-            name_to_id = {v: k for k, v in self.nodes_df[['name']].to_dict()['name'].items()}
-
-            trips.start_node = trips.start_node.apply(lambda x: name_to_id[x])
-            trips.end_node = trips.end_node.apply(lambda x: name_to_id[x])
-            self.trips_df = trips.copy()
-
-            arcs.start = arcs.start.apply(lambda x: name_to_id[x])
-            arcs.end = arcs.end.apply(lambda x: name_to_id[x])
-            self.arcs_df = arcs
-
-            # Filter trips by time window of interest
-            self.trips_df = self.trips_df[(self.trips_df.start_time >= 60*start_time) & 
-                                          (self.trips_df.start_time + self.trips_df.trip_time < 60*end_time)]
-            self.trips_df.start_time = self.trips_df.start_time - 60*start_time
-
-            self.L = len(self.nodes_df)
-            self.T_max = int(60*(end_time - start_time))
-            self.B_max = taxi_count
+        self.L = len(self.nodes_df)
+        self.T_max = int(end_time - start_time)
+        self.B_max = taxi_count
         
         self.nodes = dict()
         self.arcs = list()
@@ -78,7 +43,7 @@ class TaxiRouting(object):
         self.model = None
         
         self.setup_network()
-        self.load_model()
+        self.load_model()      
     
     def setup_network(self):
         """Create the network for this taxi routing instance."""  
@@ -125,14 +90,14 @@ class TaxiRouting(object):
             t = row['end_node']
             s_t = row['start_time']
             t_t = s_t + row['trip_time']
-            add_arc((s,s_t),(t,t_t),1,-1)   
+            add_arc((s,s_t),(t,t_t),1,-row['value'])   
             
         # Movement (non-trip) arcs
         for index, row in self.arcs_df.iterrows():
             for t in range(self.T_max):
                 i = row['start']
                 j = row['end']
-                delay = max(round(row['delay5pm']/60),1)
+                delay = row['trip_time']
                 if t + delay <= self.T_max:
                     add_arc((i,t),(j,t+delay),self.B_max,0)     
             
@@ -143,7 +108,7 @@ class TaxiRouting(object):
             self.model.AddArcWithCapacityAndUnitCost(self.start_nodes[i], 
                                                      self.end_nodes[i],
                                                      self.capacities[i], 
-                                                     self.costs[i])
+                                                     int(self.costs[i]))
         supplies = [0]*len(self.nodes)
         supplies[0] = self.B_max
         supplies[-1] = -self.B_max
@@ -182,3 +147,37 @@ class TaxiRouting(object):
         plt.figure(3,figsize=(9,6)) 
         nx.draw_networkx(G,pos,node_size=500,node_color='lightblue')
         nx.draw_networkx_edge_labels(G,pos,edge_labels=nx.get_edge_attributes(G,'flow'));
+        
+def create_dataframes(trips, arcs, L):
+    """Create input dataframes.
+    
+    Args:
+        trips (List[Tuple]): (start, end, start_time, trip_time, value) representing trip
+        arcs (List[Tuple]): (start, end, trip_time) representing arc
+        L (int): Number of locations
+    """
+    
+    trips_df = pd.DataFrame(columns=['start_node', 'end_node', 'start_time', 'trip_time', 'value'])
+    for trip in trips:
+        row = {}
+        row['start_node'] = trip[0]
+        row['end_node'] = trip[1]
+        row['start_time'] = trip[2]
+        row['trip_time'] = trip[3]
+        row['value'] = trip[4]
+        trips_df = trips_df.append(pd.DataFrame(row, index=[0]))
+
+    nodes_df = pd.DataFrame(columns=['name'])
+    for i in range(L):
+        row = {}
+        row['name'] = i
+        nodes_df = nodes_df.append(pd.DataFrame(row, index=[0]))
+
+    arcs_df = pd.DataFrame(columns=['start', 'end', 'trip_time'])
+    for arc in arcs:
+        row = {}
+        row['start'] = arc[0]
+        row['end'] = arc[1]
+        row['trip_time'] = arc[2]
+        arcs_df = arcs_df.append(pd.DataFrame(row, index=[0]))
+    return trips_df, nodes_df, arcs_df    

@@ -59,7 +59,7 @@ class TaxiRouting(object):
     def setup_network(self):
         """Create the network for this taxi routing instance."""  
         # source node
-        self.nodes['source'] = 0
+        self.nodes['s'] = 0
         
         # location x time nodes
         i = 1
@@ -69,7 +69,7 @@ class TaxiRouting(object):
                 i += 1
         
         # sink node
-        self.nodes['sink'] = i
+        self.nodes['f'] = i
         
         for node in range(i+1):
             self.arcs_in[node] = []
@@ -90,11 +90,11 @@ class TaxiRouting(object):
         
         # Taxi source arcs
         for j in range(self.L):
-            add_arc('source',(j,0),self.B_max,0)
+            add_arc('s',(j,0),self.B_max,0)
             
         # Taxi sink arcs
         for j in range(self.L):
-            add_arc((j,self.T_max),'sink',self.B_max,0)
+            add_arc((j,self.T_max),'f',self.B_max,0)
             
         # Stay in location arcs
         for j in range(self.L):
@@ -174,8 +174,8 @@ class TaxiRouting(object):
         taxi_arcs = []
         tmp_flow = self.flow.copy()
         node_map = {v: k for k, v in self.nodes.items()}
-        source = self.nodes['source']
-        sink = self.nodes['sink']
+        source = self.nodes['s']
+        sink = self.nodes['f']
         for taxi in range(self.B_max):
             taxi_arc = []
             i = source
@@ -186,7 +186,7 @@ class TaxiRouting(object):
                         tmp_flow[arc] = tmp_flow[arc] - 1
                         start_node = node_map[arc[0]]
                         end_node = node_map[arc[1]]
-                        if start_node != 'source' and end_node != 'sink':
+                        if start_node != 's' and end_node != 'f':
                             moving = (start_node[0] != end_node[0])
                             time = end_node[1] - start_node[1]
                             trip_arc = arc[2] if type(arc[2]) is bool else True
@@ -207,7 +207,7 @@ class TaxiRouting(object):
             trips = self.trips_df.loc[trip_IDs]
             total_trip_distance = sum(trips['trip_distance'])
             total_passengers = sum(trips['passenger_count'])
-            revenue = sum(trips['value'])/100
+            revenue = sum(trips['revenue'])
 
 
             taxi_stats.append({'moving_pct' : moving_time/total_time,
@@ -220,21 +220,24 @@ class TaxiRouting(object):
         self.taxi_stats = taxi_stats    
         self.avg_moving_pct = sum([stat['moving_pct'] for stat in taxi_stats])/self.B_max
         self.avg_trip_pct = sum([stat['on_trip_pct'] for stat in taxi_stats])/self.B_max
-        self.avg_num_trips = sum([stat['num_trips'] for stat in taxi_stats])/self.B_max
+        self.total_num_trips = sum([stat['num_trips'] for stat in taxi_stats])
         self.avg_total_trip_distance = sum([stat['total_trip_distance'] for stat in taxi_stats])/self.B_max
         self.total_passengers = sum([stat['total_passengers'] for stat in taxi_stats])
         self.avg_revenue = sum([stat['revenue'] for stat in taxi_stats])/self.B_max
+        self.total_revenue = sum([stat['revenue'] for stat in taxi_stats])
 
     def get_stats(self):
         """Return the summary stats for this solution."""
         self.compute_taxi_stats()
         
         print('Summary Statistics')
-        print('Avg. Moving Pct.: ',self.avg_moving_pct)
-        print('Avg. On Trip Pct.: ',self.avg_trip_pct)
-        print('Avg. Total Distance of Trips: ',self.avg_total_trip_distance)
-        print('Total Passengers: ',self.total_passengers)
-        print('Avg. Revenue: ',self.avg_revenue)
+        print('Avg. Moving Pct.: ',np.round(self.avg_moving_pct,2))
+        print('Avg. On Trip Pct.: ',np.round(self.avg_trip_pct,2))
+        print('Avg. Total Distance of Trips: ',np.round(self.avg_total_trip_distance,2))
+        print('Total Trips.: ',np.round(self.total_num_trips,2))
+        print('Total Passengers: ',np.round(self.total_passengers,2))
+        print('Avg. Revenue: ',np.round(self.avg_revenue,2))
+        print('Total Revenue: ',np.round(self.total_revenue,2))
         
     
     def taxi_paths(self):
@@ -242,8 +245,8 @@ class TaxiRouting(object):
         taxi_paths = []
         tmp_flow = self.flow.copy()
         node_map = {v: k for k, v in self.nodes.items()}
-        source = self.nodes['source']
-        sink = self.nodes['sink']
+        source = self.nodes['s']
+        sink = self.nodes['f']
         for taxi in range(self.B_max):
             path = []
             i = source
@@ -297,7 +300,9 @@ class TaxiRouting(object):
                 pos.append((time_pos[j],loc_pos[i]))      
         pos.append((1,0.5))
         plt.figure(3,figsize=(9,6)) 
-        nx.draw_networkx(G,pos,node_size=500,node_color='lightblue')
+        
+        node_map = {v: k for k, v in self.nodes.items()}        
+        nx.draw_networkx(G,pos,labels=node_map,node_size=1200,node_color='lightblue')
         nx.draw_networkx_edge_labels(G,pos,edge_labels=nx.get_edge_attributes(G,'flow'));
         
     def plot_taxi_route(self, taxis):

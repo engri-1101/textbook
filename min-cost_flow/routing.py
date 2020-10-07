@@ -3,6 +3,14 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import pandas as pd
+from bokeh import palettes
+from bokeh.plotting import figure, show
+from bokeh.io import output_notebook
+from bokeh.tile_providers import get_provider, Vendors
+from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider,
+                          HoverTool, TapTool, EdgesAndLinkedNodes, NodesAndLinkedEdges,
+                          ColumnDataSource, LabelSet, NodesOnly
+                         )
 # from gurobipy import *
 
 class TaxiRouting(object):
@@ -146,7 +154,8 @@ class TaxiRouting(object):
 #         # set objective
 #         self.model.modelSense = GRB.MINIMIZE
             
-    def optimize(self):        
+    def optimize(self):   
+        """Optimize this taxi routing problem and set the flows and objective value."""
         # OR-Tools
         if self.model.Solve() != self.model.OPTIMAL:
             print('Something went wrong.')  
@@ -160,7 +169,76 @@ class TaxiRouting(object):
 #         for arc in self.arcs:
 #              self.flow[arc] = int(self.model_flow[arc].x)
             
+    def compute_taxi_stats(self):
+        """"Compute the statisitcs for this solution."""
+        taxi_arcs = []
+        tmp_flow = self.flow.copy()
+        node_map = {v: k for k, v in self.nodes.items()}
+        source = self.nodes['source']
+        sink = self.nodes['sink']
+        for taxi in range(self.B_max):
+            taxi_arc = []
+            i = source
+            while not i == sink:
+                arcs_out = self.arcs_out[i]
+                for arc in arcs_out:
+                    if tmp_flow[arc] > 0:
+                        tmp_flow[arc] = tmp_flow[arc] - 1
+                        start_node = node_map[arc[0]]
+                        end_node = node_map[arc[1]]
+                        if start_node != 'source' and end_node != 'sink':
+                            moving = (start_node[0] != end_node[0])
+                            time = end_node[1] - start_node[1]
+                            trip_arc = arc[2] if type(arc[2]) is bool else True
+                            taxi_arc.append((time,moving,trip_arc,arc[2]))
+                        i = arc[1]
+                        break
+            taxi_arcs.append(taxi_arc)
+
+        taxi_stats = []
+        for arcs in taxi_arcs:
+            unzipped = list(zip(*arcs))
+            total_time = sum(np.array(unzipped[0]))
+            moving_time = sum(np.array(unzipped[0])[list(unzipped[1])])
+            trip_time = sum(np.array(unzipped[0])[list(unzipped[2])])
+
+            trip_IDs = list(np.array(unzipped[3])[list(unzipped[2])])
+            num_trips = len(trip_IDs)
+            trips = self.trips_df.loc[trip_IDs]
+            total_trip_distance = sum(trips['trip_distance'])
+            total_passengers = sum(trips['passenger_count'])
+            revenue = sum(trips['value'])/100
+
+
+            taxi_stats.append({'moving_pct' : moving_time/total_time,
+                               'on_trip_pct' : trip_time/total_time,
+                               'num_trips' : num_trips,
+                               'total_trip_distance' : total_trip_distance,
+                               'total_passengers' : total_passengers,
+                               'revenue' : revenue})
+            
+        self.taxi_stats = taxi_stats    
+        self.avg_moving_pct = sum([stat['moving_pct'] for stat in taxi_stats])/self.B_max
+        self.avg_trip_pct = sum([stat['on_trip_pct'] for stat in taxi_stats])/self.B_max
+        self.avg_num_trips = sum([stat['num_trips'] for stat in taxi_stats])/self.B_max
+        self.avg_total_trip_distance = sum([stat['total_trip_distance'] for stat in taxi_stats])/self.B_max
+        self.total_passengers = sum([stat['total_passengers'] for stat in taxi_stats])
+        self.avg_revenue = sum([stat['revenue'] for stat in taxi_stats])/self.B_max
+
+    def get_stats(self):
+        """Return the summary stats for this solution."""
+        self.compute_taxi_stats()
+        
+        print('Summary Statistics')
+        print('Avg. Moving Pct.: ',self.avg_moving_pct)
+        print('Avg. On Trip Pct.: ',self.avg_trip_pct)
+        print('Avg. Total Distance of Trips: ',self.avg_total_trip_distance)
+        print('Total Passengers: ',self.total_passengers)
+        print('Avg. Revenue: ',self.avg_revenue)
+        
+    
     def taxi_paths(self):
+        """Returns a list of arcs travelled and indication if they were a trip arc for each taxi."""
         taxi_paths = []
         tmp_flow = self.flow.copy()
         node_map = {v: k for k, v in self.nodes.items()}
@@ -173,31 +251,31 @@ class TaxiRouting(object):
                 arcs_out = self.arcs_out[i]
                 for arc in arcs_out:
                     if tmp_flow[arc] > 0:
-                        j = arc[1]
-                        if not j == sink:
-                            path.append(node_map[j])
                         tmp_flow[arc] = tmp_flow[arc] - 1
-                        i = j
+                        is_trip_arc = arc[2] if type(arc[2]) is bool else True
+                        path.append((node_map[arc[0]][0],node_map[arc[1]][0],is_trip_arc))
+                        i = arc[1]
                         break
-            taxi_paths.append(path)
+            taxi_paths.append(path[1:-1])
         return taxi_paths
      
-    def taxi_locations(self):
-        taxi_paths = self.taxi_paths()
-        taxi_time_dict = []
-        for taxi in range(self.B_max):
-            locations, times = list(zip(*taxi_paths[taxi]))
-            time_dict = {}
-            for i in range(len(times)):
-                time_dict[times[i]] = locations[i]
-                if i < len(times) - 1:
-                    for t in range(times[i+1]-times[i]-1):
-                        time_dict[times[i]+t+1] = (locations[i],locations[i+1])
-            taxi_time_dict.append(time_dict)
-        return taxi_time_dict
+      # TODO: Implement a method to get locations of taxis at each time interval
+#     def taxi_locations(self):
+#         taxi_paths = self.taxi_paths()
+#         taxi_time_dict = []
+#         for taxi in range(self.B_max):
+#             locations, times = list(zip(*taxi_paths[taxi]))
+#             time_dict = {}
+#             for i in range(len(times)):
+#                 time_dict[times[i]] = locations[i]
+#                 if i < len(times) - 1:
+#                     for t in range(times[i+1]-times[i]-1):
+#                         time_dict[times[i]+t+1] = (locations[i],locations[i+1])
+#             taxi_time_dict.append(time_dict)
+#         return taxi_time_dict
             
     def draw_graph(self):  
-        
+        """Draw the min-cost flow graph for this problem."""
         G = nx.DiGraph()
         edgeList = []
         for i in range(len(self.start_nodes)):
@@ -221,6 +299,75 @@ class TaxiRouting(object):
         plt.figure(3,figsize=(9,6)) 
         nx.draw_networkx(G,pos,node_size=500,node_color='lightblue')
         nx.draw_networkx_edge_labels(G,pos,edge_labels=nx.get_edge_attributes(G,'flow'));
+        
+    def plot_taxi_route(self, taxis):
+        """Plot the path of every taxi in the given list on the Manhattan grid."""
+        paths = self.taxi_paths()  # get paths
+        
+        # parallel lists for every arc
+        start = []  # start node
+        end = []  # end node
+        color = []  # color code by taxi
+        alpha = []  # opacity lower on trip arcs
+        
+        # parallel lists for initial location nodes
+        start_nodes = []
+        start_colors = []
+        
+        colors = palettes.Category10[10]
+        c = 0
+        
+        for i in taxis:
+            path = paths[i]
+            
+            # add start node information for this taxi
+            start_nodes.append(path[0][0])
+            start_colors.append(colors[c])
+            
+            for comp in path:
+                start.append(comp[0])
+                end.append(comp[1])
+                alpha.append({True : 0.3, False : 1}[comp[2]])
+                color.append(colors[c])
+                
+            c = c + 1 if c < len(colors)-1 else 0
+
+        # parallel lists for nodes
+        nodes = self.nodes_df.loc[list(set(start + end))]
+        node_ids = nodes.name.values.tolist()
+        x = nodes.x.values.tolist()
+        y = nodes.y.values.tolist()
+
+        # get plot boundaries
+        min_x, max_x = min(nodes.x)-1000, max(nodes.x)+1000
+        min_y, max_y = min(nodes.y)-1000, max(nodes.y)+1000
+
+        plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
+                      x_axis_type="mercator", y_axis_type="mercator",
+                      title='Taxi Routes', plot_width=600, plot_height=470)
+        plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+
+        graph = GraphRenderer()
+
+        # define initial location nodes
+        graph.node_renderer.data_source.add(start_nodes, 'index')
+        graph.node_renderer.data_source.add(start_colors, 'start_colors')
+        graph.node_renderer.glyph = Circle(size=7,line_width=0,fill_alpha=1, fill_color='start_colors')
+
+         # define network edges
+        graph.edge_renderer.data_source.data = dict(start=list(start),
+                                                    end=list(end),
+                                                    color=list(color),
+                                                    alpha=list(alpha))
+        graph.edge_renderer.glyph = MultiLine(line_color='color', line_alpha='alpha',
+                                             line_width=3,line_cap='round')
+
+        # set node locations
+        graph_layout = dict(zip(node_ids, zip(x, y)))
+        graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+        
+        plot.renderers.append(graph)
+        show(plot)
         
 def create_dataframes(trips, arcs, L):
     """Create input dataframes.

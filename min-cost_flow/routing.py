@@ -131,7 +131,7 @@ class TaxiRouting(object):
             self.model.AddArcWithCapacityAndUnitCost(self.start_nodes[i], 
                                                      self.end_nodes[i],
                                                      self.capacities[i], 
-                                                     int(self.costs[i]))
+                                                     int(self.costs[i]*100))
         for i in range(0, len(supplies)):
             self.model.SetNodeSupply(i, supplies[i])
             
@@ -159,7 +159,7 @@ class TaxiRouting(object):
         # OR-Tools
         if self.model.Solve() != self.model.OPTIMAL:
             print('Something went wrong.')  
-        self.objective = -self.model.OptimalCost()
+        self.objective = -self.model.OptimalCost()/100
         for i in range(len(self.arcs)):
             self.flow[self.arcs[i]] = self.model.Flow(i)
             
@@ -234,11 +234,13 @@ class TaxiRouting(object):
         print('Avg. Moving Pct.: ',np.round(self.avg_moving_pct,2))
         print('Avg. On Trip Pct.: ',np.round(self.avg_trip_pct,2))
         print('Avg. Total Distance of Trips: ',np.round(self.avg_total_trip_distance,2))
-        print('Total Trips.: ',np.round(self.total_num_trips,2))
-        print('Total Passengers: ',np.round(self.total_passengers,2))
         print('Avg. Revenue: ',np.round(self.avg_revenue,2))
-        print('Total Revenue: ',np.round(self.total_revenue,2))
-        
+        print('Total Trips: ',np.round(self.total_num_trips,2),
+              '(', round(self.total_num_trips/len(self.trips_df),2), ')')
+        print('Total Passengers: ',np.round(self.total_passengers,2),
+              '(', round(self.total_passengers/sum(self.trips_df.passenger_count),2), ')')
+        print('Total Revenue: ',np.round(self.total_revenue,2),
+              '(', round(self.total_revenue/sum(self.trips_df.revenue),2), ')')
     
     def taxi_paths(self):
         """Returns a list of arcs travelled and indication if they were a trip arc for each taxi."""

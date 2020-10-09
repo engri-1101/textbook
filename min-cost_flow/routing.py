@@ -279,18 +279,21 @@ class TaxiRouting(object):
 #             taxi_time_dict.append(time_dict)
 #         return taxi_time_dict
             
-    def draw_graph(self):  
+    def draw_graph(self, draw_all=True):  
         """Draw the min-cost flow graph for this problem."""
         G = nx.DiGraph()
         edgeList = []
-        for i in range(len(self.start_nodes)):
-            edgeList.append((self.start_nodes[i], 
-                             self.end_nodes[i], 
-                             self.capacities[i]))
-        G.add_weighted_edges_from(edgeList, 'cap')  
+        for arc in self.arcs:
+            if not draw_all and not arc[2] and self.flow[arc] == 0:
+                continue
+            edgeList.append((arc[0], 
+                             arc[1], 
+                             arc[2]))
+        G.add_weighted_edges_from(edgeList, 'trip')  
+        G.add_nodes_from(list(self.nodes.values()))
                 
-        for (i,j,trip_arc) in self.arcs:
-            G.edges[(i,j)]['flow'] = self.flow[(i,j,trip_arc)]
+        for i,j in G.edges:
+            G.edges[(i,j)]['flow'] = self.flow[(i,j,G.edges[(i,j)]['trip'])]
         
         loc_pos = list(np.linspace(0,1,2+self.L)[1:-1])
         loc_pos.reverse()

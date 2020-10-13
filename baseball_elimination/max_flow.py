@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import math
-import re
 
 class max_flow:
     """Maintains a max flow instance."""
@@ -34,6 +33,7 @@ class max_flow:
             colors = [colors[i] for i in self.G.nodes]
             nx.draw_networkx(self.G,self.pos,node_size=500,node_color=colors)
         nx.draw_networkx_edge_labels(self.G,self.pos,edge_labels=label);
+        plt.show()
 
     def create_residual_graph(self):
         """Create the flow graph for the current flow."""
@@ -62,44 +62,45 @@ class max_flow:
             nx.draw_networkx(self.residual,self.pos,node_size=500,node_color=colors,connectionstyle='arc3, rad=0.1')
         residualcap = nx.get_edge_attributes( self.residual, 'residual capacity' )        
         nx.draw_networkx_edge_labels(self.residual,self.pos,edge_labels=residualcap,label_pos=0.66);
+        plt.show()
 
-    def label(self, auto=False, show=False):
+    def label(self, auto=True, show=False):
         """Label and check nodes."""
         for i in self.G.nodes:
             self.G.nodes[i]["check"] = False
         self.G.nodes['s']["check"] = True
-        list = { 's' }
+        unexplored = { 's' }
         if show:
             self.plot_checked(residual=True)
-        while len(list) > 0:
-            i = list.pop()
-            if auto:
-                print('Node',i,'is explored next.')
-                usr_input = input('What are the neighbors?: ')
-                input_neighbors = []
-                for string in re.split('([\'].[\'])', usr_input):
-                    node = string.strip(',\'')
-                    if len(node):
-                        input_neighbors.append(node)
-                if set(self.residual.neighbors(i)) == set(input_neighbors):
-                    neighbors = input_neighbors
-                else:
-                    neighbors = self.residual.neighbors(i)
-                    print('Wrong. The neighbors were',list(neighbors))
+        while len(unexplored) > 0:
+            if not auto:
+                print('Unexplored nodes:',unexplored)
+                nxt = input('Choose next node to explore: ')
+                if nxt not in unexplored:
+                    raise ValueError('Node not in the list of unexplored nodes.')
+                i = nxt
+                unexplored.remove(i)
             else:
-                neighbors = self.residual.neighbors(i)
-                
+                i = unexplored.pop()
+            
+            neighbors = list(self.residual.neighbors(i))
+            if show:
+                print("Looking at node '%s'. Its neighbors are %s."%(i,str(neighbors)))
             for j in neighbors:  
                 if not self.G.nodes[j]["check"]:
                     self.G.nodes[j]["check"] = True
                     self.G.nodes[j]["prev"] = i
-                    list.add(j)  
+                    unexplored.add(j)  
+                    if show:
+                        print("Node '%s' now checked and prev set to '%s'."%(j,i))
+                else:
+                    if show:
+                        print("Node '%s' already checked."%(j))
             if show:
                 self.plot_checked(residual=True)
-        if show:
-                self.plot_checked()
     
     def plot_checked(self, residual=False):
+        """Plot the graph with checked nodes marked."""
         checked = nx.get_node_attributes(self.G,'check')
         colors = {}
         for node in checked:
@@ -149,6 +150,7 @@ class max_flow:
             self.label()  # run the labeling algorithm to find a s-t path in the new residual graph
 
 def add_infinite_capacities(G):
+    """Add infinite capacities on the arcs with no capacity given."""
     for i,j in G.edges:
         if 'capacity' in G.edges[i,j]:
             G.edges[i,j]['cap'] = G.edges[i,j]['capacity']

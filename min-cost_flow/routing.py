@@ -242,6 +242,51 @@ class TaxiRouting(object):
         print('Total Revenue: ',np.round(self.total_revenue,2),
               '(', round(self.total_revenue/sum(self.trips_df.revenue),2), ')')
     
+    def plot_stats(self):
+        """Plot statistics using matplotlib."""
+        self.compute_taxi_stats()
+        
+        fig, axs = plt.subplots(2, 3, tight_layout=True, figsize=(20,10))
+
+        def plot_histogram(stat, title, x_label, i, j):
+            x = [i[stat] for i in self.taxi_stats]
+            unique_vals = len(set(x))
+            if unique_vals < 5:
+                bins = unique_vals
+            else:
+                bins = int(max(5,min(20,unique_vals/2)))
+            axs[i,j].hist(x, bins)
+            axs[i,j].set_xlabel(x_label)
+            axs[i,j].set_ylabel('Frequency')
+            axs[i,j].set_title(title)
+
+        plot_histogram(stat='moving_pct',
+                       title='Histogram of Moving Percentage',
+                       x_label='Percent of time a taxi was moving', i=0, j=0)
+
+        plot_histogram(stat='on_trip_pct',
+                       title='Histogram of On Trip Percentage',
+                       x_label='Percent of time a taxi was on a trip', i=0, j=1)
+
+        plot_histogram(stat='num_trips',
+                       title='Histogram of Trips Accommodated',
+                       x_label='Number of trips given', i=0, j=2)
+
+        plot_histogram(stat='total_trip_distance',
+                       title='Histogram of Trip Distance Travelled',
+                       x_label='Total Trip Distance Travelled (km)', i=1, j=0)
+
+        plot_histogram(stat='total_passengers',
+                       title='Histogram of Passenger Count',
+                       x_label='Number of Passengers', i=1, j=1)
+
+        plot_histogram(stat='revenue',
+                       title='Histogram of Revenue',
+                       x_label='Revenue ($)', i=1, j=2)
+
+        plt.show(fig)
+    
+    
     def taxi_paths(self):
         """Returns a list of arcs travelled and indication if they were a trip arc for each taxi."""
         taxi_paths = []

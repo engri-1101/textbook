@@ -422,6 +422,44 @@ class TaxiRouting(object):
         
         plot.renderers.append(graph)
         show(plot)
+     
+    def plot_heatmap(self):
+        """Plot departing (red) and arriving (blue) locations."""
+        start_nodes = list(self.trips_df.start_node)
+        end_nodes = list(self.trips_df.end_node)
+        node_indices = [item for sublist in list(zip(start_nodes,end_nodes)) for item in sublist]
+
+        # parallel lists for nodes
+        nodes = self.nodes_df.loc[node_indices]
+        node_ids = nodes.name.values.tolist()
+        x = nodes.x.values.tolist()
+        y = nodes.y.values.tolist()    
+        colors = ['red','blue']*int(len(node_ids)/2)
+
+        # get plot boundaries
+        min_x, max_x = min(nodes.x)-1000, max(nodes.x)+1000
+        min_y, max_y = min(nodes.y)-1000, max(nodes.y)+1000
+
+        plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
+                      x_axis_type="mercator", y_axis_type="mercator",
+                      title='Heatmap of Taxi Pickups / Dropoffs', plot_width=600, plot_height=470)
+        plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+
+        graph = GraphRenderer()
+
+        # define initial location nodes
+        graph.node_renderer.data_source.add(node_ids, 'index')
+        graph.node_renderer.data_source.add(colors, 'colors')
+        graph.node_renderer.glyph = Circle(size=7,line_width=0,fill_alpha=1/self.T_max, fill_color='colors')
+
+
+        # set node locations
+        graph_layout = dict(zip(node_ids, zip(x, y)))
+        graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+
+        plot.renderers.append(graph)
+        show(plot)
+        
         
 def create_dataframes(trips, arcs, L):
     """Create input dataframes.

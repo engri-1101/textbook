@@ -284,8 +284,7 @@ class TaxiRouting(object):
                        title='Histogram of Revenue',
                        x_label='Revenue ($)', i=1, j=2)
 
-        plt.show(fig)
-    
+        plt.show(fig)    
     
     def taxi_paths(self):
         """Returns a list of arcs travelled and indication if they were a trip arc for each taxi."""
@@ -459,4 +458,41 @@ def create_dataframes(trips, arcs, L):
         row['trip_time'] = arc[2]
         arcs_df = arcs_df.append(pd.DataFrame(row, index=[0]))
     arcs_df = arcs_df.reset_index().drop(columns='index')
-    return trips_df, nodes_df, arcs_df    
+    return trips_df, nodes_df, arcs_df  
+
+def plot_returns(trips_df, nodes_df, arcs_df, start, end, taxi_min, taxi_max, intervals):
+    """Plot the marginal returns of adding an additional taxi to the fleet.
+    
+    Args:
+        start (int): start time of time window of interest
+        end (int): end time of time window of interest
+        taxi_min: minimum number of taxis to examine
+        taxi_max: maximum number of taxis to examine
+        intervals: number of intervals of fleet size to compute
+    """
+    step = int((taxi_max - taxi_min)/(intervals - 1))
+    x = []
+    revenue = []
+    marginal_return = []
+    for i in range(intervals):
+        x.append(taxi_min + i*step)
+        base = TaxiRouting(trips_df, nodes_df, arcs_df, start, end, taxi_min + i*step)
+        base.optimize()
+        base.compute_taxi_stats()
+        inc = TaxiRouting(trips_df, nodes_df, arcs_df, start, end, taxi_min + i*step + 1)
+        inc.optimize()
+        inc.compute_taxi_stats()
+        revenue.append(base.total_revenue)
+        marginal_return.append(inc.total_revenue - base.total_revenue) 
+        
+    plt.plot(x, revenue)
+    plt.xlabel('Number of Taxi Cabs')
+    plt.ylabel('Revenue')
+    plt.title('Number of Taxi Cabs vs. Revenue')
+    plt.show()
+    
+    plt.plot(x, marginal_return)
+    plt.xlabel('Number of Taxi Cabs')
+    plt.ylabel('Marginal Return')
+    plt.title('Number of Taxi Cabs vs. Marginal Return')
+    plt.show()

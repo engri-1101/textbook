@@ -1,0 +1,1 @@
+Many students introduced bugs into their code when copying and pasting the code blocks. Either they copied a line they shouldn't have or vice versa. We should probably adjust this lab to still highlight the use of functions but not have as much (or any) copying and pasting. Furthermore, this lab was the first programming lab and took two lab sessions for students to complete.

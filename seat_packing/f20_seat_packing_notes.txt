@@ -1,0 +1,6 @@
+This lab was pretty smooth. At first, we just planned to do the
+bonus part at the end but at the last moment, we choose to run
+the whole lab. A few students had issues writing the constraint
+in the OR-Tools model for the maximum independent set. I think
+this stemmed from not quite understanding how the nodes and edges
+of the graph were related to the seat packing.

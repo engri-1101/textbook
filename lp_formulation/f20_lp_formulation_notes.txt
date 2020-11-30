@@ -1,0 +1,12 @@
+This lab used OR-Tools. Some students (mainly Windows users)
+had issues because they did not have Visual Studio 2019
+installed. OR-Tools requirements can be found here:
+
+https://developers.google.com/optimization/install/python/source_windows
+
+Students did not have much trouble with part 1 but some
+stuggled with the LP formulation from scratch in part 2.
+Similarly, some students had issues with the LP formulation
+in the review sheet for the semi-final. However, students
+did very well on the LP formulation question on the
+semi-final overall!

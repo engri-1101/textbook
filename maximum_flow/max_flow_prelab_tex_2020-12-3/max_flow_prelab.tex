@@ -1,0 +1,79 @@
+\documentclass[twoside]{article}%{combine}
+%\usepackage{url}
+\usepackage{../../tex/html}
+\usepackage{epstopdf}
+\usepackage{amsfonts,amsmath,color,amsthm,amssymb, enumerate, bbm, subfig}
+\usepackage{graphicx}
+%\usepackage[DIV=14,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+%\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{tikz, etoolbox}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+%\usepackage[margin=1in]{geometry}
+\input{../../tex/115}
+\raggedbottom
+
+\begin{document}
+
+\prelab {4}{The Maximum Flow Problem}
+
+\noindent
+\textbf{Objectives:}
+
+\begin{itemize}
+\item Introduce the maximum flow problem.
+\item Demonstrate how to solve the maximum flow problem by the
+  Ford-Fulkerson algorithm.
+\end{itemize}
+
+\noindent
+\textbf{Key Ideas:}
+
+\begin{minipage}[t]{.45\linewidth}
+  \begin{itemize}
+  \item sink and source nodes
+  \item flow
+  \item feasible flow
+  \item value of flow
+  \item cuts
+  \end{itemize}  
+\end{minipage}
+\hfill
+\begin{minipage}[t]{.45\linewidth}
+  \begin{itemize}
+  \item capacity of cut
+  \item max-flow min-cut theorem
+  \item integrality properties
+  \item sensitivity analysis
+  \end{itemize}
+\end{minipage}
+
+\vspace{1em}
+
+\noindent
+\textbf{Reading Assignment:}
+\begin{itemize}
+\item
+Read Handout 5 on the maximum flow problem.
+\end{itemize}
+
+\noindent
+\textbf{Prelab Exercise:}
+
+
+\noindent
+For the following graph, compute the maximum flow from node 1 to node
+3 in any way you like. (The numbers on the arcs are capacities.) Can you give a convincing argument that you
+have found an optimal solution?
+%% REMOVED Fall 2013 because I didn't cover cuts until the day of the lab
+% Can you find a cut of minimum capacity? What is the capacity of the minimum cut? What is the value of the maximum flow?
+
+\bigskip
+
+\begin{center}
+\includegraphics[height= 2in]{prelab4_fig1.pdf}
+\end{center}
+
+\end{document}

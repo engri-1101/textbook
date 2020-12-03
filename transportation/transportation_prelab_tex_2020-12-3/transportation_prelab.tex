@@ -1,0 +1,78 @@
+\documentclass[twoside]{article}%{combine}
+%\usepackage{url}
+\usepackage{../../tex/html}
+\usepackage{epstopdf}
+\usepackage{amsfonts,amsmath,color,amsthm,amssymb, enumerate, bbm, subfig}
+\usepackage{graphicx}
+%\usepackage[DIV=14,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+%\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{tikz, etoolbox}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+%\usepackage[margin=1in]{geometry}
+\input{../../tex/115}
+\raggedbottom
+
+\begin{document}
+
+\prelab{6}{ The Transportation Problem}
+
+\noindent
+
+Objectives:
+
+\begin{itemize}
+\item   Introduce students to the transportation problem
+\item   Give an application of the
+transportation problem of the ``caterer's problem''
+\end{itemize}
+
+\noindent Key Ideas:
+\begin{itemize}
+\item   supply point and supply constraint
+\item   demand point and demand constraint
+\item   balanced transportation problem
+\item   bipartite graph
+\item   integrality properties
+\item sensitivity analysis
+\end{itemize}
+\textbf{Reading Assignment:}
+\begin{itemize}
+\item
+Read the first part of Handout 7 on the transportation problem (first 4 pages)\end{itemize}
+
+\textbf{Brief description:}
+In this lab, we will
+\begin{enumerate}
+\item Learn how to formulate a somewhat unexpected problem as a transportation problem
+\item Continue to develop our facility in using Jupyter notebooks to solve optimization problems
+\end{enumerate}
+
+\smallskip
+\noindent
+Read and understand the problem, and think about how you would model it as a mathematical optimization problem (i.e., what is a feasible solution of the problem? What is the objective function? How can you express the objective functions and constraints every feasible solution must satisfy mathematically?). 
+
+
+\smallskip
+\noindent
+\textbf{The Caterer's Problem} (From [Winston]) The Carter Caterer Company must have the following number of clean napkins available at the
+beginning of each of the next four days: day 1, 15; day 2, 12; day
+3, 18; day 4, 6. After being used, a napkin can be cleaned by one
+of two methods: fast service or slow service. Fast service costs
+10 cents per napkin, and a napkin cleaned via fast service is
+available for use the day after it is last used. Slow service
+costs 6 cents per napkin, and these napkins can be reused two days
+after they are last used. New napkins can be purchased for a cost
+of 20 cents per napkin. The catering company currently has no
+napkins, whatsoever. We wish to meet the demand for the next four
+days as cheaply as possible.
+
+\begin{enumerate}
+\item Give one feasible solution to the problem that uses all three options of obtaining clean
+napkins - buying them new, cleaning them fast, or cleaning them slowly. Compute the 
+objective function value for this solution.
+\item Give a lower bound on the cost of {\it any} feasible solution.
+\end{enumerate}
+\end{document}

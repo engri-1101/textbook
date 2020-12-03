@@ -1,0 +1,85 @@
+\documentclass[twoside]{article}%{combine}
+%\usepackage{url}
+\usepackage{../../tex/html}
+\usepackage{epstopdf}
+\usepackage{amsfonts,amsmath,color,amsthm,amssymb, enumerate, bbm, subfig}
+\usepackage{graphicx}
+%\usepackage[DIV=14,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+%\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{tikz, etoolbox}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+%\usepackage[margin=1in]{geometry}
+\input{../../tex/115}
+\raggedbottom
+
+
+\begin{document}
+
+\prelab{2}{The Shortest Path Problem}
+
+\noindent
+{\bf Objectives:}
+\begin{itemize}
+\item   Introduce students to the concept of a shortest path tree
+\item   Show students the inner workings of a combinatorial algorithm
+\item   Demonstrate the usefulness of sensitivity analysis in problem solving
+\item   Show students that we use crude optimization algorithms in our
+        everyday lives
+\item   Demonstrate the concept of the triangle inequality
+\end{itemize}
+
+\noindent
+{\bf Key Ideas:}
+\begin{itemize}
+\item   shortest path
+\item   Dijkstra's Algorithm
+\item   shortest path tree
+\item   triangle inequality
+\item   sensitivity analysis
+\item   combinatorial optimization
+\end{itemize}
+
+\noindent
+{\bf Prelab Exercise:}
+
+Please write your answer on the back of this sheet.
+
+\smallskip
+
+As a going-away present, your grandmother, a macram\'e expert,
+made you a scale model of the US Interstate system out of string.
+There's a piece of string for each piece of Interstate highway
+with knots connecting it to the nearest intersections with other
+Interstates.  The model is quite accurate, with an inch of string
+equalling 100 miles.  Your roommate
+%, Dane Brammaj, 
+asks you why
+you keep such a useless piece of junk.  You reply that it is
+actually quite useful, since it allows you to figure out the
+shortest distance route between any two points on the Interstate
+system.  How can you do this?  (Your answer will not require any
+algorithms or complicated calculations).
+
+\noindent
+As a small example you might think about what the part of this model would look like for western New York state, and think about computing the shortest route to get from Binghamton to Buffalo. (Just cut-and-paste the following as one contiguous string into your browser.)
+
+\noindent
+\begin{verbatim}
+    https://www.google.com/maps/place/Albany,+NY/@42.5563832,-78.6604602,8z/
+\end{verbatim}
+\begin{verbatim}
+    data=!4m5!3m4!1s0x89de0a34cc4ffb4b:0xe1a16312a0e728c4!8m2!3d42.6525793!4d-73.7562317
+\end{verbatim}
+
+%\includegraphics{Labs/Lab2-Dijkstra/WNY.pdf}
+
+\smallskip
+\noindent
+Would the same approach work if there were such a thing as a
+one-way Interstate?
+
+
+\end{document}

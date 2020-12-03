@@ -1,1 +1,0 @@
-The up-to-date handouts for this lab can be found at the course [Overleaf](https://www.overleaf.com/project/5ecf1b879f37710001f9f54d)

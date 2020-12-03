@@ -1,0 +1,80 @@
+\documentclass[twoside]{article}%{combine}
+%\usepackage{url}
+\usepackage{../../tex/html}
+\usepackage{epstopdf}
+\usepackage{amsfonts,amsmath,color,amsthm,amssymb, enumerate, bbm, subfig}
+\usepackage{graphicx}
+%\usepackage[DIV=14,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+%\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{tikz, etoolbox}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+%\usepackage[margin=1in]{geometry}
+\input{../../tex/115}
+\raggedbottom
+
+\begin{document}
+
+\prelab {5}{The Baseball Elimination Problem}
+
+\noindent
+\textbf{Objectives:}
+
+\begin{itemize}
+
+\item Introduce students to a sophisticated formulation using the maximum 
+ow problem.
+\item Demonstrate how to solve the application by the Ford-Fulkerson algorithm.
+on algorithm.
+\end{itemize}
+
+\noindent
+\textbf{Key Ideas:}
+
+\begin{minipage}[t]{.45\linewidth}
+  \begin{itemize}
+   \item integrality property
+   \item max-flow min-cut theorem
+   \item the baseball elimination problem
+  \end{itemize}  
+\end{minipage}
+\hfill
+
+\vspace{1em}
+
+\noindent
+\textbf{Reading Assignment:}
+\begin{itemize}
+\item
+Read Handout 6 on the baseball elimination problem.
+\end{itemize}
+
+\noindent
+\textbf{Prelab Exercise:}
+
+
+\noindent
+Look around the RIOT (Remote Interactive Optimization Tool) homepage at
+\begin{center}
+\url{https://s2.smu.edu/~olinick/riot/baseball_main.html}   
+\end{center}
+
+\noindent 
+There is no need to record anything ( and since both the baseball and basketball seasons are currently over, it is not particularly interesting now).
+
+\smallskip  
+\noindent
+The integrality property is critical for the validity of the max-flow formulation of the baseball elimination problem. This property ensures that, whenever an input to the maximum flow problem has each arc's capacity equal to an integer, then there exists an optimal solution in which the flow value assigned to each arc is also an integer. (And we know this is true, because the Ford-Fulkerson algorithm is guaranteed, in this case, to find such a solution.)
+
+\smallskip
+\noindent
+The integrality property does not imply that, whenever an input to the maximum flow problem has each arc's capacity equal to an integer, {\it every} optimal flow has {\it every} flow value equal to an integer. Give a small input (5 nodes suffices) where the capacity of each arc is an integer (it suffices for each capacity to be 1) such that there exists an optimal flow in which some arcs have a flow value that is not integral.
+
+\smallskip
+\noindent
+Give an optimal flow that has this ``non-integrality'' property for this input, and explain why this is optimal. 
+
+
+\end{document}

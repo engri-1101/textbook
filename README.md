@@ -37,7 +37,7 @@ Lastly, the directory [public_html](public_html) contains the source code for th
 |-------|-----------------------------------|----------------------------------------------------------------------------------------|-----|
 | 1     | Travelling Salesman Problem (TSP) | [tsp_prelab.pdf](travelling_salesman_problem/tsp_prelab_tex_2020-12-3/tsp_prelab.pdf)  | [tsp_lab.pdf](travelling_salesman_problem/tsp_lab_tex_2020-12-3/tsp_lab.pdf) |
 | 2     | Shortest Path                     | [shortest_path_prelab.pdf](shortest_path/shortest_path_prelab_tex_2020-12-3/shortest_path_prelab.pdf) |[shortest_path_lab.pdf](shortest_path/shortest_path_lab_tex_2020-12-3/shortest_path_lab.pdf) |
-| 3     | Software Installation             |   |    |
+| 3     | Software Installation             |   |  [software_install.pdf](software_install/software_install_tex/software_install.pdf) <br/> [test_install.ipynb](software_install/test_install.ipynb) <br/> [shortest_path_demo.zip](shortest_path/shortest_path_demo/shortest_path_demo.zip) |
 | 4     | Minimum Spanning Tree (MST)       | [mst_prelab.pdf](minimum_spanning_tree/mst_prelab_tex_2020-12-3/mst_prelab.pdf) | [mst_lab.pdf](minimum_spanning_tree/mst_lab_tex_2020-12-3/mst_lab.pdf) |
 | 5     | Maximum Flow (1-2)                | [max_flow_prelab.pdf](maximum_flow/max_flow_prelab_tex_2020-12-3/max_flow_prelab.pdf) | [max_flow_lab.zip](maximum_flow/max_flow_lab/max_flow_lab.zip) |
 | 6     | Maximum Flow (3-4)                | | [max_flow_lab_part3-4.zip](maximum_flow/max_flow_lab_part3-4/max_flow_lab_part3-4.zip) |

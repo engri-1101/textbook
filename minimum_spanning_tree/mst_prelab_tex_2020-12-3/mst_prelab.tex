@@ -1,0 +1,64 @@
+\documentclass[twoside]{article}%{combine}
+%\usepackage{url}
+\usepackage{../../tex/html}
+\usepackage{epstopdf}
+\usepackage{amsfonts,amsmath,color,amsthm,amssymb, enumerate, bbm, subfig}
+\usepackage{graphicx}
+%\usepackage[DIV=14,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+%\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{tikz, etoolbox}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+%\usepackage[margin=1in]{geometry}
+\input{../../tex/115}
+\raggedbottom
+
+
+\begin{document}
+
+\prelab{3}{The Minimum Spanning Tree Problem}
+
+\noindent
+\textbf{Objectives:}
+\begin{itemize}
+\item Introduce students to the graph theoretic concept of spanning
+  trees.
+\item Show three different combinatorial algorithms for solving the
+  minimum spanning tree problem.
+\item Demonstrate a practical use of minimum spanning trees.
+\end{itemize}
+
+
+\noindent 
+\textbf{Optional Reading Assignment:}
+\begin{itemize}
+\item
+Read Handout 4 on the minimum spanning tree problem.
+\end{itemize}
+
+onsider the following input for the minimum spanning tree
+problem.
+
+\begin{center}
+\includegraphics[height= 2in]{prelab3_fig.pdf}
+\end{center}
+
+\begin{enumerate}
+\item
+Find the minimum spanning tree in this graph, and give a very simple
+argument why it is optimal.
+\item
+It turns out that our input was more complicated: only nodes 1 through
+4 need to be connected. We may include node 5 if this yields a cheaper
+solution, but we don't need to. Node 5 is called a {\it Steiner} node.
+We wish to compute the minimum-cost tree that connects the first four
+nodes. Note that this need not be a spanning tree of the graph, since
+the node 5 need not be included. Find the optimal solution, and
+explain why it is optimal.
+\end{enumerate}
+
+
+
+\end{document}

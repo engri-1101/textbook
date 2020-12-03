@@ -31,6 +31,25 @@ Lastly, the directory [public_html](public_html) contains the source code for th
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.
 
+### Fall 2020 Schedule
+
+| Lab # | Name                              | Prelab                                                                                 | Lab |
+|-------|-----------------------------------|----------------------------------------------------------------------------------------|-----|
+| 1     | Travelling Salesman Problem (TSP) | [tsp_prelab.pdf](travelling_salesman_problem/tsp_prelab_tex_2020-12-3/tsp_prelab.pdf)  | [tsp_lab.pdf](travelling_salesman_problem/tsp_lab_tex_2020-12-3/tsp_lab.pdf) |
+| 2     | Shortest Path                     | [shortest_path_prelab.pdf](shortest_path/shortest_path_prelab_tex_2020-12-3/shortest_path_prelab.pdf) |[shortest_path_lab.pdf](shortest_path/shortest_path_lab_tex_2020-12-3/shortest_path_lab.pdf) |
+| 3     | Software Installation             |   |    |
+| 4     | Minimum Spanning Tree (MST)       | [mst_prelab.pdf](minimum_spanning_tree/mst_prelab_tex_2020-12-3/mst_prelab.pdf) | [mst_lab.pdf](minimum_spanning_tree/mst_lab_tex_2020-12-3/mst_lab.pdf) |
+| 5     | Maximum Flow (1-2)                | [max_flow_prelab.pdf](maximum_flow/max_flow_prelab_tex_2020-12-3/max_flow_prelab.pdf) | [max_flow_lab.zip](maximum_flow/max_flow_lab/max_flow_lab.zip) |
+| 6     | Maximum Flow (3-4)                | | [max_flow_lab_part3-4.zip](maximum_flow/max_flow_lab_part3-4/max_flow_lab_part3-4.zip) |
+| 7     | Baseball Elimination              | [baseball_elimination_prelab.pdf](baseball_elimination/baseball_elimination_prelab_tex_2020-12-3/baseball_elimination_prelab.pdf) | [baseball_elimination_lab.zip](baseball_elimination/baseball_elimination_lab/baseball_elimination_lab.zip) |
+| 8     | Transportation I+II               | [transportation_prelab.pdf](transportation/transportation_prelab_tex_2020-12-3/transportation_prelab.pdf) | [transportation_lab.zip](transportation/transportation_lab/transportation_lab.zip) |
+| 9     | First-Year Writing Seminar + Simplex (1) | [simplex_prelab.pdf](simplex/simplex_prelab_tex_2020-12-3/simplex_prelab.pdf) | [fws_lab.zip](first_year_writing_seminar/fws_lab/fws_lab.zip) <br/> [simplex_lab.ipynb](simplex/simplex_lab.ipynb) |
+| 10    | Simplex (2-4)                     | | [simplex_lab.ipynb](simplex/simplex_lab.ipynb) |
+| 11    | LP Formulation & Seat Packing     | [lp_formulation_prelab.pdf](lp_formulation/lp_formulation_prelab_tex_2020-12-3/lp_formulation_prelab.pdf) | [lp_formulation_lab.ipynb](lp_formulation/lp_formulation_lab.ipynb) <br/> [seat_packing_lab.zip](seat_packing/seat_packing_lab/seat_packing_lab.zip) |
+| 12    | Branch and Bound & Knapsack       | [bnb_prelab.pdf](branch_and_bound/bnb_prelab_tex_2020-12-3/bnb_prelab.pdf) | [branch_and_bound_lab.zip](branch_and_bound/branch_and_bound_lab/branch_and_bound_lab.zip) |
+| 13    | Diet  | | |
+| 14    | Game Theory  | | |
+
 ### Comprehensive List of Python Packages
 
 | Package                                                      | Description                                                            |

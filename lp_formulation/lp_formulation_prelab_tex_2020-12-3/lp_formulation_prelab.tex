@@ -1,0 +1,88 @@
+\documentclass[twoside]{article}%{combine}
+%\usepackage{url}
+\usepackage{../../tex/html}
+\usepackage{epstopdf}
+\usepackage{amsfonts,amsmath,color,amsthm,amssymb, enumerate, bbm, subfig}
+\usepackage{graphicx}
+%\usepackage[DIV=14,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+%\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{tikz, etoolbox}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+%\usepackage[margin=1in]{geometry}
+\input{../../tex/115}
+\raggedbottom
+
+\begin{document}
+
+\prelab {8}{LP Formulations}
+
+\noindent
+\textbf{Objectives:}
+
+\begin{itemize} 
+\item Practice in formulating linear programming problems
+\item Introduce the idea of linear relaxation
+\item Demonstrate the relationship between an integer program and its linear relaxation
+\end{itemize}
+
+\noindent
+\textbf{Brief description:} 
+In this lab we will see an example of modeling a problem as a Linear Program (LP),
+coding and solving it with ortools in a jupyter notebook, and start considering the question of what can be done when the desired
+output of a mathematical model should be integer.
+
+\noindent
+\textbf{Pre-lab exercise}
+Consider the following problem: (adapted from Hillier \& Lieberman) A new company is being set up to take
+telephone orders. The phone lines are staffed around the clock. People are hired to work in 8-hour shifts,
+starting at 6AM, 8AM, 12PM, 4PM, or 10PM. From survey data, the management has concluded that there
+are minimum staffing requirements at certain times of the day, as given in the table below.
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+Time period & Minimum Staff Size\\
+\hline
+6AM-8AM & 48 \\
+\hline
+8AM-10AM & 79 \\
+\hline
+10AM-Noon & 65 \\
+\hline
+Noon-2PM & 87 \\
+\hline
+2PM-4PM & 64 \\
+\hline
+4PM-6PM & 87 \\
+\hline
+6PM-8PM & 64 \\
+\hline
+8PM-10PM & 73 \\
+\hline
+10PM-Midnight & 82 \\
+\hline
+Midnight-6AM & 43 \\
+\hline
+\end{tabular}
+\end{center}
+A person is paid differently, depending on their assigned shift, where the daily salary is \$170, \$160, \$175,
+\$180, \$195, for the five shifts, respectively. The management would like to decide the number of people to
+be hired for each shift so as to minimize the total salary costs.
+
+\begin{enumerate}
+ 
+\item What do you think the decision variables should be?
+
+\item How could you write the constraint that there are at least 79 people on staff from 8AM-10AM? Hint:
+which workers will be on staff then?
+\item
+Your objective function is to minimize the cost incurred. 
+How can you express this in terms of your decision
+variables?
+
+\end{enumerate}
+
+\end{document}

@@ -110,6 +110,11 @@ ENV/
 env.bak/
 venv.bak/
 
+# LaTeX
+*.out
+*.aux
+*.synctex.gz
+
 # Spyder project settings
 .spyderproject
 .spyproject

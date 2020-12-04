@@ -1,0 +1,5 @@
+This was another new lab utilizing the new gilp software for
+visualizing simplex and branch and bound algorithms. Like the
+simplex lab, not many questions aside from some students
+having trouble formulating the last constraint in the knapsack
+model. No bugs arose from the gilp python package.

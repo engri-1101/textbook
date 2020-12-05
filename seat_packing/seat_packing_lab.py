@@ -123,7 +123,7 @@ def ex_room():
     stick = Polygon(stick_points)
     
     # plot the model
-    img = plt.imread("floorplan.jpg")
+    img = plt.imread("images-lab/floorplan.jpg")
     fig, ax = plt.subplots(dpi=300)
     plt.xticks(size = 3.5)
     plt.yticks(size = 3.5)
@@ -155,7 +155,7 @@ def ex_room_sol(df, sol):
     df['in_solution'] = df['index_string'].map(sol)
 
     # plot solutions (airline seat booking style)
-    img = plt.imread("floorplan.jpg")
+    img = plt.imread("images-lab/floorplan.jpg")
     fig, ax = plt.subplots(dpi=300)
     plt.xticks(size = 3.5)
     plt.yticks(size = 3.5)
@@ -181,7 +181,7 @@ def ex_room_sol(df, sol):
 
 # rhodes 571 initial image  (code by Sander Aarts)
 def ex_lab():
-    floor = 'labclassroom.png'
+    floor = 'images-lab/labclassroom.png'
 
     yardstick = np.array([(295, 231), (305, 231), (305, 316), (295, 316)])
     stick = Polygon(yardstick)
@@ -304,7 +304,7 @@ def ex_lab_sol(df, sol):
     df['in_solution'] = df['index_string'].map(sol)
 
     # plot all points to verify the matching worked
-    img = plt.imread('labclassroom.png')
+    img = plt.imread('images-lab/labclassroom.png')
 
     # set axis tick size
     plt.rc('xtick', labelsize=4) 

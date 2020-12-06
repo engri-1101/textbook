@@ -11,14 +11,15 @@ def write_dir(zipObj, path):
 # Lab
 with ZipFile('min-cost_flow_lab.zip', 'w') as zipObj:
     zipObj.write('min-cost_flow_lab.ipynb')
+    zipObj.write('routing.py')
     write_dir(zipObj, 'images-lab')
     write_dir(zipObj, 'data')
-    write_dir(zipObj, 'routing.py')
     zipObj.close()
     
 # Demo
 with ZipFile('min-cost_flow_demo.zip', 'w') as zipObj:
     zipObj.write('min-cost_flow_demo.ipynb')
+    zipObj.write('routing.py')
     write_dir(zipObj, 'data')
     write_dir(zipObj, 'routing.py')
     zipObj.close()

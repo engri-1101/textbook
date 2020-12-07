@@ -3,7 +3,6 @@ channels:
   - http://conda.anaconda.org/gurobi
   - defaults
 dependencies:
-  - appnope=0.1.2
   - argon2-cffi=20.1.0
   - async_generator=1.10
   - attrs=20.3.0
@@ -26,16 +25,12 @@ dependencies:
   - jupyter_client=6.1.7
   - jupyter_core=4.7.0
   - jupyterlab_pygments=0.1.2
-  - libcxx=10.0.0
-  - libedit=3.1.20191231
-  - libffi=3.3
   - libsodium=1.0.18
   - markupsafe=1.1.1
   - mistune=0.8.4
   - nbclient=0.5.1
   - nbconvert=6.0.7
   - nbformat=5.0.8
-  - ncurses=6.2
   - nest-asyncio=1.4.3
   - notebook=6.1.4
   - openssl=1.1.1h
@@ -56,7 +51,6 @@ dependencies:
   - python=3.7.9
   - python-dateutil=2.8.1
   - pyzmq=20.0.0
-  - readline=8.0
   - send2trash=1.5.0
   - setuptools=50.3.2
   - six=1.15.0

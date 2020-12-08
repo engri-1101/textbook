@@ -1,0 +1,71 @@
+\documentclass[twoside]{article}%{combine}
+%\usepackage{url}
+\usepackage{../../tex/html}
+\usepackage{epstopdf}
+\usepackage{amsfonts,amsmath,color,amsthm,amssymb, enumerate, bbm, subfig}
+\usepackage{graphicx}
+%\usepackage[DIV=14,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+%\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{tikz, etoolbox}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+%\usepackage[margin=1in]{geometry}
+\input{../../tex/115}
+\raggedbottom
+
+\begin{document}
+
+\prelab{10}{The Diet Problem - LP, IP, and LP Duality}
+
+Objectives:
+
+\begin{itemize}
+\item   Practice in formulating linear programming problems
+\item   Introduce the idea of linear relaxation
+\item   Demonstrate the relationship between an integer program and its linear relaxation
+\item Demonstrate the idea of sensitivity analysis in linear programming
+\end{itemize}
+
+\noindent
+Key Ideas:
+\begin{itemize}
+\item   Objective function
+\item   Constraints
+\item   Optimal solution
+\item   Fractional solution
+\item   Integer solution
+\item 	Linear Program
+\item 	Integer Program
+\item   Linear relaxation
+\item	Sensitivity analysis
+\end{itemize}
+\textbf{Reading Assignment:}
+\begin{itemize}
+\item
+Read Handout 11 on LP Duality
+\end{itemize}
+
+\textbf{Brief description:}
+In this lab we will consider one of the most famous (and one of the earliest) applications of linear programming --- the diet problem. 
+
+\noindent
+With the holidays nearly upon us, the opportunities to gorge ourselves with sweets presents nearly inescapable challenges. However, one group of clever OR student wonder about how best one might meet a desired consumption of calories, chocolate, sugar, and fat. Each person is making a choice among Brownie, Chocolate Ice Cream, Chestnut Praline Latte, and Pineapple Cheesecake.
+
+The table of their ``nutritional'' contents along with their cost, per serving, as well as the daily requirement for each nutritional content type, is given below:
+\begin{center}
+\begin{tabular}{|l|cccc|c|}
+Food & Calories & Chocolate (oz) & Sugar (oz) & Fat (oz) & Cost (\$) \\
+\hline
+Brownie & 400 & 3 & 2 & 2 & .5 \\
+Chocolate Ice Cream & 200 & 2 & 2 & 4 & .2 \\
+Chestnut Praline Latte & 250 & 0 & 1 & .5 & 2 \\ 
+Pineapple Cheesecase & 500 & 0 & 4 & 5 & .8 \\
+\hline 
+Requirements & 500 & 6 & 10 & 8 & \\
+\hline
+\end{tabular}
+\end{center}
+The aim is to decide the number of servings of each offering that meets (at least) the stated minimum requirement in each of the types of nutritional components, and does so at minimum total cost. Fractional servings are allowed. Write a linear programming formulation for which the optimmal solution would provide this dietary recipe.
+\end{document}

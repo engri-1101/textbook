@@ -61,7 +61,7 @@ This git repo serves as the standard for ENGRI 1101 lab software / files (while 
 | 10    | Simplex (2-4)                     | | [simplex_lab.ipynb](simplex/simplex_lab.ipynb) |
 | 11    | LP Formulation & Seat Packing     | [lp_formulation_prelab.pdf](lp_formulation/lp_formulation_prelab_tex_2020-12-3/lp_formulation_prelab.pdf) | [lp_formulation_lab.ipynb](lp_formulation/lp_formulation_lab.ipynb) <br/> [seat_packing_lab.zip](seat_packing/seat_packing_lab.zip) |
 | 12    | Branch and Bound & Knapsack       | [bnb_prelab.pdf](branch_and_bound/bnb_prelab_tex_2020-12-3/bnb_prelab.pdf) | [branch_and_bound_lab.zip](branch_and_bound/branch_and_bound_lab.zip) |
-| 13    | Diet  | | |
+| 13    | Diet                              |  [diet_prelab.pdf](diet/diet_prelab_tex_2020-12-8/diet_prelab.pdf) | [diet_lab.zip](diet/diet_lab.zip) |
 | 14    | Game Theory  | | |
 
 ### Comprehensive List of Python Packages

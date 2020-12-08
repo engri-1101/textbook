@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 zip () {
     cd "$1"
@@ -17,3 +17,4 @@ zip shortest_path
 zip seat_packing
 zip travelling_salesman_problem
 zip first_year_writing_seminar
+zip diet

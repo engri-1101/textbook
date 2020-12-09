@@ -60,44 +60,34 @@ In this class, we will use a Python distribution called \href{https://www.anacon
 \end{tabular}
 \end{center}
 
-We will now walk through the steps for creating a virtual environment in Anaconda. In a virtual environment, the installed packages are isolated to that environment. Hence, if you install a python package in one environment, you could not reference it in another. After creating the virtual environment, we will install all the necessary packages for the semester. First, open up the Anaconda application.
+\noindent \textbf{Note:} If you are using Windows, you must download the following software first: \href{https://visualstudio.microsoft.com/downloads/?q=Visual+C\%2B\%2B+Redistributable+for+Visual+Studio}{Microsoft Visual C++ Redistributable for Visual Studio 2019} (select the x64 version). This is because the OR-Tools library for Python is a wrapper for the C++ native library. \newline
+
+We will now walk through the steps for creating a virtual environment in Anaconda. In a virtual environment, the installed packages are isolated to that environment. Hence, if you install a python package in one environment, you could not reference it in another. You will import an environment that already has all necessary packages installed. First, open up the Anaconda application.
 
 \begin{enumerate}
 
 \item Navigate to the \texttt{Environments} tab
-\item Click create. You will get a pop-up like the one below. Name your environment \texttt{ENGRI\char`_1101} and use Python version 3.7
+\item Click \texttt{Import}. You will get a pop-up like the one below. Name your environment \texttt{engri\char`_1101}. For the specification file, select \texttt{engri\char`_1101.yml} which has been distributed to you. 
 
 \begin{center}
-\includegraphics[scale=0.5]{create_env}
+\includegraphics[scale=0.4]{import_env}
 \end{center}
 
-\item You should now see \texttt{ENGRI\char`_1101} in your list of environments. Click the play button and choose \texttt{Open Terminal}
-\item Run the following line in the terminal that appears: $$\texttt{pip install gilp}$$
-\item Wait for the install to complete and then run $$\texttt{pip install ortools}$$
-\item Again, wait for the install to complete and then run $$\texttt{conda install -c conda-forge shapely}$$
-\item Close the terminal window once the final installation is complete.
-\item Go back to the \texttt{Environments} tab and change the list of packages from \texttt{Installed} to \texttt{Not installed}. Search for the remaining packages: \texttt{networkx}, \texttt{matplotlib}, \texttt{pandas},  \texttt{bokeh}, and  \texttt{scikit-image} and select them using the check box on the left.
-\item Click \texttt{Apply} and you will see this pop-up. Make sure your pop-up contains all 5 packages in the red box. You will notice additional packages are also installed. These are dependencies of the 5 packages we really care about.
+\item Once the installation is complete, you should see \texttt{engri\char`_1101} in your list of environments. Navigate back to the \texttt{Home} tab. Change the \texttt{Applications on} drop-down to your new \texttt{engri\char`_1101} environment.
 
 \begin{center}
-\includegraphics[scale=0.5]{package_installs}
+\includegraphics[scale=0.3]{home_tab}
 \end{center}
 
-\item Once the installation is complete, navigate back to the \texttt{Home} tab. Change the \texttt{Applications on} drop-down to your new \texttt{ENGRI\char`_1101} environment.
+\item Launch the \texttt{Jupyter Notebook} application which will open up a web-browser tab displaying the home directory of your system. 
 
-\begin{center}
-\includegraphics[scale=0.3]{install_jupyter}
-\end{center}
-
-\item Install \texttt{Jupyter Notebook}. Afterwards, you will be able to click \texttt{Launch} which will open up a web-browser tab displaying the home directory of your system. 
-
-\item Navigate to the file \texttt{(START HERE) Test Install} and open it. Click the first block of code and then press \texttt{Run}. This should run without errors if your virtual environment has been set up properly!
+\item Navigate to the file \texttt{test\char`_install.ipynb} and open it. Run the first block of code. This should run without errors if your virtual environment has been set up properly!
 
 \end{enumerate}
 
 \section{Gurobi Installation}
 
-The Python package \texttt{ortools} is Google's optimization suite. It contains an open-source linear program (LP) and integer linear program (ILP) solver. However, it can also serve as a way to interact with the cutting-edge Gurobi solver. In order to use solve LPs and ILPs in \texttt{ortools} using Gurobi, you will need to download additional software. First, you will create an \href{https://pages.gurobi.com/registration}{Academic User Account}. Next, download the \texttt{Gurobi Optimizer} found at \href{https://www.gurobi.com/downloads/}{Gurobi Downloads}. Lastly, you will need to create an academic license to use the software. Register for an \href{https://www.gurobi.com/downloads/end-user-license-agreement-academic/}{Academic License}. After generating your unique academic license, you will be given a line to run in your terminal. When prompted, select the default location for the license file.
+The Python package \texttt{ortools} is Google's optimization suite. It contains an open-source linear program (LP) and integer linear program (ILP) solver. However, it can also serve as a way to interact with the cutting-edge Gurobi solver. In order to solve LPs and ILPs in \texttt{ortools} using Gurobi, you will need to download additional software. First, you will create an \href{https://pages.gurobi.com/registration}{Academic User Account}. Next, download the \texttt{Gurobi Optimizer} found at \href{https://www.gurobi.com/downloads/}{Gurobi Downloads}. Lastly, you will need to create an academic license to use the software. Register for an \href{https://www.gurobi.com/downloads/end-user-license-agreement-academic/}{Academic License}. After generating your unique academic license, you will be given a line to run in your terminal. When prompted, select the default location for the license file.
 
 
 \begin{center}

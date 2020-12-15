@@ -40,7 +40,7 @@ This git repo serves as the standard for ENGRI 1101 lab software / files (while 
 | 10    | Knapsack                          | Web (Figma)      | [knapsack](knapsack)                                       | qz245            |
 | 10    | Branch and Bound                  | Jupyter Notebook | [branch_and_bound](branch_and_bound)                       | hwr26            |
 | 11    | Diet                              | Jupyter Notebook | [diet](diet)                                               | hwr26            |
-| 12    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78            |
+| 12    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78 + hwr26    |
 | 13    | Minimum-cost Flow                 | Jupyter Notebook | [min-cost_flow](min-cost_flow)                             | aaj54 + hwr26    |
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.
@@ -62,7 +62,7 @@ This git repo serves as the standard for ENGRI 1101 lab software / files (while 
 | 11    | LP Formulation & Seat Packing     | [lp_formulation_prelab.pdf](lp_formulation/lp_formulation_prelab_tex_2020-12-3/lp_formulation_prelab.pdf) | [lp_formulation_lab.ipynb](lp_formulation/lp_formulation_lab.ipynb) <br/> [seat_packing_lab.zip](seat_packing/seat_packing_lab.zip) |
 | 12    | Branch and Bound & Knapsack       | [bnb_prelab.pdf](branch_and_bound/bnb_prelab_tex_2020-12-3/bnb_prelab.pdf) | [branch_and_bound_lab.zip](branch_and_bound/branch_and_bound_lab.zip) |
 | 13    | Diet                              |  [diet_prelab.pdf](diet/diet_prelab_tex_2020-12-8/diet_prelab.pdf) | [diet_lab.zip](diet/diet_lab.zip) |
-| 14    | Game Theory  | | |
+| 14    | Game Theory                       | | [game_theory_lab.zip](game_theory/game_theory_lab.zip)  |
 
 ### Comprehensive List of Python Packages
 

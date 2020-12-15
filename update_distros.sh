@@ -18,3 +18,4 @@ zip seat_packing
 zip travelling_salesman_problem
 zip first_year_writing_seminar
 zip diet
+zip game_theory

@@ -9,9 +9,7 @@ from bokeh.io import output_notebook
 from bokeh.tile_providers import get_provider, Vendors
 from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider,
                           HoverTool, TapTool, EdgesAndLinkedNodes, NodesAndLinkedEdges,
-                          ColumnDataSource, LabelSet, NodesOnly
-                         )
-# from gurobipy import *
+                          ColumnDataSource, LabelSet, NodesOnly)
 
 class TaxiRouting(object):
     """Maintain a min-cost representation of NYC taxi routing problem."""
@@ -27,171 +25,144 @@ class TaxiRouting(object):
             end_time (float): Ending hour of interest.
             taxi_count (int): The number of taxis to service rides.
         """
-        #Set dataframes
+        # dataframes
         self.nodes_df = nodes
         self.arcs_df = arcs
 
-        # Filter trips by time window of interest
+        # filter trips by time window of interest
         trips = trips[(trips.start_time >= start_time) & 
                       (trips.start_time + trips.trip_time <= end_time)].copy()
         trips.start_time = trips.start_time - start_time
         self.trips_df = trips
 
+        # instance variables
         self.L = len(self.nodes_df)
         self.T_max = int(end_time - start_time)
         self.B_max = taxi_count
         
-        self.nodes = dict()
-        self.arcs_in = dict()
-        self.arcs_out = dict()
+        self.nodes = list()
+        self.node_to_index = dict()
         self.arcs = list()
-        self.start_nodes = list()
-        self.end_nodes = list()
-        self.capacities = list()
-        self.costs = list()
+        self.arcs_out = dict()
         self.objective = 0
-        self.flow = dict()
         self.model = None
         
         self.setup_network()
         self.load_model()      
     
     def setup_network(self):
-        """Create the network for this taxi routing instance."""  
-        # source node
-        self.nodes['s'] = 0
+        """Create the network for this taxi routing instance.""" 
         
-        # location x time nodes
-        i = 1
+        # nodes
+        self.nodes.append('s')
         for l in range(self.L):
             for t in range(self.T_max+1):
-                self.nodes[(l,t)] = i
-                i += 1
+                self.nodes.append((l,t))
+        self.nodes.append('f')
+        self.node_to_index = {self.nodes[i] : i for i in range(len(self.nodes))} 
         
-        # sink node
-        self.nodes['f'] = i
-        
-        for node in range(i+1):
-            self.arcs_in[node] = []
+        for node in range(len(self.nodes)):
             self.arcs_out[node] = []
                     
         def add_arc(tail, head, cap, cost, trip_arc=False):
-            """Add arc from tail to head with given capacity and cost"""
-            i = self.nodes[tail]
-            j = self.nodes[head]
-            self.arcs.append((i,j,trip_arc))
-            self.arcs_in[j].append((i,j,trip_arc))
-            self.arcs_out[i].append((i,j,trip_arc))
-            self.start_nodes.append(i)
-            self.end_nodes.append(j)
-            self.capacities.append(cap)
-            self.costs.append(cost)
-            self.flow[(i,j,trip_arc)] = 0  # zero flow intially
+            tail = self.node_to_index[tail]
+            head = self.node_to_index[head]
+            self.arcs.append({'tail' : tail, 
+                              'head' : head, 
+                              'trip' : trip_arc,
+                              'cap' : cap, 
+                              'cost' : cost, 
+                              'flow' : 0})
+            self.arcs_out[tail].append(len(self.arcs)-1)
         
-        # Taxi source arcs
+        # source and sink arcs
         for j in range(self.L):
-            add_arc('s',(j,0),self.B_max,0)
-            
-        # Taxi sink arcs
-        for j in range(self.L):
-            add_arc((j,self.T_max),'f',self.B_max,0)
-            
-        # Stay in location arcs
+            add_arc('s',(j,0),self.B_max,0) # source
+            add_arc((j,self.T_max),'f',self.B_max,0) # sink
+        
+        # static arcs
         for j in range(self.L):
             for t in range(self.T_max):
                 add_arc((j,t),(j,t+1),self.B_max,0)
-                
-        # Customer trips
+        
+        # trips
         for index, row in self.trips_df.iterrows():
             s = row['start_node']
             t = row['end_node']
             s_t = row['start_time']
             t_t = s_t + row['trip_time']
             add_arc((s,s_t),(t,t_t),1,-row['value'], index)   
-            
-        # Movement (non-trip) arcs
+        
+        # movement (non-trip) arcs
         for index, row in self.arcs_df.iterrows():
-            for t in range(self.T_max):
-                i = row['start']
-                j = row['end']
-                delay = row['trip_time']
-                if t + delay <= self.T_max:
-                    add_arc((i,t),(j,t+delay),self.B_max,0)  
-            
+            i = row['start']
+            j = row['end']
+            delay = row['trip_time']
+            for t in range(self.T_max + 1 - delay):
+                add_arc((i,t),(j,t+delay),self.B_max,0)  
+        
+        self.arcs = pd.DataFrame(self.arcs)
+        
     def load_model(self):
         """Load the network into the model."""  
+        self.model = pywrapgraph.SimpleMinCostFlow()
         
+        # arcs
+        tails = list(self.arcs['tail'])
+        heads = list(self.arcs['head'])
+        caps = list(self.arcs['cap'])
+        costs = list((self.arcs['cost']*100).astype(int))
+        
+        for i in range(len(tails)):
+            self.model.AddArcWithCapacityAndUnitCost(tails[i], heads[i], caps[i], costs[i])
+        
+        # nodes
         supplies = [0]*len(self.nodes)
         supplies[0] = self.B_max
         supplies[-1] = -self.B_max
         
-        # OR-Tools
-        self.model = pywrapgraph.SimpleMinCostFlow()
-        for i in range(0, len(self.start_nodes)):
-            self.model.AddArcWithCapacityAndUnitCost(self.start_nodes[i], 
-                                                     self.end_nodes[i],
-                                                     self.capacities[i], 
-                                                     int(self.costs[i]*100))
         for i in range(0, len(supplies)):
             self.model.SetNodeSupply(i, supplies[i])
             
-#         # Gurobi
-#         self.model = Model('min-cost_flow')
-#         self.model_flow = self.model.addVars(self.arcs, lb=0.0, obj=self.costs, name='flow')
-        
-#         # Capacity constraint
-#         for i in range(len(self.arcs)):
-#             self.model.addConstr(self.model_flow[self.arcs[i]], 
-#                                  GRB.LESS_EQUAL, 
-#                                  self.capacities[i], 
-#                                  "cap_(%s,%s,%s)"%self.arcs[i])
-        
-#         # flow conservation
-#         self.model.addConstrs((self.model_flow.sum(j,'*') 
-#                                - self.model_flow.sum('*',j) 
-#                                == supplies[j] for j in range(len(self.nodes))), "node")
-        
-#         # set objective
-#         self.model.modelSense = GRB.MINIMIZE
+        # NOTE: Gurobi implemention removed in commit #168
+        # -> It is slower than OR-Tool's min-cost flow specific solver
             
     def optimize(self):   
         """Optimize this taxi routing problem and set the flows and objective value."""
-        # OR-Tools
         if self.model.Solve() != self.model.OPTIMAL:
             print('Something went wrong.')  
         self.objective = -self.model.OptimalCost()/100
         for i in range(len(self.arcs)):
-            self.flow[self.arcs[i]] = self.model.Flow(i)
+            self.arcs.at[i,'flow'] = self.model.Flow(i)
             
-#         # Gurobi
-#         self.model.optimize()
-#         self.objective = -self.model.objVal
-#         for arc in self.arcs:
-#              self.flow[arc] = int(self.model_flow[arc].x)
+        # NOTE: Gurobi implemention removed in commit #168
+        # -> It is slower than OR-Tool's min-cost flow specific solver
             
     def compute_taxi_stats(self):
         """"Compute the statisitcs for this solution."""
         taxi_arcs = []
-        tmp_flow = self.flow.copy()
-        node_map = {v: k for k, v in self.nodes.items()}
-        source = self.nodes['s']
-        sink = self.nodes['f']
+        tmp_flow = self.arcs['flow'].to_dict().copy()
+        source = self.node_to_index['s']
+        sink = self.node_to_index['f']
         for taxi in range(self.B_max):
+            print(taxi)
             taxi_arc = []
             i = source
             while not i == sink:
-                arcs_out = self.arcs_out[i]
-                for arc in arcs_out:
-                    if tmp_flow[arc] > 0:
-                        tmp_flow[arc] = tmp_flow[arc] - 1
-                        start_node = node_map[arc[0]]
-                        end_node = node_map[arc[1]]
-                        if start_node != 's' and end_node != 'f':
-                            moving = (start_node[0] != end_node[0])
-                            time = end_node[1] - start_node[1]
-                            trip_arc = arc[2] if type(arc[2]) is bool else True
-                            taxi_arc.append((time,moving,trip_arc,arc[2]))
-                        i = arc[1]
+                arcs_out = self.arcs.loc[self.arcs_out[i]]
+                for index, row in arcs_out.iterrows():
+                    if tmp_flow[index] > 0:
+                        tmp_flow[index] = tmp_flow[index] - 1
+                        tail = row['tail']
+                        head = row['head']
+                        i = head
+                        if tail != source and head != sink:
+                            trip_arc = row['trip'] if type(row['trip']) is bool else True
+                            tail = self.nodes[tail]
+                            head = self.nodes[head]
+                            moving = (tail[0] != head[0])
+                            time = tail[1] - head[1]
+                            taxi_arc.append((time,moving,trip_arc,row['trip']))
                         break
             taxi_arcs.append(taxi_arc)
 
@@ -288,25 +259,26 @@ class TaxiRouting(object):
     
     def taxi_paths(self):
         """Returns a list of arcs travelled and indication if they were a trip arc for each taxi."""
-        taxi_paths = []
-        tmp_flow = self.flow.copy()
-        node_map = {v: k for k, v in self.nodes.items()}
-        source = self.nodes['s']
-        sink = self.nodes['f']
+        paths = []
+        tmp_flow = self.arcs['flow'].to_dict().copy()
+        source = self.node_to_index['s']
+        sink = self.node_to_index['f']
         for taxi in range(self.B_max):
             path = []
             i = source
             while not i == sink:
-                arcs_out = self.arcs_out[i]
-                for arc in arcs_out:
-                    if tmp_flow[arc] > 0:
-                        tmp_flow[arc] = tmp_flow[arc] - 1
-                        is_trip_arc = arc[2] if type(arc[2]) is bool else True
-                        path.append((node_map[arc[0]][0],node_map[arc[1]][0],is_trip_arc))
-                        i = arc[1]
+                arcs_out = self.arcs.loc[self.arcs_out[i]]
+                for index, row in arcs_out.iterrows():
+                    if tmp_flow[index] > 0:
+                        tmp_flow[index] = tmp_flow[index] - 1
+                        trip_arc = row['trip'] if type(row['trip']) is bool else True
+                        s_loc = self.nodes[row['tail']][0]
+                        t_loc = self.nodes[row['head']][0]
+                        path.append((s_loc ,t_loc, trip_arc))
+                        i = row['head']
                         break
-            taxi_paths.append(path[1:-1])
-        return taxi_paths
+            paths.append(path[1:-1])
+        return paths
      
       # TODO: Implement a method to get locations of taxis at each time interval
 #     def taxi_locations(self):
@@ -327,17 +299,14 @@ class TaxiRouting(object):
         """Draw the min-cost flow graph for this problem."""
         G = nx.DiGraph()
         edgeList = []
-        for arc in self.arcs:
-            if not draw_all and not arc[2] and self.flow[arc] == 0:
+        for index, row in self.arcs.iterrows():
+            if not draw_all and not row['trip'] and row['flow'] == 0:
                 continue
-            edgeList.append((arc[0], 
-                             arc[1], 
-                             arc[2]))
-        G.add_weighted_edges_from(edgeList, 'trip')  
-        G.add_nodes_from(list(self.nodes.values()))
-                
-        for i,j in G.edges:
-            G.edges[(i,j)]['flow'] = self.flow[(i,j,G.edges[(i,j)]['trip'])]
+            edgeList.append((row['tail'], 
+                             row['head'], 
+                             row['flow']))
+        G.add_weighted_edges_from(edgeList, 'flow')  
+        G.add_nodes_from(list(range(len(self.nodes))))
         
         loc_pos = list(np.linspace(0,1,2+self.L)[1:-1])
         loc_pos.reverse()
@@ -350,8 +319,8 @@ class TaxiRouting(object):
         pos.append((1,0.5))
         plt.figure(3,figsize=(9,6)) 
         
-        node_map = {v: k for k, v in self.nodes.items()}        
-        nx.draw_networkx(G,pos,labels=node_map,node_size=1200,node_color='lightblue')
+        labels = {i: self.nodes[i] for i in range(len(self.nodes))}        
+        nx.draw_networkx(G,pos,labels=labels,node_size=1200,node_color='lightblue')
         nx.draw_networkx_edge_labels(G,pos,edge_labels=nx.get_edge_attributes(G,'flow'));
         
     def plot_taxi_route(self, taxis):

@@ -45,6 +45,7 @@ class TaxiRouting(object):
         self.arcs = list()
         self.arcs_out = dict()
         self.objective = 0
+        self.unit_flows = list()
         self.model = None
         
         self.setup_network()
@@ -133,39 +134,45 @@ class TaxiRouting(object):
             print('Something went wrong.')  
         self.objective = -self.model.OptimalCost()/100
         for i in range(len(self.arcs)):
-            self.arcs.at[i,'flow'] = self.model.Flow(i)
+            self.arcs.at[i,'flow'] = self.model.Flow(i)  
+        self.unit_flows = self.decompose_flow()
             
         # NOTE: Gurobi implemention removed in commit #168
         # -> It is slower than OR-Tool's min-cost flow specific solver
-            
-    def compute_taxi_stats(self):
-        """"Compute the statisitcs for this solution."""
-        taxi_arcs = []
+    
+    def decompose_flow(self):
+        """Decompose the current flow into unit flows."""
+        paths = []
         tmp_flow = self.arcs['flow'].to_dict().copy()
         source = self.node_to_index['s']
         sink = self.node_to_index['f']
-        for taxi in range(self.B_max):
-            print(taxi)
-            taxi_arc = []
+        for unit_flow in range(self.B_max):
+            path = []
             i = source
             while not i == sink:
-                arcs_out = self.arcs.loc[self.arcs_out[i]]
-                for index, row in arcs_out.iterrows():
-                    if tmp_flow[index] > 0:
-                        tmp_flow[index] = tmp_flow[index] - 1
-                        tail = row['tail']
-                        head = row['head']
-                        i = head
-                        if tail != source and head != sink:
-                            trip_arc = row['trip'] if type(row['trip']) is bool else True
-                            tail = self.nodes[tail]
-                            head = self.nodes[head]
-                            moving = (tail[0] != head[0])
-                            time = tail[1] - head[1]
-                            taxi_arc.append((time,moving,trip_arc,row['trip']))
-                        break
-            taxi_arcs.append(taxi_arc)
+                index = [i for i in self.arcs_out[i] if tmp_flow[i] > 0][0]
+                i = self.arcs.at[index, 'head']
+                tmp_flow[index] = tmp_flow[index] - 1
+                path.append(index)
+            paths.append(path[1:-1])
+        return paths  
+    
+    def compute_taxi_stats(self):
+        """"Compute the statisitcs for this solution."""
+        paths = []
+        for unit_flow in self.unit_flows:
+            path = []
+            for arc_index in unit_flow:
+                arc = self.arcs.loc[arc_index]
+                trip_arc = arc['trip'] if type(arc['trip']) is bool else True
+                tail = self.nodes[arc['tail']]
+                head = self.nodes[arc['head']]
+                moving = (tail[0] != head[0])
+                time = tail[1] - head[1]
+                path.append((time,moving,trip_arc,arc['trip']))
+            paths.append(path)
 
+        taxi_arcs = paths
         taxi_stats = []
         for arcs in taxi_arcs:
             unzipped = list(zip(*arcs))
@@ -260,24 +267,14 @@ class TaxiRouting(object):
     def taxi_paths(self):
         """Returns a list of arcs travelled and indication if they were a trip arc for each taxi."""
         paths = []
-        tmp_flow = self.arcs['flow'].to_dict().copy()
-        source = self.node_to_index['s']
-        sink = self.node_to_index['f']
-        for taxi in range(self.B_max):
+        for unit_flow in self.unit_flows:
             path = []
-            i = source
-            while not i == sink:
-                arcs_out = self.arcs.loc[self.arcs_out[i]]
-                for index, row in arcs_out.iterrows():
-                    if tmp_flow[index] > 0:
-                        tmp_flow[index] = tmp_flow[index] - 1
-                        trip_arc = row['trip'] if type(row['trip']) is bool else True
-                        s_loc = self.nodes[row['tail']][0]
-                        t_loc = self.nodes[row['head']][0]
-                        path.append((s_loc ,t_loc, trip_arc))
-                        i = row['head']
-                        break
-            paths.append(path[1:-1])
+            for arc_index in unit_flow:
+                arc = self.arcs.loc[arc_index]
+                path.append((self.nodes[arc['tail']][0],
+                             self.nodes[arc['head']][0],
+                             arc['trip'] if type(arc['trip']) is bool else True))
+            paths.append(path)
         return paths
      
       # TODO: Implement a method to get locations of taxis at each time interval

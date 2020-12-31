@@ -136,6 +136,7 @@ class TaxiRouting(object):
         for i in range(len(self.arcs)):
             self.arcs.at[i,'flow'] = self.model.Flow(i)  
         self.unit_flows = self.decompose_flow()
+        self.compute_taxi_stats()    
             
         # NOTE: Gurobi implemention removed in commit #168
         # -> It is slower than OR-Tool's min-cost flow specific solver
@@ -158,7 +159,7 @@ class TaxiRouting(object):
         return paths  
     
     def compute_taxi_stats(self):
-        """"Compute the statisitcs for this solution."""
+        """Compute the statisitcs for this solution."""
         paths = []
         for unit_flow in self.unit_flows:
             path = []
@@ -172,10 +173,9 @@ class TaxiRouting(object):
                 path.append((time,moving,trip_arc,arc['trip']))
             paths.append(path)
 
-        taxi_arcs = paths
         taxi_stats = []
-        for arcs in taxi_arcs:
-            unzipped = list(zip(*arcs))
+        for path in paths:
+            unzipped = list(zip(*path))
             total_time = sum(np.array(unzipped[0]))
             moving_time = sum(np.array(unzipped[0])[list(unzipped[1])])
             trip_time = sum(np.array(unzipped[0])[list(unzipped[2])])
@@ -183,51 +183,59 @@ class TaxiRouting(object):
             trip_IDs = list(np.array(unzipped[3])[list(unzipped[2])])
             num_trips = len(trip_IDs)
             trips = self.trips_df.loc[trip_IDs]
-            total_trip_distance = sum(trips['trip_distance'])
-            total_passengers = sum(trips['passenger_count'])
-            revenue = sum(trips['revenue'])
+            
+            total_trip_distance = None if any(trips['trip_distance'].isna()) else sum(trips['trip_distance'])
+            total_passengers = None if any(trips['passenger_count'].isna()) else sum(trips['passenger_count'])
+            revenue = None if any(trips['revenue'].isna()) else sum(trips['revenue'])
 
-
-            taxi_stats.append({'moving_pct' : moving_time/total_time,
-                               'on_trip_pct' : trip_time/total_time,
+            taxi_stats.append({'moving_pct' : moving_time / total_time,
+                               'on_trip_pct' : trip_time / total_time,
                                'num_trips' : num_trips,
                                'total_trip_distance' : total_trip_distance,
                                'total_passengers' : total_passengers,
                                'revenue' : revenue})
-            
-        self.taxi_stats = taxi_stats    
-        self.avg_moving_pct = sum([stat['moving_pct'] for stat in taxi_stats])/self.B_max
-        self.avg_trip_pct = sum([stat['on_trip_pct'] for stat in taxi_stats])/self.B_max
+        self.taxi_stats = taxi_stats   
+        
+        # aggregate 
+        self.avg_moving_pct = sum([stat['moving_pct'] for stat in taxi_stats]) / self.B_max
+        self.avg_trip_pct = sum([stat['on_trip_pct'] for stat in taxi_stats]) / self.B_max
         self.total_num_trips = sum([stat['num_trips'] for stat in taxi_stats])
-        self.avg_total_trip_distance = sum([stat['total_trip_distance'] for stat in taxi_stats])/self.B_max
-        self.total_passengers = sum([stat['total_passengers'] for stat in taxi_stats])
-        self.avg_revenue = sum([stat['revenue'] for stat in taxi_stats])/self.B_max
-        self.total_revenue = sum([stat['revenue'] for stat in taxi_stats])
+    
+        trip_distance_list = [stat['total_trip_distance'] for stat in taxi_stats]
+        passengers_list = [stat['total_passengers'] for stat in taxi_stats]
+        revenue_list = [stat['revenue'] for stat in taxi_stats]
+        
+        self.avg_total_trip_distance = sum(trip_distance_list) / self.B_max if None not in trip_distance_list else None
+        self.total_passengers = sum(passengers_list) if None not in passengers_list else None
+        self.avg_revenue = sum(revenue_list) / self.B_max if None not in revenue_list else None
+        self.total_revenue = sum(revenue_list) if None not in revenue_list else None
 
     def get_stats(self):
-        """Return the summary stats for this solution."""
-        self.compute_taxi_stats()
-        
+        """Return the summary stats for this solution."""        
         print('Summary Statistics')
-        print('Avg. Moving Pct.: ',np.round(self.avg_moving_pct,2))
-        print('Avg. On Trip Pct.: ',np.round(self.avg_trip_pct,2))
-        print('Avg. Total Distance of Trips: ',np.round(self.avg_total_trip_distance,2))
-        print('Avg. Revenue: ',np.round(self.avg_revenue,2))
-        print('Total Trips: ',np.round(self.total_num_trips,2),
-              '(', round(self.total_num_trips/len(self.trips_df),2), ')')
-        print('Total Passengers: ',np.round(self.total_passengers,2),
-              '(', round(self.total_passengers/sum(self.trips_df.passenger_count),2), ')')
-        print('Total Revenue: ',np.round(self.total_revenue,2),
-              '(', round(self.total_revenue/sum(self.trips_df.revenue),2), ')')
+        print('Avg. Moving Pct.: %.2f' % (self.avg_moving_pct))
+        print('Avg. On Trip Pct.: %.2f' % (self.avg_trip_pct))
+        if not self.avg_total_trip_distance is None:
+            print('Avg. Total Distance of Trips: %.2f' % (self.avg_total_trip_distance))
+        if not self.avg_revenue is None:
+            print('Avg. Revenue: %.2f' % (self.avg_revenue))
+        print('Total Trips: %.2f (%.2f)' % (self.total_num_trips, 
+                                            self.total_num_trips / len(self.trips_df)))
+        if not self.total_passengers is None:
+            print('Total Passengers: %.2f (%.2f)' % (self.total_passengers, 
+                                                     self.total_passengers / sum(self.trips_df.passenger_count)))
+        if not self.total_revenue is None:
+            print('Total Revenue: %.2f (%.2f)' % (self.total_revenue,
+                                                  self.total_revenue / sum(self.trips_df.revenue)))
     
     def plot_stats(self):
-        """Plot statistics using matplotlib."""
-        self.compute_taxi_stats()
-        
+        """Plot statistics using matplotlib."""        
         fig, axs = plt.subplots(2, 3, tight_layout=True, figsize=(20,10))
 
         def plot_histogram(stat, title, x_label, i, j):
             x = [i[stat] for i in self.taxi_stats]
+            if None in x:
+                return
             unique_vals = len(set(x))
             if unique_vals < 5:
                 bins = unique_vals
@@ -264,10 +272,14 @@ class TaxiRouting(object):
 
         plt.show(fig)    
     
-    def taxi_paths(self):
+    def taxi_paths(self, indices=None):
         """Returns a list of arcs travelled and indication if they were a trip arc for each taxi."""
+        if indices is None:
+            indices = list(range(0, len(self.unit_flows)))
+        unit_flows = [self.unit_flows[i] for i in indices]
+            
         paths = []
-        for unit_flow in self.unit_flows:
+        for unit_flow in unit_flows:
             path = []
             for arc_index in unit_flow:
                 arc = self.arcs.loc[arc_index]
@@ -322,7 +334,7 @@ class TaxiRouting(object):
         
     def plot_taxi_route(self, taxis):
         """Plot the path of every taxi in the given list on the Manhattan grid."""
-        paths = self.taxi_paths()  # get paths
+        paths = self.taxi_paths(indices=taxis)  # get paths
         
         # parallel lists for every arc
         start = []  # start node
@@ -337,8 +349,7 @@ class TaxiRouting(object):
         colors = palettes.Category10[10]
         c = 0
         
-        for i in taxis:
-            path = paths[i]
+        for path in paths:
             
             # add start node information for this taxi
             start_nodes.append(path[0][0])
@@ -444,6 +455,11 @@ def create_dataframes(trips, arcs, L):
         row['start_time'] = trip[2]
         row['trip_time'] = trip[3]
         row['value'] = trip[4]
+        
+        # Eliminate key error
+        row['trip_distance'] = None
+        row['passenger_count'] = None
+        row['revenue'] = None
         trips_df = trips_df.append(pd.DataFrame(row, index=[0]))
     trips_df = trips_df.reset_index().drop(columns='index')
 

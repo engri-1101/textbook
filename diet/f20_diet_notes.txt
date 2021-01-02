@@ -1,0 +1,4 @@
+Some of the solutions snuck their way into the distribution file.
+This lab was pretty well recieved overall was on the quicker side.
+
+(2-1-2021) All solutions were removed from the distribution files.

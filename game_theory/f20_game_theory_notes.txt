@@ -1,0 +1,7 @@
+Students had the option to complete this lab on their own. It was the
+last lab of the semester. I had few students come to the optional lab
+section. Of those that did, most had issues understanding complementary
+slackness (although we did not use this name in the lab). I think the 
+strategy of the computer goalie in the penalty kick game needs to be
+improved. When using the optimal kicker strategy, the goalie ends up 
+staying middle the entire time when it should go left ~10% of the time.

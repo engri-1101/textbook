@@ -13,4 +13,5 @@ with ZipFile('seat_packing_lab.zip', 'w') as zipObj:
     zipObj.write('seat_packing_lab.ipynb')
     zipObj.write('seat_packing_lab.py')
     write_dir(zipObj, 'images-lab')
+    write_dir(zipObj, 'data')
     zipObj.close()

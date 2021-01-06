@@ -8,6 +8,7 @@ zip () {
     cd ..
 }
 
+zip transportation
 zip tsp_integer_programming
 zip maximum_flow
 zip branch_and_bound

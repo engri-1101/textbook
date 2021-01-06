@@ -6,7 +6,7 @@
 | 4     | Maximum Flow                      | | | |
 | 5     | Baseball Elimination              | | | |
 | 6     | Transportation I+II               | [transportation_model](transportation_model.ipynb) | [transportation_steel](transportation_steel.csv)  <br/> [transportation_caterer](transportation_caterer.csv)  <br/> [transportation_oil](transportation_oil.csv) | |
-| 7     | First-Year Writing Seminar        | [fws_model](fws_model.ipynb) | [fws_example](fws_example.csv) <br/> [fws_f09_ballots](fws_f09_ballots.csv) | |
+| 7     | First-Year Writing Seminar        | [fws_model](fws_model.ipynb) |  [fws_7_students](fws_7_students.csv) <br/> [fws_8_students](fws_8_students.csv) <br/> [fws_f09_ballots](fws_f09_ballots.csv)| |
 | 8     | Simplex                           | | | |
 | 9     | LP Formulation                    | | | [work_schedule_lp](work_schedule_lp.ipynb)  <br/>  [oil_production_lp](oil_production_lp.ipynb) |
 | 10     | TSP and Integer Programming       | | | |

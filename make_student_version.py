@@ -17,7 +17,8 @@ import numpy as np
          
 # temporarily done manually
 keys = ['./baseball_elimination/baseball_elimination_lab_key.ipynb',
-        './lp_formulation/lp_formulation_lab_key.ipynb']
+        './lp_formulation/lp_formulation_lab_key.ipynb',
+        './transportation/transportation_lab_key.ipynb']
 
 
 # starting with just lp formulation key

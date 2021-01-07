@@ -13,6 +13,6 @@
 | 11     | Seat Packing                      | [mis_model](mis_model.ipynb) | [mis_small_example](mis_small_example.csv) <br/> [mis_seat_packing_example](mis_seat_packing_example.csv) |
 | 12    | Knapsack                          | | | |
 | 13    | Branch and Bound                  | [knapsack_model](knapsack_model.ipynb)             | [knapsack_example](knapsack_example.csv) | |
-| 14    | Diet                              | [diet_model](diet_model.ipynb)                     | [diet_neos](diet_neos) | [small_diet_lp](small_diet_lp.ipynb) |
+| 14    | Diet                              | [diet_model](diet_model.ipynb)                     |  [diet_cereal](diet_cereal) <br/> [diet_neos](diet_neos) | [small_diet_lp](small_diet_lp.ipynb) |
 | 15    | Game Theory                       | | | [penalty_kick_game_lp](penalty_kick_game_lp.ipynb) |
 | 16    | Minimum-cost Flow                 | | | |

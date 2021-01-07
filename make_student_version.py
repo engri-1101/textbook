@@ -3,21 +3,26 @@ import re
 import numpy as np
 
 # find all key files
-keys = []
-dirs = list(walk('.'))[0][1]
-for directory in dirs:
-    files = list(walk('./%s' % (directory)))[0][2]
-    for file in files:
-        file_split = file.split('.')
-        assert len(file_split) <= 2
-        if len(file_split) == 2 and file_split[1] == 'ipynb':
-            file_name = file_split[0]
-            if file_name.split('_')[-1] == 'key':
-                keys.append('./%s/%s' % (directory, file))
+# keys = []
+# dirs = list(walk('.'))[0][1]
+# for directory in dirs:
+#     files = list(walk('./%s' % (directory)))[0][2]
+#     for file in files:
+#         file_split = file.split('.')
+#         assert len(file_split) <= 2
+#         if len(file_split) == 2 and file_split[1] == 'ipynb':
+#             file_name = file_split[0]
+#             if file_name.split('_')[-1] == 'key':
+#                 keys.append('./%s/%s' % (directory, file))
+         
+# temporarily done manually
+keys = ['./baseball_elimination/baseball_elimination_lab_key.ipynb',
+        './lp_formulation/lp_formulation_lab_key.ipynb']
+
 
 # starting with just lp formulation key
-for k in [-4]:
-    file = open(keys[k], "r")
+for key in keys:
+    file = open(key, "r")
     file_text = file.read()
 
     # find all code answers
@@ -47,7 +52,7 @@ for k in [-4]:
 
     file.close()
     
-    student_file = keys[k].replace('_key', '')
+    student_file = key.replace('_key', '')
     file = open(student_file, "w")
     file.write(file_text)
     file.close()

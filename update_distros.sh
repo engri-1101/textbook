@@ -18,6 +18,7 @@ python make_student_version.py
 
 # Clear output of all student versions
 clear_output lp_formulation/lp_formulation_lab.ipynb
+clear_output baseball_elimination/baseball_elimination_lab.ipynb
 
 # Create zipped distribution files
 zip transportation

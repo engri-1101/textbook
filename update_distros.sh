@@ -1,5 +1,10 @@
 #!/bin/bash
 
+clear_output() {
+    jupyter nbconvert --ClearOutputPreprocessor.enabled=True --clear-output --inplace "$1"
+    echo 'cleared successfully.'
+}
+
 zip () {
     cd "$1"
     echo $PWD
@@ -8,6 +13,13 @@ zip () {
     cd ..
 }
 
+# Make student version of file from key
+python make_student_version.py
+
+# Clear output of all student versions
+clear_output lp_formulation/lp_formulation_lab.ipynb
+
+# Create zipped distribution files
 zip transportation
 zip tsp_integer_programming
 zip maximum_flow

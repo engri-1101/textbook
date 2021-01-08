@@ -24,6 +24,7 @@ clear_output first_year_writing_seminar/fws_lab.ipynb
 clear_output simplex/simplex_lab.ipynb
 clear_output tsp_integer_programming/tsp_integer_programming_lab.ipynb
 clear_output seat_packing/seat_packing_lab.ipynb
+clear_output branch_and_bound/branch_and_bound_lab.ipynb
 
 # Create zipped distribution files
 zip transportation

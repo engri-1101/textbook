@@ -25,7 +25,8 @@ keys = ['./baseball_elimination/baseball_elimination_lab_key.ipynb',
         './seat_packing/seat_packing_lab_key.ipynb',
         './branch_and_bound/branch_and_bound_lab_key.ipynb',
         './diet/diet_lab_key.ipynb',
-        './game_theory/game_theory_lab_key.ipynb']
+        './game_theory/game_theory_lab_key.ipynb',
+        './min-cost_flow/min-cost_flow_lab_key.ipynb']
 
 
 # starting with just lp formulation key

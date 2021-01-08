@@ -27,6 +27,7 @@ clear_output seat_packing/seat_packing_lab.ipynb
 clear_output branch_and_bound/branch_and_bound_lab.ipynb
 clear_output diet/diet_lab.ipynb
 clear_output game_theory/game_theory_lab.ipynb
+clear_output min-cost_flow/min-cost_flow_lab.ipynb
 
 # Create zipped distribution files
 zip transportation

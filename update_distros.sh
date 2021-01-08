@@ -23,6 +23,7 @@ clear_output transportation/transportation_lab.ipynb
 clear_output first_year_writing_seminar/fws_lab.ipynb
 clear_output simplex/simplex_lab.ipynb
 clear_output tsp_integer_programming/tsp_integer_programming_lab.ipynb
+clear_output seat_packing/seat_packing_lab.ipynb
 
 # Create zipped distribution files
 zip transportation

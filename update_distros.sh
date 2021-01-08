@@ -22,6 +22,7 @@ clear_output baseball_elimination/baseball_elimination_lab.ipynb
 clear_output transportation/transportation_lab.ipynb
 clear_output first_year_writing_seminar/fws_lab.ipynb
 clear_output simplex/simplex_lab.ipynb
+clear_output tsp_integer_programming/tsp_integer_programming_lab.ipynb
 
 # Create zipped distribution files
 zip transportation

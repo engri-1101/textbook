@@ -19,7 +19,8 @@ import numpy as np
 keys = ['./baseball_elimination/baseball_elimination_lab_key.ipynb',
         './lp_formulation/lp_formulation_lab_key.ipynb',
         './transportation/transportation_lab_key.ipynb',
-        './first_year_writing_seminar/fws_lab_key.ipynb']
+        './first_year_writing_seminar/fws_lab_key.ipynb',
+        './simplex/simplex_lab_key.ipynb']
 
 
 # starting with just lp formulation key

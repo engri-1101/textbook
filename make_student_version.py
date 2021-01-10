@@ -42,7 +42,7 @@ def make_student_version(key):
 args = sys.argv
 assert len(args) == 2
 key = args[1]
-write_lab_from_key(key)
+make_student_version(key)
     
 # find all key files
 # keys = []

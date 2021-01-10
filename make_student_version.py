@@ -1,22 +1,10 @@
 from os import walk
 import re
 import numpy as np
+import sys
 
-# find all key files
-keys = []
-dirs = list(walk('.'))[0][1]
-for directory in dirs:
-    files = list(walk('./%s' % (directory)))[0][2]
-    for file in files:
-        file_split = file.split('.')
-        assert len(file_split) <= 2
-        if len(file_split) == 2 and file_split[1] == 'ipynb':
-            file_name = file_split[0]
-            if file_name.split('_')[-1] == 'key':
-                keys.append('./%s/%s' % (directory, file))
-
-# starting with just lp formulation key
-for key in keys:
+def make_student_version(key):
+    """Make a student version of the given lab key in the same directory."""
     file = open(key, "r")
     file_text = file.read()
 
@@ -41,7 +29,6 @@ for key in keys:
     to_remove = np.array(to_remove)
     for r in range(len(to_remove)):
         i,j = to_remove[r]
-#         print(k,file_text[i:j])
         file_text = file_text[:i] + file_text[j:]
         to_remove = to_remove - (j-i) # adjust other indices
 
@@ -51,3 +38,21 @@ for key in keys:
     file = open(student_file, "w")
     file.write(file_text)
     file.close()
+    
+args = sys.argv
+assert len(args) == 2
+key = args[1]
+write_lab_from_key(key)
+    
+# find all key files
+# keys = []
+# dirs = list(walk('.'))[0][1]
+# for directory in dirs:
+#     files = list(walk('./%s' % (directory)))[0][2]
+#     for file in files:
+#         file_split = file.split('.')
+#         assert len(file_split) <= 2
+#         if len(file_split) == 2 and file_split[1] == 'ipynb':
+#             file_name = file_split[0]
+#             if file_name.split('_')[-1] == 'key':
+#                 keys.append('./%s/%s' % (directory, file))

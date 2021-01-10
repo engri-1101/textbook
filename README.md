@@ -32,7 +32,7 @@ This git repo serves as the standard for ENGRI 1101 lab software / files (while 
 | 4     | Maximum Flow                      | Jupyter Notebook | [maximum_flow](maximum_flow)                               | fms9             |
 | 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               | qz245            |
 | 6     | Transportation I+II               | Jupyter Notebook | [transportation](transportation)                           | qz245            |
-| 7     | First-Year Writing Seminar        | Jupyter Notebook | [first_year_writing_seminar](first_year_writing_seminar)   | qz245            |
+| 7     | First-Year Writing Seminar        | Jupyter Notebook | [fws](fws)                                                 | qz245            |
 | 8     | Simplex                           | Jupyter Notebook | [simplex](simplex)                                         | hwr26            |
 | 9     | LP Formulation                    | Jupyter Notebook | [lp_formulation](lp_formulation)                           | hwr26            |
 | 10     | TSP and Integer Programming       | Jupyter Notebook | [tsp_integer_programming](tsp_integer_programming)         | hwr26            |
@@ -57,7 +57,7 @@ This git repo serves as the standard for ENGRI 1101 lab software / files (while 
 | 6     | Maximum Flow (3-4)                | | [max_flow_lab_part3-4.zip](maximum_flow/max_flow_lab_part3-4.zip) |
 | 7     | Baseball Elimination              | [baseball_elimination_prelab.pdf](baseball_elimination/baseball_elimination_prelab_tex_2020-12-3/baseball_elimination_prelab.pdf) | [baseball_elimination_lab.zip](baseball_elimination/baseball_elimination_lab.zip) |
 | 8     | Transportation I+II               | [transportation_prelab.pdf](transportation/transportation_prelab_tex_2020-12-3/transportation_prelab.pdf) | [transportation_lab.ipynb](transportation/transportation_lab.ipynb) |
-| 9     | First-Year Writing Seminar + Simplex (1) | [simplex_prelab.pdf](simplex/simplex_prelab_tex_2020-12-3/simplex_prelab.pdf) | [fws_lab.zip](first_year_writing_seminar/fws_lab.zip) <br/> [simplex_lab.ipynb](simplex/simplex_lab.ipynb) |
+| 9     | First-Year Writing Seminar + Simplex (1) | [simplex_prelab.pdf](simplex/simplex_prelab_tex_2020-12-3/simplex_prelab.pdf) | [fws_lab.zip](fws/fws_lab.zip) <br/> [simplex_lab.ipynb](simplex/simplex_lab.ipynb) |
 | 10    | Simplex (2-4)                     | | [simplex_lab.ipynb](simplex/simplex_lab.ipynb) |
 | 11    | LP Formulation & Seat Packing     | [lp_formulation_prelab.pdf](lp_formulation/lp_formulation_prelab_tex_2020-12-3/lp_formulation_prelab.pdf) | [lp_formulation_lab.ipynb](lp_formulation/lp_formulation_lab.ipynb) <br/> [seat_packing_lab.zip](seat_packing/seat_packing_lab.zip) |
 | 12    | Branch and Bound & Knapsack       | [bnb_prelab.pdf](branch_and_bound/bnb_prelab_tex_2020-12-3/bnb_prelab.pdf) | [branch_and_bound_lab.zip](branch_and_bound/branch_and_bound_lab.zip) |

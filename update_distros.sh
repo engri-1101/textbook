@@ -1,19 +1,22 @@
 #!/bin/bash
 
+# make student version of a given key file
 make_student_version() {
     # get path for both key and student version
-    key=$1_key.ipynb
-    student=$1.ipynb
+    key=$1/$1_lab_key.ipynb
+    student=$1/$1_lab.ipynb
+    
     # only create student version if the key file has changed
     if [[ $(git diff "$key") ]]; then
         python make_student_version.py $key
         jupyter nbconvert --ClearOutputPreprocessor.enabled=True --clear-output --inplace $student
-        echo $student" - student version created successfully."
+        echo $1" - student version created successfully."
     else
-        echo $student" - lab key file unchanged."
+        echo $1" - lab key file unchanged."
     fi
 }
 
+# create a zipped distribution file for a given lab
 zip () {
     cd "$1"
     echo $PWD
@@ -22,21 +25,19 @@ zip () {
     cd ..
 }
 
-# Make student version of key file
-make_student_version lp_formulation/lp_formulation_lab
-make_student_version baseball_elimination/baseball_elimination_lab
-make_student_version transportation/transportation_lab
-make_student_version first_year_writing_seminar/fws_lab
-make_student_version simplex/simplex_lab
-make_student_version tsp_integer_programming/tsp_integer_programming_lab
-make_student_version seat_packing/seat_packing_lab
-make_student_version branch_and_bound/branch_and_bound_lab
-make_student_version diet/diet_lab
-make_student_version game_theory/game_theory_lab
-make_student_version min-cost_flow/min-cost_flow_lab
-make_student_version shortest_path/shortest_path_lab
+make_student_version lp_formulation
+make_student_version baseball_elimination
+make_student_version transportation
+make_student_version fws
+make_student_version simplex
+make_student_version tsp_integer_programming
+make_student_version seat_packing
+make_student_version branch_and_bound
+make_student_version diet
+make_student_version game_theory
+make_student_version min-cost_flow
+make_student_version shortest_path
 
-# Create zipped distribution files
 zip transportation
 zip tsp_integer_programming
 zip maximum_flow
@@ -46,6 +47,6 @@ zip min-cost_flow
 zip shortest_path
 zip seat_packing
 zip travelling_salesman_problem
-zip first_year_writing_seminar
+zip fws
 zip diet
 zip game_theory

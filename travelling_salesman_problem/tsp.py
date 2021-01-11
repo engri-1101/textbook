@@ -301,7 +301,7 @@ def plot_tour(nodes, G, tour):
     show(grid)
     
     
-def plot_vlsi_tour(nodes, G, tour):
+def plot_vlsi_tour(nodes, G, tour, labels=True):
     """Plot the vlsi tour on the nodes."""
     edges_x = []
     edges_y = []
@@ -350,15 +350,24 @@ def plot_vlsi_tour(nodes, G, tour):
     plot.outline_line_color = None
     
     # label
-    cost = Div(text=str(round(tour_cost(G, tour),3)), width=400, align='center')
+    cost = Div(text=str(round(tour_cost(G, tour),3)), width=800, align='center')
     plot.multi_line(xs=lines_x, ys=lines_y, line_color='black', line_width=2)
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=2, line_dash='dashed')
-    plot.circle(x_start, y_start, size=5, line_color='#DC0000', fill_color='#DC0000')
-    plot.circle(x_end, y_end, size=5, line_color='steelblue', fill_color='steelblue')
+    plot.circle(x_start, y_start, size=5, line_color='steelblue', fill_color='steelblue')
+    plot.circle(x_end, y_end, size=5, line_color='#DC0000', fill_color='#DC0000')
+    
+    source = ColumnDataSource(data=dict(x_end=x_end,
+                                        y_end=y_end,
+                                        name=list(range(len(y_start)))))
+    
+    if labels:
+        labels = LabelSet(x='x_end', y='y_end', text='name', level='glyph',
+                  x_offset=5, y_offset=0, render_mode='canvas', source=source)
+        plot.add_layout(labels)
 
     
     # create layout
-    grid = gridplot([[plot]], 
+    grid = gridplot([[plot],[cost]], 
                     plot_width=800, plot_height=400,
                     toolbar_location = None,
                     toolbar_options={'logo': None})

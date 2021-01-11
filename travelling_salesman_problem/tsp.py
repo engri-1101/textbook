@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import pandas as pd
+from ortools.constraint_solver import pywrapcp
 from random import randrange
 from bokeh.plotting import figure, show
 from bokeh.io import output_notebook, show
@@ -142,14 +143,14 @@ def insertion_iteration(G, tour, unvisited, nearest):
         nearest (bool): run nearest neighbor if true. Otherwise, run random.
     """
     # dictionary from univisited nodes to their shortest distance from tour
-    d = G[:,[0,1]].min(axis=1)
+    d = G[:,np.unique(tour)].min(axis=1)
     d = {i : d[i] for i in range(len(d)) if i in unvisited}
     if nearest:
         min_val = min(d.values())
         possible = [k for k, v in d.items() if v==min_val]    
     else:
         max_val = max(d.values())
-        possible = [k for k, v in d.items() if v==max_val]    
+        possible = [k for k, v in d.items() if v==max_val] 
     next_node = possible[randrange(len(possible))]
 
     # insert node into tour at minimum cost
@@ -181,6 +182,41 @@ def furthest_insertion(G, initial=None):
     if initial is None:
         initial = [0,len(G)-1,0]
     return insertion(G, initial, False)
+
+
+def solve_tsp(G):
+    """Use OR-Tools to get an optimal tour of the graph G.
+    
+    Args:
+        G (np.ndarray): adjacency matrix representing a graph.
+    """
+    # number of locations, number of vehicles, start location
+    manager = pywrapcp.RoutingIndexManager(len(G), 1, 0)
+    routing = pywrapcp.RoutingModel(manager)
+
+    def distance_callback(from_index, to_index):
+        """Returns the distance between the two nodes."""
+        from_node = manager.IndexToNode(from_index)
+        to_node = manager.IndexToNode(to_index)
+        return G[from_node, to_node]*10000
+
+    transit_callback_index = routing.RegisterTransitCallback(distance_callback)
+    routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+
+    def get_routes(solution, routing, manager):
+        """Get vehicle routes from a solution and store them in an array."""
+        routes = []
+        for route_nbr in range(routing.vehicles()):
+            index = routing.Start(route_nbr)
+            route = [manager.IndexToNode(index)]
+            while not routing.IsEnd(index):
+                index = solution.Value(routing.NextVar(index))
+                route.append(manager.IndexToNode(index))
+            routes.append(route)
+        return routes
+
+    solution = routing.Solve()
+    return get_routes(solution, routing, manager)[0]
 
 
 def plot_tour(nodes, G, tour):
@@ -307,7 +343,8 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     plot.outline_line_color = None
     
     # label
-    cost = Div(text=str(costs[0]), width=400, align='center')
+    cost = Div(text=str(costs[0]), width=350, align='center')
+    done = Div(text='', width=300, align='center')  
     n = Div(text='0', width=400, align='center')
         
     # tour and edges
@@ -321,41 +358,65 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     # nodes
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
     
+    # --------------
+    # CUSTOM JS CODE
+    # --------------
+    
+    increment = """
+    if ((parseInt(n.text) + 1) < source.data['edges_y'].length) {
+        n.text = (parseInt(n.text) + 1).toString()
+    }
+    var iteration = parseInt(n.text)
+    """
+    
+    decrement = """
+    if ((parseInt(n.text) - 1) >= 0) {
+        n.text = (parseInt(n.text) - 1).toString()
+    }
+    var iteration = parseInt(n.text)
+    """
+    
+    auto_complete_tour = """
+    if (iteration == source.data['edges_y'].length - 2) {
+        iteration = iteration + 1
+    }
+    """
+    
+    auto_incomplete_tour = """
+    if (iteration == source.data['edges_y'].length - 2) {
+        iteration = iteration - 1
+    }
+    """
+      
     update = """
     cost.text = source.data['costs'][iteration].toFixed(3)
+    
+    if (iteration == source.data['edges_y'].length - 1) {
+        done.text = "done."
+    } else {
+        done.text = ""
+    }
 
     tour.data['edges_x'] = source.data['edges_x'][iteration]
     tour.data['edges_y'] = source.data['edges_y'][iteration]
     tour.change.emit()
     """
-    
-    next_btn_code = """
-    if ((parseInt(n.text) + 1) < source.data['edges_y'].length) {
-        n.text = (parseInt(n.text) + 1).toString()
-    }
-
-    var iteration = parseInt(n.text)
-    cost.text = iteration.toString()
-    """ + update
-
-    prev_btn_code = """
-    if ((parseInt(n.text) - 1) >= 0) {
-        n.text = (parseInt(n.text) - 1).toString()
-    }
-
-    var iteration = parseInt(n.text)
-    """ + update
+       
+    next_btn_code = increment + auto_complete_tour + update
+    prev_btn_code = decrement + auto_incomplete_tour + update
     
     # add buttons
     next_button = Button(label="Next", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    next_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, n=n), code=next_btn_code))
+    next_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+                                               done=done, n=n), code=next_btn_code))
     prev_button = Button(label="Previous", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, n=n), code=prev_btn_code))
+    prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+                                               done=done, n=n), code=prev_btn_code))
     
     # create layout
     grid = gridplot([[plot],
                      [row(prev_button, next_button, max_width=400, sizing_mode='stretch_both')],
-                     [cost]], 
+                     [row(cost,done)]], 
                     plot_width=400, plot_height=400,
                     toolbar_location = None,
                     toolbar_options={'logo': None})

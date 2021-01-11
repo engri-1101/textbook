@@ -41,6 +41,39 @@ def tsp_grid_instance(n, m, manhattan=True):
     return nodes_df, d
 
 
+def create_G(nodes, manhattan=True):
+    """Create the adjacency/distance matrix G for the given nodes dataframe.
+    
+    Args:
+        nodes (pd.DataFrame): node locations of the graph G.
+    """
+    d = np.zeros((len(nodes),len(nodes)))
+    for i, node_i in nodes.iterrows():
+        for j, node_j in nodes.iterrows():
+            if manhattan:
+                d[i][j] = abs(node_i['x'] - node_j['x']) + abs(node_i['y'] - node_j['y'])
+            else:
+                d[i][j] = math.sqrt((node_i['x'] - node_j['x'])**2 + (node_i['y'] - node_j['y'])**2)
+    return d
+
+
+def create_vlsi_G(nodes, manhattan=True):
+    """Create the adjacency/distance matrix G for the given VLSI nodes dataframe.
+    
+    Args:
+        nodes (pd.DataFrame): node start and end locations of the graph G.
+    """
+    d = np.zeros((len(nodes),len(nodes)))
+    for i, node_i in nodes.iterrows():
+        for j, node_j in nodes.iterrows():
+            if manhattan:
+                d[i][j] = abs(node_i['x_end'] - node_j['x_start']) + abs(node_i['y_end'] - node_j['y_start'])
+            else:
+                d[i][j] = math.sqrt((node_i['x_end'] - node_j['x_start'])**2 
+                                    + (node_i['y_end'] - node_j['y_start'])**2)
+    return d
+
+
 def tour_cost(G, tour):
     """Return the cost of the tour on graph G.
     
@@ -230,8 +263,12 @@ def plot_tour(nodes, G, tour):
     y = nodes.y.values.tolist()
 
     # set graph range
-    min_x, max_x = min(x)-1, max(x)+1
-    min_y, max_y = min(y)-1, max(y)+1
+    min_x, max_x = min(x), max(x)
+    x_margin = 0.05*(max_x - min_x)
+    min_x, max_x = min_x - x_margin, max_x + x_margin
+    min_y, max_y = min(y), max(y)
+    y_margin = 0.05*(max_y - min_y)
+    min_y, max_y = min_y - y_margin, max_y + y_margin
 
     # make plot
     plot = figure(x_range=(min_x, max_x), 
@@ -258,6 +295,71 @@ def plot_tour(nodes, G, tour):
     # create layout
     grid = gridplot([[plot],[cost]], 
                     plot_width=400, plot_height=400,
+                    toolbar_location = None,
+                    toolbar_options={'logo': None})
+    
+    show(grid)
+    
+    
+def plot_vlsi_tour(nodes, G, tour):
+    """Plot the vlsi tour on the nodes."""
+    edges_x = []
+    edges_y = []
+    for i in tour:
+        edges_x.append(nodes.loc[i]['x_start'])
+        edges_y.append(nodes.loc[i]['y_start'])
+        edges_x.append(nodes.loc[i]['x_end'])
+        edges_y.append(nodes.loc[i]['y_end'])
+
+    lines_x = []
+    lines_y = []
+    for index, row in nodes.iterrows():
+        lines_x.append([row['x_start'],row['x_end']])
+        lines_y.append([row['y_start'],row['y_end']])
+        
+    x_start = nodes.x_start.values.tolist()
+    y_start = nodes.y_start.values.tolist()
+    x_end = nodes.x_end.values.tolist()
+    y_end = nodes.y_end.values.tolist()
+        
+    x = x_start + x_end
+    y = y_start + y_end
+
+    # set graph range
+    min_x, max_x = min(x), max(x)
+    x_margin = 0.05*(max_x - min_x)
+    min_x, max_x = min_x - x_margin, max_x + x_margin
+    min_y, max_y = min(y), max(y)
+    y_margin = 0.05*(max_y - min_y)
+    min_y, max_y = min_y - y_margin, max_y + y_margin
+
+    # make plot
+    plot = figure(x_range=(min_x, max_x), 
+                  y_range=(min_y, max_y), 
+                  title="", 
+                  plot_width=1000,
+                  plot_height=500)
+    plot.toolbar.logo = None
+    plot.toolbar_location = None
+    plot.xgrid.grid_line_color = None
+    plot.ygrid.grid_line_color = None
+    plot.xaxis.visible = False
+    plot.yaxis.visible = False 
+    plot.background_fill_color = None
+    plot.border_fill_color = None
+    plot.outline_line_color = None
+    
+    # label
+    cost = Div(text=str(round(tour_cost(G, tour),3)), width=400, align='center')
+    plot.multi_line(xs=lines_x, ys=lines_y, line_color='black', line_width=2)
+    plot.line(x=edges_x, y=edges_y, line_color='black', line_width=2, line_dash='dashed')
+    plot.circle(x_start, y_start, size=5, line_color='#DC0000', fill_color='#DC0000')
+    plot.circle(x_end, y_end, size=5, line_color='steelblue', fill_color='steelblue')
+
+    
+    # create layout
+    grid = gridplot([[plot]], 
+                    plot_width=800, plot_height=400,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
     
@@ -323,8 +425,12 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     y = nodes.y.values.tolist()
     
     # set graph range
-    min_x, max_x = min(x)-1, max(x)+1
-    min_y, max_y = min(y)-1, max(y)+1
+    min_x, max_x = min(x), max(x)
+    x_margin = 0.05*(max_x - min_x)
+    min_x, max_x = min_x - x_margin, max_x + x_margin
+    min_y, max_y = min(y), max(y)
+    y_margin = 0.05*(max_y - min_y)
+    min_y, max_y = min_y - y_margin, max_y + y_margin
 
     # make plot
     plot = figure(x_range=(min_x, max_x), 

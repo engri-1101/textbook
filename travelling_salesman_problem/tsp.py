@@ -13,6 +13,10 @@ from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider
                           HoverTool, TapTool, EdgesAndLinkedNodes, NodesAndLinkedEdges,
                           ColumnDataSource, LabelSet, NodesOnly, Button, CustomJS)
 
+# ----------------
+# Create instances
+# ----------------
+
 def tsp_grid_instance(n, m, manhattan=True):
     """Return a distance matrix (manhattan or euclidian) on an n*m grid.
     
@@ -29,51 +33,35 @@ def tsp_grid_instance(n, m, manhattan=True):
             nodes.append((i,j))
             nodes_df = nodes_df.append({'name' : str((i,j)), 'x' : i, 'y' : j}, ignore_index=True)
 
-    # create distance matrix
-    d = np.zeros((len(nodes),len(nodes)))
-    for i in range(len(nodes)):
-        for j in range(len(nodes)):
-            if manhattan:
-                d[i][j] = abs(nodes[i][0] - nodes[j][0]) + abs(nodes[i][1] - nodes[j][1])
-            else:
-                d[i][j] = math.sqrt((nodes[i][0] - nodes[j][0])**2 + (nodes[i][1] - nodes[j][1])**2)
-    
+    d = distance_matrix(nodes_df, manhattan=manhattan)
+      
     return nodes_df, d
 
 
-def create_G(nodes, manhattan=True):
-    """Create the adjacency/distance matrix G for the given nodes dataframe.
-    
-    Args:
-        nodes (pd.DataFrame): node locations of the graph G.
-    """
-    d = np.zeros((len(nodes),len(nodes)))
-    for i, node_i in nodes.iterrows():
-        for j, node_j in nodes.iterrows():
-            if manhattan:
-                d[i][j] = abs(node_i['x'] - node_j['x']) + abs(node_i['y'] - node_j['y'])
-            else:
-                d[i][j] = math.sqrt((node_i['x'] - node_j['x'])**2 + (node_i['y'] - node_j['y'])**2)
-    return d
-
-
-def create_vlsi_G(nodes, manhattan=True):
-    """Create the adjacency/distance matrix G for the given VLSI nodes dataframe.
+def distance_matrix(nodes, manhattan=True, vlsi=False):
+    """Compute the distance matrix between the nodes.
     
     Args:
         nodes (pd.DataFrame): node start and end locations of the graph G.
+        manhattan (bool): return manhattan distance matrix if true. Otherwise, return euclidian.
+        vlsi (bool): true if and only if this is a vlsi etching instance.
     """
-    d = np.zeros((len(nodes),len(nodes)))
-    for i, node_i in nodes.iterrows():
-        for j, node_j in nodes.iterrows():
-            if manhattan:
-                d[i][j] = abs(node_i['x_end'] - node_j['x_start']) + abs(node_i['y_end'] - node_j['y_start'])
-            else:
-                d[i][j] = math.sqrt((node_i['x_end'] - node_j['x_start'])**2 
-                                    + (node_i['y_end'] - node_j['y_start'])**2)
-    return d
+    if not vlsi:
+        A = np.array(list(zip(nodes['x'].tolist(), nodes['y'].tolist())))
+        B = A
+    else:
+        A = np.array(list(zip(nodes['x_start'].tolist(), nodes['y_start'].tolist())))
+        B = np.array(list(zip(nodes['x_end'].tolist(), nodes['y_end'].tolist())))
+  
+    if manhattan:
+        return np.abs(A[:,0,None] - B[:,0]) + np.abs(A[:,1,None] - B[:,1])
+    else:
+        p1 = np.sum(A**2, axis=1)[:, np.newaxis]
+        p2 = np.sum(B**2, axis=1)
+        p3 = -2 * np.dot(A,B.T)
+        return np.sqrt(p1+p2+p3)
 
-
+    
 def tour_cost(G, tour):
     """Return the cost of the tour on graph G.
     
@@ -83,6 +71,10 @@ def tour_cost(G, tour):
     """
     return sum([G[tour[i],tour[i+1]] for i in range(len(tour)-1)])
 
+
+# --------------
+# TSP Heuristics
+# --------------
 
 def neighbor(G, initial, nearest):
     """Run a neighbor heuristic on G starting at the given initial node.
@@ -217,6 +209,10 @@ def furthest_insertion(G, initial=None):
     return insertion(G, initial, False)
 
 
+# -----
+# 2-OPT
+# -----
+
 def two_opt(G, tour):
     """Run 2-OPT on the initial tour until no improvement can be made.
     
@@ -229,6 +225,7 @@ def two_opt(G, tour):
         improved, swapped = two_opt_iteration(tour,G)
     return tour
 
+
 def two_opt_iteration(tour,G):
     """Do an interation of 2-OPT. Return true if improved.
     
@@ -238,22 +235,21 @@ def two_opt_iteration(tour,G):
         G (np.ndarray): adjacency matrix representing a graph. 
     """
     for i in range(len(tour)-1):
-        for j in range(len(tour)-1):
+        for j in range(i,len(tour)-1):
             u_1, u_2 = tour[i], tour[i+1]
             v_1, v_2 = tour[j], tour[j+1]
             if len(np.unique([u_1, u_2, v_1, v_2])) == 4:
                 if G[u_1,v_1] + G[u_2,v_2] < G[u_1,u_2] + G[v_1,v_2]:
-                    if i < j:
-                        swap = tour[i+1:j+1]
-                        swap.reverse()
-                        tour[i+1:j+1] = swap
-                    else:
-                        swap = tour[j+1:i+1]
-                        swap.reverse()
-                        tour[j+1:i+1] = swap
+                    swap = tour[i+1:j+1]
+                    swap.reverse()
+                    tour[i+1:j+1] = swap
                     return True, [u_1, u_2, v_1, v_2]
     return False, None
 
+
+# ----------
+# TSP Solver
+# ----------
 
 def solve_tsp(G):
     """Use OR-Tools to get an optimal tour of the graph G.
@@ -290,6 +286,72 @@ def solve_tsp(G):
     return get_routes(solution, routing, manager)[0]
 
 
+# --------
+# Plotting
+# --------
+
+def blank_plot(x, y, plot_width, plot_height):
+    """Create a blank bokeh plot."""
+    min_x, max_x, min_y, max_y = graph_range(x, y)
+    plot = figure(x_range=(min_x, max_x), 
+                  y_range=(min_y, max_y), 
+                  title="", 
+                  plot_width=plot_width,
+                  plot_height=plot_height)
+    plot.toolbar.logo = None
+    plot.toolbar_location = None
+    plot.xgrid.grid_line_color = None
+    plot.ygrid.grid_line_color = None
+    plot.xaxis.visible = False
+    plot.yaxis.visible = False 
+    plot.background_fill_color = None
+    plot.border_fill_color = None
+    plot.outline_line_color = None
+    return plot
+
+
+def graph_range(x, y):
+    """Return graph range for given points."""
+    min_x, max_x = min(x), max(x)
+    x_margin = 0.05*(max_x - min_x)
+    min_x, max_x = min_x - x_margin, max_x + x_margin
+    min_y, max_y = min(y), max(y)
+    y_margin = 0.05*(max_y - min_y)
+    min_y, max_y = min_y - y_margin, max_y + y_margin
+    return min_x, max_x, min_y, max_y
+
+
+# --------------
+# CUSTOM JS CODE
+# --------------
+
+increment = """
+if ((parseInt(n.text) + 1) < source.data['edges_y'].length) {
+    n.text = (parseInt(n.text) + 1).toString()
+}
+var iteration = parseInt(n.text)
+"""
+
+decrement = """
+if ((parseInt(n.text) - 1) >= 0) {
+    n.text = (parseInt(n.text) - 1).toString()
+}
+var iteration = parseInt(n.text)
+"""
+
+auto_complete_tour = """
+if (iteration == source.data['edges_y'].length - 2) {
+    iteration = iteration + 1
+}
+"""
+
+auto_incomplete_tour = """
+if (iteration == source.data['edges_y'].length - 2) {
+    iteration = iteration - 1
+}
+"""
+
+
 def plot_tour(nodes, G, tour):
     """Plot the tour on the nodes."""
     edges_x = []
@@ -300,36 +362,13 @@ def plot_tour(nodes, G, tour):
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
 
-    # set graph range
-    min_x, max_x = min(x), max(x)
-    x_margin = 0.05*(max_x - min_x)
-    min_x, max_x = min_x - x_margin, max_x + x_margin
-    min_y, max_y = min(y), max(y)
-    y_margin = 0.05*(max_y - min_y)
-    min_y, max_y = min_y - y_margin, max_y + y_margin
-
-    # make plot
-    plot = figure(x_range=(min_x, max_x), 
-                  y_range=(min_y, max_y), 
-                  title="", 
-                  plot_width=500,
-                  plot_height=500)
-    plot.toolbar.logo = None
-    plot.toolbar_location = None
-    plot.xgrid.grid_line_color = None
-    plot.ygrid.grid_line_color = None
-    plot.xaxis.visible = False
-    plot.yaxis.visible = False 
-    plot.background_fill_color = None
-    plot.border_fill_color = None
-    plot.outline_line_color = None
+    plot = blank_plot(x, y, 500, 500)
     
     # label
     cost = Div(text=str(round(tour_cost(G, tour),3)), width=400, align='center')
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=4)
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
 
-    
     # create layout
     grid = gridplot([[plot],[cost]], 
                     plot_width=400, plot_height=400,
@@ -339,7 +378,7 @@ def plot_tour(nodes, G, tour):
     show(grid)
     
     
-def plot_vlsi_tour(nodes, G, tour, labels=True):
+def plot_vlsi_tour(nodes, G, tour):
     """Plot the vlsi tour on the nodes."""
     edges_x = []
     edges_y = []
@@ -360,32 +399,7 @@ def plot_vlsi_tour(nodes, G, tour, labels=True):
     x_end = nodes.x_end.values.tolist()
     y_end = nodes.y_end.values.tolist()
         
-    x = x_start + x_end
-    y = y_start + y_end
-
-    # set graph range
-    min_x, max_x = min(x), max(x)
-    x_margin = 0.05*(max_x - min_x)
-    min_x, max_x = min_x - x_margin, max_x + x_margin
-    min_y, max_y = min(y), max(y)
-    y_margin = 0.05*(max_y - min_y)
-    min_y, max_y = min_y - y_margin, max_y + y_margin
-
-    # make plot
-    plot = figure(x_range=(min_x, max_x), 
-                  y_range=(min_y, max_y), 
-                  title="", 
-                  plot_width=1000,
-                  plot_height=500)
-    plot.toolbar.logo = None
-    plot.toolbar_location = None
-    plot.xgrid.grid_line_color = None
-    plot.ygrid.grid_line_color = None
-    plot.xaxis.visible = False
-    plot.yaxis.visible = False 
-    plot.background_fill_color = None
-    plot.border_fill_color = None
-    plot.outline_line_color = None
+    plot = blank_plot(x_start + x_end, y_start + y_end, 1000, 500)
     
     # label
     cost = Div(text=str(round(tour_cost(G, tour),3)), width=800, align='center')
@@ -393,16 +407,6 @@ def plot_vlsi_tour(nodes, G, tour, labels=True):
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=2, line_dash='dashed')
     plot.circle(x_start, y_start, size=5, line_color='steelblue', fill_color='steelblue')
     plot.circle(x_end, y_end, size=5, line_color='#DC0000', fill_color='#DC0000')
-    
-    source = ColumnDataSource(data=dict(x_end=x_end,
-                                        y_end=y_end,
-                                        name=list(range(len(y_start)))))
-    
-    if labels:
-        labels = LabelSet(x='x_end', y='y_end', text='name', level='glyph',
-                  x_offset=5, y_offset=0, render_mode='canvas', source=source)
-        plot.add_layout(labels)
-
     
     # create layout
     grid = gridplot([[plot],[cost]], 
@@ -472,30 +476,8 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
         edges_y.append([nodes.loc[i]['y'] for i in tour])
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
-    
-    # set graph range
-    min_x, max_x = min(x), max(x)
-    x_margin = 0.05*(max_x - min_x)
-    min_x, max_x = min_x - x_margin, max_x + x_margin
-    min_y, max_y = min(y), max(y)
-    y_margin = 0.05*(max_y - min_y)
-    min_y, max_y = min_y - y_margin, max_y + y_margin
 
-    # make plot
-    plot = figure(x_range=(min_x, max_x), 
-                  y_range=(min_y, max_y), 
-                  title="", 
-                  plot_width=500,
-                  plot_height=500)
-    plot.toolbar.logo = None
-    plot.toolbar_location = None
-    plot.xgrid.grid_line_color = None
-    plot.ygrid.grid_line_color = None
-    plot.xaxis.visible = False
-    plot.yaxis.visible = False 
-    plot.background_fill_color = None
-    plot.border_fill_color = None
-    plot.outline_line_color = None
+    plot = blank_plot(x, y, 500, 500)
     
     # label
     cost = Div(text=str(costs[0]), width=350, align='center')
@@ -509,39 +491,11 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     tour = ColumnDataSource(data={'edges_x': edges_x[0],
                                   'edges_y' : edges_y[0]})
     plot.line(x='edges_x', y='edges_y', line_color='black', line_width=4, source=tour)
-    
-    # nodes
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
     
     # --------------
     # CUSTOM JS CODE
     # --------------
-    
-    increment = """
-    if ((parseInt(n.text) + 1) < source.data['edges_y'].length) {
-        n.text = (parseInt(n.text) + 1).toString()
-    }
-    var iteration = parseInt(n.text)
-    """
-    
-    decrement = """
-    if ((parseInt(n.text) - 1) >= 0) {
-        n.text = (parseInt(n.text) - 1).toString()
-    }
-    var iteration = parseInt(n.text)
-    """
-    
-    auto_complete_tour = """
-    if (iteration == source.data['edges_y'].length - 2) {
-        iteration = iteration + 1
-    }
-    """
-    
-    auto_incomplete_tour = """
-    if (iteration == source.data['edges_y'].length - 2) {
-        iteration = iteration - 1
-    }
-    """
       
     update = """
     cost.text = source.data['costs'][iteration].toFixed(3)
@@ -631,29 +585,8 @@ def plot_two_opt(nodes, G, tour):
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
     
-    # set graph range
-    min_x, max_x = min(x), max(x)
-    x_margin = 0.05*(max_x - min_x)
-    min_x, max_x = min_x - x_margin, max_x + x_margin
-    min_y, max_y = min(y), max(y)
-    y_margin = 0.05*(max_y - min_y)
-    min_y, max_y = min_y - y_margin, max_y + y_margin
 
-    # make plot
-    plot = figure(x_range=(min_x, max_x), 
-                  y_range=(min_y, max_y), 
-                  title="", 
-                  plot_width=500,
-                  plot_height=500)
-    plot.toolbar.logo = None
-    plot.toolbar_location = None
-    plot.xgrid.grid_line_color = None
-    plot.ygrid.grid_line_color = None
-    plot.xaxis.visible = False
-    plot.yaxis.visible = False 
-    plot.background_fill_color = None
-    plot.border_fill_color = None
-    plot.outline_line_color = None
+    plot = blank_plot(x, y, 500, 500)
     
     # label
     cost = Div(text=str(costs[0]), width=350, align='center')
@@ -685,21 +618,7 @@ def plot_two_opt(nodes, G, tour):
     # --------------
     # CUSTOM JS CODE
     # --------------
-    
-    increment = """
-    if ((parseInt(n.text) + 1) < source.data['edges_y'].length) {
-        n.text = (parseInt(n.text) + 1).toString()
-    }
-    var iteration = parseInt(n.text)
-    """
-    
-    decrement = """
-    if ((parseInt(n.text) - 1) >= 0) {
-        n.text = (parseInt(n.text) - 1).toString()
-    }
-    var iteration = parseInt(n.text)
-    """
-     
+      
     update = """
     cost.text = source.data['costs'][iteration].toFixed(3)
     

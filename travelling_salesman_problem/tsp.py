@@ -290,7 +290,7 @@ def solve_tsp(G):
 # Plotting
 # --------
 
-def blank_plot(x, y, plot_width, plot_height):
+def blank_plot(x, y, plot_width, plot_height, show_us=False):
     """Create a blank bokeh plot."""
     min_x, max_x, min_y, max_y = graph_range(x, y)
     plot = figure(x_range=(min_x, max_x), 
@@ -307,18 +307,28 @@ def blank_plot(x, y, plot_width, plot_height):
     plot.background_fill_color = None
     plot.border_fill_color = None
     plot.outline_line_color = None
+    if show_us:
+        us_outline(plot)
     return plot
 
 
 def graph_range(x, y):
     """Return graph range for given points."""
     min_x, max_x = min(x), max(x)
-    x_margin = 0.05*(max_x - min_x)
+    x_margin = 0.085*(max_x - min_x)
     min_x, max_x = min_x - x_margin, max_x + x_margin
     min_y, max_y = min(y), max(y)
-    y_margin = 0.05*(max_y - min_y)
+    y_margin = 0.085*(max_y - min_y)
     min_y, max_y = min_y - y_margin, max_y + y_margin
     return min_x, max_x, min_y, max_y
+
+
+def us_outline(plot):
+    """Add an outline of the US to the plot."""
+    plot.image_url(url=['images/us.png'],x=plot.x_range.start-20,
+                                         y=plot.y_range.end+5,
+                                         w=plot.x_range.end - plot.x_range.start,
+                                         h=plot.y_range.end - plot.y_range.start)
 
 
 # --------------
@@ -352,7 +362,7 @@ if (iteration == source.data['edges_y'].length - 2) {
 """
 
 
-def plot_tour(nodes, G, tour):
+def plot_tour(nodes, G, tour, width=400, height=400, show_us=False):
     """Plot the tour on the nodes."""
     edges_x = []
     edges_y = []
@@ -362,23 +372,23 @@ def plot_tour(nodes, G, tour):
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
 
-    plot = blank_plot(x, y, 500, 500)
+    plot = blank_plot(x, y, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(round(tour_cost(G, tour),3)), width=400, align='center')
+    cost = Div(text=str(round(tour_cost(G, tour),3)), width=width, align='center')
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=4)
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
 
     # create layout
     grid = gridplot([[plot],[cost]], 
-                    plot_width=400, plot_height=400,
+                    plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
     
     show(grid)
     
     
-def plot_vlsi_tour(nodes, G, tour):
+def plot_vlsi_tour(nodes, G, tour, width=800, height=400, show_us=False):
     """Plot the vlsi tour on the nodes."""
     edges_x = []
     edges_y = []
@@ -399,10 +409,10 @@ def plot_vlsi_tour(nodes, G, tour):
     x_end = nodes.x_end.values.tolist()
     y_end = nodes.y_end.values.tolist()
         
-    plot = blank_plot(x_start + x_end, y_start + y_end, 1000, 500)
+    plot = blank_plot(x_start + x_end, y_start + y_end, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(round(tour_cost(G, tour),3)), width=800, align='center')
+    cost = Div(text=str(round(tour_cost(G, tour),3)), width=width, align='center')
     plot.multi_line(xs=lines_x, ys=lines_y, line_color='black', line_width=2)
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=2, line_dash='dashed')
     plot.circle(x_start, y_start, size=5, line_color='steelblue', fill_color='steelblue')
@@ -410,14 +420,14 @@ def plot_vlsi_tour(nodes, G, tour):
     
     # create layout
     grid = gridplot([[plot],[cost]], 
-                    plot_width=800, plot_height=400,
+                    plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
     
     show(grid)
     
 
-def plot_tsp_heuristic(nodes, G, heuristic, initial):
+def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show_us=False):
     """Plot the heuristic executed on graph G.
     
     Args:
@@ -477,12 +487,12 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
 
-    plot = blank_plot(x, y, 500, 500)
+    plot = blank_plot(x, y, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(costs[0]), width=350, align='center')
-    done = Div(text='', width=300, align='center')  
-    n = Div(text='0', width=400, align='center')
+    cost = Div(text=str(costs[0]), width=int(width/2), align='center')
+    done = Div(text='', width=int(width/2), align='center')  
+    n = Div(text='0', width=width, align='center')
         
     # tour and edges
     source = ColumnDataSource(data={'edges_x': edges_x,
@@ -524,9 +534,9 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     
     # create layout
     grid = gridplot([[plot],
-                     [row(prev_button, next_button, max_width=400, sizing_mode='stretch_both')],
+                     [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
                      [row(cost,done)]], 
-                    plot_width=400, plot_height=400,
+                    plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
     
@@ -535,7 +545,7 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     return tour_list
     
     
-def plot_two_opt(nodes, G, tour):
+def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
     """Plot the execution of two-opt on the given tour.
     
     Args:
@@ -586,12 +596,12 @@ def plot_two_opt(nodes, G, tour):
     y = nodes.y.values.tolist()
     
 
-    plot = blank_plot(x, y, 500, 500)
+    plot = blank_plot(x, y, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(costs[0]), width=350, align='center')
-    done = Div(text='', width=300, align='center')  
-    n = Div(text='0', width=400, align='center')
+    cost = Div(text=str(costs[0]), width=int(width/2), align='center')
+    done = Div(text='', width=int(width/2), align='center')  
+    n = Div(text='0', width=width, align='center')
         
     # tour and edges
     source = ColumnDataSource(data={'edges_x': edges_x,
@@ -658,9 +668,9 @@ def plot_two_opt(nodes, G, tour):
     # TODO: fix the prev button
     # create layout
     grid = gridplot([[plot],
-                     [row(next_button, max_width=400, sizing_mode='stretch_both')],
+                     [row(next_button, max_width=width, sizing_mode='stretch_both')],
                      [row(cost,done)]], 
-                    plot_width=400, plot_height=400,
+                    plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
     

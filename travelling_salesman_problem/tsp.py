@@ -217,6 +217,44 @@ def furthest_insertion(G, initial=None):
     return insertion(G, initial, False)
 
 
+def two_opt(G, tour):
+    """Run 2-OPT on the initial tour until no improvement can be made.
+    
+    Args:
+        G (np.ndarray): adjacency matrix representing a graph.
+        tour (List[int]): intial tour to be improved.
+    """ 
+    improved = two_opt_iteration(tour,G)
+    while improved:
+        improved = two_opt_iteration(tour,G)
+    return tour
+
+def two_opt_iteration(tour,G):
+    """Do an interation of 2-OPT. Return true if improved.
+    
+    Args:
+        edges (List[List[int]]): List of edges in the current tour.
+        tour_matrix (np.ndarray): Adjacency matrix representing the tour.
+        G (np.ndarray): adjacency matrix representing a graph. 
+    """
+    for i in range(len(tour)-1):
+        for j in range(len(tour)-1):
+            u_1, u_2 = tour[i], tour[i+1]
+            v_1, v_2 = tour[j], tour[j+1]
+            if len(np.unique([u_1, u_2, v_1, v_2])) == 4:
+                if G[u_1,v_1] + G[u_2,v_2] < G[u_1,u_2] + G[v_1,v_2]:
+                    if i < j:
+                        swap = tour[i+1:j+1]
+                        swap.reverse()
+                        tour[i+1:j+1] = swap
+                    else:
+                        swap = tour[j+1:i+1]
+                        swap.reverse()
+                        tour[j+1:i+1] = swap
+                    return True
+    return False
+
+
 def solve_tsp(G):
     """Use OR-Tools to get an optimal tour of the graph G.
     

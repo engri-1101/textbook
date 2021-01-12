@@ -375,7 +375,7 @@ def plot_tour(nodes, G, tour, width=400, height=400, show_us=False):
     plot = blank_plot(x, y, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(round(tour_cost(G, tour),3)), width=width, align='center')
+    cost = Div(text=str(round(tour_cost(G, tour),1)), width=width, align='center')
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=4)
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
 
@@ -412,7 +412,7 @@ def plot_vlsi_tour(nodes, G, tour, width=800, height=400, show_us=False):
     plot = blank_plot(x_start + x_end, y_start + y_end, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(round(tour_cost(G, tour),3)), width=width, align='center')
+    cost = Div(text=str(round(tour_cost(G, tour),1)), width=width, align='center')
     plot.multi_line(xs=lines_x, ys=lines_y, line_color='black', line_width=2)
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=2, line_dash='dashed')
     plot.circle(x_start, y_start, size=5, line_color='steelblue', fill_color='steelblue')
@@ -420,6 +420,106 @@ def plot_vlsi_tour(nodes, G, tour, width=800, height=400, show_us=False):
     
     # create layout
     grid = gridplot([[plot],[cost]], 
+                    plot_width=width, plot_height=height,
+                    toolbar_location = None,
+                    toolbar_options={'logo': None})
+    
+    show(grid)
+    
+
+def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
+    """Allow the user to construct a tour.
+    
+    Args:
+        nodes (pd.DataFrame): node locations of the graph G.
+        G (np.ndarray): adjacency matrix of the graph G.
+    """  
+    # node data
+    x = nodes.x.values.tolist()
+    y = nodes.y.values.tolist()
+
+    plot = blank_plot(x, y, width, height, show_us=show_us)
+    
+    # label
+    cost = Div(text=str(0.0), width=int(width/2), align='center') 
+    done = Div(text='', width=int(width/2), align='center')  
+        
+    # tour and edges
+    source = ColumnDataSource(data={'G': G.tolist()})
+    tour = ColumnDataSource(data={'edges_x': [],
+                                  'edges_y' : [],
+                                  'indices' : []})
+    plot.line(x='edges_x', y='edges_y', line_color='black', line_width=4, source=tour)
+    pts = plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue', nonselection_fill_alpha=1)
+    
+    # --------------
+    # CUSTOM JS CODE
+    # --------------
+      
+    # TODO: Fix auto-complete tour bug
+    on_click = """
+    var node = cb_data.index.indices[0]
+    
+    if (node.toString() != '') {
+        if (!(tour.data['indices'].includes(node))) {
+            if (tour.data['indices'].length > 0) { 
+                var prev = tour.data['indices'][tour.data['indices'].length - 1]
+            } else {
+                var prev = -1
+            }
+
+            var tmp_edges_x = tour.data['edges_x']
+            var tmp_edges_y = tour.data['edges_y']
+            var tmp_indices = tour.data['indices']
+
+            tmp_edges_x.push(pts.data['x'][node])
+            tmp_edges_y.push(pts.data['y'][node])
+            tmp_indices.push(node)
+
+            tour.data['edges_x'] = tmp_edges_x
+            tour.data['edges_y'] = tmp_edges_y
+            tour.data['indices'] = tmp_indices
+
+            if (prev == -1) {
+                cost.text = '0'
+            } else {
+                var before = parseInt(cost.text)
+                var increase = source.data['G'][prev][node]
+                cost.text = (before + increase).toFixed(1)   
+            }
+            
+            if (tour.data['indices'].length == source.data['G'].length) {
+                var tmp_edges_x = tour.data['edges_x']
+                var tmp_edges_y = tour.data['edges_y']
+                var tmp_indices = tour.data['indices']
+
+                tmp_edges_x.push(pts.data['x'][tmp_edges_x[0]])
+                tmp_edges_y.push(pts.data['y'][tmp_edges_y[0]])
+                tmp_indices.push(tmp_indices[0])
+
+                tour.data['edges_x'] = tmp_edges_x
+                tour.data['edges_y'] = tmp_edges_y
+                tour.data['indices'] = tmp_indices
+
+                var before = parseInt(cost.text)
+                var increase = source.data['G'][node][tmp_indices[0]]
+                cost.text = (before + increase).toFixed(1) 
+
+                done.text = 'done.'
+            }    
+        }
+    }
+    tour.change.emit()
+    """
+    
+    plot.add_tools(HoverTool(tooltips=None,
+                             callback=CustomJS(args=dict(source=source, tour=tour, pts=pts.data_source,
+                                                       cost=cost, done=done), code=on_click),
+                             renderers=[pts]))
+    
+    # create layout
+    grid = gridplot([[plot],
+                     [row(cost,done)]], 
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
@@ -490,7 +590,7 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show
     plot = blank_plot(x, y, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(costs[0]), width=int(width/2), align='center')
+    cost = Div(text=str(round(costs[0],1)), width=int(width/2), align='center')
     done = Div(text='', width=int(width/2), align='center')  
     n = Div(text='0', width=width, align='center')
         
@@ -508,7 +608,7 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show
     # --------------
       
     update = """
-    cost.text = source.data['costs'][iteration].toFixed(3)
+    cost.text = source.data['costs'][iteration].toFixed(1)
     
     if (iteration == source.data['edges_y'].length - 1) {
         done.text = "done."
@@ -599,7 +699,7 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
     plot = blank_plot(x, y, width, height, show_us=show_us)
     
     # label
-    cost = Div(text=str(costs[0]), width=int(width/2), align='center')
+    cost = Div(text=str(round(costs[0],1)), width=int(width/2), align='center')
     done = Div(text='', width=int(width/2), align='center')  
     n = Div(text='0', width=width, align='center')
         

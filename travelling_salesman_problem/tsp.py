@@ -455,8 +455,7 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
     # --------------
     # CUSTOM JS CODE
     # --------------
-      
-    # TODO: Fix auto-complete tour bug
+     
     on_click = """
     var node = cb_data.index.indices[0]
     
@@ -481,9 +480,9 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
             tour.data['indices'] = tmp_indices
 
             if (prev == -1) {
-                cost.text = '0'
+                cost.text = '0.0'
             } else {
-                var before = parseInt(cost.text)
+                var before = parseFloat(cost.text)
                 var increase = source.data['G'][prev][node]
                 cost.text = (before + increase).toFixed(1)   
             }
@@ -493,22 +492,21 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
                 var tmp_edges_y = tour.data['edges_y']
                 var tmp_indices = tour.data['indices']
 
-                tmp_edges_x.push(pts.data['x'][tmp_edges_x[0]])
-                tmp_edges_y.push(pts.data['y'][tmp_edges_y[0]])
+                tmp_edges_x.push(tmp_edges_x[0])
+                tmp_edges_y.push(tmp_edges_y[0])
                 tmp_indices.push(tmp_indices[0])
 
                 tour.data['edges_x'] = tmp_edges_x
                 tour.data['edges_y'] = tmp_edges_y
                 tour.data['indices'] = tmp_indices
 
-                var before = parseInt(cost.text)
+                var before = parseFloat(cost.text)
                 var increase = source.data['G'][node][tmp_indices[0]]
                 cost.text = (before + increase).toFixed(1) 
-
-                done.text = 'done.'
             }    
         }
     }
+    done.text = '['.concat(tour.data['indices'].join(',')).concat(']')
     tour.change.emit()
     """
     
@@ -730,7 +728,7 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
     # --------------
       
     update = """
-    cost.text = source.data['costs'][iteration].toFixed(3)
+    cost.text = source.data['costs'][iteration].toFixed(1)
     
     if (iteration == source.data['edges_y'].length - 1) {
         done.text = "done."

@@ -760,13 +760,12 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
                                                done=done, n=n), code=next_btn_code))
     prev_button = Button(label="Previous", button_type="success", width_policy='fit', sizing_mode='scale_width')
     prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
-                                               waps_source=swaps_source, swaps=swaps,
+                                               swaps_source=swaps_source, swaps=swaps,
                                                done=done, n=n), code=prev_btn_code))
-    
-    # TODO: fix the prev button
+   
     # create layout
     grid = gridplot([[plot],
-                     [row(next_button, max_width=width, sizing_mode='stretch_both')],
+                     [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
                      [row(cost,done)]], 
                     plot_width=width, plot_height=height,
                     toolbar_location = None,

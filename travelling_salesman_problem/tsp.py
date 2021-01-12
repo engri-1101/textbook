@@ -224,9 +224,9 @@ def two_opt(G, tour):
         G (np.ndarray): adjacency matrix representing a graph.
         tour (List[int]): intial tour to be improved.
     """ 
-    improved = two_opt_iteration(tour,G)
+    improved, swapped = two_opt_iteration(tour,G)
     while improved:
-        improved = two_opt_iteration(tour,G)
+        improved, swapped = two_opt_iteration(tour,G)
     return tour
 
 def two_opt_iteration(tour,G):
@@ -251,8 +251,8 @@ def two_opt_iteration(tour,G):
                         swap = tour[j+1:i+1]
                         swap.reverse()
                         tour[j+1:i+1] = swap
-                    return True
-    return False
+                    return True, [u_1, u_2, v_1, v_2]
+    return False, None
 
 
 def solve_tsp(G):
@@ -411,7 +411,7 @@ def plot_vlsi_tour(nodes, G, tour, labels=True):
                     toolbar_options={'logo': None})
     
     show(grid)
-
+    
 
 def plot_tsp_heuristic(nodes, G, heuristic, initial):
     """Plot the heuristic executed on graph G.
@@ -461,6 +461,8 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
     
     tours.append(list(tour))
     costs.append(tour_cost(G, tour))
+    
+    tour_list = list(tour)
     
     # data for every tour and nodes
     edges_x = []
@@ -575,3 +577,174 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial):
                     toolbar_options={'logo': None})
     
     show(grid)
+    
+    return tour_list
+    
+    
+def plot_two_opt(nodes, G, tour):
+    """Plot the execution of two-opt on the given tour.
+    
+    Args:
+        nodes (pd.DataFrame): node locations of the graph G.
+        G (np.ndarray): adjacency matrix of the graph G.
+        tour (List[int]): inital feasible tour.
+    """    
+    # maintain at every iteration
+    tours = []
+    swaps = []
+    costs = []
+    
+    # run 2-OPT
+    tours.append(list(tour))
+    costs.append(tour_cost(G, tour))
+    improved, swapped = two_opt_iteration(tour,G)
+    if improved:
+        swaps.append([] if swapped is None else list(swapped))
+    while improved:
+        tours.append(list(tour))
+        costs.append(tour_cost(G, tour))
+        improved, swapped = two_opt_iteration(tour,G)
+        if improved:
+            swaps.append([] if swapped is None else list(swapped))
+     
+    tour_list = list(tour)
+    
+    # data for every tour and nodes
+    edges_x = []
+    edges_y = []
+    swaps_before_x = []
+    swaps_before_y = []
+    swaps_after_x = []
+    swaps_after_y = []
+    for tour in tours:      
+        edges_x.append([nodes.loc[i]['x'] for i in tour])
+        edges_y.append([nodes.loc[i]['y'] for i in tour])
+    for swap in swaps:
+        (u1x, u1y) = nodes.loc[swap[0]][['x','y']]
+        (u2x, u2y) = nodes.loc[swap[1]][['x','y']]
+        (v1x, v1y) = nodes.loc[swap[2]][['x','y']]
+        (v2x, v2y) = nodes.loc[swap[3]][['x','y']]
+        swaps_before_x.append([[u1x, u2x],[v1x, v2x]])
+        swaps_before_y.append([[u1y, u2y],[v1y, v2y]])   
+        swaps_after_x.append([[u1x, v1x],[u2x, v2x]])
+        swaps_after_y.append([[u1y, v1y],[u2y, v2y]])  
+    x = nodes.x.values.tolist()
+    y = nodes.y.values.tolist()
+    
+    # set graph range
+    min_x, max_x = min(x), max(x)
+    x_margin = 0.05*(max_x - min_x)
+    min_x, max_x = min_x - x_margin, max_x + x_margin
+    min_y, max_y = min(y), max(y)
+    y_margin = 0.05*(max_y - min_y)
+    min_y, max_y = min_y - y_margin, max_y + y_margin
+
+    # make plot
+    plot = figure(x_range=(min_x, max_x), 
+                  y_range=(min_y, max_y), 
+                  title="", 
+                  plot_width=500,
+                  plot_height=500)
+    plot.toolbar.logo = None
+    plot.toolbar_location = None
+    plot.xgrid.grid_line_color = None
+    plot.ygrid.grid_line_color = None
+    plot.xaxis.visible = False
+    plot.yaxis.visible = False 
+    plot.background_fill_color = None
+    plot.border_fill_color = None
+    plot.outline_line_color = None
+    
+    # label
+    cost = Div(text=str(costs[0]), width=350, align='center')
+    done = Div(text='', width=300, align='center')  
+    n = Div(text='0', width=400, align='center')
+        
+    # tour and edges
+    source = ColumnDataSource(data={'edges_x': edges_x,
+                                    'edges_y': edges_y,
+                                    'costs': costs})
+    tour = ColumnDataSource(data={'edges_x': edges_x[0],
+                                  'edges_y' : edges_y[0]})
+    swaps_source = ColumnDataSource(data={'swaps_before_x' : swaps_before_x,
+                                          'swaps_before_y' : swaps_before_y,
+                                          'swaps_after_x' : swaps_after_x,
+                                          'swaps_after_y' : swaps_after_y})
+    if len(swaps_before_x) > 0:
+        swaps = ColumnDataSource(data={'swaps_before_x' : swaps_before_x[0],
+                                       'swaps_before_y' : swaps_before_y[0],
+                                       'swaps_after_x' : swaps_after_x[0],
+                                       'swaps_after_y' : swaps_after_y[0]})
+    
+    plot.line(x='edges_x', y='edges_y', line_color='black', line_width=4, source=tour)
+    if len(swaps_before_x) > 0:
+        plot.multi_line(xs='swaps_before_x', ys='swaps_before_y', line_color='red', line_width=4, source=swaps)
+        plot.multi_line(xs='swaps_after_x', ys='swaps_after_y', line_color='#90D7F6', line_width=4, source=swaps)
+    plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
+    
+    # --------------
+    # CUSTOM JS CODE
+    # --------------
+    
+    increment = """
+    if ((parseInt(n.text) + 1) < source.data['edges_y'].length) {
+        n.text = (parseInt(n.text) + 1).toString()
+    }
+    var iteration = parseInt(n.text)
+    """
+    
+    decrement = """
+    if ((parseInt(n.text) - 1) >= 0) {
+        n.text = (parseInt(n.text) - 1).toString()
+    }
+    var iteration = parseInt(n.text)
+    """
+     
+    update = """
+    cost.text = source.data['costs'][iteration].toFixed(3)
+    
+    if (iteration == source.data['edges_y'].length - 1) {
+        done.text = "done."
+        swaps.data['swaps_before_x'] = [[]]
+        swaps.data['swaps_before_y'] = [[]]
+        swaps.data['swaps_after_x'] = [[]]
+        swaps.data['swaps_after_y'] = [[]]
+    } else {
+        done.text = ""
+        swaps.data['swaps_before_x'] = swaps_source.data['swaps_before_x'][iteration]
+        swaps.data['swaps_before_y'] = swaps_source.data['swaps_before_y'][iteration]
+        swaps.data['swaps_after_x'] = swaps_source.data['swaps_after_x'][iteration]
+        swaps.data['swaps_after_y'] = swaps_source.data['swaps_after_y'][iteration]
+    }
+
+    tour.data['edges_x'] = source.data['edges_x'][iteration]
+    tour.data['edges_y'] = source.data['edges_y'][iteration]
+    tour.change.emit()
+    swaps.change.emit()
+    """
+       
+    next_btn_code = increment + update
+    prev_btn_code = decrement + update
+    
+    # add buttons
+    next_button = Button(label="Next", button_type="success", width_policy='fit', sizing_mode='scale_width')
+    next_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+                                               swaps_source=swaps_source, swaps=swaps,
+                                               done=done, n=n), code=next_btn_code))
+    prev_button = Button(label="Previous", button_type="success", width_policy='fit', sizing_mode='scale_width')
+    prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+                                               waps_source=swaps_source, swaps=swaps,
+                                               done=done, n=n), code=prev_btn_code))
+    
+    # TODO: fix the prev button
+    # create layout
+    grid = gridplot([[plot],
+                     [row(next_button, max_width=400, sizing_mode='stretch_both')],
+                     [row(cost,done)]], 
+                    plot_width=400, plot_height=400,
+                    toolbar_location = None,
+                    toolbar_options={'logo': None})
+    
+    show(grid)
+    
+    return tour_list

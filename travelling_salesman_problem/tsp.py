@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import pandas as pd
+import pickle
 from ortools.constraint_solver import pywrapcp
 from random import randrange
 from bokeh.plotting import figure, show
@@ -38,15 +39,15 @@ def tsp_grid_instance(n, m, manhattan=True):
     return nodes_df, d
 
 
-def distance_matrix(nodes, manhattan=True, vlsi=False):
+def distance_matrix(nodes, manhattan=True, etching=False):
     """Compute the distance matrix between the nodes.
     
     Args:
         nodes (pd.DataFrame): node start and end locations of the graph G.
         manhattan (bool): return manhattan distance matrix if true. Otherwise, return euclidian.
-        vlsi (bool): true if and only if this is a vlsi etching instance.
+        etching (bool): true if and only if this is a pcb etching instance.
     """
-    if not vlsi:
+    if not etching:
         A = np.array(list(zip(nodes['x'].tolist(), nodes['y'].tolist())))
         B = A
     else:
@@ -252,7 +253,7 @@ def two_opt_iteration(tour,G):
 # ----------
 
 def solve_tsp(G):
-    """Use OR-Tools to get an optimal tour of the graph G.
+    """Use OR-Tools to get a tour of the graph G.
     
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
@@ -285,6 +286,17 @@ def solve_tsp(G):
     solution = routing.Solve()
     return get_routes(solution, routing, manager)[0]
 
+
+# ---------------------
+# Optimal TSP Solutions
+# ---------------------
+
+def optimal_tour(name):
+    """Return an optimal tour for some instance name."""
+    with open('data/optimal_tours.pickle', 'rb') as f:
+        optimal_tours = pickle.load(f)
+    return optimal_tours[name]
+   
 
 # --------
 # Plotting
@@ -388,8 +400,8 @@ def plot_tour(nodes, G, tour, width=400, height=400, show_us=False):
     show(grid)
     
     
-def plot_vlsi_tour(nodes, G, tour, width=800, height=400, show_us=False):
-    """Plot the vlsi tour on the nodes."""
+def plot_etching_tour(nodes, G, tour, width=800, height=400, show_us=False):
+    """Plot the etching tour on the nodes."""
     edges_x = []
     edges_y = []
     for i in tour:

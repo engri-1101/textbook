@@ -37,9 +37,11 @@ make_student_version diet
 make_student_version game_theory
 make_student_version min-cost_flow
 make_student_version shortest_path
+make_student_version travelling_salesman_problem
 
 zip transportation
 zip tsp_integer_programming
+zip travelling_salesman_problem
 zip maximum_flow
 zip branch_and_bound
 zip baseball_elimination

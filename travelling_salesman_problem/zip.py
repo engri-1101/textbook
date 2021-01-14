@@ -7,6 +7,13 @@ def write_dir(zipObj, path):
     for file in [y for x in os.walk(path) for y in glob.glob(os.path.join(x[0],'*'))]:
         zipObj.write(file)
 
+# Lab 
+with ZipFile('travelling_salesman_problem_lab.zip', 'w') as zipObj:
+    zipObj.write('travelling_salesman_problem_lab.ipynb')
+    zipObj.write('tsp.py')
+    write_dir(zipObj, 'data')
+    write_dir(zipObj, 'images')
+    zipObj.close()        
 
 # Demo 
 with ZipFile('radio_telescope_demo.zip', 'w') as zipObj:

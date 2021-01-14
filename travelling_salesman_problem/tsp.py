@@ -450,16 +450,20 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
                                   'edges_y' : [],
                                   'indices' : []})
     plot.line(x='edges_x', y='edges_y', line_color='black', line_width=4, source=tour)
-    pts = plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue', nonselection_fill_alpha=1)
+    pts = plot.circle(x, y, size=10, line_color='steelblue', fill_color='steelblue', nonselection_fill_alpha=1)
     
     # --------------
     # CUSTOM JS CODE
     # --------------
+    
+    on_hover = """
+    source.data['last_index'] = cb_data.index.indices[0]   
+    """
      
     on_click = """
-    var node = cb_data.index.indices[0]
+    var node = source.data['last_index']
     
-    if (node.toString() != '') {
+    if (node.toString() != -1) {
         if (!(tour.data['indices'].includes(node))) {
             if (tour.data['indices'].length > 0) { 
                 var prev = tour.data['indices'][tour.data['indices'].length - 1]
@@ -511,9 +515,11 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
     """
     
     plot.add_tools(HoverTool(tooltips=None,
-                             callback=CustomJS(args=dict(source=source, tour=tour, pts=pts.data_source,
+                             callback=CustomJS(args=dict(source=source), code=on_hover),
+                             renderers=[pts]),
+                   TapTool(callback=CustomJS(args=dict(source=source, tour=tour, pts=pts.data_source,
                                                        cost=cost, done=done), code=on_click),
-                             renderers=[pts]))
+                           renderers=[pts]))
     
     # create layout
     grid = gridplot([[plot],

@@ -1,0 +1,21 @@
+name: gerry
+channels:
+  - conda-forge
+  - http://conda.anaconda.org/gurobi
+  - defaults
+dependencies:
+  - python=3.7
+  - pandas
+  - numpy
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - gurobi
+  - seaborn
+  - geopandas
+  - shapely
+  - geopy
+  - nb_conda
+  - ipykernel
+  - networkx
+  - pysal

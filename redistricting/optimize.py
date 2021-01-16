@@ -1,4 +1,3 @@
-from gurobipy import *
 import numpy as np
 from scipy.stats import t
 from ortools.linear_solver import pywraplp as OR
@@ -23,7 +22,7 @@ def make_bdm(leaf_nodes, n_blocks=None):
 
 
 def make_master(k, block_district_matrix, costs,
-                relax=False, opt_type='abs_val', solver='OR-Tools'):
+                relax=False, opt_type='abs_val', solver='CBC'):
     """
     Constructs the master selection problem.
     Args:
@@ -38,73 +37,45 @@ def make_master(k, block_district_matrix, costs,
     """
     n_blocks, n_columns = block_district_matrix.shape
     
-    if solver == 'OR-Tools':
-        # define the model
+    # define the model
+    if solver=='CBC':
         m = OR.Solver('master', OR.Solver.CBC_MIXED_INTEGER_PROGRAMMING)
-
-        # decision variables
-        x = {} # x_i is 1 iff district i is used, 0 otherwise
-        D = range(n_columns)
-        for j in D:
-            if relax:
-                x[j] = m.NumVar(0, 1, name="x(%s)" % j)
-            else:
-                x[j] = m.IntVar(0, 1, name="x(%s)" % j)
-
-        # objective function
-        if opt_type == 'minimize':
-            m.Minimize(sum(costs[j] * x[j] for j in D))
-        elif opt_type == 'maximize':
-            m.Maximize(sum(costs[j] * x[j] for j in D))
-        elif opt_type == 'abs_val':
-            w = m.NumVar(-k, k, name="w")
-            m.Add(sum(costs[j] * x[j] for j in D) <= w, name='absval_pos')
-            m.Add(sum(costs[j] * x[j] for j in D) >= -w, name='absval_neg')
-            m.Minimize(w)
-        else:
-            raise ValueError('Invalid optimization type')
-
-        # subject to: each census tract appears in exactly one district
-        for i in range(n_blocks):    
-            m.Add(sum(x[j] * block_district_matrix[i, j] for j in D) == 1)
-
-        # subject to: k total districts
-        m.Add(sum(x[j] for j in D) == k)
-
-        return m,x
-    elif solver == 'gurobi':
-        master = Model("master LP")
-
-        x = {}
-        D = range(n_columns)
-        vtype = GRB.CONTINUOUS if relax else GRB.BINARY
-        for j in D:
-            x[j] = master.addVar(vtype=vtype, name="x(%s)" % j)
-
-        master.addConstrs((quicksum(x[j] * block_district_matrix[i, j] for j in D) == 1
-                           for i in range(n_blocks)), name='exactlyOne')
-
-        master.addConstr(quicksum(x[j] for j in D) == k,
-                         name="totalDistricts")
-
-        if opt_type == 'minimize':
-            master.setObjective(quicksum(costs[j] * x[j] for j in D), GRB.MINIMIZE)
-        elif opt_type == 'maximize':
-            master.setObjective(quicksum(costs[j] * x[j] for j in D), GRB.MAXIMIZE)
-        elif opt_type == 'abs_val':
-            w = master.addVar(name="w", lb=-k, ub=k)
-            master.addConstr(quicksum(costs[j] * x[j] for j in D) <= w,
-                             name='absval_pos')
-            master.addConstr(quicksum(costs[j] * x[j] for j in D) >= -w,
-                             name='absval_neg')
-
-            master.setObjective(w, GRB.MINIMIZE)
-        else:
-            raise ValueError('Invalid optimization type')
-
-        return master, x
+    elif solver=='gurobi':
+        m = OR.Solver('master', OR.Solver.GUROBI_MIXED_INTEGER_PROGRAMMING)
     else:
         raise ValueError('Invalid solver')
+
+    # decision variables
+    x = {} # x_i is 1 iff district i is used, 0 otherwise
+    D = range(n_columns)
+    for j in D:
+        if relax:
+            x[j] = m.NumVar(0, 1, name="x(%s)" % j)
+        else:
+            x[j] = m.IntVar(0, 1, name="x(%s)" % j)
+
+    # objective function
+    if opt_type == 'minimize':
+        m.Minimize(sum(costs[j] * x[j] for j in D))
+    elif opt_type == 'maximize':
+        m.Maximize(sum(costs[j] * x[j] for j in D))
+    elif opt_type == 'abs_val':
+        w = m.NumVar(-k, k, name="w")
+        m.Add(sum(costs[j] * x[j] for j in D) <= w, name='absval_pos')
+        m.Add(sum(costs[j] * x[j] for j in D) >= -w, name='absval_neg')
+        m.Minimize(w)
+    else:
+        raise ValueError('Invalid optimization type')
+
+    # subject to: each census tract appears in exactly one district
+    for i in range(n_blocks):    
+        m.Add(sum(x[j] * block_district_matrix[i, j] for j in D) == 1)
+
+    # subject to: k total districts
+    m.Add(sum(x[j] for j in D) == k)
+
+    return m,x
+
 
 def efficiency_gap_coefficients(district_df, state_vote_share):
     """

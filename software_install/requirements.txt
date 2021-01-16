@@ -29,3 +29,5 @@ tifffile==2020.9.3
 tornado==6.1
 typing==3.7.4.3
 typing-extensions==3.7.4.3
+descartes==1.1.0
+geopandas==0.8.1

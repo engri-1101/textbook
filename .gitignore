@@ -129,3 +129,6 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# 300.00 MB file size limit
+redistricting/redistricting_lab.zip

@@ -38,6 +38,7 @@ make_student_version game_theory
 make_student_version min-cost_flow
 make_student_version shortest_path
 make_student_version travelling_salesman_problem
+make_student_version redistricting
 
 zip transportation
 zip tsp_integer_programming
@@ -52,3 +53,4 @@ zip travelling_salesman_problem
 zip fws
 zip diet
 zip game_theory
+zip redistricting

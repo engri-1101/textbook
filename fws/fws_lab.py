@@ -118,4 +118,4 @@ def Histo(match,margin):
     plt.title('Histogram of Received Preferences')
     for i in match.keys():
         plt.annotate(str(values[i-1]), xy=(keys[i-1],values[i-1]+margin), ha='center')
-    plt.show()
+    return plt.show()

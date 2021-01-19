@@ -196,7 +196,7 @@ def politics_map(gdf, district_df, leaf_nodes, solution, figsize=(10,10)):
 
 small_example = np.array([[0,1,1,1,0],
                           [0,0,1,1,1],
-                          [1,0,0,1,0]])
+                          [1,0,1,1,0]])
 large_example = np.array([[1., 0., 1., 1., 0., 0.],
                           [1., 1., 1., 1., 1., 1.],
                           [0., 1., 1., 1., 1., 1.],

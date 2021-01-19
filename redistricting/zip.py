@@ -12,6 +12,7 @@ def write_dir(zipObj, path):
 with ZipFile('redistricting_lab.zip', 'w') as zipObj:
     zipObj.write('redistricting_lab.ipynb')
     zipObj.write('redistricting.py')
+    zipObj.write('polyominoes.py')
     write_dir(zipObj, 'images')
     write_dir(zipObj, 'data')
     zipObj.close()

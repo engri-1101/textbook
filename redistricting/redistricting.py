@@ -197,10 +197,19 @@ def politics_map(gdf, district_df, leaf_nodes, solution, figsize=(10,10)):
 small_example = np.array([[0,1,1,1,0],
                           [0,0,1,1,1],
                           [1,0,0,1,0]])
-large_example = np.array([[0,0,1,1,1] for i in range(8)])
+large_example = np.array([[1., 0., 1., 1., 0., 0.],
+                          [1., 1., 1., 1., 1., 1.],
+                          [0., 1., 1., 1., 1., 1.],
+                          [1., 1., 0., 0., 1., 0.],
+                          [1., 0., 0., 0., 1., 1.],
+                          [1., 1., 0., 0., 1., 1.],
+                          [1., 1., 1., 1., 1., 0.]])
 
-def feasible_districts_on_grid(n,m,k):
-    """Get a dataframe of feasible districts of size k on an n x m grid."""
+# 9x5 example solution gerrymandered for red: [4842, 24453, 59212, 60208, 65129]
+
+def feasible_districts_on_grid(grid, k):
+    """Get a dataframe of feasible districts on this grid."""
+    n,m = grid.shape
     D_coordinates = []
     D_indices = []
     polyominos = [list(poly) for poly in generate(k)]
@@ -216,25 +225,21 @@ def feasible_districts_on_grid(n,m,k):
             for j in range(m-w):
                 d = list(zip(np.array(y_np)+i, np.array(x_np)+j))
                 D_coordinates.append(d)
-                
-    for d in D_coordinates:
-        M = np.zeros((n,m))
-        for i,j in d:
-            M[i,j] = 1
-        D_indices.append(list(np.flipud(M).flatten().nonzero()[0]))
-                
+                D_indices.append([m*i + j for i,j in d])
     return D_coordinates, D_indices
     
     
-def create_districts_df(n,m,k,partisanship):     
+def create_districts_df(grid, k):
+    """Create a dataframe of districts and compute statistics for each."""
+    n,m = grid.shape
     district_df = {}
     even_50_pct = math.ceil(k/2)
-    D_coordinates, D_indices = feasible_districts_on_grid(n,m,k)
+    D_coordinates, D_indices = feasible_districts_on_grid(grid,k)
     for i in range(len(D_coordinates)):
         row = {}
         row['tracts'] = D_indices[i]
         row['tract_coord'] = D_coordinates[i]
-        votes = [partisanship[i,j] for i,j in D_coordinates[i]]
+        votes = [grid[i,j] for i,j in D_coordinates[i]]
         D_votes = votes.count(0)
         R_votes = votes.count(1)
         row['D_votes'] = D_votes
@@ -242,17 +247,25 @@ def create_districts_df(n,m,k,partisanship):
         if D_votes > R_votes:
             D_wasted = D_votes - even_50_pct
             R_wasted = R_votes
+            row['R_win'] = False
         else:
             D_wasted = D_votes
             R_wasted = R_votes - even_50_pct
+            row['R_win'] = True
         row['efficiency_gap'] = (D_wasted - R_wasted) / k
+        
+        x,y = list(zip(*D_coordinates[i]))
+        w = max(max(x) - min(x), max(y) - min(y)) + 1
+        row['square_roeck'] = (len(x) / (w**2))
+     
         district_df[i] = row
     return pd.DataFrame(district_df).T
 
 
-def grid_district_matrix(n,m,k):
-    """Return a district matrix for an n x m grid with size k districts."""
-    D = feasible_districts_on_grid(n,m,k)[1]
+def grid_district_matrix(grid,k):
+    """Return a district matrix for the grid with size k districts."""
+    n,m = grid.shape
+    D = feasible_districts_on_grid(grid,k)[1]
     A = np.zeros((n*m, len(D)))
     for j in range(len(D)):
         for i in D[j]:
@@ -260,7 +273,7 @@ def grid_district_matrix(n,m,k):
     return A
 
 
-def blank_grid_plot(n, m, box_size=30):
+def blank_grid_plot(n,m, box_size=30):
     """Create a blank bokeh plot."""
     plt = figure(x_range=(0, m), 
                  y_range=(0, n), 
@@ -279,29 +292,71 @@ def blank_grid_plot(n, m, box_size=30):
     return plt
 
 
-def grid_plot(n,m,partisanship,color_map={1:'#DC0000', 0:'#195495'},line_color='white'):
-    """Return a plot of an n x m grid."""
+def grid_plot(grid,color_map={1:'#DC0000', 0:'#195495'},line_color='white'):
+    """Return a plot of the grid."""
+    n,m = grid.shape
     plt = blank_grid_plot(n,m)
     top = [i+1 for i in range(n) for j in range(m)]
     bottom = [i for i in range(n) for j in range(m)]
     left = [i for j in range(n) for i in range(m)]
     right = [i+1 for j in range(n) for i in range(m)]
-    color = [color_map[i] for i in np.flipud(partisanship).flatten()]
+    color = [color_map[i] for i in grid.flatten()]
     plt.quad(top=top, bottom=bottom, left=left, right=right, color=color, line_color=line_color, line_width=2)
     return plt
 
 
-def plot_feasible_districts(n,m,k,columns=5):
-    """Plot all the feasible districts of size k on an n x m grid."""
-    D = feasible_districts_on_grid(n,m,k)[0]
+def plot_feasible_districts(grid,k,columns=5):
+    """Plot all the feasible districts of size k on an the grid."""
+    n,m = grid.shape
+    D = feasible_districts_on_grid(grid,k)[0]
     rows = math.ceil(len(D) / columns)
     plots = [[] for r in range(rows)]
     for d in range(len(D)):
         M = np.zeros((n,m))
         for i,j in D[d]:
             M[i,j] = 1
-        plots[d % rows].append(grid_plot(n,m,M,color_map={1:'black', 0:'white'},line_color='gray'))
+        plots[d % rows].append(grid_plot(M,color_map={1:'black', 0:'white'},line_color='gray'))
     grid = gridplot(plots,
                     toolbar_location = None,
                     toolbar_options={'logo': None})   
     show(grid)
+    
+
+def add_grid_district(plt, grid, district_df, d):
+    """Add the given district d to the grid plot."""
+    n,m = grid.shape
+    indices = district_df.loc[d]['tracts']
+    y,x = zip(*district_df.loc[d]['tract_coord'])
+    for k in range(len(indices)):
+        i = indices[k]
+        # bottom, top, left, right
+        has_side = [not j in indices for j in [i-m,i+m,i-1,i+1]]
+        if i // m == 0:
+            has_side[0] = True
+        if i // m == n-1:
+            has_side[1] = True
+        if i % m == 0:
+            has_side[2] = True
+        if i % m == m-1:
+            has_side[3] = True
+
+        sides_x = [[x[k],x[k]+1], [x[k],x[k]+1], [x[k],x[k]], [x[k]+1,x[k]+1]]
+        sides_x = [sides_x[i] for i in range(4) if has_side[i]]
+        sides_y = [[y[k],y[k]], [y[k]+1,y[k]+1], [y[k],y[k]+1], [y[k],y[k]+1]]
+        sides_y = [sides_y[i] for i in range(4) if has_side[i]]
+
+        plt.multi_line(sides_x,sides_y, line_width=6, line_color='black', line_cap='round')
+
+
+def plot_grid_districts(grid, district_df, districts):
+    """Plot the grid with the given chosen districts."""
+    n,m = grid.shape
+    plt = grid_plot(grid)
+    for d in districts:
+        add_grid_district(plt, grid, district_df, d)
+        
+    show(plt)
+    results = list(district_df.iloc[districts]['R_win'])
+    print('R : %d, D : %d' % (results.count(True), results.count(False)))
+    print('Efficiency Gap: %f' % (district_df.iloc[districts]['efficiency_gap'].mean()))
+    print('Square Roeck: %f' % (district_df.iloc[districts]['square_roeck'].mean()))

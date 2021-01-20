@@ -16,3 +16,4 @@
 | 14    | Diet                              | [diet_model](diet_model.ipynb)                     |  [diet_cereal](diet_cereal) <br/> [diet_neos](diet_neos) | [small_diet_lp](small_diet_lp.ipynb) |
 | 15    | Game Theory                       | | | [penalty_kick_game_lps](penalty_kick_game_lps.ipynb) |
 | 16    | Minimum-cost Flow                 | | | |
+| 17    | Redistricting                     | [redistricting_model](redistricting_model.ipynb) | | |

@@ -212,6 +212,95 @@ def spanning_tree_cost(G, tree):
     return sum([G[u][v]['weight'] for u,v in tree])
 
 
+# TRAVELLING SALESMAN PROBLEM (TSP)
+
+def neighbor(G, initial, nearest, iterations):
+    """Run a neighbor heuristic on G starting at the given initial node.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        intial (int): index of the node to start from.
+        nearest (bool): run nearest neighbor if true. Otherwise, run random.
+        iterations (bool): True iff the tree at every iteration should be returned.
+    """
+    unvisited = list(range(len(G))) # list of nodes
+
+    # start tour at initial and remove it from unvisited
+    tour = [initial]
+    unvisited.remove(initial)
+    tours = [tour.copy()]
+
+    # choose next node from unvisited
+    while len(unvisited) > 0:
+        if nearest:
+            u = tour[-1]
+            d = {v : G[u][v]['weight'] for v in range(len(G)) if v in unvisited}
+            min_val = min(d.values())
+            possible = [k for k, v in d.items() if v==min_val]
+            next_node = possible[randrange(len(possible))]
+        else:
+            next_node = unvisited[randrange(len(unvisited))]
+        tour.append(next_node)
+        unvisited.remove(next_node)
+        tours.append(tour.copy())
+
+    # go back to start
+    tour.append(initial)
+    tours.append(tour.copy())
+
+    return tours if iterations else tour
+
+
+def insertion(G, initial, nearest, iterations):
+    """Run an insertion heuristic on G starting with the given initial 2-node tour.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        intial (List[int]): Initial 2-node tour.
+        nearest (bool): Run nearest insertion if true. Otherwise, run random.
+        iterations (bool): True iff the tree at every iteration should be returned."""
+
+    unvisited = list(range(len(G))) # list of nodes
+
+    # start tour at initial and remove it from unvisited
+    tour = list(initial)
+    unvisited.remove(initial[0])
+    unvisited.remove(initial[1])
+    tours = [tour.copy()]
+
+    # choose next node from unvisited
+    while len(unvisited) > 0:
+        d = {u : min([G[u][v]['weight'] for v in np.unique(tour)]) for u in unvisited}
+        if nearest:
+            min_val = min(d.values())
+            possible = [k for k, v in d.items() if v==min_val]
+        else:
+            max_val = max(d.values())
+            possible = [k for k, v in d.items() if v==max_val]
+        next_node = possible[randrange(len(possible))]
+
+        # insert node into tour at minimum cost
+        increase = [G[tour[i]][next_node]['weight']
+                    + G[next_node][tour[i+1]]['weight']
+                    - G[tour[i]][tour[i+1]]['weight'] for i in range(len(tour)-1)]
+        insert_index = increase.index(min(increase))+1
+        tour.insert(insert_index, next_node)
+        unvisited.remove(next_node)
+        tours.append(tour.copy())
+
+    return tours if iterations else tour
+
+
+def tour_cost(G, tour):
+    """Return the cost of the tour on graph G.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        tour (List[int]): ordered list of nodes visited on the tour.
+    """
+    return sum([G[tour[i]][tour[i+1]]['weight'] for i in range(len(tour)-1)])
+
+
 # --------
 # Plotting
 # --------
@@ -313,15 +402,20 @@ def set_edge_positions(G):
     nx.set_edge_attributes(G, {(u,v) : (G.nodes[u]['y'], G.nodes[v]['y']) for u,v in G.edges}, 'ys')
 
 
-def set_graph_colors(G, edges=[]):
+def set_graph_colors(G, edges=[], show_all_edges=True):
     """Add node/edge attribute with color data. Highlight edges."""
     for u in G.nodes:
         G.nodes[u]['line_color'] = 'steelblue'
         G.nodes[u]['fill_color'] = 'steelblue'
     for u,v in G.edges:
         G[u][v]['line_color'] = 'lightgray'
+        if show_all_edges:
+            G[u][v]['visible'] = True
+        else:
+            G[u][v]['visible'] = False
     for u,v in edges:
         G[u][v]['line_color'] = 'black'
+        G[u][v]['visible'] = True
 
 
 def graph_sources(G):
@@ -334,16 +428,19 @@ def graph_sources(G):
     return nodes_src, edges_src, labels_src
 
 # TODO: Ensure nodes are plotted above edges
-def graph_glyphs(plot, nodes_src, edges_src, labels_src):
+def graph_glyphs(plot, nodes_src, edges_src, labels_src, show_edges=True, show_labels=True):
     """Add and return glyphs for nodes and edges"""
     edges_glyph = plot.multi_line(xs='xs', ys='ys',
                                   line_color='line_color', hover_line_color='black',
                                   line_width=6, nonselection_line_alpha=1,
+                                  visible=show_edges,
+                                  alpha='visible',
                                   source=edges_src)
     nodes_glyph = plot.circle(x='x', y='y', size=12,
                               line_color='line_color', fill_color='fill_color',
                               nonselection_fill_alpha=1, source=nodes_src)
-    labels = LabelSet(x='x', y='y', text='text', render_mode='canvas', source=labels_src)
+
+    labels = LabelSet(x='x', y='y', text='text', render_mode='canvas', visible=show_labels, source=labels_src)
     plot.add_layout(labels)
     return edges_glyph, nodes_glyph
 
@@ -351,7 +448,7 @@ def graph_glyphs(plot, nodes_src, edges_src, labels_src):
 # MAIN FUNCTIONS
 
 
-def plot_graph(G, edges=[], width=900, height=500):
+def plot_graph(G, show_all_edges=True, show_labels=True, edges=[], width=900, height=500):
     """Plot the graph G.
 
     Args:
@@ -362,11 +459,10 @@ def plot_graph(G, edges=[], width=900, height=500):
     plot = blank_plot(G, plot_width=width, plot_height=height)
 
     set_edge_positions(G)
-    set_graph_colors(G, edges)
+    set_graph_colors(G, edges, show_all_edges=show_all_edges)
 
     nodes_src, edges_src, labels_src = graph_sources(G)
-    edges_glyph, nodes_glyph = graph_glyphs(plot, nodes_src, edges_src, labels_src)
-
+    edges_glyph, nodes_glyph = graph_glyphs(plot, nodes_src, edges_src, labels_src, show_labels=show_labels)
     plot.add_tools(HoverTool(tooltips=[("Node", "$index")], renderers=[nodes_glyph]))
     grid = gridplot([[plot]],
                     plot_width=width, plot_height=height,
@@ -375,7 +471,8 @@ def plot_graph(G, edges=[], width=900, height=500):
     show(grid)
 
 
-def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, width=900, height=500):
+def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None,
+                          show_edges=True, show_labels=True, width=900, height=500):
     """Plot the graph G with iterations of edges, nodes, and tables.
 
     Args:
@@ -431,7 +528,8 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, w
     args_dict['n'] = n
     args_dict['k'] = k
     args_dict['done'] = done
-    edges_glyph, nodes_glyph = graph_glyphs(plot, nodes_src, edges_src, labels_src)
+    edges_glyph, nodes_glyph = graph_glyphs(plot, nodes_src, edges_src, labels_src,
+                                            show_edges=show_edges, show_labels=show_labels)
 
     if edges is not None:
         edge_subset_src = ColumnDataSource(data={'xs': edge_xs[0],
@@ -448,7 +546,7 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, w
         columns = ([TableColumn(field='index', title='')] +
                [TableColumn(field=str(i), title=str(i)) for i in range(len(tables[0])-1)])
         table = DataTable(source=table_src, columns=columns, height=80, width=width, background='white', index_position=None,
-                        editable=False, reorderable=False, sortable=False, selectable=False)
+                          editable=False, reorderable=False, sortable=False, selectable=False)
         args_dict['table_src'] = table_src
 
     # Javascript
@@ -480,7 +578,7 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, w
               [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
               [row(cost, done) if costs else row(done)]]
     if tables is not None:
-        layout.insert(1, table)
+        layout.insert(1, [table])
 
     grid = gridplot(layout,
                     plot_width=width, plot_height=height,
@@ -518,3 +616,26 @@ def plot_mst_algorithm(G, alg, i=0, width=900, height=500):
     nodes = [list(set([item for sublist in edge for item in sublist])) for edge in edges]
     costs = [spanning_tree_cost(G, tree) for tree in edges]
     plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs, width=width, height=height)
+
+
+def plot_tsp_heuristic(G, alg, initial, width=900, height=500):
+    """Plot the TSP heuristic running on G.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        alg (str): {'random_neighbor', 'nearest_neighbor', 'nearest_insertion', 'furthest_insertion'}
+        initial (int): Starting index or tour (depending on alg)
+    """
+    if alg == 'random_neighbor':
+        tours = neighbor(G, initial=initial, nearest=False, iterations=True)
+    elif alg == 'nearest_neighbor':
+        tours = neighbor(G, initial=initial, nearest=True, iterations=True)
+    elif alg == 'nearest_insertion':
+        tours = insertion(G, initial=initial, nearest=True, iterations=True)
+    elif alg == 'furthest_insertion':
+        tours = insertion(G, initial=initial, nearest=False, iterations=True)
+    nodes = tours
+    edges = [[(tour[i], tour[i+1]) for i in range(len(tour)-1)] for tour in tours]
+    costs = [tour_cost(G, tour) for tour in tours]
+    plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs,
+                          show_edges=False, show_labels=False, width=width, height=height)

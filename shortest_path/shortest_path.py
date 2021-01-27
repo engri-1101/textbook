@@ -49,7 +49,7 @@ def create_table(dist, prev, S):
 
 def dijkstras(A, s=0, iterations=True):
     '''Execute Dijkstra's algorithm from source s on the given graph.
-    
+
     Args:
         A (np.ndarray): An adjacency matrix representing this graph.
         s (int): Source vertex to run the algorithm from.
@@ -114,9 +114,9 @@ def graph_range(x, y):
 def blank_plot(x, y, plot_width, plot_height):
     """Create a blank bokeh plot."""
     min_x, max_x, min_y, max_y = graph_range(x, y)
-    plot = figure(x_range=(min_x, max_x), 
-                  y_range=(min_y, max_y), 
-                  title="", 
+    plot = figure(x_range=(min_x, max_x),
+                  y_range=(min_y, max_y),
+                  title="",
                   plot_width=plot_width,
                   plot_height=plot_height)
     plot.toolbar.logo = None
@@ -124,7 +124,7 @@ def blank_plot(x, y, plot_width, plot_height):
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
     plot.xaxis.visible = False
-    plot.yaxis.visible = False 
+    plot.yaxis.visible = False
     plot.background_fill_color = None
     plot.border_fill_color = None
     plot.outline_line_color = None
@@ -134,31 +134,31 @@ def blank_plot(x, y, plot_width, plot_height):
 
 def plot_shortest_path_tree(nodes, edges, prev, width=900, height=500):
     """Plot the heuristic executed on nodes and edges.
-    
+
     Args:
         nodes (pd.DataFrame): Dataframe of nodes with their x,y positions.
         edges (pd.DataFrame): Dataframe of edges (pairs of nodes) and weights.
         prev (Dict): Previous attribute for every edge.
     """
     plot = blank_plot(nodes['x'], nodes['y'], plot_width=width, plot_height=height)
-    
+
     tree_edge_xs, tree_edge_ys = shortest_path_tree_edges(nodes, prev)
-    
+
     # create copy of dfs
     nodes = nodes.copy()
     edges = edges.copy()
-    
+
     # create cooordinates for edges
     edges['u_pos'] = edges['u'].apply(lambda x: tuple(nodes.loc[x]))
     edges['v_pos'] = edges['v'].apply(lambda x: tuple(nodes.loc[x]))
     edges['xs'] = [[row['u_pos'][0], row['v_pos'][0]] for index, row in edges.iterrows()]
     edges['ys'] = [[row['u_pos'][1], row['v_pos'][1]] for index, row in edges.iterrows()]
-    
+
     # set inital colors of edges and nodes
     nodes['line_color'] = 'steelblue'
     nodes['fill_color'] = 'steelblue'
     edges['line_color'] = 'lightgray'
-    
+
     # data sources
     tree_edge_src = ColumnDataSource(data={'xs': tree_edge_xs,
                                            'ys': tree_edge_ys})
@@ -167,38 +167,38 @@ def plot_shortest_path_tree(nodes, edges, prev, width=900, height=500):
     labels_src = ColumnDataSource(data={'x': [np.mean(i) for i in edges['xs']],
                                         'y': [np.mean(i) for i in edges['ys']],
                                         'text': edges['weight']})
-    
+
     # glyphs
     plot.multi_line('xs', 'ys', line_color='line_color', hover_line_color='black',
                     line_width=6, nonselection_line_alpha=1, source=edges_src)
     plot.multi_line('xs', 'ys', line_color='black', line_width=6, source=tree_edge_src)
-    plot.circle('x', 'y', size=12, line_color='line_color', 
+    plot.circle('x', 'y', size=12, line_color='line_color',
                 fill_color='fill_color', nonselection_fill_alpha=1, source=nodes_src)
     labels = LabelSet(x='x', y='y', text='text', render_mode='canvas', source=labels_src)
     plot.add_layout(labels)
-    
+
     # create layout
     grid = gridplot([[plot]],
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
-    
+
     show(grid)
-    
-    
+
+
 def plot_dijkstras(nodes, edges, source=0, width=900, height=500):
     """Plot the Dijkstra's algorithm executed on nodes and edges.
-    
+
     Args:
         nodes (pd.DataFrame): Dataframe of nodes with their x,y positions.
         edges (pd.DataFrame): Dataframe of edges (pairs of nodes) and weights.
     """
     plot = blank_plot(nodes['x'], nodes['y'], plot_width=width, plot_height=height)
-    
+
     # get every iteration of the algorithm
     A = adjacency_matrix(nodes, edges)
     marks, prevs, tables = dijkstras(A, s=source, iterations=True)
-    
+
     iteration_xs = []
     iteration_ys = []
     iteration_nodes = marks
@@ -206,25 +206,25 @@ def plot_dijkstras(nodes, edges, source=0, width=900, height=500):
     for prev in prevs:
         xs, ys = shortest_path_tree_edges(nodes, prev)
         iteration_xs.append(xs)
-        iteration_ys.append(ys) 
-    
+        iteration_ys.append(ys)
+
     # create copy of dfs
     nodes = nodes.copy()
     edges = edges.copy()
-    
+
     # create cooordinates for edges
     edges['u_pos'] = edges['u'].apply(lambda x: tuple(nodes.loc[x]))
     edges['v_pos'] = edges['v'].apply(lambda x: tuple(nodes.loc[x]))
     edges['xs'] = [[row['u_pos'][0], row['v_pos'][0]] for index, row in edges.iterrows()]
     edges['ys'] = [[row['u_pos'][1], row['v_pos'][1]] for index, row in edges.iterrows()]
-    
+
     # set inital colors of edges and nodes
     nodes['line_color'] = '#EA8585'
     nodes['fill_color'] = '#EA8585'
     nodes.at[source, 'line_color'] = 'steelblue'
     nodes.at[source, 'fill_color'] = 'steelblue'
     edges['line_color'] = 'lightgray'
-    
+
     # data sources
     source = ColumnDataSource(data={'iteration_xs': iteration_xs,
                                     'iteration_ys' : iteration_ys,
@@ -238,29 +238,29 @@ def plot_dijkstras(nodes, edges, source=0, width=900, height=500):
     labels_src = ColumnDataSource(data={'x': [np.mean(i) for i in edges['xs']],
                                         'y': [np.mean(i) for i in edges['ys']],
                                         'text': edges['weight']})
-    
+
     # glyphs
     n = Div(text='0', width=width, align='center')
-    done = Div(text='', width=int(width/2), align='center')  
+    done = Div(text='', width=int(width/2), align='center')
     plot.multi_line('xs', 'ys', line_color='line_color', hover_line_color='black',
                     line_width=6, nonselection_line_alpha=1, source=edges_src)
     plot.multi_line('xs', 'ys', line_color='black', line_width=6, source=tree_edge_src)
-    nodes_glyph = plot.circle('x', 'y', size=12, line_color='line_color', 
+    nodes_glyph = plot.circle('x', 'y', size=12, line_color='line_color',
                                fill_color='fill_color', nonselection_fill_alpha=1, source=nodes_src)
     labels = LabelSet(x='x', y='y', text='text', render_mode='canvas', source=labels_src)
     plot.add_layout(labels)
-    
+
     # table
-    columns = ([TableColumn(field='index', title='')] + 
+    columns = ([TableColumn(field='index', title='')] +
                [TableColumn(field=str(i), title=str(i)) for i in range(len(iteration_tables[0])-1)])
-    table = DataTable(source=table_src, columns=columns, height=80, width=width, background='white', index_position=None, 
+    table = DataTable(source=table_src, columns=columns, height=80, width=width, background='white', index_position=None,
                      editable=False, reorderable=False, sortable=False, selectable=False)
-    
+
     # --------------
     # CUSTOM JS CODE
     # --------------
-     
-    update = """    
+
+    update = """
     if (iteration == source.data['iteration_nodes'].length - 1) {
         done.text = "done."
     } else {
@@ -270,7 +270,7 @@ def plot_dijkstras(nodes, edges, source=0, width=900, height=500):
     tree_edge_src.data['xs'] = source.data['iteration_xs'][iteration]
     tree_edge_src.data['ys'] = source.data['iteration_ys'][iteration]
     table_src.data = source.data['iteration_tables'][iteration]
-    
+
     var in_tree = source.data['iteration_nodes'][iteration]
 
     for (let i = 0; i < nodes_src.data['line_color'].length ; i++) {
@@ -282,14 +282,14 @@ def plot_dijkstras(nodes, edges, source=0, width=900, height=500):
             nodes_src.data['line_color'][i] = '#EA8585'
         }
     }
-    
+
     nodes_src.change.emit()
     tree_edge_src.change.emit()
-    """ 
-    
+    """
+
     next_btn_code = increment + update
     prev_btn_code = decrement + update
-    
+
     # add buttons
     next_button = Button(label="Next", button_type="success", width_policy='fit', sizing_mode='scale_width')
     next_button.js_on_click(CustomJS(args=dict(source=source, nodes_src=nodes_src, table_src=table_src,
@@ -297,17 +297,17 @@ def plot_dijkstras(nodes, edges, source=0, width=900, height=500):
     prev_button = Button(label="Previous", button_type="success", width_policy='fit', sizing_mode='scale_width')
     prev_button.js_on_click(CustomJS(args=dict(source=source, nodes_src=nodes_src, table_src=table_src,
                                                tree_edge_src=tree_edge_src, done=done, n=n), code=prev_btn_code))
-    
-    
+
+
     plot.add_tools(HoverTool(tooltips=[("Node", "$index")], renderers=[nodes_glyph]))
-    
+
     # create layout
     grid = gridplot([[plot],
                      [table],
                      [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
-                     [row(done)]], 
+                     [row(done)]],
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
-    
+
     show(grid)

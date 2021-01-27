@@ -20,7 +20,7 @@ from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider
 
 def tsp_grid_instance(n, m, manhattan=True):
     """Return a distance matrix (manhattan or euclidian) on an n*m grid.
-    
+
     Args:
         n (int): width of the grid.
         m (int): height of the grid.
@@ -35,13 +35,13 @@ def tsp_grid_instance(n, m, manhattan=True):
             nodes_df = nodes_df.append({'name' : str((i,j)), 'x' : i, 'y' : j}, ignore_index=True)
 
     d = distance_matrix(nodes_df, manhattan=manhattan)
-      
+
     return nodes_df, d
 
 
 def distance_matrix(nodes, manhattan=True, etching=False):
     """Compute the distance matrix between the nodes.
-    
+
     Args:
         nodes (pd.DataFrame): node start and end locations of the graph G.
         manhattan (bool): return manhattan distance matrix if true. Otherwise, return euclidian.
@@ -53,7 +53,7 @@ def distance_matrix(nodes, manhattan=True, etching=False):
     else:
         A = np.array(list(zip(nodes['x_start'].tolist(), nodes['y_start'].tolist())))
         B = np.array(list(zip(nodes['x_end'].tolist(), nodes['y_end'].tolist())))
-  
+
     if manhattan:
         return np.abs(A[:,0,None] - B[:,0]) + np.abs(A[:,1,None] - B[:,1])
     else:
@@ -62,10 +62,10 @@ def distance_matrix(nodes, manhattan=True, etching=False):
         p3 = -2 * np.dot(A,B.T)
         return np.sqrt(p1+p2+p3)
 
-    
+
 def tour_cost(G, tour):
     """Return the cost of the tour on graph G.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
         tour (List[int]): ordered list of nodes visited on the tour.
@@ -79,31 +79,31 @@ def tour_cost(G, tour):
 
 def neighbor(G, initial, nearest):
     """Run a neighbor heuristic on G starting at the given initial node.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
-        intial (int): index of the node to start from.    
+        intial (int): index of the node to start from.
         nearest (bool): run nearest neighbor if true. Otherwise, run random.
     """
     unvisited = list(range(len(G))) # list of nodes
-    
+
     # start tour at initial and remove it from unvisited
     tour = [initial]
-    unvisited.remove(initial) 
-    
+    unvisited.remove(initial)
+
     # choose next node from unvisited
     while len(unvisited) > 0:
         neighbor_iteration(G, tour, unvisited, nearest)
-        
+
     # go back to start
     tour.append(initial)
-    
+
     return tour
 
 
 def neighbor_iteration(G, tour, unvisited, nearest):
     """Do an iteration of a neighbor heuristic on G.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
         tour (List[int]): current tour on G
@@ -125,43 +125,43 @@ def neighbor_iteration(G, tour, unvisited, nearest):
 
 def random_neighbor(G, initial=0):
     """Run the nearest neighbor heuristic on G starting at the given initial node.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
-        intial (int): index of the node to start from.    
+        intial (int): index of the node to start from.
     """
     return neighbor(G, initial, False)
 
 def nearest_neighbor(G, initial=0):
     """Run the nearest neighbor heuristic on G starting at the given initial node.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
-        intial (int): index of the node to start from.    
+        intial (int): index of the node to start from.
     """
     return neighbor(G, initial, True)
 
 
 def insertion(G, initial, nearest):
     """Run an insertion heuristic on G starting with the given initial 2-node tour."""
-    
+
     unvisited = list(range(len(G))) # list of nodes
-    
+
     # start tour at initial and remove it from unvisited
     tour = list(initial)
-    unvisited.remove(initial[0]) 
-    unvisited.remove(initial[1]) 
-    
+    unvisited.remove(initial[0])
+    unvisited.remove(initial[1])
+
     # choose next node from unvisited
     while len(unvisited) > 0:
         insertion_iteration(G, tour, unvisited, nearest)
-    
+
     return tour
 
 
 def insertion_iteration(G, tour, unvisited, nearest):
     """Do an iteration of an insertion heuristic on G.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
         tour (List[int]): current tour on G
@@ -173,37 +173,37 @@ def insertion_iteration(G, tour, unvisited, nearest):
     d = {i : d[i] for i in range(len(d)) if i in unvisited}
     if nearest:
         min_val = min(d.values())
-        possible = [k for k, v in d.items() if v==min_val]    
+        possible = [k for k, v in d.items() if v==min_val]
     else:
         max_val = max(d.values())
-        possible = [k for k, v in d.items() if v==max_val] 
+        possible = [k for k, v in d.items() if v==max_val]
     next_node = possible[randrange(len(possible))]
 
     # insert node into tour at minimum cost
     increase = [G[tour[i], next_node]
-                + G[next_node, tour[i+1]] 
+                + G[next_node, tour[i+1]]
                 - G[tour[i], tour[i+1]] for i in range(len(tour)-1)]
     insert_index = increase.index(min(increase))+1
     tour.insert(insert_index, next_node)
-    unvisited.remove(next_node) 
+    unvisited.remove(next_node)
 
 
 def nearest_insertion(G, initial=[0,1,0]):
     """Run the nearest insertion heuristic on G starting with the given initial 2-node tour.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
-        intial (List[int]): initial 2-node tour. 
+        intial (List[int]): initial 2-node tour.
     """
     return insertion(G, initial, True)
 
 
 def furthest_insertion(G, initial=None):
     """Run the furthest insertion heuristic on G starting with the given initial 2-node tour.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
-        intial (int): initial 2-node tour.  
+        intial (int): initial 2-node tour.
     """
     if initial is None:
         initial = [0,len(G)-1,0]
@@ -216,11 +216,11 @@ def furthest_insertion(G, initial=None):
 
 def two_opt(G, tour):
     """Run 2-OPT on the initial tour until no improvement can be made.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
         tour (List[int]): intial tour to be improved.
-    """ 
+    """
     improved, swapped = two_opt_iteration(tour,G)
     while improved:
         improved, swapped = two_opt_iteration(tour,G)
@@ -229,11 +229,11 @@ def two_opt(G, tour):
 
 def two_opt_iteration(tour,G):
     """Do an interation of 2-OPT. Return true if improved.
-    
+
     Args:
         edges (List[List[int]]): List of edges in the current tour.
         tour_matrix (np.ndarray): Adjacency matrix representing the tour.
-        G (np.ndarray): adjacency matrix representing a graph. 
+        G (np.ndarray): adjacency matrix representing a graph.
     """
     for i in range(len(tour)-1):
         for j in range(i,len(tour)-1):
@@ -254,7 +254,7 @@ def two_opt_iteration(tour,G):
 
 def solve_tsp(G):
     """Use OR-Tools to get a tour of the graph G.
-    
+
     Args:
         G (np.ndarray): adjacency matrix representing a graph.
     """
@@ -296,7 +296,7 @@ def optimal_tour(name):
     with open('data/optimal_tours.pickle', 'rb') as f:
         optimal_tours = pickle.load(f)
     return optimal_tours[name]
-   
+
 
 # --------
 # Plotting
@@ -305,9 +305,9 @@ def optimal_tour(name):
 def blank_plot(x, y, plot_width, plot_height, show_us=False):
     """Create a blank bokeh plot."""
     min_x, max_x, min_y, max_y = graph_range(x, y)
-    plot = figure(x_range=(min_x, max_x), 
-                  y_range=(min_y, max_y), 
-                  title="", 
+    plot = figure(x_range=(min_x, max_x),
+                  y_range=(min_y, max_y),
+                  title="",
                   plot_width=plot_width,
                   plot_height=plot_height)
     plot.toolbar.logo = None
@@ -315,7 +315,7 @@ def blank_plot(x, y, plot_width, plot_height, show_us=False):
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
     plot.xaxis.visible = False
-    plot.yaxis.visible = False 
+    plot.yaxis.visible = False
     plot.background_fill_color = None
     plot.border_fill_color = None
     plot.outline_line_color = None
@@ -385,21 +385,21 @@ def plot_tour(nodes, G, tour, width=400, height=400, show_us=False):
     y = nodes.y.values.tolist()
 
     plot = blank_plot(x, y, width, height, show_us=show_us)
-    
+
     # label
     cost = Div(text=str(round(tour_cost(G, tour),1)), width=width, align='center')
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=4)
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
 
     # create layout
-    grid = gridplot([[plot],[cost]], 
+    grid = gridplot([[plot],[cost]],
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
-    
+
     show(grid)
-    
-    
+
+
 def plot_etching_tour(nodes, G, tour, width=800, height=400, show_us=False):
     """Plot the etching tour on the nodes."""
     edges_x = []
@@ -415,47 +415,47 @@ def plot_etching_tour(nodes, G, tour, width=800, height=400, show_us=False):
     for index, row in nodes.iterrows():
         lines_x.append([row['x_start'],row['x_end']])
         lines_y.append([row['y_start'],row['y_end']])
-        
+
     x_start = nodes.x_start.values.tolist()
     y_start = nodes.y_start.values.tolist()
     x_end = nodes.x_end.values.tolist()
     y_end = nodes.y_end.values.tolist()
-        
+
     plot = blank_plot(x_start + x_end, y_start + y_end, width, height, show_us=show_us)
-    
+
     # label
     cost = Div(text=str(round(tour_cost(G, tour),1)), width=width, align='center')
     plot.multi_line(xs=lines_x, ys=lines_y, line_color='black', line_width=2)
     plot.line(x=edges_x, y=edges_y, line_color='black', line_width=2, line_dash='dashed')
     plot.circle(x_start, y_start, size=5, line_color='steelblue', fill_color='steelblue')
     plot.circle(x_end, y_end, size=5, line_color='#DC0000', fill_color='#DC0000')
-    
+
     # create layout
-    grid = gridplot([[plot],[cost]], 
+    grid = gridplot([[plot],[cost]],
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
-    
+
     show(grid)
-    
+
 
 def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
     """Allow the user to construct a tour.
-    
+
     Args:
         nodes (pd.DataFrame): node locations of the graph G.
         G (np.ndarray): adjacency matrix of the graph G.
-    """  
+    """
     # node data
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
 
     plot = blank_plot(x, y, width, height, show_us=show_us)
-    
+
     # label
-    cost = Div(text=str(0.0), width=int(width/2), align='center') 
-    done = Div(text='', width=int(width/2), align='center')  
-        
+    cost = Div(text=str(0.0), width=int(width/2), align='center')
+    done = Div(text='', width=int(width/2), align='center')
+
     # tour and edges
     source = ColumnDataSource(data={'G': G.tolist()})
     tour = ColumnDataSource(data={'edges_x': [],
@@ -463,21 +463,21 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
                                   'indices' : []})
     plot.line(x='edges_x', y='edges_y', line_color='black', line_width=4, source=tour)
     pts = plot.circle(x, y, size=10, line_color='steelblue', fill_color='steelblue', nonselection_fill_alpha=1)
-    
+
     # --------------
     # CUSTOM JS CODE
     # --------------
-    
+
     on_hover = """
-    source.data['last_index'] = cb_data.index.indices[0]   
+    source.data['last_index'] = cb_data.index.indices[0]
     """
-     
+
     on_click = """
     var node = source.data['last_index']
-    
+
     if (node.toString() != -1) {
         if (!(tour.data['indices'].includes(node))) {
-            if (tour.data['indices'].length > 0) { 
+            if (tour.data['indices'].length > 0) {
                 var prev = tour.data['indices'][tour.data['indices'].length - 1]
             } else {
                 var prev = -1
@@ -500,9 +500,9 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
             } else {
                 var before = parseFloat(cost.text)
                 var increase = source.data['G'][prev][node]
-                cost.text = (before + increase).toFixed(1)   
+                cost.text = (before + increase).toFixed(1)
             }
-            
+
             if (tour.data['indices'].length == source.data['G'].length) {
                 var tmp_edges_x = tour.data['edges_x']
                 var tmp_edges_y = tour.data['edges_y']
@@ -518,34 +518,34 @@ def plot_create_tour(nodes, G, width=400, height=400, show_us=False):
 
                 var before = parseFloat(cost.text)
                 var increase = source.data['G'][node][tmp_indices[0]]
-                cost.text = (before + increase).toFixed(1) 
-            }    
+                cost.text = (before + increase).toFixed(1)
+            }
         }
     }
     done.text = '['.concat(tour.data['indices'].join(',')).concat(']')
     tour.change.emit()
     """
-    
+
     plot.add_tools(HoverTool(tooltips=None,
                              callback=CustomJS(args=dict(source=source), code=on_hover),
                              renderers=[pts]),
                    TapTool(callback=CustomJS(args=dict(source=source, tour=tour, pts=pts.data_source,
                                                        cost=cost, done=done), code=on_click),
                            renderers=[pts]))
-    
+
     # create layout
     grid = gridplot([[plot],
-                     [row(cost,done)]], 
+                     [row(cost,done)]],
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
-    
+
     show(grid)
-    
+
 
 def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show_us=False):
     """Plot the heuristic executed on graph G.
-    
+
     Args:
         nodes (pd.DataFrame): node locations of the graph G.
         G (np.ndarray): adjacency matrix of the graph G.
@@ -553,25 +553,25 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show
         initial (List[int]): the initial tour / node for heuristic.
     """
     assert heuristic in ['random_neighbor', 'nearest_neighbor', 'nearest_insertion', 'furthest_insertion']
-    
+
     # maintain tour and cost at every iteration
     tours = []
     costs = []
-    
+
     unvisited = list(range(len(G))) # list of nodes
-    
+
     # set initial tour
     if heuristic in ['random_neighbor', 'nearest_neighbor']:
         tour = [initial]
-        unvisited.remove(initial) 
+        unvisited.remove(initial)
     else:
         tour = list(initial)
-        unvisited.remove(initial[0]) 
-        unvisited.remove(initial[1]) 
-        
+        unvisited.remove(initial[0])
+        unvisited.remove(initial[1])
+
     tours.append(list(tour))
     costs.append(tour_cost(G, tour))
-    
+
     # choose next node from unvisited
     while len(unvisited) > 0:
         if heuristic == 'random_neighbor':
@@ -584,32 +584,32 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show
             insertion_iteration(G, tour, unvisited, nearest=False)
         tours.append(list(tour))
         costs.append(tour_cost(G, tour))
-    
+
     # back to start
     if heuristic in ['random_neighbor', 'nearest_neighbor']:
-        tour.append(initial) 
-    
+        tour.append(initial)
+
     tours.append(list(tour))
     costs.append(tour_cost(G, tour))
-    
+
     tour_list = list(tour)
-    
+
     # data for every tour and nodes
     edges_x = []
     edges_y = []
-    for tour in tours:      
+    for tour in tours:
         edges_x.append([nodes.loc[i]['x'] for i in tour])
         edges_y.append([nodes.loc[i]['y'] for i in tour])
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
 
     plot = blank_plot(x, y, width, height, show_us=show_us)
-    
+
     # label
     cost = Div(text=str(round(costs[0],1)), width=int(width/2), align='center')
-    done = Div(text='', width=int(width/2), align='center')  
+    done = Div(text='', width=int(width/2), align='center')
     n = Div(text='0', width=width, align='center')
-        
+
     # tour and edges
     source = ColumnDataSource(data={'edges_x': edges_x,
                                     'edges_y': edges_y,
@@ -618,14 +618,14 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show
                                   'edges_y' : edges_y[0]})
     plot.line(x='edges_x', y='edges_y', line_color='black', line_width=4, source=tour)
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
-    
+
     # --------------
     # CUSTOM JS CODE
     # --------------
-      
+
     update = """
     cost.text = source.data['costs'][iteration].toFixed(1)
-    
+
     if (iteration == source.data['edges_y'].length - 1) {
         done.text = "done."
     } else {
@@ -636,44 +636,44 @@ def plot_tsp_heuristic(nodes, G, heuristic, initial, width=400, height=400, show
     tour.data['edges_y'] = source.data['edges_y'][iteration]
     tour.change.emit()
     """
-       
+
     next_btn_code = increment + auto_complete_tour + update
     prev_btn_code = decrement + auto_incomplete_tour + update
-    
+
     # add buttons
     next_button = Button(label="Next", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    next_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+    next_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost,
                                                done=done, n=n), code=next_btn_code))
     prev_button = Button(label="Previous", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+    prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost,
                                                done=done, n=n), code=prev_btn_code))
-    
+
     # create layout
     grid = gridplot([[plot],
                      [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
-                     [row(cost,done)]], 
+                     [row(cost,done)]],
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
-    
+
     show(grid)
-    
+
     return tour_list
-    
-    
+
+
 def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
     """Plot the execution of two-opt on the given tour.
-    
+
     Args:
         nodes (pd.DataFrame): node locations of the graph G.
         G (np.ndarray): adjacency matrix of the graph G.
         tour (List[int]): inital feasible tour.
-    """    
+    """
     # maintain at every iteration
     tours = []
     swaps = []
     costs = []
-    
+
     # run 2-OPT
     tours.append(list(tour))
     costs.append(tour_cost(G, tour))
@@ -686,9 +686,9 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
         improved, swapped = two_opt_iteration(tour,G)
         if improved:
             swaps.append([] if swapped is None else list(swapped))
-     
+
     tour_list = list(tour)
-    
+
     # data for every tour and nodes
     edges_x = []
     edges_y = []
@@ -696,7 +696,7 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
     swaps_before_y = []
     swaps_after_x = []
     swaps_after_y = []
-    for tour in tours:      
+    for tour in tours:
         edges_x.append([nodes.loc[i]['x'] for i in tour])
         edges_y.append([nodes.loc[i]['y'] for i in tour])
     for swap in swaps:
@@ -705,20 +705,20 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
         (v1x, v1y) = nodes.loc[swap[2]][['x','y']]
         (v2x, v2y) = nodes.loc[swap[3]][['x','y']]
         swaps_before_x.append([[u1x, u2x],[v1x, v2x]])
-        swaps_before_y.append([[u1y, u2y],[v1y, v2y]])   
+        swaps_before_y.append([[u1y, u2y],[v1y, v2y]])
         swaps_after_x.append([[u1x, v1x],[u2x, v2x]])
-        swaps_after_y.append([[u1y, v1y],[u2y, v2y]])  
+        swaps_after_y.append([[u1y, v1y],[u2y, v2y]])
     x = nodes.x.values.tolist()
     y = nodes.y.values.tolist()
-    
+
 
     plot = blank_plot(x, y, width, height, show_us=show_us)
-    
+
     # label
     cost = Div(text=str(round(costs[0],1)), width=int(width/2), align='center')
-    done = Div(text='', width=int(width/2), align='center')  
+    done = Div(text='', width=int(width/2), align='center')
     n = Div(text='0', width=width, align='center')
-        
+
     # tour and edges
     source = ColumnDataSource(data={'edges_x': edges_x,
                                     'edges_y': edges_y,
@@ -734,20 +734,20 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
                                        'swaps_before_y' : swaps_before_y[0],
                                        'swaps_after_x' : swaps_after_x[0],
                                        'swaps_after_y' : swaps_after_y[0]})
-    
+
     plot.line(x='edges_x', y='edges_y', line_color='black', line_width=4, source=tour)
     if len(swaps_before_x) > 0:
         plot.multi_line(xs='swaps_before_x', ys='swaps_before_y', line_color='red', line_width=4, source=swaps)
         plot.multi_line(xs='swaps_after_x', ys='swaps_after_y', line_color='#90D7F6', line_width=4, source=swaps)
     plot.circle(x, y, size=8, line_color='steelblue', fill_color='steelblue')
-    
+
     # --------------
     # CUSTOM JS CODE
     # --------------
-      
+
     update = """
     cost.text = source.data['costs'][iteration].toFixed(1)
-    
+
     if (iteration == source.data['edges_y'].length - 1) {
         done.text = "done."
         swaps.data['swaps_before_x'] = [[]]
@@ -767,28 +767,28 @@ def plot_two_opt(nodes, G, tour, width=400, height=400, show_us=False):
     tour.change.emit()
     swaps.change.emit()
     """
-       
+
     next_btn_code = increment + update
     prev_btn_code = decrement + update
-    
+
     # add buttons
     next_button = Button(label="Next", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    next_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+    next_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost,
                                                swaps_source=swaps_source, swaps=swaps,
                                                done=done, n=n), code=next_btn_code))
     prev_button = Button(label="Previous", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost, 
+    prev_button.js_on_click(CustomJS(args=dict(tour=tour, source=source, cost=cost,
                                                swaps_source=swaps_source, swaps=swaps,
                                                done=done, n=n), code=prev_btn_code))
-   
+
     # create layout
     grid = gridplot([[plot],
                      [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
-                     [row(cost,done)]], 
+                     [row(cost,done)]],
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
-    
+
     show(grid)
-    
+
     return tour_list

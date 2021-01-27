@@ -214,7 +214,7 @@ def spanning_tree_cost(G, tree):
 
 # TRAVELLING SALESMAN PROBLEM (TSP)
 
-def neighbor(G, initial, nearest, iterations):
+def neighbor(G, initial=0, nearest=True, iterations=False):
     """Run a neighbor heuristic on G starting at the given initial node.
 
     Args:
@@ -251,7 +251,7 @@ def neighbor(G, initial, nearest, iterations):
     return tours if iterations else tour
 
 
-def insertion(G, initial, nearest, iterations):
+def insertion(G, initial=[0,1,0], nearest=True, iterations=False):
     """Run an insertion heuristic on G starting with the given initial 2-node tour.
 
     Args:

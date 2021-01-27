@@ -73,8 +73,10 @@ def create_network(nodes, edges=None, directed=False):
 # Algorithms
 # ----------
 
+# SHORTEST PATH
+
 def dijkstras(G, s=0, iterations=False):
-    '''Execute Dijkstra's algorithm on graph G from source s.
+    '''Run Dijkstra's algorithm on graph G from source s.
 
     Args:
         G (nx.Graph): Networkx graph.
@@ -123,6 +125,92 @@ def dijkstras(G, s=0, iterations=False):
         marks.append(S.copy())
     return (marks, prevs, tables) if iterations else edges_from_prev(prev)
 
+# MINIMUM SPANNING TREE (MST)
+
+def prims(G, i, iterations=False):
+    """Run Prim's algorithm on graph G starting from node i.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        i (int): Index of the node to start from.
+        iterations (bool): True iff the tree at every iteration should be returned.
+    """
+    tree = []
+    trees = [[]]
+    unvisited = list(range(len(G)))
+    unvisited.remove(i)
+    visited = [i]
+    while len(unvisited) > 0:
+        possible = {(u,v) : G[u][v]['weight'] for u in visited for v in unvisited if G.has_edge(u,v)}
+        u,v = min(possible, key=possible.get)
+        unvisited.remove(v)
+        visited.append(v)
+        tree.append((u,v))
+        trees.append(list(tree))
+    return trees if iterations else tree
+
+
+def kruskals(G, iterations=False):
+    """Run Kruskal's algorithm on graph G.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        iterations (bool): True iff the tree at every iteration should be returned.
+    """
+    edges = nx.get_edge_attributes(G,'weight')
+    edges = list(dict(sorted(edges.items(), key=lambda item: item[1])))
+    tree = []
+    trees = [[]]
+    forest = {i:i for i in range(len(G))}
+    i = 0
+    while len(tree) < len(G) - 1:
+        u,v = edges[i]
+        x = forest[u]
+        y = forest[v]
+        if x != y:
+            for k in [k for k,v in forest.items() if v == y]:
+                forest[k] = x
+            tree.append((u,v))
+            trees.append(list(tree))
+        i += 1
+    return trees if iterations else tree
+
+
+def reverse_kruskals(G, iterations=False):
+    """Run reverse Kruskal's algorithm on graph G.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        iterations (bool): True iff the tree at every iteration should be returned.
+    """
+    edges = nx.get_edge_attributes(G,'weight')
+    edges = list(dict(sorted(edges.items(), key=lambda item: item[1], reverse=True)))
+    G_prime = nx.Graph()
+    for i in range(len(G)):
+        G_prime.add_node(i)
+    G_prime.add_edges_from(edges)
+    trees = [list(G_prime.edges)]
+    i = 0
+    while len(G_prime.edges) > len(G) - 1:
+        u,v = edges[i]
+        G_prime.remove_edge(u,v)
+        if not nx.is_connected(G_prime):
+            G_prime.add_edge(u,v)
+        else:
+            trees.append(list(G_prime.edges))
+        i += 1
+    return trees if iterations else list(G_prime.edges)
+
+
+def spanning_tree_cost(G, tree):
+    """Return the cost of the given spanning tree.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        tree (List): List of edges in the spanning tree.
+    """
+    return sum([G[u][v]['weight'] for u,v in tree])
+
 
 # --------
 # Plotting
@@ -131,7 +219,7 @@ def dijkstras(G, s=0, iterations=False):
 # JAVASCRIPT
 
 increment = """
-if ((parseInt(n.text) + 1) < source.data['nodes'].length) {
+if ((parseInt(n.text) + 1) < parseInt(k.text)) {
     n.text = (parseInt(n.text) + 1).toString()
 }
 var iteration = parseInt(n.text)
@@ -144,17 +232,29 @@ if ((parseInt(n.text) - 1) >= 0) {
 var iteration = parseInt(n.text)
 """
 
-iteration_update = """
-if (iteration == source.data['nodes'].length - 1) {
+done_update = """
+if (iteration == parseInt(k.text) - 1) {
     done.text = "done."
 } else {
     done.text = ""
 }
+"""
 
+edge_subset_update = """
 edge_subset_src.data['xs'] = source.data['edge_xs'][iteration]
 edge_subset_src.data['ys'] = source.data['edge_ys'][iteration]
-table_src.data = source.data['tables'][iteration]
+edge_subset_src.change.emit()
+"""
 
+cost_update = """
+cost.text = source.data['costs'][iteration].toFixed(1)
+"""
+
+table_update = """
+table_src.data = source.data['tables'][iteration]
+"""
+
+nodes_update = """
 var in_tree = source.data['nodes'][iteration]
 
 for (let i = 0; i < nodes_src.data['line_color'].length ; i++) {
@@ -168,7 +268,6 @@ for (let i = 0; i < nodes_src.data['line_color'].length ; i++) {
 }
 
 nodes_src.change.emit()
-edge_subset_src.change.emit()
 """
 
 # HELPER FUNCTIONS
@@ -276,7 +375,7 @@ def plot_graph(G, edges=[], width=900, height=500):
     show(grid)
 
 
-def plot_graph_iterations(G, nodes=[], edges=[], tables=None, width=900, height=500):
+def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, width=900, height=500):
     """Plot the graph G with iterations of edges, nodes, and tables.
 
     Args:
@@ -294,55 +393,96 @@ def plot_graph_iterations(G, nodes=[], edges=[], tables=None, width=900, height=
         G.nodes[u]['line_color'] = '#EA8585'
         G.nodes[u]['fill_color'] = '#EA8585'
 
-    edge_xs = []
-    edge_ys = []
-    tables = [table.to_dict(orient='list') for table in tables]
-    for i in range(len(edges)):
-        xs = [G[u][v]['xs'] for u,v in edges[i]]
-        ys = [G[u][v]['ys'] for u,v in edges[i]]
-        edge_xs.append(xs)
-        edge_ys.append(ys)
+    # build source data dictionary
+    k = 0  # number of iterations
+    source_data = {}
+    if edges is not None:
+        k = len(edges)
+        edge_xs = []
+        edge_ys = []
+        for i in range(len(edges)):
+            xs = [G[u][v]['xs'] for u,v in edges[i]]
+            ys = [G[u][v]['ys'] for u,v in edges[i]]
+            edge_xs.append(xs)
+            edge_ys.append(ys)
+        source_data['edge_xs'] = edge_xs
+        source_data['edge_ys'] = edge_ys
+    if nodes is not None:
+        k = len(nodes)
+        source_data['nodes'] = nodes
+    if costs is not None:
+        k = len(costs)
+        source_data['costs'] = costs
+    if tables is not None:
+        k = len(tables)
+        tables = [table.to_dict(orient='list') for table in tables]
+        source_data['tables'] = tables
 
-    # data sources
+    # data sources and glyphs
+    args_dict = {}
     nodes_src, edges_src, labels_src = graph_sources(G)
-    source = ColumnDataSource(data={'edge_xs': edge_xs,
-                                    'edge_ys' : edge_ys,
-                                    'nodes' : nodes,
-                                    'tables' : tables})
-    edge_subset_src = ColumnDataSource(data={'xs': edge_xs[0],
-                                             'ys': edge_ys[0]})
-    table_src = ColumnDataSource(data=tables[0])
+    args_dict['nodes_src'] = nodes_src
+    source = ColumnDataSource(data=source_data)
+    args_dict['source'] = source
 
-
-    # glyphs
     n = Div(text='0', width=width, align='center')
+    k = Div(text=str(k), width=width, align='center')
     done = Div(text='', width=int(width/2), align='center')
+    args_dict['n'] = n
+    args_dict['k'] = k
+    args_dict['done'] = done
     edges_glyph, nodes_glyph = graph_glyphs(plot, nodes_src, edges_src, labels_src)
-    plot.multi_line('xs', 'ys', line_color='black', line_width=6, source=edge_subset_src)
-    columns = ([TableColumn(field='index', title='')] +
+
+    if edges is not None:
+        edge_subset_src = ColumnDataSource(data={'xs': edge_xs[0],
+                                                 'ys': edge_ys[0]})
+        plot.multi_line('xs', 'ys', line_color='black', line_width=6, source=edge_subset_src)
+        args_dict['edge_subset_src'] = edge_subset_src
+
+    if costs is not None:
+        cost = Div(text=str(costs[0]), width=int(width/2), align='center')
+        args_dict['cost'] = cost
+
+    if tables is not None:
+        table_src = ColumnDataSource(data=tables[0])
+        columns = ([TableColumn(field='index', title='')] +
                [TableColumn(field=str(i), title=str(i)) for i in range(len(tables[0])-1)])
-    table = DataTable(source=table_src, columns=columns, height=80, width=width, background='white', index_position=None,
-                      editable=False, reorderable=False, sortable=False, selectable=False)
+        table = DataTable(source=table_src, columns=columns, height=80, width=width, background='white', index_position=None,
+                        editable=False, reorderable=False, sortable=False, selectable=False)
+        args_dict['table_src'] = table_src
 
     # Javascript
-    next_btn_code = increment + iteration_update
-    prev_btn_code = decrement + iteration_update
+    next_btn_code = increment + done_update
+    prev_btn_code = decrement + done_update
+    if costs is not None:
+        next_btn_code += cost_update
+        prev_btn_code += cost_update
+    if edges is not None:
+        next_btn_code += edge_subset_update
+        prev_btn_code += edge_subset_update
+    if tables is not None:
+        next_btn_code += table_update
+        prev_btn_code += table_update
+    if nodes is not None:
+        next_btn_code += nodes_update
+        prev_btn_code += nodes_update
 
     # buttons
     next_button = Button(label="Next", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    next_button.js_on_click(CustomJS(args=dict(source=source, nodes_src=nodes_src, edge_subset_src=edge_subset_src,
-                                               table_src=table_src, done=done, n=n), code=next_btn_code))
+    next_button.js_on_click(CustomJS(args=args_dict, code=next_btn_code))
     prev_button = Button(label="Previous", button_type="success", width_policy='fit', sizing_mode='scale_width')
-    prev_button.js_on_click(CustomJS(args=dict(source=source, nodes_src=nodes_src, edge_subset_src=edge_subset_src,
-                                               table_src=table_src, done=done, n=n), code=prev_btn_code))
+    prev_button.js_on_click(CustomJS(args=args_dict, code=prev_btn_code))
 
     plot.add_tools(HoverTool(tooltips=[("Node", "$index")], renderers=[nodes_glyph]))
 
     # create layout
-    grid = gridplot([[plot],
-                     [table],
-                     [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
-                     [row(done)]],
+    layout = [[plot],
+              [row(prev_button, next_button, max_width=width, sizing_mode='stretch_both')],
+              [row(cost, done) if costs else row(done)]]
+    if tables is not None:
+        layout.insert(1, table)
+
+    grid = gridplot(layout,
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
@@ -351,7 +491,7 @@ def plot_graph_iterations(G, nodes=[], edges=[], tables=None, width=900, height=
 
 
 def plot_dijkstras(G, source=0, width=900, height=500):
-    """Plot the Dijkstra's algorithm executed on nodes and edges.
+    """Plot Dijkstra's algorithm running on G.
 
     Args:
         G (nx.Graph): Networkx graph.
@@ -359,3 +499,22 @@ def plot_dijkstras(G, source=0, width=900, height=500):
     """
     nodes, edges, tables = dijkstras(G, s=source, iterations=True)
     plot_graph_iterations(G, nodes=nodes, edges=edges, tables=tables, width=width, height=height)
+
+
+def plot_mst_algorithm(G, alg, i=0, width=900, height=500):
+    """Plot the MST algorithm running on G.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        alg (str): {'prims', 'kruskals', 'reverse_kruskals'}
+        source (int): Source vertex to run the algorithm from.
+    """
+    if alg == 'prims':
+        edges = prims(G, i=i, iterations=True)
+    elif alg == 'kruskals':
+        edges = kruskals(G, iterations=True)
+    elif alg == 'reverse_kruskals':
+        edges = reverse_kruskals(G, iterations=True)
+    nodes = [list(set([item for sublist in edge for item in sublist])) for edge in edges]
+    costs = [spanning_tree_cost(G, tree) for tree in edges]
+    plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs, width=width, height=height)

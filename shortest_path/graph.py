@@ -21,6 +21,7 @@ from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider
 # Graph Building
 # --------------
 
+
 def distance_matrix(nodes, manhattan=True):
     """Compute the distance matrix between the nodes.
 
@@ -47,7 +48,7 @@ def distance_matrix(nodes, manhattan=True):
         return np.sqrt(p1+p2+p3)
 
 
-def create_network(nodes, edges=None, directed=False):
+def create_network(nodes, edges=None, directed=False, manhattan=True):
     """Return networkx graph representing list of nodes/edges.
 
     If no edges are given, defaults to generating all edges with
@@ -57,9 +58,10 @@ def create_network(nodes, edges=None, directed=False):
         nodes (pd.DataFrame): Dataframe of nodes with positional columns (x,y).
         edges (pd.DataFrame): Dataframe of edges (u,v) with weight w.
         directed (bool): True iff graph is directed (defaults to False).
+        manhattan (bool): use manhattan distance matrix if true. Otherwise, use euclidian.
     """
     if edges is None:
-        G = nx.convert_matrix.from_numpy_matrix(A=distance_matrix(nodes),
+        G = nx.convert_matrix.from_numpy_matrix(A=distance_matrix(nodes, manhattan=manhattan),
                                                 create_using=nx.DiGraph if directed else nx.Graph)
     else:
         G = nx.convert_matrix.from_pandas_edgelist(df=edges,  source='u', target='v', edge_attr='weight',
@@ -67,6 +69,21 @@ def create_network(nodes, edges=None, directed=False):
     for attr in nodes.columns:
         nx.set_node_attributes(G, pd.Series(nodes[attr]).to_dict(), attr)
     return G
+
+
+def grid_instance(n, m, manhattan=True):
+    """Return a graph G representing an n x m set of nodes.
+
+    Args:
+        n (int): width of the grid.
+        m (int): height of the grid.
+        manhattan (bool): use manhattan distance matrix if true. Otherwise, use euclidian.
+    """
+    nodes = pd.DataFrame()
+    for i in range(n):
+        for j in range(m):
+            nodes = nodes.append({'name' : str((i,j)), 'x' : i, 'y' : j}, ignore_index=True)
+    return create_network(nodes, directed=False, manhattan=manhattan)
 
 
 # ----------

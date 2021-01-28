@@ -291,6 +291,38 @@ def insertion(G, initial=[0,1,0], nearest=True, iterations=False):
     return tours if iterations else tour
 
 
+def two_opt(G, tour, iterations=False):
+    """Run 2-OPT on the initial tour until no improvement can be made.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        tour (List[int]): intial tour to be improved.
+        iterations (bool): True iff the tree at every iteration should be returned.
+    """
+    def two_opt_iteration(tour,G):
+        for i in range(len(tour)-1):
+            for j in range(i,len(tour)-1):
+                u_1, u_2 = tour[i], tour[i+1]
+                v_1, v_2 = tour[j], tour[j+1]
+                if len(np.unique([u_1, u_2, v_1, v_2])) == 4:
+                    after_swap = G[u_1][v_1]['weight'] + G[u_2][v_2]['weight']
+                    before_swap = G[u_1][u_2]['weight'] + G[v_1][v_2]['weight']
+                    if after_swap < before_swap:
+                        swap = tour[i+1:j+1]
+                        swap.reverse()
+                        tour[i+1:j+1] = swap
+                        return True, [u_1, u_2, v_1, v_2]
+        return False, None
+
+    tours = [tour.copy()]
+    improved, swapped = two_opt_iteration(tour,G)
+    tours.append(tour.copy())
+    while improved:
+        improved, swapped = two_opt_iteration(tour,G)
+        tours.append(tour.copy())
+    return tours if iterations else tour
+
+
 def tour_cost(G, tour):
     """Return the cost of the tour on graph G.
 
@@ -785,7 +817,7 @@ def plot_tsp_heuristic(G, alg, initial, width=900, height=500):
 
     Args:
         G (nx.Graph): Networkx graph.
-        alg (str): {'random_neighbor', 'nearest_neighbor', 'nearest_insertion', 'furthest_insertion'}
+        alg (str): {'random_neighbor', 'nearest_neighbor', 'nearest_insertion', 'furthest_insertion', '2-OPT'}
         initial (int): Starting index or tour (depending on alg)
     """
     if alg == 'random_neighbor':
@@ -796,6 +828,8 @@ def plot_tsp_heuristic(G, alg, initial, width=900, height=500):
         tours = insertion(G, initial=initial, nearest=True, iterations=True)
     elif alg == 'furthest_insertion':
         tours = insertion(G, initial=initial, nearest=False, iterations=True)
+    elif alg == '2-OPT':
+        tours = two_opt(G, tour=initial, iterations=True)
     nodes = tours
     edges = [[(tour[i], tour[i+1]) for i in range(len(tour)-1)] for tour in tours]
     costs = [tour_cost(G, tour) for tour in tours]

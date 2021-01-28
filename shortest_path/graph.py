@@ -323,6 +323,48 @@ def two_opt(G, tour, iterations=False):
     return tours if iterations else tour
 
 
+def solve_tsp(G):
+    """Use OR-Tools to get a tour of the graph G.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+    """
+    # number of locations, number of vehicles, start location
+    manager = pywrapcp.RoutingIndexManager(len(G), 1, 0)
+    routing = pywrapcp.RoutingModel(manager)
+
+    def distance_callback(from_index, to_index):
+        """Returns the distance between the two nodes."""
+        from_node = manager.IndexToNode(from_index)
+        to_node = manager.IndexToNode(to_index)
+        return G[from_node][to_node]['weight']*10000
+
+    transit_callback_index = routing.RegisterTransitCallback(distance_callback)
+    routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+
+    def get_routes(solution, routing, manager):
+        """Get vehicle routes from a solution and store them in an array."""
+        routes = []
+        for route_nbr in range(routing.vehicles()):
+            index = routing.Start(route_nbr)
+            route = [manager.IndexToNode(index)]
+            while not routing.IsEnd(index):
+                index = solution.Value(routing.NextVar(index))
+                route.append(manager.IndexToNode(index))
+            routes.append(route)
+        return routes
+
+    solution = routing.Solve()
+    return get_routes(solution, routing, manager)[0]
+
+
+def optimal_tour(name):
+    """Return an optimal tour for some instance name."""
+    with open('data/optimal_tours.pickle', 'rb') as f:
+        optimal_tours = pickle.load(f)
+    return optimal_tours[name]
+
+
 def tour_cost(G, tour):
     """Return the cost of the tour on graph G.
 

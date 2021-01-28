@@ -315,12 +315,13 @@ def two_opt(G, tour, iterations=False):
         return False, None
 
     tours = [tour.copy()]
+    swaps = []
     improved, swapped = two_opt_iteration(tour,G)
-    tours.append(tour.copy())
     while improved:
-        improved, swapped = two_opt_iteration(tour,G)
         tours.append(tour.copy())
-    return tours if iterations else tour
+        swaps.append(swapped.copy())
+        improved, swapped = two_opt_iteration(tour,G)
+    return (tours, swaps) if iterations else tour
 
 
 def solve_tsp(G):
@@ -431,6 +432,14 @@ for (let i = 0; i < nodes_src.data['line_color'].length ; i++) {
 }
 
 nodes_src.change.emit()
+"""
+
+swaps_update = """
+swaps_src.data['swaps_before_x'] = source.data['swaps_before_x'][iteration]
+swaps_src.data['swaps_before_y'] = source.data['swaps_before_y'][iteration]
+swaps_src.data['swaps_after_x'] = source.data['swaps_after_x'][iteration]
+swaps_src.data['swaps_after_y'] = source.data['swaps_after_y'][iteration]
+swaps_src.change.emit()
 """
 
 on_hover = """
@@ -720,7 +729,7 @@ def plot_create(G, create, width=900, height=500, show_us=False):
     show(grid)
 
 
-def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, show_edges=True,
+def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, swaps=None, show_edges=True,
                           show_labels=True, width=900, height=500, show_us=False):
     """Plot the graph G with iterations of edges, nodes, and tables.
 
@@ -763,6 +772,30 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, s
         k = len(tables)
         tables = [table.to_dict(orient='list') for table in tables]
         source_data['tables'] = tables
+    if swaps is not None:
+        k = len(swaps) + 1
+        swaps_before_x = []
+        swaps_before_y = []
+        swaps_after_x = []
+        swaps_after_y = []
+        for swap in swaps:
+            get_coord = lambda i: (G.nodes()[swap[i]]['x'], G.nodes()[swap[i]]['y'])
+            (u1x, u1y) = get_coord(0)
+            (u2x, u2y) = get_coord(1)
+            (v1x, v1y) = get_coord(2)
+            (v2x, v2y) = get_coord(3)
+            swaps_before_x.append([[u1x, u2x],[v1x, v2x]])
+            swaps_before_y.append([[u1y, u2y],[v1y, v2y]])
+            swaps_after_x.append([[u1x, v1x],[u2x, v2x]])
+            swaps_after_y.append([[u1y, v1y],[u2y, v2y]])
+        swaps_before_x.append([[],[]])
+        swaps_before_y.append([[],[]])
+        swaps_after_x.append([[],[]])
+        swaps_after_y.append([[],[]])
+        source_data['swaps_before_x'] = swaps_before_x
+        source_data['swaps_before_y'] = swaps_before_y
+        source_data['swaps_after_x'] = swaps_after_x
+        source_data['swaps_after_y'] = swaps_after_y
 
     # data sources and glyphs
     args_dict = {}
@@ -798,6 +831,15 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, s
                           editable=False, reorderable=False, sortable=False, selectable=False)
         args_dict['table_src'] = table_src
 
+    if swaps is not None:
+        swaps_src = ColumnDataSource(data={'swaps_before_x': swaps_before_x[0],
+                                           'swaps_before_y': swaps_before_y[0],
+                                           'swaps_after_x': swaps_after_x[0],
+                                           'swaps_after_y': swaps_after_y[0]})
+        plot.multi_line(xs='swaps_before_x', ys='swaps_before_y', line_color='red', line_width=6, level='overlay', source=swaps_src)
+        plot.multi_line(xs='swaps_after_x', ys='swaps_after_y', line_color='#90D7F6', line_width=6, level='overlay', source=swaps_src)
+        args_dict['swaps_src'] = swaps_src
+
     # Javascript
     next_btn_code = increment + done_update
     prev_btn_code = decrement + done_update
@@ -813,6 +855,10 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, s
     if nodes is not None:
         next_btn_code += nodes_update
         prev_btn_code += nodes_update
+    if swaps is not None:
+        next_btn_code += swaps_update
+        prev_btn_code += swaps_update
+
 
     # buttons
     next_button = Button(label="Next", button_type="success", width_policy='fit', sizing_mode='scale_width')
@@ -875,6 +921,7 @@ def plot_tsp_heuristic(G, alg, initial, width=900, height=500, show_us=False):
         alg (str): {'random_neighbor', 'nearest_neighbor', 'nearest_insertion', 'furthest_insertion', '2-OPT'}
         initial (int): Starting index or tour (depending on alg)
     """
+    swaps = None
     if alg == 'random_neighbor':
         tours = neighbor(G, initial=initial, nearest=False, iterations=True)
     elif alg == 'nearest_neighbor':
@@ -884,9 +931,9 @@ def plot_tsp_heuristic(G, alg, initial, width=900, height=500, show_us=False):
     elif alg == 'furthest_insertion':
         tours = insertion(G, initial=initial, nearest=False, iterations=True)
     elif alg == '2-OPT':
-        tours = two_opt(G, tour=initial, iterations=True)
+        tours, swaps = two_opt(G, tour=initial, iterations=True)
     nodes = tours
     edges = [[(tour[i], tour[i+1]) for i in range(len(tour)-1)] for tour in tours]
     costs = [tour_cost(G, tour) for tour in tours]
-    plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs, show_edges=False,
+    plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs, swaps=swaps, show_edges=False,
                           show_labels=False, width=width, height=height, show_us=show_us)

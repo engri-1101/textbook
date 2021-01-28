@@ -451,7 +451,7 @@ def graph_range(x, y):
     return min_x, max_x, min_y, max_y
 
 
-def blank_plot(G, plot_width, plot_height):
+def blank_plot(G, plot_width, plot_height, show_us=False):
     """Return a blank bokeh plot."""
     min_x, max_x, min_y, max_y = graph_range(nx.get_node_attributes(G,'x').values(),
                                              nx.get_node_attributes(G,'y').values())
@@ -471,7 +471,19 @@ def blank_plot(G, plot_width, plot_height):
     plot.outline_line_color = None
     plot.toolbar.active_drag = None
     plot.toolbar.active_scroll = None
+    if show_us:
+        us_outline(plot)
     return plot
+
+
+def us_outline(plot):
+    """Add an outline of the US to the plot."""
+    plot.image_url(url=['images/us.png'],
+                   x=plot.x_range.start-20,
+                   y=plot.y_range.end+5,
+                   w=plot.x_range.end - plot.x_range.start,
+                   h=plot.y_range.end - plot.y_range.start,
+                   level='image')
 
 
 def set_edge_positions(G):
@@ -534,7 +546,7 @@ def graph_glyphs(plot, nodes_src, edges_src, labels_src, show_edges=True, show_l
 # MAIN FUNCTIONS
 
 
-def plot_graph(G, show_all_edges=True, show_labels=True, edges=[], width=900, height=500):
+def plot_graph(G, show_all_edges=True, show_labels=True, edges=[], width=900, height=500, show_us=False):
     """Plot the graph G.
 
     Args:
@@ -542,7 +554,7 @@ def plot_graph(G, show_all_edges=True, show_labels=True, edges=[], width=900, he
         edges (List): Edges to highlight.
     """
     G = G.copy()
-    plot = blank_plot(G, plot_width=width, plot_height=height)
+    plot = blank_plot(G, plot_width=width, plot_height=height, show_us=show_us)
 
     set_edge_positions(G)
     set_graph_colors(G, edges, show_all_edges=show_all_edges)
@@ -558,7 +570,7 @@ def plot_graph(G, show_all_edges=True, show_labels=True, edges=[], width=900, he
     show(grid)
 
 
-def plot_create(G, create, width=900, height=500):
+def plot_create(G, create, width=900, height=500, show_us=False):
     """Plot a graph in which you can either create a tour or spanning tree.
 
     Args:
@@ -573,7 +585,7 @@ def plot_create(G, create, width=900, height=500):
         show_labels=True
 
     G = G.copy()
-    plot = blank_plot(G, plot_width=width, plot_height=height)
+    plot = blank_plot(G, plot_width=width, plot_height=height, show_us=show_us)
 
     set_edge_positions(G)
     set_graph_colors(G, show_all_edges=show_all_edges)
@@ -681,6 +693,7 @@ def plot_create(G, create, width=900, height=500):
     add_node(v)
     if (tour.length == n) {
         add_node(tour[0])
+        error_msg.text = 'done.'
     }
 
     source.change.emit()
@@ -707,8 +720,8 @@ def plot_create(G, create, width=900, height=500):
     show(grid)
 
 
-def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None,
-                          show_edges=True, show_labels=True, width=900, height=500):
+def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None, show_edges=True,
+                          show_labels=True, width=900, height=500, show_us=False):
     """Plot the graph G with iterations of edges, nodes, and tables.
 
     Args:
@@ -718,7 +731,7 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None,
         tables (List): Tables at each iteration.
     """
     G = G.copy()
-    plot = blank_plot(G, plot_width=width, plot_height=height)
+    plot = blank_plot(G, plot_width=width, plot_height=height, show_us=show_us)
 
     set_edge_positions(G)
     set_graph_colors(G)
@@ -854,7 +867,7 @@ def plot_mst_algorithm(G, alg, i=0, width=900, height=500):
     plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs, width=width, height=height)
 
 
-def plot_tsp_heuristic(G, alg, initial, width=900, height=500):
+def plot_tsp_heuristic(G, alg, initial, width=900, height=500, show_us=False):
     """Plot the TSP heuristic running on G.
 
     Args:
@@ -875,5 +888,5 @@ def plot_tsp_heuristic(G, alg, initial, width=900, height=500):
     nodes = tours
     edges = [[(tour[i], tour[i+1]) for i in range(len(tour)-1)] for tour in tours]
     costs = [tour_cost(G, tour) for tour in tours]
-    plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs,
-                          show_edges=False, show_labels=False, width=width, height=height)
+    plot_graph_iterations(G, nodes=nodes, edges=edges, costs=costs, show_edges=False,
+                          show_labels=False, width=width, height=height, show_us=show_us)

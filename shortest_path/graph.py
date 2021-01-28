@@ -359,6 +359,10 @@ for (let i = 0; i < nodes_src.data['line_color'].length ; i++) {
 nodes_src.change.emit()
 """
 
+on_hover = """
+source.data['last_index'] = cb_data.index.indices[0]
+"""
+
 # HELPER FUNCTIONS
 
 
@@ -405,8 +409,8 @@ def set_edge_positions(G):
 def set_graph_colors(G, edges=[], show_all_edges=True):
     """Add node/edge attribute with color data. Highlight edges."""
     for u in G.nodes:
-        G.nodes[u]['line_color'] = 'steelblue'
-        G.nodes[u]['fill_color'] = 'steelblue'
+        G.nodes[u]['line_color'] = '#EA8585'
+        G.nodes[u]['fill_color'] = '#EA8585'
     for u,v in G.edges:
         G[u][v]['line_color'] = 'lightgray'
         if show_all_edges:
@@ -420,14 +424,21 @@ def set_graph_colors(G, edges=[], show_all_edges=True):
 
 def graph_sources(G):
     """Return data sources for the graph G."""
-    nodes_src = ColumnDataSource(data=pd.DataFrame([G.nodes[u] for u in sorted(G.nodes())]).to_dict(orient='list'))
-    edges_src = ColumnDataSource(data=pd.DataFrame([G[u][v] for u,v in G.edges()]).to_dict(orient='list'))
+    nodes_df = pd.DataFrame([G.nodes[u] for u in sorted(G.nodes())])
+    nodes_src = ColumnDataSource(data=nodes_df.to_dict(orient='list'))
+
+    edges_df = pd.DataFrame([G[u][v] for u,v in G.edges()])
+    u,v = zip(*[(u,v) for u,v in G.edges])
+    edges_df['u'] = u
+    edges_df['v'] = v
+    edges_src = ColumnDataSource(data=edges_df.to_dict(orient='list'))
+
     labels_src = ColumnDataSource(data={'x': [np.mean(i) for i in nx.get_edge_attributes(G, 'xs').values()],
                                         'y': [np.mean(i) for i in nx.get_edge_attributes(G, 'ys').values()],
                                         'text': list(nx.get_edge_attributes(G,'weight').values())})
     return nodes_src, edges_src, labels_src
 
-# TODO: Ensure nodes are plotted above edges
+
 def graph_glyphs(plot, nodes_src, edges_src, labels_src, show_edges=True, show_labels=True):
     """Add and return glyphs for nodes and edges"""
     edges_glyph = plot.multi_line(xs='xs', ys='ys',
@@ -435,8 +446,9 @@ def graph_glyphs(plot, nodes_src, edges_src, labels_src, show_edges=True, show_l
                                   line_width=6, nonselection_line_alpha=1,
                                   visible=show_edges,
                                   alpha='visible',
+                                  level='image',
                                   source=edges_src)
-    nodes_glyph = plot.circle(x='x', y='y', size=12,
+    nodes_glyph = plot.circle(x='x', y='y', size=12, level='glyph',
                               line_color='line_color', fill_color='fill_color',
                               nonselection_fill_alpha=1, source=nodes_src)
 
@@ -468,6 +480,156 @@ def plot_graph(G, show_all_edges=True, show_labels=True, edges=[], width=900, he
                     plot_width=width, plot_height=height,
                     toolbar_location = None,
                     toolbar_options={'logo': None})
+
+    show(grid)
+
+
+def plot_create(G, create, width=900, height=500):
+    """Plot a graph in which you can either create a tour or spanning tree.
+
+    Args:
+        G (nx.Graph): Networkx graph.
+        create (string): {'tour', 'tree'}
+    """
+    if create == 'tour':
+        show_all_edges=False
+        show_labels=False
+    elif create == 'tree':
+        show_all_edges=True
+        show_labels=True
+
+    G = G.copy()
+    plot = blank_plot(G, plot_width=width, plot_height=height)
+
+    set_edge_positions(G)
+    set_graph_colors(G, show_all_edges=show_all_edges)
+
+    nodes_src, edges_src, labels_src = graph_sources(G)
+
+    source = ColumnDataSource(data={'tree_nodes': [],
+                                    'tree_edges' : [],
+                                    'clicked' : []})
+    tour_src =  ColumnDataSource(data={'edges_x' : [],
+                                       'edges_y' : []})
+    cost_matrix = ColumnDataSource(data={'G' : nx.adjacency_matrix(G).todense().tolist()})
+    cost = Div(text='0.0', width=int(width/3), align='center')
+    error_msg = Div(text='', width=int(width/3), align='center')
+    clicked = Div(text='[]', width=int(width/3), align='center')
+    plot.line(x='edges_x', y='edges_y', line_color='black', line_width=6, level='image', source=tour_src)
+    edges_glyph, nodes_glyph = graph_glyphs(plot, nodes_src, edges_src, labels_src, show_labels=show_labels)
+
+    check_done = """
+    if (error_msg.text == 'done.') {
+        return;
+    }
+    """
+
+    create_tree_on_click = """
+    var i = source.data['last_index']
+    var u = edges_src.data['u'][i]
+    var v = edges_src.data['v'][i]
+    var w = edges_src.data['weight'][i]
+
+    var tree_nodes = source.data['tree_nodes']
+    var tree_edges = source.data['tree_edges']
+
+    if (!tree_nodes.includes(u) || !tree_nodes.includes(v)) {
+        if (!tree_nodes.includes(v)) {
+            tree_nodes.push(v)
+            nodes_src.data['line_color'][v] = 'steelblue'
+            nodes_src.data['fill_color'][v] = 'steelblue'
+        }
+        if (!tree_nodes.includes(u)) {
+            tree_nodes.push(u)
+            nodes_src.data['line_color'][u] = 'steelblue'
+            nodes_src.data['fill_color'][u] = 'steelblue'
+        }
+        edges_src.data['line_color'][i] = 'black'
+        tree_edges.push([u,v])
+        var prev_cost = parseFloat(cost.text)
+        cost.text = (prev_cost + w).toFixed(1)
+        error_msg.text = ''
+    } else {
+        error_msg.text = 'You have selected an invalid edge.'
+    }
+
+    if (tree_nodes.length == nodes_src.data['x'].length) {
+        error_msg.text = 'done.'
+    }
+
+    clicked.text = '['
+    for (let i = 0; i < tree_edges.length; i++) {
+        clicked.text = clicked.text.concat('(').concat(tree_edges[i].join(',')).concat(')')
+        if (!(i == tree_edges.length - 1)) {
+            clicked.text = clicked.text.concat(',')
+        }
+    }
+    clicked.text = clicked.text.concat(']')
+
+    source.change.emit()
+    nodes_src.change.emit()
+    edges_src.change.emit()
+    """
+
+    create_tour_on_click = """
+    var v = source.data['last_index']
+    var n = nodes_src.data['line_color'].length
+    var tour = source.data['clicked']
+
+    if (tour.includes(v)) {
+        error_msg.text = 'This node is already in the tour.'
+        return;
+    } else {
+        error_msg.text = ''
+    }
+
+    function add_node(v) {
+        // add to cost
+        if (tour.length > 0) {
+            var u = tour[tour.length - 1]
+            var prev_cost = parseFloat(cost.text)
+            cost.text = (prev_cost + cost_matrix.data['G'][u][v]).toFixed(1)
+        }
+
+        // add to tour
+        tour.push(v)
+        clicked.text = '['.concat(tour.join(',')).concat(']')
+
+        // highlight new node
+        nodes_src.data['line_color'][v] = 'steelblue'
+        nodes_src.data['fill_color'][v] = 'steelblue'
+
+        // highlight new edge
+        tour_src.data['edges_x'].push(nodes_src.data['x'][v])
+        tour_src.data['edges_y'].push(nodes_src.data['y'][v])
+    }
+
+    add_node(v)
+    if (tour.length == n) {
+        add_node(tour[0])
+    }
+
+    source.change.emit()
+    tour_src.change.emit()
+    nodes_src.change.emit()
+    """
+
+    plot.add_tools(HoverTool(tooltips=[("Node", "$index")], renderers=[nodes_glyph]),
+                   HoverTool(tooltips=None,
+                             callback=CustomJS(args=dict(source=source), code=on_hover),
+                             renderers=[edges_glyph if create=='tree' else nodes_glyph]),
+                   TapTool(callback=CustomJS(args=dict(source=source, edges_src=edges_src, nodes_src=nodes_src, tour_src=tour_src,
+                                                       cost_matrix=cost_matrix, cost=cost, error_msg=error_msg, clicked=clicked),
+                                             code=check_done + create_tree_on_click if create=='tree' else create_tour_on_click),
+                           renderers=[edges_glyph if create=='tree' else nodes_glyph]))
+
+    # create layout
+    grid = gridplot([[plot],
+                     [row(cost,error_msg,clicked)]],
+                    plot_width=width, plot_height=height,
+                    toolbar_location = None,
+                    toolbar_options={'logo': None})
+
     show(grid)
 
 
@@ -534,7 +696,7 @@ def plot_graph_iterations(G, nodes=None, edges=None, costs= None, tables=None,
     if edges is not None:
         edge_subset_src = ColumnDataSource(data={'xs': edge_xs[0],
                                                  'ys': edge_ys[0]})
-        plot.multi_line('xs', 'ys', line_color='black', line_width=6, source=edge_subset_src)
+        plot.multi_line('xs', 'ys', line_color='black', line_width=6, level='underlay', source=edge_subset_src)
         args_dict['edge_subset_src'] = edge_subset_src
 
     if costs is not None:

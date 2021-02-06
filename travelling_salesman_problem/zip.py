@@ -10,6 +10,7 @@ def write_dir(zipObj, path):
 # Lab 
 with ZipFile('travelling_salesman_problem_lab.zip', 'w') as zipObj:
     zipObj.write('travelling_salesman_problem_lab.ipynb')
+    zipObj.write('tsp.py')
     write_dir(zipObj, 'data')
     write_dir(zipObj, 'images')
     zipObj.close()        

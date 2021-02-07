@@ -7,6 +7,12 @@ def write_dir(zipObj, path):
     for file in [y for x in os.walk(path) for y in glob.glob(os.path.join(x[0],'*'))]:
         zipObj.write(file)
 
+# Lab
+with ZipFile('shortest_path_lab.zip', 'w') as zipObj:
+    zipObj.write('shortest_path_lab.ipynb')
+    write_dir(zipObj, 'data')
+    write_dir(zipObj, 'images')
+    zipObj.close()
 
 # Demo
 with ZipFile('shortest_path_demo.zip', 'w') as zipObj:

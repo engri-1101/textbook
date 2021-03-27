@@ -2,10 +2,12 @@ name: engri_1101
 channels:
   - http://conda.anaconda.org/gurobi
   - defaults
+  - conda-forge
 dependencies:
   - python=3.7
   - nb_conda
   - ipykernel
+  - geopandas==0.8.1
   - pip
   - pip:
     - bokeh==2.2.3
@@ -20,5 +22,3 @@ dependencies:
     - scipy==1.5.4
     - shapely==1.7.1
     - descartes==1.1.0
-    - geopandas==0.8.1
-    

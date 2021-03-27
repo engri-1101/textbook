@@ -60,7 +60,11 @@ In this class, we will use a Python distribution called \href{https://www.anacon
 \end{tabular}
 \end{center}
 
-\noindent \textbf{Note:} If you are using Windows, you must download the following software first: \href{https://visualstudio.microsoft.com/downloads/?q=Visual+C\%2B\%2B+Redistributable+for+Visual+Studio}{Microsoft Visual C++ Redistributable for Visual Studio 2019} (select the x64 version). This is because the OR-Tools library for Python is a wrapper for the C++ native library. \newline
+\noindent \textbf{Note:} If you are using Windows, you must download the following software first: \href{https://visualstudio.microsoft.com/downloads/?q=Visual+C\%2B\%2B+Redistributable+for+Visual+Studio}{Microsoft Visual C++ Redistributable for Visual Studio 2019} (select the x64 version at the bottom of the page). This is because the OR-Tools library for Python is a wrapper for the C++ native library. \newline
+
+\begin{center}
+\includegraphics[scale=0.4]{vs_download}
+\end{center}
 
 We will now walk through the steps for creating a virtual environment in Anaconda. In a virtual environment, the installed packages are isolated to that environment. Hence, if you install a python package in one environment, you could not reference it in another. You will import an environment that already has all necessary packages installed. First, open up the Anaconda application.
 
@@ -84,6 +88,8 @@ We will now walk through the steps for creating a virtual environment in Anacond
 \item Navigate to the file \texttt{test\char`_install.ipynb} and open it. Run the first block of code. This should run without errors if your virtual environment has been set up properly!
 
 \end{enumerate}
+
+\newpage
 
 \section{Gurobi Installation}
 

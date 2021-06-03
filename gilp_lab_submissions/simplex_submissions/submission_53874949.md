@@ -1,0 +1,475 @@
+# Geometry of Simplex Lab
+
+## Objectives
+- Understand the geometry of a linear program's feasible region.
+- Use isoprofit lines and planes to solve 2D and 3D LPs graphically.
+- Identify the most limiting constraint in an iteration of simplex both algebraically and geometrically.
+- Identify the geometric features corresponding to dictionaries.
+- Describe the geometrical decision made at each iteration of simplex.
+
+## Review
+Recall, linear programs (LPs) have three main components: decision variables, constraints, and an objective function. The goal of linear programming is to find a **feasible solution** (a solution satisfying every constraint) with the highest objective value. The set of feasible solutions form a **feasible region**. In lecture, we learned about isoprofit lines. For every objective value, we can define an isoprofit line. Isoprofit lines have the property that two solutions on the same line have the same objective value and all isoprofit lines are parallel. 
+
+In the first part of the lab, we will use a Python package called GILP to solve linear programs graphically. We introduce the package now.
+
+## GILP
+
+If you are running this file in a Google Colab Notebook, uncomment the following line and run it. Otherwise, you can ignore it.
+
+
+```python
+#!pip install gilp
+```
+
+This lab uses default LPs built in to GILP. We import them below.
+
+
+```python
+from gilp import examples as ex
+```
+
+We access the LP examples using `ex.NAME` where `NAME` is the name of the example LP. For example, consider:
+
+$$\begin{align*}
+\max \quad & 5x_1+3x_2\\
+\text{s.t.} \quad & 2x_1 + 1x_2 \leq 20 \\
+\quad & 1x_1 + 1x_2 \leq 16
+ \\
+\quad & 1x_1 + 0x_2 \leq 7 \\
+\quad & x_1, x_2 \geq 0 \\
+\end{align*}$$
+
+This example LP is called `ALL_INTEGER_2D_LP`. We assign this LP to the variable `lp` below.
+
+
+```python
+lp = ex.ALL_INTEGER_2D_LP
+```
+
+We can visualize this LP using a function called `lp_visual()`. First, we must import it.
+
+
+```python
+from gilp.visualize import lp_visual
+```
+
+The function `lp_visual()` takes an LP and returns a visualization. We then use the `.show()` function to display the visualiazation.
+
+
+```python
+lp_visual(lp).show()
+```
+
+On the left, you can see a coordinate plane where the $x$-axis corresponds to the value of $x_1$ and the $y$-axis corresponds to the value of $x_2$. The region shaded blue is the feasible region. Along the perimeter of the feasible region, you can see points where two edges come to a "corner". You can hover over these **corner points** to see information about them. Only some of the information in the hover box will be relevant for Part I. The first two values of **BFS** represent the values of $x_1$ and $x_2$ respectively and **Obj** is the objective value. For example, the upper left corner point has solution $x_1 = 0$ and $x_2 = 16$ with objective value 48. The dashed lines represent the constraints. You can click on the constraints in the legend to mute and un-mute them. Note this does not alter the LP; it just changes visibility. Lastly, the objective slider allows you to see the isoprofit line for a range of objective values.  
+
+# Part I: Solving Linear Programs Graphically
+
+Let's use GILP to solve the following LP graphically:
+
+$$\begin{align*}
+\max \quad & 5x_1+3x_2\\
+\text{s.t.} \quad & 2x_1 + 1x_2 \leq 20 \\
+\quad & 1x_1 + 1x_2 \leq 16 \\
+\quad & 1x_1 + 0x_2 \leq 7 \\
+\quad & x_1, x_2 \geq 0 \\
+\end{align*}$$
+
+Recall, this LP is called `ALL_INTEGER_2D_LP`.
+
+
+```python
+lp = ex.ALL_INTEGER_2D_LP # get LP example
+lp_visual(lp).show() # visualize it
+```
+
+**Q1:** How can you use isoprofit lines to solve LPs graphically?
+
+**A:** We find the isoprofit line with the highest objective value that still touches the feasible solution area. 
+
+**Q2:** Use the objective slider to solve this LP graphically. Give an optimal solution and objective value. Argue why it is optimal. (Hint: The objective slider shows the isoprofit line (in red) for some objective value.)
+
+**A:** The optimal solution is (4, 12) and the objective value is 56. We know this because it is the point of intersection of the last isoprofit line that touches the feasible solution area. 
+
+**Q3:** Plug your solution from **Q2** back into the LP and verify that each constraint is satisfied (don't forget non-negativity constraints!) and the objective value is as expected. Show your work.
+
+**A:** 2(4)+1(12)<=20? 20 is equal to 20 so yes that works.
+1(4)+1(12)<=16? 16 is equal to 16 so that works as well.
+1(4)+0(12)<=7? 4 is less than 7 so that works.
+Both 4 and 12 are greater than 0 so the non-negativity constraints are satisfied.
+All constraints are satisfied so this is a viable optimal solution.
+
+Let's try another! This LP is called `DEGENERATE_FIN_2D_LP`.
+
+$$\begin{align*}
+\max \quad & 1x_1+2x_2\\
+\text{s.t.} \quad & 0x_1 + 1x_2 \leq 4 \\
+\quad & 1x_1 - 1x_2 \leq 2 \\
+\quad & 1x_1 + 0x_2 \leq 3 \\
+\quad & -2x_1 + 1x_2 \leq 0 \\
+\quad & x_1, x_2 \geq 0 \\
+\end{align*}$$
+
+
+```python
+lp = ex.DEGENERATE_FIN_2D_LP # get LP example
+lp_visual(lp).show() # visualize it
+```
+
+**Q4:** Use the objective slider to solve the `DEGENERATE_FIN_2D_LP` LP graphically. Give an optimal solution and objective value. (Hint: The objective slider shows the isoprofit line (in red) for some objective value.)
+
+**A:** The optimal solution is (3,4) and the objective value is 11.
+
+You should now be comfortable solving linear programs with two decision variables graphically. In this case, each constraint is a line representing an inequality. These inequalites define a shaded region in the coordinate plane which is our feasible region. Lastly, the isoprofits are parallel lines. To find an optimal solution, we just increase the objective value while the corresponding isoprofit line still intersects the 2D feasible region. 
+
+Now, we will try to wrap our head around an LP with three decision variables! Similar to before, we can plot solutions to a 3D LP on a plot with 3 axes. Here, the $x$-axis corresponds to the value of $x_1$ and the $y$-axis corresponds to the value of $x_2$ as before. Furthermore, the $z$-axis corresponds to the value of $x_3$. Now, constraints are *planes* representing an inequality. These inequality planes define a 3D shaded region which is our feasible region. The isoprofits are isoprofit *planes* which are parallel. To find an optimal solution, we just increase the objective value while the corresponding isoprofit plane still intersects the 3D feasible region. Let us look at an example.
+
+This LP is called `ALL_INTEGER_3D_LP`:
+
+$$\begin{align*}
+\max \quad & 1x_1+2x_2+4x_3\\
+\text{s.t.} \quad & 1x_1 + 0x_2 + 0x_3 \leq 6 \\
+\quad & 1x_1 + 0x_2 + 1x_3 \leq 8 \\
+\quad & 0x_1 + 0x_2 + 1x_3 \leq 5 \\
+\quad & 0x_1 + 1x_2 + 1x_3 \leq 8 \\
+\quad & x_1, x_2 \geq 0 \\
+\end{align*}$$
+
+
+
+```python
+lp = ex.ALL_INTEGER_3D_LP # get LP example
+lp_visual(lp).show() # visualize it
+```
+
+The 3D feasible region is shown on the left. Hold and drag the mouse to examine it from different angles. Next, click on a constraint to un-mute it. Each constraint is a gray plane in 3D space. Un-mute the constraints one by one to see how they define the 3D feasible region. Move the objective slider to see the isoprofit planes. The isoprofit plane is light gray and the intersection with the feasible region is shown in red. Like the 2D visualization, you can hover over corner points to see information about that point.
+
+**Q5:** Use the objective slider to solve this LP graphically. Give an optimal solution and objective value. (Hint: The objective slider shows the isoprofit plane for some objective value in light gray and the intersection with the feasible region in red.)
+
+**A:** The optimal solution is (3,3,5) and the objective value is 29. This is an opitmal solution because it is the highest objective value that still has any intersection between the isoprofit plane and the feasible solution space.
+
+When it comes to LPs with 4 or more decision variables, our graphical approaches fail. We need to find a different way to solve linear programs of this size.
+
+# Part II: The Simplex Algorithm for Solving LPs
+
+## Dictionary Form LP
+
+First, let's answer some guiding questions that will help to motivate the simplex algorithm.  
+
+**Q6:** Does there exist a unique way to write any given inequality constraint? If so, explain why each constraint can only be written one way. Otherwise, give 2 ways of writing the same inequality constraint.
+
+**A:** There does not exist one unique way to write a given inequality constraint. For example you could write y=4 or you could write 0<y<=4 and 4<=y<8
+
+**Q7:** Consider the following two constraints: $2x_1 + 1x_2 \leq 20$ and $2x_1 + 1x_2 + x_3 = 20$ where all $x$ are nonnegative. Are these the same constraint? Why? (This question is tricky!)
+
+**A:** These are not the same constraint as there are values that make the first work that don't work in the second and vice versa. This is primarily due to the = vs the <= signs.
+
+**Q8:** Based on your answers to **Q6** and **Q7**, do you think there exists a unique way to write any given LP?
+
+**A:** No, I do not believe that there exists a unique way to write any given LP.
+
+You should have found that there are many ways to write some LP. This begs a new question: are some ways of writing an LP harder or easier to solve than others? Consider the following LP: 
+
+$$\begin{align*}
+\max \quad & 56 - 2x_3 - 1x_4\\
+\text{s.t.} \quad & x_1 = 4 - 1x_3 + 1x_4 \\
+\quad & x_2 = 12 + 1x_3 - 2x_4 \\
+\quad & x_5 = 3 + 1x_3 - 1x_4 \\
+\quad & x_1, x_2, x_3, x_4, x_5 \geq 0 \\
+\end{align*}$$
+
+**Q9:** Just by looking at this LP, can you give an optimal solution and its objective value. If so, explain what property of the LP allows you to do this. (Hint: Look at the objective function)
+
+**A:** The optimal solution is (4, 12, 0, 0, 3). The objective value is 56. I'm not sure what the property is called but it says that if each coefficient of the variables are negative and there is a constraint that makes all variables positive, then the variables in the objective function should be zero giving us an objective value of 56 in this case.
+
+The LP above is the same as `ALL_INTEGER_2D_LP` just rewritten in a different way! This rewitten form (which we found is easier to solve) was found using the simplex algorithm. At its core, the simplex algorithm strategically rewrites an LP until it is in a form that is "easy" to solve. 
+
+The simplex algorithm relies on an LP being in **dictionary form**. Recall the following properties of an LP in dictionary form:
+- All constraints are equality constraints
+- All variables are constrained to be nonnegative
+- Each variable only appears on the left-hand side (LHS) or the right-hand side (RHS) of the constraints (not both)
+- Each constraint has a unique variable on the LHS
+- The objective function is in terms of the variables that appear on the RHS of the constraints only.
+- All constants on the RHS of the constraints are nonnegative
+
+**Q10:** Rewrite the example LP `ALL_INTEGER_2D_LP` in dictionary form. Show your steps!
+
+$$\begin{align*}
+\max \quad & 5x_1+3x_2\\
+\text{s.t.} \quad & 2x_1 + 1x_2 \leq 20 \\
+\quad & 1x_1 + 1x_2 \leq 16 \\
+\quad & 1x_1 + 0x_2 \leq 7 \\
+\quad & x_1, x_2 \geq 0 \\
+\end{align*}$$
+
+**A:** The max is still 5x_1+3x_2 such that x_3=20-2x_1-x_2>=0 which leads to x_3=20-2x_1-x_2. Then there is 
+     x_4=16-x_1-x_2>=0 which leads to x_4=16-x_1-x_2 and
+     x_5=7-x_1>=0 which leads to x_5=7-x_1 and 
+     x_1,x_2,x_3,x_4,x_5 >= 0 to compensate for the fact that each variable must be above 0 for the constraints to stay consistent.
+
+
+## Most Limiting Constraint
+
+Once our LP is in dictionary form, we can run the simplex algorithm! In every iteration of the simplex algorithm, we will take an LP in dictionary form and strategically rewrite it in a new dictionary form. Note: it is important to realize that rewriting the LP **does not** change the LP's feasible region. Let us examine an iteration of simplex on a new LP.
+
+$$\begin{align*}
+\max \quad & 5x_1+3x_2\\
+\text{s.t.} \quad & 1x_1 + 0x_2 \leq 4 \\
+\quad & 0x_1 + 1x_2 \leq 6 \\
+\quad & 2x_1 + 1x_2 \leq 9 \\
+\quad & 3x_1 + 2x_2 \leq 15 \\
+\quad & x_1, x_2 \geq 0 \\
+\end{align*}$$
+
+**Q11:** Is this LP in dictionary form? If not, rewrite this LP in dictionary form.
+
+**A:** No this LP is not in dictionary form. 
+Rewrite in Dictionary form: The max is still 5x_1+3x_2 such that x_3=4-x_1>=0 which leads to x_3=4-x_1. Then there is x_4=6-x_2>=0 which leads to x_4=6-x_2 and x_5=9-2x_1-x_2>=0 which leads to x_5=9-2x_1-x_2 and x_6=15-3x_1-2x_2>=0 which leads to x_6=15-3x_1-2x_2 while x_1,x_2,x_3,x_4,x_5,x_6 >= 0 to compensate for the fact that each variable must be above 0 for the constraints to stay consistent.
+
+**Q12:** Recall from **Q9** how you found a feasible solution (which we argued to be optimal) just by looking at the LP. Using this same stratagy, look at the LP above and give a feasible solution and its objective value for this LP. Describe how you found this feasible solution. Is it optimal? Why?
+
+**A:** Well just by looking at the objective function, we can see that each variable coefficient is positive so we want to make both x1 and x2 as big as possible. By solving for x1 and x2 using the remaining constraints we can see that x1 = 3 and x2 = 3. This, when pllugged into the objective function will give us an objective value o 24.
+
+From **Q12** we see that every dictionary form LP has a corresponding feasible solution. Furthermore, there are positive coefficents in the objective function. Hence, we can increase the objective value by increaseing the corresponding variable. In our example, both $x_1$ and $x_2$ have positive coefficents in the objective function. Let us choose to increase $x_1$.
+
+**Q13:** What do we have to be careful about when increasing $x_1$?
+
+**A:** We need to make sure that each time we increase x1, that it still works with all constraints.
+
+**Q14:** After choosing a variable to increase, we must determine the most limiting constraint. Let us look at the first constraint $x_3 = 4 - 1x_1 - 0x_2$. How much can $x_1$ increase? (Hint: what does a dictionary form LP require about the constant on the RHS of constraints?)
+
+**A:** The nost limiting constraint is the first constraint which limitis x1 to 4.
+
+**Q15:** Like in **Q14**, determine how much each constraint limits the increase in $x_1$ and identify the most limiting constraint.
+
+**A:** The second constraint puts no limit on x1. The third constraint puts a limit of 4.5 on x1. The fourth constraint puts a limit of 5 on x1.
+
+If we increase $x_1$ to 4, note that $x_3$ will become zero. Earlier, we identified that each dictionary form has a corresponding feasible solution acheived by setting variables on the RHS (and in the objective function) to zero. Hence, since $x_3$ will become zero, we want to rewrite our LP such that $x_3$ appears on the RHS. Furthermore, since $x_1$ is no longer zero, it should now appear on the LHS.
+
+**Q16:** Rewrite the most limiting constraint $x_3 = 4 - 1x_1 - 0x_2$ such that $x_1$ appears on the left and $x_3$ appears on the right.
+
+**A:** x_1=4-x_3
+
+**Q17:** Using substitution, rewrite the LP such that $x_3$ appears on the RHS and $x_1$ appears on the LHS. (Hint: Don't forget the rule about which variables can appear in the objective function)
+
+**A:** The max is now 5(4-x_3)+3x_2 which equals 20-5x_3+3x_2 but the constraints change so that x_1=4-x_3>=0 which leads to x_1=4-x_3. Then there is x_4=6-x_2>=0 which leads to x_4=6-x_2 and x_5=9-2(4-x_3)-x_2>=0 which leads to x_5=9-2(4-x_3)-x_2 and x_6=15-3(4-x_3)-2x_2>=0 which leads to x_6=15-3(4-x_3)-2x_2 while x_1,x_2,x_3,x_4,x_5,x_6 >= 0 to compensate for the fact that each variable must be above 0 for the constraints to stay consistent.
+
+**Q18:** We have now completed an iteration of simplex! What is the corresponding feasible solution of the new LP?
+
+**A:** The corresponding feasible solution is now 20.
+
+Now that we have seen an iteration of simplex algebraically, let's use GILP to visualize it! The LP example we have been using is called `LIMITING_CONSTRAINT_2D_LP`. To visualize simplex, we must import a function called `simplex_visual()`.
+
+
+```python
+from gilp.visualize import simplex_visual # import the function
+import numpy as np
+lp = ex.LIMITING_CONSTRAINT_2D_LP # get the LP example
+simplex_visual(lp, initial_solution=np.array([[0],[0]])).show() # show the simplex visualization
+```
+
+This visualization is much the same as the previous one but we now have an addtional slider which allows you to toggle through iterations of simplex. Furthermore, the corresponding dictionary at every iteration of simplex is shown in the top right. If you toggle between two iterations, you can see the dictionary form for both the previous and next LP at the same time.
+
+**Q19:** Starting from point (0,0), by how much can you increase $x_1$ before the point is no longer feasible? Which constraint do you *hit* first? Does this match what you found algebraically?
+
+**A:** You can increase x_1 by 4 before you hit the most limiting constraint on x_1 which is x_1<=4. This does match what I found algebraically.
+
+**Q20:** Which variable will be the next increasing variable and why? (Hint: Look at the dictionary form LP at iteration 1)
+
+**A:** The next variable to increase will be x_2 because it is the variable in the objective function with a positive coefficient.
+
+**Q21:** Visually, which constraint do you think is the most limiting constraint? How much can $x_2$ increase? Give the corresponding feasible solution and its objective value of the next dictionary form LP. (Hint: hover over the feasible points to see information about them.)
+
+**A:** x2 can only increase by 1 while x1 can increase by 4 so I think that the fifth constraint is the most limiting. The corresponding feasible solution should give us a value of 23 which is equivalent to what we found earlier.
+
+**Q22:** Move the slider to see the next iteration of simplex. Was your guess from **Q21** correct? If not, describe how your guess was wrong.
+
+**A:** My guess was accurate.
+
+**Q23:** Look at the dictionary form LP after the second iteration of simplex. What is the increasing variable? Identify the most limiting constraint graphically and algebraically. Show your work and verify they are the same constraint. In addition, give the next feasible solution and its objective value.
+
+**A:** The increasign variable is x3. The most limiting constraint is constraint 6 which maxes x3 to increase by 1. This would lead to a new objective value of 24.
+
+**Q24:** Is the new feasible solution you found in **Q23** optimal? (Hint: Look at the dictionary form LP)
+
+**A:** Yes this is now optimal because all of the variables in the objective function have a negative coefficient.
+
+**Q25:** In **Q21** and **Q23**, how did you determine the most limiting constraint graphically?
+
+**A:** I looked at what path the increase was on and saw the next point where that path was no longer possible to follow.
+
+**(BONUS):** In 2D, we can increase a variable until we hit a 2D line representing the most limiting constraint. What would be the analagous situation in 3D?
+
+**A:** 
+
+# Part III: Geometrical Interpretation of the Dictionary
+
+We have seen how the simplex algorithm transforms an LP from one dictionary form to another. Each dictionary form has a corresponding dictionary defined by the variables on the LHS of the constraints. Furthermore, each dictionary form has a corresponding feasible solution obtained by setting all non-dictionary variables to 0 and the dictionary variables to the constants on the RHS. In this section, we will explore the geometric interpretation of a dictionary.
+
+
+```python
+lp = ex.ALL_INTEGER_2D_LP # get LP example
+simplex_visual(lp, initial_solution=np.array([[0],[0]])).show() # visualize it
+```
+
+Recall, we can hover over the corner points of the feasible region. **BFS** indicates the feasible solution corresponding to that point. For example, (7,0,6,9,0) means $x_1 = 7, x_2 = 0, x_3 = 6, x_4 = 9$, and $x_5 = 0$. **B** gives the indices of the variables in the dictionary. For example, (1,3,4) means that $x_1, x_3,$ and $x_4$ are in the dictionary. Lastly, the objective value at that point is given.
+
+**Q26:** Hover over the point (7,6) where $x_1 = 7$ and $x_2 = 6$. What is the feasible solution at that point ?
+
+**A:** The feasible solution is (7,6,0,3,0).
+
+We have a notion of *slack* for an inequality constraint. Consider the constraint $x_1 \geq 0$. A feasible solution where $x_1 = 7$ has a slack of 7 in this constraint. Consider the constraint $2x_1 + 1x_2 \leq 20$. The feasible solution with $x_1 = 7$ and $x_2 = 6$ has a slack of 0 in this constraint.
+
+**Q27:** What is the slack in constraint $1x_1 + 1x_2 \leq 16$ when $x_1 = 7$ and $x_2 = 6$?
+
+**A:** The slack in this case is 3.
+
+**Q28:** Look at the constraint $2x_1 + 1x_2 \leq 20$. After rewriting in dictionary form, the constraint is $x_3 = 20 - 2x_1 - 1x_2$. What does $x_3$ represent?
+
+**A:** x_3 represents how much slack there is for this constraint.
+
+**Q29:** What do you notice about the feasible solution at point (7,6) and the slack in each constraint?
+
+**A:** There is no slack at this point for each constraint.
+
+It turns out that each decision variable is really a measure of slack in some corresponding constraint!
+
+**Q30:** If the slack between a constraint and a feasible solution is 0, what does that tell you about the relationship between the feasible solution and constraint geometrically?
+
+**A:**  That means that the it is an intersection point between two constraints, a.k.a. a corner point.
+
+**Q31:** For (7,6), which variables are **not** in the dictionary? For which constraints do they represent the slack? (Hint: The **B** in the hover box gives the indices of the variables in the dicitonary)
+
+**A:** x3 and x5 are not in the dictionary.  They are not in the dictionary because they are right hand side variables. They indicate slack for each variable in the dictionary.
+
+**Q32:** For (7,6), what are the values of the non-dictionary variables? Using what you learned from **Q30**, what does their value tell you about the feasible solution at (7,6)?
+
+**A:** The value of each variable not in the dictionary are 0. If they have a value of 0 then there is no slack.
+
+**Q33:** Look at some other corner points with this in mind. What do you find?
+
+**A:** Each corner point has 3 variables in the dicitonary and two not in the dictionary in this example.
+
+Now, let's look at a 3 dimensional LP!
+
+
+```python
+lp = ex.ALL_INTEGER_3D_LP # get LP example
+lp_visual(lp).show() # visualize it
+```
+
+**Q34:** Hover over the point (6,6,2) where $x_1 = 6, x_2 = 6,$ and $x_3 = 2$. Note which variables are not in the dictionary. Toggle the corresponding constraints on. What do you notice?
+
+**A:** Variables x4 and x5 are not in the dictionary. When the corresponding constraints are toggled on the size of the feasible solution changes.
+
+**Q35:** Look at some other corner points and do as you did in Q34. Do you see a similar pattern? Combining what you learned in Q33, what can you say about the relationship between the variables not in the dictionary at some corner point, and the corresponding constraints?
+
+**A:** The variables not in the dictionary at a corner point are equal to 0 and their corresponding constraints are not used.
+
+**Q36:** What geometric feature do feasible solutions for a dictionary correspond to?
+
+**A:** They correspond to a point.
+
+## Part IV: Pivot Rules
+
+The first step in an iteration of simplex is to choose an increasing variable. Sometimes, there are multiple options since multiple variables have a positive coefficent in the objective function. Here, we will explore what this decison translates to geometrically.
+
+In this section, we will use a special LP commonly referred to as the Klee-Minty Cube.
+
+$$\begin{align*}
+\max \quad & 4x_1+ 2x_2+ x_3\\
+\text{s.t.} \quad\ & x_1 \leq 5 \\
+& 4x_1 + x_2 \leq 25 \\
+& 8x_1 + 4x_2 + x_3 \leq 125 \\
+& x_1, x_2, x_3 \geq 0.
+\end{align*}$$
+
+Furthermore, we will use an optional parameter called `rule` for the `simplex_visual()` function. This rule tells simplex which varaible to choose as an increasing variable when there are multiple options.
+
+
+```python
+simplex_visual(ex.KLEE_MINTY_3D_LP, rule='dantzig', initial_solution=np.array([[0],[0],[0]])).show()
+```
+
+**Q37:** Use the iteration slider to examine the path of simplex on this LP. What do you notice?
+
+**A:** They trace over each other on the x1x2-plane, separated by a changing x3 value.
+
+Above, we used a pivot rule proposed by Dantzig. In this rule, the variable with the largest positive coefficient in the objective function enters the dictionary. Go through the iterations again to verify this.
+
+Let us consider another pivot rule proposed by Bland, a professor here at Cornell. In his rule, of the variables with positive coefficents in the objective function, the one with the smallest index enters. Let us examine the path of simplex using this pivot rule! Again, look at the dictionary form LP at every iteration.
+
+
+```python
+simplex_visual(ex.KLEE_MINTY_3D_LP,rule='manual_select', initial_solution=np.array([[0],[0],[0]])).show()
+```
+
+##### **Q38:** What is the difference between the path of simplex using Dantzig's rule and Bland's rule?
+
+**A:** They ended up in the same point but Bland's rule did it in half the iterations making it much quicker to compute when solving for the iterations algebraically.
+
+Can you do any better? By setting `rule='manual_select'`, you can choose the entering variable explicitly at each simplex iteration. 
+
+**Q39:** Can you do better than 5 iterations? How many paths can you find? (By my count, there are 7)
+
+**A:** First path: 2,3,5 -> Led to 3 iterations. Second path: 3 -> Led to 1 iteration. Third path: 1,3,4 -> Led to 3 iterations. Those are the 3 better paths that I found. The rest that I looked at are either equal to bland's 5 iterations or have over 5 iterations.
+
+
+```python
+simplex_visual(ex.KLEE_MINTY_3D_LP,rule='manual_select', initial_solution=np.array([[0],[0],[0]])).show()
+```
+
+**Q40:** What does the choice of increasing variable correspond to geometrically?
+
+**A:** It is choosing in which direction you go. If it is a variable that outlines a constraint line on the graph then that is the direction in which you are increasing. Otherwise, you are increasing a variable along one of the axis of the graph.
+
+**Q41:** Are there any paths you could visualize taking to the optimal solution that `rule='manual_select'` prevented you from taking? If yes, give an example and explain why it is not a valid path for simplex to take. (Hint: Look at the objective value after each simplex iteration.)
+
+**A:** No because the path that increases the x3 variable only took one iteration so I do not believe that there is a faster way to get to the optimal objective value.
+
+# Part V: Creating LPs in GILP (Optional)
+
+We can also create our own LPs! First, we must import the `LP` class. 
+
+
+```python
+from gilp.simplex import LP
+```
+
+Let us create the following LP.
+
+$$\begin{align*}
+\max \quad & 3x_1+2x_2\\
+\text{s.t.} \quad & 2x_1 + 1x_2 \leq 6 \\
+\quad & 0x_1 + 1x_2 \leq 2 \\
+\quad & x_1, x_2 \geq 0 \\
+\end{align*}$$
+
+We will create this LP by specifying 3 arrays of coefficents. We define the NumPy arrays `A`, `b`, and `c` and then pass them to the `LP` class to create the LP.
+
+
+```python
+A = np.array([[2,1],  # LHS constraint coefficents
+              [0,1]])
+b = np.array([6,2])  # RHS constraint coefficents
+c = np.array([3,2])  # objective function coefficents
+lp = LP(A,b,c)
+```
+
+Let's visualize it!
+
+
+```python
+lp_visual(lp).show()
+```
+
+... and solve it!
+
+
+```python
+simplex_visual(lp, initial_solution=np.array([[0],[0]])).show()
+```
+
+
+```python
+
+```

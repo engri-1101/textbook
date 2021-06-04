@@ -128,3 +128,4 @@ Create a python script called `zip.py` using one from another lab as a template.
 | [redistricting](redistricting)                 | Optimize the redistricting 5x10 example <br/> Tetrominoes Tetris completion example |
 | [shortest_path](shortest_path)                 | Modeling example of text splitting (past HW)  |
 | [vinal](https://github.com/henryrobbins/vinal) package| Make bottom text more visible (highlight / color) |
+| [baseball_elimination](baseball_elimination)   | ECAC Cornell Hockey |

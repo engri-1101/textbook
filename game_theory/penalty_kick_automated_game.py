@@ -1,7 +1,10 @@
-from bokeh.models import (Button, Slider, Dropdown)
+from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
+                          TableColumn, DataTable)
 from bokeh.models.widgets import Div
 
 #<editor-fold create_buttons():
+#Needs:
+#   from bokeh.models import Button
 def create_buttons(b_automate_label = "Automate",
                    b_automate_button_type = "success",
                    b_automate_sizing_mode = "scale_width",
@@ -45,6 +48,8 @@ def create_buttons(b_automate_label = "Automate",
     return b_automate, b_start_automate, b_auto_next
 #</editor-fold>
 #<editor-fold create_sliders():
+#Needs:
+#   from bokeh.models import Slider
 def create_sliders(ll_aim_slider_start = 0, ll_aim_slider_end = 1,
                    ll_aim_slider_value = 1/6, ll_aim_slider_step = 0.01,
                    ll_aim_slider_title = "LL Aim Weight",
@@ -136,6 +141,8 @@ def create_sliders(ll_aim_slider_start = 0, ll_aim_slider_end = 1,
             iterations_slider)
 #</editor-fold>
 #<editor-fold create_gamestate_divs():
+#Needs:
+#   from bokeh.models.widgets import Div
 def create_gamestate_divs(iterations_to_run_start_text = "50",
                           iterations_to_run_visibility = False,
                           strategy_to_use_start_text = "Not Set",
@@ -272,4 +279,152 @@ def create_strategy_dropdown(fictitious_play_text = "Fictitious_Play",
                                  disabled = dropdown_disabled,
                                  visible = dropdown_visibility)
     return strategy_dropdown
+#</editor-fold>
+#<editor-fold create_distribution_table_source():
+#Needs:
+#   from bokeh.models import ColumnDataSource
+def create_distribution_table_source(footedness_left_text = "Left",
+                                     footedness_right_text = "Right",
+                                     aim_direction_left_text = "Left",
+                                     aim_direction_middle_text = "Middle",
+                                     aim_direction_right_text = "Right"):
+    #Make Automation Distribution Tracking Table:
+    distribution_data = dict(footedness = [footedness_left_text,
+                                           footedness_left_text,
+                                           footedness_left_text,
+                                           footedness_right_text,
+                                           footedness_right_text,
+                                           footedness_right_text],
+                             aim_direction = [aim_direction_left_text,
+                                              aim_direction_middle_text,
+                                              aim_direction_right_text,
+                                              aim_direction_left_text,
+                                              aim_direction_middle_text,
+                                              aim_direction_right_text],
+                             freq = [0, 0, 0, 0, 0, 0],
+                             decisions = [0, 0, 0, 0, 0, 0],
+                             goalie_perceived_risks = [0, 0, 0, 0, 0, 0],
+                             striker_score_chance = [0, 0, 0, 0, 0, 0],
+                             striker_score_roll = [0, 0, 0, 0, 0, 0])
+
+    distribution_table_source = ColumnDataSource(distribution_data)
+
+    return distribution_table_source
+#</editor-fold>
+#<editor-fold create_distribution_table():
+#Needs:
+#   from bokeh.models import TableColumn, DataTable
+def create_distribution_table(source,
+                              footedness_column_title = "Striker Footedness",
+                              footedness_column_width = 101,
+                              aim_direction_column_title = "Striker Aim Direction",
+                              aim_direction_column_width = 107,
+                              freq_column_title = "Frequency",
+                              freq_column_width = 60,
+                              decisions_column_title = "Goalie Decisions",
+                              decisions_column_width = 90,
+                              perceived_risks_column_title = "Goalie Perceived Risks",
+                              perceived_risks_column_width = 130,
+                              score_chance_column_title = "Striker's Score Chance",
+                              score_chance_column_width = 120,
+                              score_roll_column_title = "Striker's Score Roll",
+                              score_roll_column_width = 103,
+                              table_width = 711,
+                              table_height = 280,
+                              table_autosize_mode = "force_fit",
+                              table_sizing_mode = "scale_width",
+                              table_visibility = False,
+                              table_fit_columns = False):
+
+    footedness_column = TableColumn(field = "footedness",
+                                    title = footedness_column_title,
+                                    width = footedness_column_width)
+    aim_direction_column = TableColumn(field = "aim_direction",
+                                       title = aim_direction_column_title,
+                                       width = aim_direction_column_width)
+    freq_column = TableColumn(field = "freq",
+                              title = freq_column_title,
+                              width = freq_column_width)
+    decisions_column = TableColumn(field = "decisions",
+                                   title = decisions_column_title,
+                                   width = decisions_column_width)
+    perceived_risks_column =  TableColumn(field = "goalie_perceived_risks",
+                                          title = perceived_risks_column_title,
+                                          width = perceived_risks_column_width)
+    score_chance_column = TableColumn(field = "striker_score_chance",
+                                      title = score_chance_column_title,
+                                      width = score_chance_column_width)
+    score_roll_column = TableColumn(field = "striker_score_roll",
+                                    title = score_roll_column_title,
+                                    width = score_roll_column_width)
+    distribution_columns = [footedness_column, aim_direction_column,
+                            freq_column, decisions_column,
+                            perceived_risks_column, score_chance_column,
+                            score_roll_column]
+
+    automation_distribution_table = DataTable(source = source,
+                                              columns = distribution_columns,
+                                              width = table_width,
+                                              height = table_height,
+                                              autosize_mode = table_autosize_mode,
+                                              sizing_mode = table_sizing_mode,
+                                              visible = table_visibility,
+                                              fit_columns = table_fit_columns)
+    return automation_distribution_table
+#</editor-fold>
+#<editor-fold create_automation_table_source():
+#Needs:
+#   from bokeh.models import ColumnDataSource
+def create_automation_table_source(ll_base_chance = 1/6,
+                                   lm_base_chance = 1/6,
+                                   lr_base_chance = 1/6,
+                                   rl_base_chance = 1/6,
+                                   rm_base_chance = 1/6,
+                                   rr_base_chance = 1/6,
+                                   footedness_left_text = "Left",
+                                   footedness_right_text = "Right",
+                                   aim_direction_left_text = "Left",
+                                   aim_direction_middle_text = "Middle",
+                                   aim_direction_right_text = "Right"):
+
+    data = dict(footedness = [footedness_left_text, footedness_left_text,
+                              footedness_left_text, footedness_right_text,
+                              footedness_right_text, footedness_right_text],
+                aim_direction = [aim_direction_left_text,
+                                 aim_direction_middle_text,
+                                 aim_direction_right_text,
+                                 aim_direction_left_text,
+                                 aim_direction_middle_text,
+                                 aim_direction_right_text],
+                chances = [ll_base_chance, lm_base_chance, lr_base_chance,
+                           rl_base_chance, rm_base_chance, rr_base_chance])
+
+    automation_table_source = ColumnDataSource(data)
+    return automation_table_source
+#</editor-fold>
+#<editor-fold create_automation_table():
+#Needs:
+#   from bokeh.models import TableColumn, DataTable
+def create_automation_table(source,
+                            footedness_column_title = "Striker Footedness",
+                            aim_direction_column_title = "Striker Aim Direction",
+                            chances_column_title = "Chance", table_width = 600,
+                            table_height = 280,
+                            table_autosize_mode = "force_fit",
+                            table_visibility = False):
+
+    footedness_column = TableColumn(field = "footedness",
+                                    title = footedness_column_title)
+    aim_direction_column = TableColumn(field = "aim_direction",
+                                       title = aim_direction_column_title)
+    chances_column = TableColumn(field = "chances",
+                                 title = chances_column_title)
+
+    columns = [footedness_column, aim_direction_column, chances_column]
+
+    automation_table = DataTable(source = source, columns = columns,
+                                 width = table_width, height = table_height,
+                                 autosize_mode = table_autosize_mode,
+                                 visible = table_visibility)
+    return automation_table
 #</editor-fold>

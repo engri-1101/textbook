@@ -920,6 +920,14 @@ game_stats_figure_3_source.data['hb6'] = hb6_ys;
 game_stats_figure_3_source.change.emit();
 """
     #</editor-fold>
+
+    #<editor-fold strategy_dropdown_callback Code String:
+strategy_dropdown_code = """
+strategy_dropdown.label = this.item;
+strategy_to_use.text = this.item;
+b_start_automate.visible = true;
+"""
+    #</editor-fold>
 #</editor-fold>
 
 #<editor-fold create_buttons():
@@ -1405,4 +1413,13 @@ def iterations_slider_setup(iterations_slider, args_dict):
                                           code = iterations_slider_code)
 
     iterations_slider.js_on_change('value', iterations_slider_callback)
+#</editor-fold>
+#<editor-fold strategy_dropdown_setup():
+#Needs:
+#   from bokeh.models import CustomJS
+def strategy_dropdown_setup(strategy_dropdown, args_dict):
+    strategy_dropdown_callback = CustomJS(args = args_dict,
+                                          code = strategy_dropdown_code)
+    strategy_dropdown.js_on_event("menu_item_click",
+                                  strategy_dropdown_callback)
 #</editor-fold>

@@ -6,29 +6,21 @@ from bokeh.models.widgets import Div
     #Has Been worked On?:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
+//Change visibilities of game items:
 b_automate.visible = false;
-
 b_start.visible = false;
 b_fl.visible = false;
 b_fr.visible = false;
 b_next.visible = false;
-
 LL_aim_slider.visible = true;
 LM_aim_slider.visible = true;
 LR_aim_slider.visible = true;
 RL_aim_slider.visible = true;
 RM_aim_slider.visible = true;
 RR_aim_slider.visible = true;
-
 iterations_slider.visible = true;
-
 strategy_dropdown.visible = true;
-
 automation_table.visible = true;
-
-txt.data['text'][2] = '';
-txt.data['text'][3] = 'Choose a right- or left footed kicker!';
-txt.change.emit();
 """
     #</editor-fold>
     #Has Been worked On?:

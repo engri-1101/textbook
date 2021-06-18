@@ -3,7 +3,7 @@ from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
 from bokeh.models.widgets import Div
 
 #<editor-fold Code Strings:
-    #Has Been worked On?:
+    #Has Been worked On?: Yes
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
 //Change visibilities of game items:
@@ -23,23 +23,20 @@ strategy_dropdown.visible = true;
 automation_table.visible = true;
 """
     #</editor-fold>
-    #Has Been worked On?:
+    #Has Been worked On?: Yes
     #<editor-fold automate_start_code Initial Gui Display Code String:
 automate_start_code_initial_gui_display = """
+//Change visibilities of game items:
 b_start_automate.visible = false;
 b_auto_next.visible = true;
-
 LL_aim_slider.visible = false;
 LM_aim_slider.visible = false;
 LR_aim_slider.visible = false;
 RL_aim_slider.visible = false;
 RM_aim_slider.visible = false;
 RR_aim_slider.visible = false;
-
 iterations_slider.visible = false;
-
 strategy_dropdown.visible = false;
-
 automation_table.visible = false;
 automation_distribution_table.visible = true;
 """

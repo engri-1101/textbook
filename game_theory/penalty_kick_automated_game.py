@@ -803,120 +803,95 @@ ColumnDataSourceToChange.change.emit();
     #</editor-fold>
     #<editor-fold iterations_slider_callback Code String:
 iterations_slider_code = """
-var iterations = parseInt(iterations_to_run.text);
-iterations = cb_obj.value;
+
+//Read iterations, and update iterations_to_run:
+const iterations = cb_obj.value;
 iterations_to_run.text = iterations.toString();
+
+//Set the max of the y axis for game_stats_figure_1 to be the
+//amount of iterations (It is impossible to have bars higher than that value):
 game_stats_figure_1.y_range.end = iterations;
 
-game_stats_figure_2.x_range.end = iterations;
+//Set the max and min of the y axis for game_stats_figure_2 to be
+//+/- the amount of iterations as it is impossible to have a score higher or
+//lower than that:
 game_stats_figure_2.y_range.start = -iterations;
 game_stats_figure_2.y_range.end = iterations;
 
+//Sets the max of the x axis for game_stats_figure_2 and game_stats_figure_3 to
+//be the amount of iterations.
+game_stats_figure_2.x_range.end = iterations;
 game_stats_figure_3.x_range.end = iterations;
 
-var xs_2 = [];
-var xs_3 = [];
-var ys = [];
-var ll_ys = [];
-var lm_ys = [];
-var lr_ys = [];
-var rl_ys = [];
-var rm_ys = [];
-var rr_ys = [];
-var hb1_ys = []
-var hb2_ys = []
-var hb3_ys = []
-var hb4_ys = []
-var hb5_ys = []
-var hb6_ys = []
-var heights = [];
-var highlight_alphas = [];
-var ll_highlight_alphas = [];
-var lm_highlight_alphas = [];
-var lr_highlight_alphas = [];
-var rl_highlight_alphas = [];
-var rm_highlight_alphas = [];
-var rr_highlight_alphas = [];
-for (var i = 0; i <= iterations; i++){
+//Initiate arrays to update lengths and values of data in sources:
+const array_length = iterations + 1;
+let xs_2 = [];
+let xs_3 = [];
+let ys = new Array(array_length).fill(0);
+let ll_ys = new Array(array_length).fill(0);
+let lm_ys = new Array(array_length).fill(0);
+let lr_ys = new Array(array_length).fill(0);
+let rl_ys = new Array(array_length).fill(0);
+let rm_ys = new Array(array_length).fill(0);
+let rr_ys = new Array(array_length).fill(0);
+let hb1_ys = new Array(array_length).fill(0);
+let hb2_ys = new Array(array_length).fill(0);
+let hb3_ys = new Array(array_length).fill(0);
+let hb4_ys = new Array(array_length).fill(0);
+let hb5_ys = new Array(array_length).fill(0);
+let hb6_ys = new Array(array_length).fill(0);
+let heights = new Array(array_length).fill(iterations * 2);
+let highlight_alphas = new Array(array_length).fill(0);
+let ll_highlight_alphas = new Array(array_length).fill(0);
+let lm_highlight_alphas = new Array(array_length).fill(0);
+let lr_highlight_alphas = new Array(array_length).fill(0);
+let rl_highlight_alphas = new Array(array_length).fill(0);
+let rm_highlight_alphas = new Array(array_length).fill(0);
+let rr_highlight_alphas = new Array(array_length).fill(0);
+
+//Update previously created arrays with their correct values:
+for (let i = 0; i <= iterations; i++){
     xs_2.push(i);
     xs_3.push(i);
-    ys.push(0);
-    ll_ys.push(0);
-    lm_ys.push(0);
-    lr_ys.push(0);
-    rl_ys.push(0);
-    rm_ys.push(0);
-    rr_ys.push(0);
-    hb1_ys.push(0);
-    hb2_ys.push(0);
-    hb3_ys.push(0);
-    hb4_ys.push(0);
-    hb5_ys.push(0);
-    hb6_ys.push(0);
-    heights.push(iterations * 2);
-    highlight_alphas.push(0);
-    ll_highlight_alphas.push(0);
-    lm_highlight_alphas.push(0);
-    lr_highlight_alphas.push(0);
-    rl_highlight_alphas.push(0);
-    rm_highlight_alphas.push(0);
-    rr_highlight_alphas.push(0);
 }
-game_stats_figure_2_source.data['xs'] = xs_2;
-game_stats_figure_2_source.data['ys'] = ys;
-game_stats_figure_2_source.data['heights'] = heights;
-game_stats_figure_2_source.data['highlight_alphas'] = highlight_alphas;
 
+//Write the correct initial values for the arrays that need it:
+ll_ys[0] = 1/3 * (0.67 + 0.74 + 0.87);
+lm_ys[0] = 1/3 * (0.70 + 0.60 + 0.65);
+lr_ys[0] = 1/3 * (0.96 + 0.72 + 0.61);
+rl_ys[0] = 1/3 * (0.55 + 0.74 + 0.95);
+rm_ys[0] = 1/3 * (0.65 + 0.60 + 0.73);
+rr_ys[0] = 1/3 * (0.93 + 0.72 + 0.70);
+
+//Update game_stats_figure_2_source.data with its new arrays:
+const fig_2_data = game_stats_figure_2_source.data;
+fig_2_data['xs'] = xs_2;
+fig_2_data['ys'] = ys;
+fig_2_data['heights'] = heights;
+fig_2_data['highlight_alphas'] = highlight_alphas;
 game_stats_figure_2_source.change.emit();
 
-
-game_stats_figure_3_source.data['xs'] = xs_3;
-game_stats_figure_3_source.data['ll_ys'] = ll_ys;
-game_stats_figure_3_source.data['lm_ys'] = lm_ys;
-game_stats_figure_3_source.data['lr_ys'] = lr_ys;
-game_stats_figure_3_source.data['rl_ys'] = rl_ys;
-game_stats_figure_3_source.data['rm_ys'] = rm_ys;
-game_stats_figure_3_source.data['rr_ys'] = rr_ys;
-
-game_stats_figure_3_source.data['ll_ys'][0] = (1/3 * 0.67
-                                               + 1/3 * 0.74
-                                               + 1/3 * 0.87);
-
-game_stats_figure_3_source.data['lm_ys'][0] = (1/3 * 0.70
-                                               + 1/3 * 0.60
-                                               + 1/3 * 0.65);
-
-game_stats_figure_3_source.data['lr_ys'][0] = (1/3 * 0.96
-                                               + 1/3 * 0.72
-                                               + 1/3 * 0.61);
-
-game_stats_figure_3_source.data['rl_ys'][0] = (1/3 * 0.55
-                                               + 1/3 * 0.74
-                                               + 1/3 * 0.95);
-
-game_stats_figure_3_source.data['rm_ys'][0] = (1/3 * 0.65
-                                               + 1/3 * 0.60
-                                               + 1/3 * 0.73);
-
-game_stats_figure_3_source.data['rr_ys'][0] = (1/3 * 0.93
-                                               + 1/3 * 0.72
-                                               + 1/3 * 0.70);
-
-
-game_stats_figure_3_source.data['ll_highlight_alphas'] = ll_highlight_alphas;
-game_stats_figure_3_source.data['lm_highlight_alphas'] = lm_highlight_alphas;
-game_stats_figure_3_source.data['lr_highlight_alphas'] = lr_highlight_alphas;
-game_stats_figure_3_source.data['rl_highlight_alphas'] = rl_highlight_alphas;
-game_stats_figure_3_source.data['rm_highlight_alphas'] = rm_highlight_alphas;
-game_stats_figure_3_source.data['rr_highlight_alphas'] = rr_highlight_alphas;
-
-game_stats_figure_3_source.data['hb1'] = hb1_ys;
-game_stats_figure_3_source.data['hb2'] = hb2_ys;
-game_stats_figure_3_source.data['hb3'] = hb3_ys;
-game_stats_figure_3_source.data['hb4'] = hb4_ys;
-game_stats_figure_3_source.data['hb5'] = hb5_ys;
-game_stats_figure_3_source.data['hb6'] = hb6_ys;
-
+//Update game_stats_figure_3_source.data with its new arrays:
+const fig_3_data = game_stats_figure_3_source.data;
+fig_3_data['xs'] = xs_3;
+fig_3_data['ll_ys'] = ll_ys;
+fig_3_data['lm_ys'] = lm_ys;
+fig_3_data['lr_ys'] = lr_ys;
+fig_3_data['rl_ys'] = rl_ys;
+fig_3_data['rm_ys'] = rm_ys;
+fig_3_data['rr_ys'] = rr_ys;
+fig_3_data['ll_highlight_alphas'] = ll_highlight_alphas;
+fig_3_data['lm_highlight_alphas'] = lm_highlight_alphas;
+fig_3_data['lr_highlight_alphas'] = lr_highlight_alphas;
+fig_3_data['rl_highlight_alphas'] = rl_highlight_alphas;
+fig_3_data['rm_highlight_alphas'] = rm_highlight_alphas;
+fig_3_data['rr_highlight_alphas'] = rr_highlight_alphas;
+fig_3_data['hb1'] = hb1_ys;
+fig_3_data['hb2'] = hb2_ys;
+fig_3_data['hb3'] = hb3_ys;
+fig_3_data['hb4'] = hb4_ys;
+fig_3_data['hb5'] = hb5_ys;
+fig_3_data['hb6'] = hb6_ys;
 game_stats_figure_3_source.change.emit();
 """
     #</editor-fold>

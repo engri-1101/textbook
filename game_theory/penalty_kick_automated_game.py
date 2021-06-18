@@ -2,7 +2,7 @@ from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
                           TableColumn, DataTable, CustomJS)
 from bokeh.models.widgets import Div
 
-#<editor-fold Automate Track Code Strings:
+#<editor-fold Code Strings:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
 b_automate.visible = false;
@@ -30,6 +30,7 @@ txt.data['text'][3] = 'Choose a right- or left footed kicker!';
 txt.change.emit();
 """
     #</editor-fold>
+
     #<editor-fold automate_start_code Initial Gui Display Code String:
 automate_start_code_initial_gui_display = """
 b_start_automate.visible = false;
@@ -776,6 +777,149 @@ automate_loop_iteration=(automate_loop_iteration_var_instantiations
 b_automate_start_code = (automate_start_code_initial_gui_display
                          + automate_loop_iteration)
     #</editor-fold>
+
+    #<editor-fold aim_slider_callback Code String:
+aim_slider_callback_code = """
+var data = ColumnDataSourceToChange.data;
+var chances = data['chances'];
+
+var total = 0;
+total += LL_aim_slider.value;
+total += LM_aim_slider.value;
+total += LR_aim_slider.value;
+total += RL_aim_slider.value;
+total += RM_aim_slider.value;
+total += RR_aim_slider.value;
+
+chances[0] = LL_aim_slider.value / total;
+chances[1] = LM_aim_slider.value / total;
+chances[2] = LR_aim_slider.value / total;
+chances[3] = RL_aim_slider.value / total;
+chances[4] = RM_aim_slider.value / total;
+chances[5] = RR_aim_slider.value / total;
+
+ColumnDataSourceToChange.change.emit();
+"""
+    #</editor-fold>
+    #<editor-fold iterations_slider_callback Code String:
+iterations_slider_code = """
+var iterations = parseInt(iterations_to_run.text);
+iterations = cb_obj.value;
+iterations_to_run.text = iterations.toString();
+game_stats_figure_1.y_range.end = iterations;
+
+game_stats_figure_2.x_range.end = iterations;
+game_stats_figure_2.y_range.start = -iterations;
+game_stats_figure_2.y_range.end = iterations;
+
+game_stats_figure_3.x_range.end = iterations;
+
+var xs_2 = [];
+var xs_3 = [];
+var ys = [];
+var ll_ys = [];
+var lm_ys = [];
+var lr_ys = [];
+var rl_ys = [];
+var rm_ys = [];
+var rr_ys = [];
+var hb1_ys = []
+var hb2_ys = []
+var hb3_ys = []
+var hb4_ys = []
+var hb5_ys = []
+var hb6_ys = []
+var heights = [];
+var highlight_alphas = [];
+var ll_highlight_alphas = [];
+var lm_highlight_alphas = [];
+var lr_highlight_alphas = [];
+var rl_highlight_alphas = [];
+var rm_highlight_alphas = [];
+var rr_highlight_alphas = [];
+for (var i = 0; i <= iterations; i++){
+    xs_2.push(i);
+    xs_3.push(i);
+    ys.push(0);
+    ll_ys.push(0);
+    lm_ys.push(0);
+    lr_ys.push(0);
+    rl_ys.push(0);
+    rm_ys.push(0);
+    rr_ys.push(0);
+    hb1_ys.push(0);
+    hb2_ys.push(0);
+    hb3_ys.push(0);
+    hb4_ys.push(0);
+    hb5_ys.push(0);
+    hb6_ys.push(0);
+    heights.push(iterations * 2);
+    highlight_alphas.push(0);
+    ll_highlight_alphas.push(0);
+    lm_highlight_alphas.push(0);
+    lr_highlight_alphas.push(0);
+    rl_highlight_alphas.push(0);
+    rm_highlight_alphas.push(0);
+    rr_highlight_alphas.push(0);
+}
+game_stats_figure_2_source.data['xs'] = xs_2;
+game_stats_figure_2_source.data['ys'] = ys;
+game_stats_figure_2_source.data['heights'] = heights;
+game_stats_figure_2_source.data['highlight_alphas'] = highlight_alphas;
+
+game_stats_figure_2_source.change.emit();
+
+
+game_stats_figure_3_source.data['xs'] = xs_3;
+game_stats_figure_3_source.data['ll_ys'] = ll_ys;
+game_stats_figure_3_source.data['lm_ys'] = lm_ys;
+game_stats_figure_3_source.data['lr_ys'] = lr_ys;
+game_stats_figure_3_source.data['rl_ys'] = rl_ys;
+game_stats_figure_3_source.data['rm_ys'] = rm_ys;
+game_stats_figure_3_source.data['rr_ys'] = rr_ys;
+
+game_stats_figure_3_source.data['ll_ys'][0] = (1/3 * 0.67
+                                               + 1/3 * 0.74
+                                               + 1/3 * 0.87);
+
+game_stats_figure_3_source.data['lm_ys'][0] = (1/3 * 0.70
+                                               + 1/3 * 0.60
+                                               + 1/3 * 0.65);
+
+game_stats_figure_3_source.data['lr_ys'][0] = (1/3 * 0.96
+                                               + 1/3 * 0.72
+                                               + 1/3 * 0.61);
+
+game_stats_figure_3_source.data['rl_ys'][0] = (1/3 * 0.55
+                                               + 1/3 * 0.74
+                                               + 1/3 * 0.95);
+
+game_stats_figure_3_source.data['rm_ys'][0] = (1/3 * 0.65
+                                               + 1/3 * 0.60
+                                               + 1/3 * 0.73);
+
+game_stats_figure_3_source.data['rr_ys'][0] = (1/3 * 0.93
+                                               + 1/3 * 0.72
+                                               + 1/3 * 0.70);
+
+
+game_stats_figure_3_source.data['ll_highlight_alphas'] = ll_highlight_alphas;
+game_stats_figure_3_source.data['lm_highlight_alphas'] = lm_highlight_alphas;
+game_stats_figure_3_source.data['lr_highlight_alphas'] = lr_highlight_alphas;
+game_stats_figure_3_source.data['rl_highlight_alphas'] = rl_highlight_alphas;
+game_stats_figure_3_source.data['rm_highlight_alphas'] = rm_highlight_alphas;
+game_stats_figure_3_source.data['rr_highlight_alphas'] = rr_highlight_alphas;
+
+game_stats_figure_3_source.data['hb1'] = hb1_ys;
+game_stats_figure_3_source.data['hb2'] = hb2_ys;
+game_stats_figure_3_source.data['hb3'] = hb3_ys;
+game_stats_figure_3_source.data['hb4'] = hb4_ys;
+game_stats_figure_3_source.data['hb5'] = hb5_ys;
+game_stats_figure_3_source.data['hb6'] = hb6_ys;
+
+game_stats_figure_3_source.change.emit();
+"""
+    #</editor-fold>
 #</editor-fold>
 
 #<editor-fold create_buttons():
@@ -1227,4 +1371,38 @@ def b_auto_next_setup(b_auto_next, args_dict):
     b_auto_next_click = CustomJS(args = args_dict,
                                  code = automate_loop_iteration)
     b_auto_next.js_on_click(b_auto_next_click)
+#</editor-fold>
+#<editor-fold aim_sliders_setup():
+#Needs:
+#   from bokeh.models import CustomJS
+def aim_sliders_setup(ll_aim_slider, lm_aim_slider, lr_aim_slider,
+                      rl_aim_slider, rm_aim_slider, rr_aim_slider,
+                      automation_table_source):
+
+    args_dict = dict(ColumnDataSourceToChange = automation_table_source,
+                     LL_aim_slider = ll_aim_slider,
+                     LM_aim_slider = lm_aim_slider,
+                     LR_aim_slider = lr_aim_slider,
+                     RL_aim_slider = rl_aim_slider,
+                     RM_aim_slider = rm_aim_slider,
+                     RR_aim_slider = rr_aim_slider)
+
+    aim_slider_customjs = CustomJS(args = args_dict,
+                                   code = aim_slider_callback_code)
+
+    ll_aim_slider.js_on_change('value', aim_slider_customjs)
+    lm_aim_slider.js_on_change('value', aim_slider_customjs)
+    lr_aim_slider.js_on_change('value', aim_slider_customjs)
+    rl_aim_slider.js_on_change('value', aim_slider_customjs)
+    rm_aim_slider.js_on_change('value', aim_slider_customjs)
+    rr_aim_slider.js_on_change('value', aim_slider_customjs)
+#</editor-fold>
+#<editor-fold iterations_slider_setup():
+#Needs:
+#   from bokeh.models import CustomJS
+def iterations_slider_setup(iterations_slider, args_dict):
+    iterations_slider_callback = CustomJS(args = args_dict,
+                                          code = iterations_slider_code)
+
+    iterations_slider.js_on_change('value', iterations_slider_callback)
 #</editor-fold>

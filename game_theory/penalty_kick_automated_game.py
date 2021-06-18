@@ -454,6 +454,8 @@ if(strategy_to_use.text == "Fictitious_Play"){
 """
 
 select_bar = """
+var selected_bar = 0;
+
 if (kicker_foot == 'Right'){
     selected_bar += 3;
 }
@@ -531,9 +533,6 @@ if(parseInt(nround.text) >= parseInt(iterations_to_run.text)){
 """
 
 update_game_stats_figure_1 = """
-
-var selected_bar = 0;
-
 var scored_bars = [ll_scored_bar, lm_scored_bar, lr_scored_bar,
                    rl_scored_bar, rm_scored_bar, rr_scored_bar];
 var scored_texts = [ll_scored, lm_scored, lr_scored,
@@ -553,18 +552,14 @@ var blockedr_bars = [ll_blocked_right_bar, lm_blocked_right_bar, lr_blocked_righ
                      rl_blocked_right_bar, rm_blocked_right_bar, rr_blocked_right_bar];
 var blockedr_texts = [ll_blocked_right, lm_blocked_right, lr_blocked_right,
                       rl_blocked_right, rm_blocked_right, rr_blocked_right];
-
 """+select_bar+"""
 
 if(goal == 1){
-
     var new_score = parseInt(scored_texts[selected_bar].text);
     new_score += 1;
     scored_texts[selected_bar].text = new_score.toString();
-
 }
 else{
-
     if(goalie_action == 'Left'){
         var new_blockedl = parseInt(blockedl_texts[selected_bar].text);
         new_blockedl += 1;

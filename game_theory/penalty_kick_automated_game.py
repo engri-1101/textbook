@@ -3,6 +3,7 @@ from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
 from bokeh.models.widgets import Div
 
 #<editor-fold Code Strings:
+    #Has Been worked On?:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
 b_automate.visible = false;
@@ -30,7 +31,7 @@ txt.data['text'][3] = 'Choose a right- or left footed kicker!';
 txt.change.emit();
 """
     #</editor-fold>
-
+    #Has Been worked On?:
     #<editor-fold automate_start_code Initial Gui Display Code String:
 automate_start_code_initial_gui_display = """
 b_start_automate.visible = false;
@@ -51,6 +52,7 @@ automation_table.visible = false;
 automation_distribution_table.visible = true;
 """
     #</editor-fold>
+    #Has Been worked On?:
     #<editor-fold automate_loop Code Strings:
 automate_loop_iteration_var_instantiations = """
 // Define probability matrix
@@ -777,20 +779,18 @@ automate_loop_iteration=(automate_loop_iteration_var_instantiations
 b_automate_start_code = (automate_start_code_initial_gui_display
                          + automate_loop_iteration)
     #</editor-fold>
-
+    #Has Been worked On?: Yes
     #<editor-fold aim_slider_callback Code String:
 aim_slider_callback_code = """
-var data = ColumnDataSourceToChange.data;
-var chances = data['chances'];
+//Get the chances array to modify:
+const chances = ColumnDataSourceToChange.data['chances'];
 
-var total = 0;
-total += LL_aim_slider.value;
-total += LM_aim_slider.value;
-total += LR_aim_slider.value;
-total += RL_aim_slider.value;
-total += RM_aim_slider.value;
-total += RR_aim_slider.value;
+//Get the current total of the sliders:
+const total = (LL_aim_slider.value + LM_aim_slider.value
+               + LR_aim_slider.value + RL_aim_slider.value
+               + RM_aim_slider.value + RR_aim_slider.value);
 
+//Set the chances array's values accordingly:
 chances[0] = LL_aim_slider.value / total;
 chances[1] = LM_aim_slider.value / total;
 chances[2] = LR_aim_slider.value / total;
@@ -798,9 +798,11 @@ chances[3] = RL_aim_slider.value / total;
 chances[4] = RM_aim_slider.value / total;
 chances[5] = RR_aim_slider.value / total;
 
+//Emit changes:
 ColumnDataSourceToChange.change.emit();
 """
     #</editor-fold>
+    #Has Been worked On?: Yes
     #<editor-fold iterations_slider_callback Code String:
 iterations_slider_code = """
 
@@ -895,11 +897,14 @@ fig_3_data['hb6'] = hb6_ys;
 game_stats_figure_3_source.change.emit();
 """
     #</editor-fold>
-
+    #Has Been worked On?: Yes
     #<editor-fold strategy_dropdown_callback Code String:
 strategy_dropdown_code = """
+//Set the label of the dropdown (the text displayed) to the selected item:
 strategy_dropdown.label = this.item;
+//Set the text of the strategy_to_use div to the selected item:
 strategy_to_use.text = this.item;
+//Set the start automate button to be visible:
 b_start_automate.visible = true;
 """
     #</editor-fold>

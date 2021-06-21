@@ -1,7 +1,7 @@
 from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
                           TableColumn, DataTable, CustomJS)
 from bokeh.models.widgets import Div
-
+from ortools.linear_solver import pywraplp as OR
 #<editor-fold Code Strings:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
@@ -1492,4 +1492,70 @@ def strategy_dropdown_setup(strategy_dropdown, args_dict):
                                           code = strategy_dropdown_code)
     strategy_dropdown.js_on_event("menu_item_click",
                                   strategy_dropdown_callback)
+#</editor-fold>
+#<editor-fold create_optimal_mixed_counter_strategy():
+def create_optimal_mixed_counter_strategy(striker_ll_chance,
+                                          striker_lm_chance,
+                                          striker_lr_chance,
+                                          striker_rl_chance,
+                                          striker_rm_chance,
+                                          striker_rr_chance):
+    m1 = OR.Solver('left_subgame_counter_strategy', OR.Solver.CLP_LINEAR_PROGRAMMING);
+
+    LL = m1.NumVar(0, 1, 'LL');
+    LM = m1.NumVar(0, 1, 'LM');
+    LR = m1.NumVar(0, 1, 'LR');
+    Lz = m1.NumVar(-m1.infinity(), m1.infinity(), 'Lz');
+
+    m1.Minimize(Lz);
+
+    m1.Add(LL + LM + LR == 1);
+    m1.Add((LL * (striker_ll_chance * 0.67
+                  + striker_lm_chance * 0.74
+                  + striker_lr_chance * 0.87))
+           + (LM * (striker_ll_chance * 0.70
+                    + striker_lm_chance * 0.60
+                    + striker_lr_chance * 0.65))
+           + (LR * (striker_ll_chance * 0.96
+                    + striker_lm_chance * 0.72
+                    + striker_lr_chance * 0.61)) <= Lz);
+
+    m2 = OR.Solver('right_subgame_counter_strategy', OR.Solver.CLP_LINEAR_PROGRAMMING);
+
+    RL = m2.NumVar(0, 1, 'RL');
+    RM = m2.NumVar(0, 1, 'RM');
+    RR = m2.NumVar(0, 1, 'RR');
+    Rz = m2.NumVar(-m2.infinity(), m2.infinity(), 'Rz');
+
+    m2.Minimize(Rz);
+
+    m2.Add(RL + RM + RR == 1);
+    m2.Add((RL * (striker_rl_chance * 0.55
+                  + striker_rm_chance * 0.74
+                  + striker_rr_chance * 0.95))
+            + (RM * (striker_rl_chance * 0.65
+                     + striker_rm_chance * 0.60
+                     + striker_rr_chance * 0.73))
+            + (RR * (striker_rl_chance * 0.93
+                     + striker_rm_chance * 0.72
+                     + striker_rr_chance * 0.70)) <= Rz);
+
+    m1.Solve()
+    m2.Solve()
+    print('Solution:')
+    print('    Left Subgame:')
+    print('        Objective value =', m1.Objective().Value())
+    for var in m1.variables():
+        print('        ' + var.name(), ':', var.solution_value())
+    print('    Right Subgame:')
+    print('        Objective value =', m2.Objective().Value())
+    for var in m2.variables():
+        print('        ' + var.name(), ':', var.solution_value())
+
+    return [m1.variables()[0].solution_value(),
+            m1.variables()[1].solution_value(),
+            m1.variables()[2].solution_value(),
+            m2.variables()[0].solution_value(),
+            m2.variables()[1].solution_value(),
+            m2.variables()[2].solution_value()]
 #</editor-fold>

@@ -43,237 +43,252 @@ automation_distribution_table.visible = true;
     #</editor-fold>
     #Has Been worked On?:
     #<editor-fold automate_loop Code Strings:
-automate_loop_iteration_var_instantiations = """
-// Define probability matrix
-var p = {'Right' : {'LeftLeft' : 0.55,
-                    'LeftMiddle' : 0.65,
-                    'LeftRight' : 0.93,
-                    'MiddleLeft' : 0.74,
-                    'MiddleMiddle' : 0.60,
-                    'MiddleRight' : 0.72,
-                    'RightLeft' : 0.95,
-                    'RightMiddle' : 0.73,
-                    'RightRight' : 0.70},
-         'Left' :  {'LeftLeft' : 0.67,
-                    'LeftMiddle' : 0.70,
-                   'LeftRight' : 0.96,
-                    'MiddleLeft' : 0.74,
-                    'MiddleMiddle' : 0.60,
-                    'MiddleRight' : 0.72,
-                    'RightLeft' : 0.87,
-                    'RightMiddle' : 0.65,
-                    'RightRight' : 0.61}};
-
-//Obtain the Shot Aim chances from the column data source
-    var chances_data = ChancesColumnDataSource.data;
-    var chances = chances_data['chances'];
-    var LL_chance = chances[0];
-    var LM_chance = LL_chance + chances[1];
-    var LR_chance = LM_chance + chances[2];
-    var RL_chance = LR_chance + chances[3];
-    var RM_chance = RL_chance + chances[4];
-
-//Goalie Logic Decision Making Variables
-    var chance_left = 1/3;
-    var chance_middle = 1/3;
-    var chance_right = 1/3;
-
-    var danger_goalie_left = 0;
-    var danger_goalie_middle = 0;
-    var danger_goalie_right = 0;
-    var selected_dict = 0;
-
-    var total_sample_rolls;
-
-    var goalie_action = "None";
-
-//Loop Randomness Variable
-    var roll = 0;
-
-//Goalie Fictitious Learning Variables
-    var selected_index = 0;
-
-    var dist_data = DistributionColumnDataSource.data;
-    var freq = dist_data['freq'];
-    var decisions = dist_data['decisions'];
-
-//Data Display Variables
-    var perceived_risks = dist_data['goalie_perceived_risks'];
-    var scoring_chance = dist_data['striker_score_chance'];
-    var scoring_roll = dist_data['striker_score_roll'];
-
-//Striker Kick Choice Variables
-    var kicker_foot = 'none';
-    var kicker_kick = 'none';
-
-//Scoring Variables
-    var score_chance = 0;
-    var goal = 1;
-
-//Animation Variables
-    var animation_positions = {'Left' : [37, 43],
-                               'Middle' : [47,53],
-                               'Right' : [57, 63]};
-    var bally = 63;
+        #<editor-fold automate_loop_setup:
+create_automate_loop_constants = """
+const score_probabilities = {'Right' : {'LeftLeft' : 0.55,
+                                        'LeftMiddle' : 0.65,
+                                        'LeftRight' : 0.93,
+                                        'MiddleLeft' : 0.74,
+                                        'MiddleMiddle' : 0.60,
+                                        'MiddleRight' : 0.72,
+                                        'RightLeft' : 0.95,
+                                        'RightMiddle' : 0.73,
+                                        'RightRight' : 0.70},
+                             'Left' :  {'LeftLeft' : 0.67,
+                                        'LeftMiddle' : 0.70,
+                                        'LeftRight' : 0.96,
+                                        'MiddleLeft' : 0.74,
+                                        'MiddleMiddle' : 0.60,
+                                        'MiddleRight' : 0.72,
+                                        'RightLeft' : 0.87,
+                                        'RightMiddle' : 0.65,
+                                        'RightRight' : 0.61}};
+const chances = ChancesColumnDataSource.data['chances'];
+const dist_data = DistributionColumnDataSource.data;
+const freq = dist_data['freq'];
+const iters_to_run = parseInt(iterations_to_run.text);
 """
 
+create_automate_loop_state_lets = """
+let danger_goalie_left = 0;
+let danger_goalie_middle = 0;
+let danger_goalie_right = 0;
+
+let goalie_action = "None";
+
+let kicker_foot = 'none';
+let kicker_kick = 'none';
+
+let goal = 1;
+let game_score = 0;
+let rounds_played = 0;
+"""
+
+automate_loop_setup = (create_automate_loop_constants
+                       + create_automate_loop_state_lets)
+        #</editor-fold>
+
+
+#<editor-fold automate_loop_iteration_display
 automate_loop_iteration_display = """
-txt.data['text'][0] = 'Rounds played: ' + rounds_played;
+const game_text = txt.data['text'];
+
+game_text[0] = 'Rounds played: ' + rounds_played;
 
 if (goal == 1){
-    txt.data['text'][3] = 'GOAL!';
+    game_text[3] = 'GOAL!';
 }
 else{
-    txt.data['text'][3] = 'Blocked';
+    game_text[3] = 'Blocked';
 }
 
-txt.data['text'][1] = 'Total score: ' + game_score;
+game_text[1] = 'Total score: ' + game_score;
 
 txt.change.emit();
-
-DistributionColumnDataSource.change.emit();
 """
-
+#</editor-fold>
+#<editor-fold automate_loop_roll_kicker_action
 automate_loop_roll_kicker_action = """
-//Handle Automated Selection
-roll = Math.random();
+function rollKickerAction(){
+    let action_roll = Math.random();
 
-if(roll <= LL_chance){
-    kicker_foot = 'Left';
-    kicker_kick = 'Left';
+    const LL_chance = chances[0];
+    const LM_chance = LL_chance + chances[1];
+    const LR_chance = LM_chance + chances[2];
+    const RL_chance = LR_chance + chances[3];
+    const RM_chance = RL_chance + chances[4];
+
+    const action_LL_chance = chances[0];
+    const action_LM_chance = action_LL_chance + chances[1];
+    const action_LR_chance = action_LM_chance + chances[2];
+    const action_RL_chance = action_LR_chance + chances[3];
+    const action_RM_chance = action_RL_chance + chances[4];
+    let foot;
+    let kick;
+
+    if(action_roll <= action_LL_chance){
+        foot = 'Left';
+        kick = 'Left';
+    }
+    else if(action_roll <= action_LM_chance){
+        foot = 'Left';
+        kick = 'Middle';
+    }
+    else if(action_roll <= action_LR_chance){
+        foot = 'Left';
+        kick = 'Right';
+    }
+    else if(action_roll <= action_RL_chance){
+        foot = 'Right';
+        kick = 'Left';
+    }
+    else if(action_roll <= action_RM_chance){
+        foot = 'Right';
+        kick = 'Middle';
+    }
+    else{
+        foot = 'Right';
+        kick = 'Right';
+    }
+    return [foot, kick]
 }
-else if(roll <= LM_chance){
-    kicker_foot = 'Left';
-    kicker_kick = 'Middle';
-}
-else if(roll <= LR_chance){
-    kicker_foot = 'Left';
-    kicker_kick = 'Right';
-}
-else if(roll <= RL_chance){
-    kicker_foot = 'Right';
-    kicker_kick = 'Left';
-}
-else if(roll <= RM_chance){
-    kicker_foot = 'Right';
-    kicker_kick = 'Middle';
-}
-else{
-    kicker_foot = 'Right';
-    kicker_kick = 'Right';
-}
+[kicker_foot, kicker_kick] = rollKickerAction();
 """
-
+#</editor-fold>
+#<editor-fold automate_loop_handle_goalie_decision
+    #<editor-fold run_fictitious_play
 run_fictitious_play = """
 //Handle Goalie Decision
+function runFictitiousPlay(){
 
-if(kicker_foot == 'Left'){
-    total_sample_rolls = freq[0] + freq[1] + freq[2];
-    selected_dict = p['Left'];
+    let tsr; //total_sample_rolls
+    let cl; //chance left
+    let cm; //chance middle
+    let cr; //chance right
+    let action; //action for goalie to take
+    let sfprobsdict; //striker foot probabilities dictionary
+    let dgl; //danger_goalie_left
+    let dgm; //danger_goalie_middle
+    let dgr; //danger_goalie_right
+    let action_roll; //random roll
 
-    if(total_sample_rolls == 0){
-        chance_left = 1/3;
-        chance_middle = 1/3;
-        chance_right = 1/3;
-    }
-    else{
-        chance_left = freq[0] / total_sample_rolls;
-        chance_middle = freq[1] / total_sample_rolls;
-        chance_right = freq[2] / total_sample_rolls;
-    }
-}
-else{
-    total_sample_rolls = freq[3] + freq[4] + freq[5];
-    selected_dict = p['Right'];
-    if(total_sample_rolls == 0){
-        chance_left = 1/3;
-        chance_middle = 1/3;
-        chance_right = 1/3;
-    }
-    else{
-        chance_left = freq[3] / total_sample_rolls;
-        chance_middle = freq[4] / total_sample_rolls;
-        chance_right = freq[5] / total_sample_rolls;
-    }
-}
-
-danger_goalie_left = (chance_left * selected_dict['LeftLeft']
-                      + chance_middle*selected_dict['MiddleLeft']
-                      + chance_right*selected_dict['RightLeft']);
-danger_goalie_middle = (chance_left * selected_dict['LeftMiddle']
-                        + chance_middle*selected_dict['MiddleMiddle']
-                        + chance_right*selected_dict['RightMiddle']);
-danger_goalie_right = (chance_left * selected_dict['LeftRight']
-                       + chance_middle*selected_dict['MiddleRight']
-                       + chance_right*selected_dict['RightRight']);
-
-
-if(danger_goalie_left < danger_goalie_middle){
-    if(danger_goalie_left < danger_goalie_right){
-        goalie_action = "Left";
-    }
-    else if(danger_goalie_left == danger_goalie_right){
-        roll = Math.random();
-        if(roll <= 0.5){
-            goalie_action = "Left";
+    if(kicker_foot == 'Left'){
+        tsr = freq[0] + freq[1] + freq[2];
+        sfprobsdict = score_probabilities['Left'];
+        if(tsr == 0){
+            cl = 1/3;
+            cm = 1/3;
+            cr = 1/3;
         }
         else{
-            goalie_action = "Right";
+            cl = freq[0] / tsr;
+            cm = freq[1] / tsr;
+            cr = freq[2] / tsr;
         }
     }
+
     else{
-        goalie_action = "Right";
-    }
-}
-else if (danger_goalie_left == danger_goalie_middle){
-    roll = Math.random();
-    if(roll <= 0.5){
-        goalie_action = "Left";
-    }
-    else{
-        goalie_action = "Middle";
-    }
-}
-else{
-    if(danger_goalie_middle < danger_goalie_right){
-        goalie_action = "Middle";
-    }
-    else if(danger_goalie_middle == danger_goalie_right){
-        roll = Math.random();
-        if(roll <= 0.5){
-            goalie_action = "Middle";
+        tsr = freq[3] + freq[4] + freq[5];
+        sfprobsdict = score_probabilities['Right'];
+        if(tsr == 0){
+            cl = 1/3;
+            cm = 1/3;
+            cr = 1/3;
         }
         else{
-            goalie_action = "Right";
+            cl = freq[3] / tsr;
+            cm = freq[4] / tsr;
+            cr = freq[5] / tsr;
+        }
+    }
+
+    dgl = (cl * sfprobsdict['LeftLeft']
+           + cm*sfprobsdict['MiddleLeft']
+           + cr*sfprobsdict['RightLeft']);
+    dgm = (cl * sfprobsdict['LeftMiddle']
+           + cm*sfprobsdict['MiddleMiddle']
+           + cr*sfprobsdict['RightMiddle']);
+    dgr = (cl * sfprobsdict['LeftRight']
+           + cm*sfprobsdict['MiddleRight']
+           + cr*sfprobsdict['RightRight']);
+
+
+    if(dgl < dgm){
+        if(dgl < dgr){
+            action = "Left";
+        }
+        else if(dgl == dgr){
+            action_roll = Math.random();
+            if(action_roll <= 0.5){
+                action = "Left";
+            }
+            else{
+                action = "Right";
+            }
+        }
+        else{
+            action = "Right";
+        }
+    }
+    else if (dgl == dgm){
+        action_roll = Math.random();
+        if(action_roll <= 0.5){
+            action = "Left";
+        }
+        else{
+            action = "Middle";
         }
     }
     else{
-        goalie_action = "Right";
+        if(dgm < dgr){
+            action = "Middle";
+        }
+        else if(dgm == dgr){
+            action_roll = Math.random();
+            if(action_roll <= 0.5){
+                action = "Middle";
+            }
+            else{
+                action = "Right";
+            }
+        }
+        else{
+            action = "Right";
+        }
     }
+    return [action, dgl, dgm, dgr]
 }
+[goalie_action, danger_goalie_left,
+ danger_goalie_middle, danger_goalie_right] = runFictitiousPlay();
 """
-
+#</editor-fold>
+    #<editor-fold run_optimal_mixed_strategy
 run_optimal_mixed_strategy = """
-roll = Math.random();
-if(kicker_foot == 'Left'){
-    if(roll <= 0.8){
-        goalie_action = "Middle";
+function runOptimalMixedStrategy(){
+    let action_roll = Math.random();
+    let action;
+    if(kicker_foot == 'Left'){
+        if(action_roll <= 0.8){
+            action = "Middle"
+        }
+        else{
+            action = "Left"
+        }
     }
     else{
-        goalie_action = "Left";
+        if(action_roll <= 0.7419){
+            action = "Middle";
+        }
+        else{
+            action = "Right";
+        }
     }
+    return action;
 }
-else if(kicker_foot == 'Right'){
-    if(roll <= 0.7419){
-        goalie_action = "Middle";
-    }
-    else{
-        goalie_action = "Right";
-    }
 
-}
+goalie_action = runOptimalMixedStrategy();
 """
-
+#</editor-fold>
 automate_loop_handle_goalie_decision = """
 if(strategy_to_use.text == "Fictitious_Play"){
     """ + run_fictitious_play + """
@@ -282,475 +297,533 @@ else{
     """ + run_optimal_mixed_strategy + """
 }
 """
-
+#</editor-fold>
+#<editor-fold automate_loop_handle_scoring
 automate_loop_handle_scoring = """
-//Handle Score Chance:
+function scoring(){
+    const scoring_chance = dist_data['striker_score_chance'];
+    const scoring_roll = dist_data['striker_score_roll'];
 
-roll = Math.random();
-score_chance = p[kicker_foot][kicker_kick+goalie_action];
-if(roll <= score_chance){
-    goal = 1;
-}
-else{
-    goal = -1;
-}
-//Display Score Chance:
+    let score_roll = Math.random();
+    let score_chance = score_probabilities[kicker_foot][kicker_kick+goalie_action];
+    let index_to_update = 0;
+    let rounds_played = (parseInt(nround.text) + 1);
+    let round_score;
 
-for(var i=0; i<=5; i++){
-    scoring_chance[i] = 0;
-    scoring_roll[i] = 0;
-}
+    if(score_roll <= score_chance){
+        round_score = 1;
+    }
+    else{
+        round_score = -1;
+    }
+    //Display Score Chance:
 
-selected_index = 0;
-if(kicker_foot == 'Right'){
-    selected_index += 3;
-}
-if(kicker_kick == 'Middle'){
-    selected_index += 1;
-}
-else if(kicker_kick == 'Right'){
-    selected_index += 2;
-}
+    for(var i = 0; i <= 5; i++){
+        scoring_chance[i] = 0;
+        scoring_roll[i] = 0;
+    }
 
-scoring_chance[selected_index] = score_chance;
-scoring_roll[selected_index] = roll.toString().substring(0, 8);
+    if(kicker_foot == 'Right'){
+        index_to_update += 3;
+    }
+    if(kicker_kick == 'Middle'){
+        index_to_update += 1;
+    }
+    else if(kicker_kick == 'Right'){
+        index_to_update += 2;
+    }
 
-// Update text
+    scoring_chance[index_to_update] = score_chance;
+    scoring_roll[index_to_update] = score_roll.toString().substring(0, 8);
 
-var rounds_played = (parseInt(nround.text) + 1);
-if(rounds_played >= parseInt(iterations_to_run.text)){
-    b_auto_next.visible = false;
-    game_figure.visible = false;
-    automation_distribution_table.visible = false;
+    // Update text
+
+    if(rounds_played >= iters_to_run){
+        b_auto_next.visible = false;
+        game_figure.visible = false;
+        automation_distribution_table.visible = false;
+
+        if(strategy_to_use.text == "Fictitious_Play"){
+            game_stats_figure_1.visible = true;
+            game_stats_figure_2.visible = true;
+            game_stats_figure_3.visible = true;
+        }
+        else{
+            game_stats_figure_1.visible = true;
+            game_stats_figure_2.visible = true;
+            game_stats_figure_3.visible = false;
+        }
+    }
+    nround.text = rounds_played.toString();
+
+    let current_game_score = parseInt(score.text) + round_score;
+    score.text = current_game_score.toString();
+
+    return [round_score, current_game_score, rounds_played];
+}
+[goal, game_score, rounds_played] = scoring();
+"""
+#</editor-fold>
+#<editor-fold automate_loop_animation
+automate_loop_animation = """
+function doAnimation(){
+    let animation_roll = Math.random();
+    let animation_slot = 0;
+
+    const animation_positions = {'Left' : [37, 43],
+                                 'Middle' : [47,53],
+                                 'Right' : [57, 63]};
+
+    if(animation_roll <= 0.5){
+        animation_slot = 1;
+    }
+
+    ball.x = animation_positions[kicker_kick][animation_slot];
+    ball.y = 63;
+
+    if(goal == -1){
+        if(goalie_action == kicker_kick){
+            goalie_head.x = ball.x;
+            goalie_body.x = ball.x;
+        }
+        else{
+            if(kicker_kick == "Right"){
+                ball.x = 70;
+            }
+            else if(kicker_kick == "Left"){
+                ball.x = 30;
+            }
+            else{
+                ball.x = [30,70][animation_slot];
+            }
+        }
+    }
+    else{
+        if(goalie_action == kicker_kick){
+            if(animation_slot == 1){
+                goalie_head.x = animation_positions[goalie_action][0];
+                goalie_body.x = animation_positions[goalie_action][0];
+            }
+            else{
+                goalie_head.x = animation_positions[goalie_action][1];
+                goalie_body.x = animation_positions[goalie_action][1];
+            }
+        }
+        else{
+            animation_slot = 1;
+                if(animation_roll <= 0.5){
+            }
+            else{
+                animation_slot = 0;
+            }
+            goalie_head.x = animation_positions[goalie_action][animation_slot];
+            goalie_body.x = animation_positions[goalie_action][animation_slot];
+        }
+    }
+}
+doAnimation();
+"""
+#</editor-fold>
+#<editor-fold automate_loop_update_fictitious_decision_tracking
+automate_loop_update_fictitious_decision_tracking = """
+function goalieFictitiousDecisionTracking(){
+    const perceived_risks = dist_data['goalie_perceived_risks'];
+    let selected_freq_index = 0;
+    if(kicker_foot == 'Right'){
+        selected_freq_index += 3;
+    }
+    if(kicker_kick == 'Middle'){
+        selected_freq_index += 1;
+    }
+    else if(kicker_kick == 'Right'){
+        selected_freq_index += 2;
+    }
+    freq[selected_freq_index] += 1;
+
+    let selected_decisions_index = 0;
+    if(kicker_foot == 'Right'){
+        selected_decisions_index += 3;
+    }
+    if(goalie_action == 'Middle'){
+        selected_decisions_index += 1;
+    }
+    else if(goalie_action == 'Right'){
+        selected_decisions_index += 2;
+    }
+    dist_data['decisions'][selected_decisions_index] += 1;
 
     if(strategy_to_use.text == "Fictitious_Play"){
-        game_stats_figure_1.visible = true;
-        game_stats_figure_2.visible = true;
-        game_stats_figure_3.visible = true;
+        let selected_pr_index = 0;
+        if(kicker_foot == 'Right'){
+            selected_pr_index += 3;
+        }
+        for(var i=0; i<=5; i++){
+            perceived_risks[i] = 0;
+        }
+        perceived_risks[selected_pr_index] = danger_goalie_left.toString().substring(0, 8);
+        perceived_risks[selected_pr_index + 1] = danger_goalie_middle.toString().substring(0, 8);
+        perceived_risks[selected_pr_index + 2] = danger_goalie_right.toString().substring(0, 8);
+    }
+}
+
+goalieFictitiousDecisionTracking();
+"""
+#</editor-fold>
+#<editor-fold update_game_stats_figure_1
+update_game_stats_figure_1 = """
+
+function updateFig1(){
+    let scored_bars = [ll_scored_bar, lm_scored_bar, lr_scored_bar,
+                       rl_scored_bar, rm_scored_bar, rr_scored_bar];
+    let scored_texts = [ll_scored, lm_scored, lr_scored,
+                        rl_scored, rm_scored, rr_scored];
+
+    let blockedl_bars = [ll_blocked_left_bar, lm_blocked_left_bar,
+                         lr_blocked_left_bar, rl_blocked_left_bar,
+                         rm_blocked_left_bar, rr_blocked_left_bar];
+    let blockedl_texts = [ll_blocked_left, lm_blocked_left, lr_blocked_left,
+                          rl_blocked_left, rm_blocked_left, rr_blocked_left];
+
+    let blockedm_bars = [ll_blocked_middle_bar, lm_blocked_middle_bar,
+                         lr_blocked_middle_bar, rl_blocked_middle_bar,
+                         rm_blocked_middle_bar, rr_blocked_middle_bar];
+    let blockedm_texts = [ll_blocked_middle, lm_blocked_middle,
+                          lr_blocked_middle, rl_blocked_middle,
+                          rm_blocked_middle, rr_blocked_middle];
+
+    let blockedr_bars = [ll_blocked_right_bar, lm_blocked_right_bar,
+                         lr_blocked_right_bar, rl_blocked_right_bar,
+                         rm_blocked_right_bar, rr_blocked_right_bar];
+    let blockedr_texts = [ll_blocked_right, lm_blocked_right, lr_blocked_right,
+                          rl_blocked_right, rm_blocked_right, rr_blocked_right];
+
+    let selected_bar = 0;
+
+    if (kicker_foot == 'Right'){
+        selected_bar += 3;
+    }
+
+    if(kicker_kick == 'Middle'){
+        selected_bar += 1;
+    }
+    else if(kicker_kick == 'Right'){
+        selected_bar += 2;
+    }
+
+    if(goal == 1){
+        let new_score = parseInt(scored_texts[selected_bar].text);
+        new_score += 1;
+        scored_texts[selected_bar].text = new_score.toString();
     }
     else{
-        game_stats_figure_1.visible = true;
-        game_stats_figure_2.visible = true;
-        game_stats_figure_3.visible = false;
-    }
-
-}
-nround.text = rounds_played.toString();
-
-var game_score = parseInt(score.text) + goal;
-score.text = game_score.toString();
-"""
-
-automate_loop_animation = """
-//Animate Scenario:
-
-var animation_roll = 0;
-var animation_slot = 0;
-animation_roll = Math.random()
-
-if(animation_roll <= 0.5){
-    animation_slot = 1;
-}
-
-ball.x = animation_positions[kicker_kick][animation_slot];
-ball.y = bally;
-
-if(goal == -1){
-    if(goalie_action == kicker_kick){
-        goalie_head.x = ball.x;
-        goalie_body.x = ball.x;
-    }
-    else{
-        if(kicker_kick == "Right"){
-            ball.x = 70;
+        if(goalie_action == 'Left'){
+            let new_blockedl = parseInt(blockedl_texts[selected_bar].text);
+            new_blockedl += 1;
+            blockedl_texts[selected_bar].text = new_blockedl.toString();
         }
-        else if(kicker_kick == "Left"){
-            ball.x = 30;
+        else if(goalie_action == 'Middle'){
+            let new_blockedm = parseInt(blockedm_texts[selected_bar].text);
+            new_blockedm += 1;
+            blockedm_texts[selected_bar].text = new_blockedm.toString();
         }
         else{
-            ball.x = [30,70][animation_slot];
+            let new_blockedr = parseInt(blockedr_texts[selected_bar].text);
+            new_blockedr += 1;
+            blockedr_texts[selected_bar].text = new_blockedr.toString();
         }
     }
 
-}
-else{
-    if(goalie_action == kicker_kick){
-        if(animation_slot == 1){
-            goalie_head.x = animation_positions[goalie_action][0];
-            goalie_body.x = animation_positions[goalie_action][0];
+    let scored_bar_height = parseInt(scored_texts[selected_bar].text);
+    scored_bars[selected_bar].height = scored_bar_height;
+    scored_bars[selected_bar].y = scored_bar_height / 2;
+
+    let blockedl_bar_height = parseInt(blockedl_texts[selected_bar].text);
+    blockedl_bars[selected_bar].height = blockedl_bar_height;
+    blockedl_bars[selected_bar].y = scored_bar_height + blockedl_bar_height/2;
+
+    let blockedm_bar_height = parseInt(blockedm_texts[selected_bar].text);
+    blockedm_bars[selected_bar].height = blockedm_bar_height;
+    blockedm_bars[selected_bar].y = (scored_bar_height
+                                     + blockedl_bar_height
+                                     + blockedm_bar_height/2);
+
+    let blockedr_bar_height = parseInt(blockedr_texts[selected_bar].text);
+    blockedr_bars[selected_bar].height = blockedr_bar_height;
+    blockedr_bars[selected_bar].y = (scored_bar_height
+                                     + blockedl_bar_height
+                                     + blockedm_bar_height
+                                     + blockedr_bar_height/2);
+
+    let new_graph_height = 0;
+    for (let i = 0; i <= 5; i++){
+        let possible_graph_height = (Math.round((parseInt(scored_texts[i].text)
+                                                 + parseInt(blockedl_texts[i].text)
+                                                 + parseInt(blockedm_texts[i].text)
+                                                 + parseInt(blockedr_texts[i].text))
+                                                * 5/4));
+        if(possible_graph_height > new_graph_height){
+           new_graph_height = possible_graph_height;
         }
-        else{
-            goalie_head.x = animation_positions[goalie_action][1];
-            goalie_body.x = animation_positions[goalie_action][1];
-        }
-    }
-    else{
-        if(animation_roll <= 0.5){
-            animation_slot = 1;
-        }
-        else{
-            animation_slot = 0;
-        }
-        goalie_head.x = animation_positions[goalie_action][animation_slot];
-        goalie_body.x = animation_positions[goalie_action][animation_slot];
-    }
-}
-"""
-
-automate_loop_update_fictitious_decision_tracking = """
-//Update Goalie Frequency Tracking:
-
-selected_index = 0;
-if(kicker_foot == 'Right'){
-    selected_index += 3;
-}
-if(kicker_kick == 'Middle'){
-    selected_index += 1;
-}
-else if(kicker_kick == 'Right'){
-    selected_index += 2;
-}
-
-freq[selected_index] += 1;
-
-//Update Goalie Decision Tracking:
-
-selected_index = 0;
-if(kicker_foot == 'Right'){
-    selected_index += 3;
-}
-if(goalie_action == 'Middle'){
-    selected_index += 1;
-}
-else if(goalie_action == 'Right'){
-    selected_index += 2;
-}
-
-decisions[selected_index] += 1;
-
-if(strategy_to_use.text == "Fictitious_Play"){
-
-    //Update Goalie Perceived Risks:
-
-    selected_index = 0;
-    if(kicker_foot == 'Right'){
-        selected_index += 3;
-    }
-    for(var i=0; i<=5; i++){
-        perceived_risks[i] = 0;
-    }
-    perceived_risks[selected_index] = danger_goalie_left.toString().substring(0, 8);
-    perceived_risks[selected_index + 1] = danger_goalie_middle.toString().substring(0, 8);
-    perceived_risks[selected_index + 2] = danger_goalie_right.toString().substring(0, 8);
-}
-"""
-
-select_bar = """
-var selected_bar = 0;
-
-if (kicker_foot == 'Right'){
-    selected_bar += 3;
-}
-
-if(kicker_kick == 'Middle'){
-    selected_bar += 1;
-}
-else if(kicker_kick == 'Right'){
-    selected_bar += 2;
-}
-"""
-
-update_bar = """
-var scored_bar_height = parseInt(scored_texts[selected_bar].text);
-scored_bars[selected_bar].height = scored_bar_height;
-scored_bars[selected_bar].y = scored_bar_height / 2;
-
-var blockedl_bar_height = parseInt(blockedl_texts[selected_bar].text);
-blockedl_bars[selected_bar].height = blockedl_bar_height;
-blockedl_bars[selected_bar].y = scored_bar_height + blockedl_bar_height/2;
-
-var blockedm_bar_height = parseInt(blockedm_texts[selected_bar].text);
-blockedm_bars[selected_bar].height = blockedm_bar_height;
-blockedm_bars[selected_bar].y = scored_bar_height + blockedl_bar_height + blockedm_bar_height/2;
-
-var blockedr_bar_height = parseInt(blockedr_texts[selected_bar].text);
-blockedr_bars[selected_bar].height = blockedr_bar_height;
-blockedr_bars[selected_bar].y = scored_bar_height + blockedl_bar_height + blockedm_bar_height + blockedr_bar_height/2;
-"""
-
-resize_graph = """
-var new_graph_height = 0;
-for (var i = 0; i <= 5; i++){
-    var possible_graph_height = (Math.round((parseInt(scored_texts[i].text)
-                                             + parseInt(blockedl_texts[i].text)
-                                             + parseInt(blockedm_texts[i].text)
-                                             + parseInt(blockedr_texts[i].text))
-                                            * 5/4));
-    if(possible_graph_height > new_graph_height){
-       new_graph_height = possible_graph_height;
     }
     game_stats_figure_1.y_range.end = new_graph_height;
+
+    if(parseInt(nround.text) >= iters_to_run){
+        const fig_1_data = game_stats_figure_1_source.data;
+
+        for (let i = 0; i <= 5; i++){
+            const scored_y_height = parseInt(scored_texts[i].text);
+            const blockedl_height = (parseInt(blockedl_texts[i].text)
+                                     + scored_y_height);
+            const blockedm_height = (parseInt(blockedm_texts[i].text)
+                                     + blockedl_height);
+            const blockedr_height = (parseInt(blockedr_texts[i].text)
+                                     + blockedm_height);
+
+            const index0 = i * 3;
+            const index1 = index0 + 1;
+            const index2 = index1 + 1;
+
+            fig_1_data['scored_y'][index0] = scored_y_height;
+            fig_1_data['scored_y'][index1] = scored_y_height;
+            fig_1_data['scored_y'][index2] = scored_y_height;
+
+            fig_1_data['blockedl_y'][index0] = blockedl_height;
+            fig_1_data['blockedl_y'][index1] = blockedl_height;
+            fig_1_data['blockedl_y'][index2] = blockedl_height;
+
+            fig_1_data['blockedm_y'][index0] = blockedm_height;
+            fig_1_data['blockedm_y'][index1] = blockedm_height;
+            fig_1_data['blockedm_y'][index2] = blockedm_height;
+
+            fig_1_data['blockedr_y'][index0] = blockedr_height;
+            fig_1_data['blockedr_y'][index1] = blockedr_height;
+            fig_1_data['blockedr_y'][index2] = blockedr_height;
+        }
+
+        game_stats_figure_1_source.change.emit();
+    }
 }
+updateFig1();
 """
-
-update_figure_1_source = """
-if(parseInt(nround.text) >= parseInt(iterations_to_run.text)){
-    const fig_1_data = game_stats_figure_1_source.data;
-
-    for (var i = 0; i <= 5; i++){
-        var scored_y_height = parseInt(scored_texts[i].text);
-        var blockedl_height = parseInt(blockedl_texts[i].text) + scored_y_height;
-        var blockedm_height = parseInt(blockedm_texts[i].text) + blockedl_height;
-        var blockedr_height = parseInt(blockedr_texts[i].text) + blockedm_height;
-
-        fig_1_data['scored_y'][i*3] = scored_y_height;
-        fig_1_data['scored_y'][i*3 + 1] = scored_y_height;
-        fig_1_data['scored_y'][i*3 + 2] = scored_y_height;
-
-        fig_1_data['blockedl_y'][i*3] = blockedl_height;
-        fig_1_data['blockedl_y'][i*3 + 1] = blockedl_height;
-        fig_1_data['blockedl_y'][i*3 + 2] = blockedl_height;
-
-        fig_1_data['blockedm_y'][i*3] = blockedm_height;
-        fig_1_data['blockedm_y'][i*3 + 1] = blockedm_height;
-        fig_1_data['blockedm_y'][i*3 + 2] = blockedm_height;
-
-        fig_1_data['blockedr_y'][i*3] = blockedr_height;
-        fig_1_data['blockedr_y'][i*3 + 1] = blockedr_height;
-        fig_1_data['blockedr_y'][i*3 + 2] = blockedr_height;
-    }
-
-    game_stats_figure_1_source.change.emit();
-}
-"""
-
-update_game_stats_figure_1 = """
-var scored_bars = [ll_scored_bar, lm_scored_bar, lr_scored_bar,
-                   rl_scored_bar, rm_scored_bar, rr_scored_bar];
-var scored_texts = [ll_scored, lm_scored, lr_scored,
-                    rl_scored, rm_scored, rr_scored];
-
-var blockedl_bars = [ll_blocked_left_bar, lm_blocked_left_bar, lr_blocked_left_bar,
-                     rl_blocked_left_bar, rm_blocked_left_bar, rr_blocked_left_bar];
-var blockedl_texts = [ll_blocked_left, lm_blocked_left, lr_blocked_left,
-                      rl_blocked_left, rm_blocked_left, rr_blocked_left];
-
-var blockedm_bars = [ll_blocked_middle_bar, lm_blocked_middle_bar, lr_blocked_middle_bar,
-                     rl_blocked_middle_bar, rm_blocked_middle_bar, rr_blocked_middle_bar];
-var blockedm_texts = [ll_blocked_middle, lm_blocked_middle, lr_blocked_middle,
-                      rl_blocked_middle, rm_blocked_middle, rr_blocked_middle];
-
-var blockedr_bars = [ll_blocked_right_bar, lm_blocked_right_bar, lr_blocked_right_bar,
-                     rl_blocked_right_bar, rm_blocked_right_bar, rr_blocked_right_bar];
-var blockedr_texts = [ll_blocked_right, lm_blocked_right, lr_blocked_right,
-                      rl_blocked_right, rm_blocked_right, rr_blocked_right];
-"""+select_bar+"""
-
-if(goal == 1){
-    var new_score = parseInt(scored_texts[selected_bar].text);
-    new_score += 1;
-    scored_texts[selected_bar].text = new_score.toString();
-}
-else{
-    if(goalie_action == 'Left'){
-        var new_blockedl = parseInt(blockedl_texts[selected_bar].text);
-        new_blockedl += 1;
-        blockedl_texts[selected_bar].text = new_blockedl.toString();
-    }
-    else if(goalie_action == 'Middle'){
-        var new_blockedm = parseInt(blockedm_texts[selected_bar].text);
-        new_blockedm += 1;
-        blockedm_texts[selected_bar].text = new_blockedm.toString();
-    }
-    else{
-        var new_blockedr = parseInt(blockedr_texts[selected_bar].text);
-        new_blockedr += 1;
-        blockedr_texts[selected_bar].text = new_blockedr.toString();
-    }
-}
-
-""" + update_bar + resize_graph + update_figure_1_source
-
+#</editor-fold>
+#<editor-fold update_game_stats_figure_2
 update_game_stats_figure_2 = """
-const fig_2_data = game_stats_figure_2_source.data;
-fig_2_data['ys'][parseInt(nround.text)] = parseInt(score.text);
-game_stats_figure_2_source.change.emit();
+function updateFig2(){
+    const fig_2_data = game_stats_figure_2_source.data;
 
-if(parseInt(nround.text) >= parseInt(iterations_to_run.text)){
-    //Resize Graph and Hitboxes:
-    var fig_2_min_val = 0;
-    var fig_2_max_val = 0;
+    let nround_val = parseInt(nround.text);
 
-    for(var i = 0; i <= parseInt(iterations_to_run.text); i++){
-        if(fig_2_min_val > fig_2_data['ys'][i]){
-            fig_2_min_val = fig_2_data['ys'][i];
-        }
-        if(fig_2_max_val < fig_2_data['ys'][i]){
-            fig_2_max_val = fig_2_data['ys'][i];
-        }
-    }
-    //Resize Hitboxes:
-    var heights = [];
-    var buffer = Math.round((Math.abs(fig_2_max_val) + Math.abs(fig_2_min_val)) * 1/8) + 1;
-    if(Math.abs(fig_2_max_val) > Math.abs(fig_2_min_val)){
-        for(var i = 0; i <= parseInt(iterations_to_run.text); i++){
-            heights.push(Math.abs((fig_2_max_val + buffer) * 2));
-        }
-    }
-    else{
-        for(var i = 0; i <= parseInt(iterations_to_run.text); i++){
-            heights.push(Math.abs((fig_2_min_val - buffer) * 2));
-        }
-    }
-    fig_2_data['heights'] = heights;
-
-    //Resize Graph:
-    game_stats_figure_2.y_range.end = fig_2_max_val + buffer;
-    game_stats_figure_2.y_range.start = fig_2_min_val - buffer;
-
+    fig_2_data['ys'][nround_val] = parseInt(score.text);
     game_stats_figure_2_source.change.emit();
+
+    if(nround_val >= iters_to_run){
+        //Resize Graph and Hitboxes:
+        let fig_2_min_val = 0;
+        let fig_2_max_val = 0;
+
+        for(let i = 0; i <= iters_to_run; i++){
+            if(fig_2_min_val > fig_2_data['ys'][i]){
+                fig_2_min_val = fig_2_data['ys'][i];
+            }
+            if(fig_2_max_val < fig_2_data['ys'][i]){
+                fig_2_max_val = fig_2_data['ys'][i];
+            }
+        }
+        //Resize Hitboxes:
+        let heights = [];
+        let buffer = Math.round((Math.abs(fig_2_max_val)
+                                 + Math.abs(fig_2_min_val))
+                                * 1/8) + 1;
+        if(Math.abs(fig_2_max_val) > Math.abs(fig_2_min_val)){
+            for(let i = 0; i <= iters_to_run; i++){
+                heights.push(Math.abs((fig_2_max_val + buffer) * 2));
+            }
+        }
+        else{
+            for(let i = 0; i <= iters_to_run; i++){
+                heights.push(Math.abs((fig_2_min_val - buffer) * 2));
+            }
+        }
+        fig_2_data['heights'] = heights;
+
+        //Resize Graph:
+        game_stats_figure_2.y_range.end = fig_2_max_val + buffer;
+        game_stats_figure_2.y_range.start = fig_2_min_val - buffer;
+
+        game_stats_figure_2_source.change.emit();
+    }
 }
+updateFig2();
 """
-
-resize_fig_3_hbs = """
-for(var i = 0; i <= parseInt(iterations_to_run.text); i++){
-    var perceived_risks = [fig_3_data['ll_ys'][i],
-                           fig_3_data['lm_ys'][i],
-                           fig_3_data['lr_ys'][i],
-                           fig_3_data['rl_ys'][i],
-                           fig_3_data['rm_ys'][i],
-                           fig_3_data['rr_ys'][i]];
-
-    var sorted_perceived_risks = perceived_risks.sort((a, b) => b - a);
-    var hbh1 = (sorted_perceived_risks[5] + sorted_perceived_risks[4]) / 2;
-    var hbh2 = (sorted_perceived_risks[4] + sorted_perceived_risks[3])/2 - hbh1;
-    var hbh3 = (sorted_perceived_risks[3] + sorted_perceived_risks[2])/2 - hbh2 - hbh1;
-    var hbh4 = (sorted_perceived_risks[2] + sorted_perceived_risks[1])/2 - hbh3 - hbh2 - hbh1;
-    var hbh5 = (sorted_perceived_risks[1] + sorted_perceived_risks[0])/2 - hbh4 - hbh3 - hbh2 - hbh1;
-    var hbh6 = 1 - hbh1 - hbh2 - hbh3 - hbh4 - hbh5;
-    fig_3_data['hb1'][i] = hbh1;
-    fig_3_data['hb2'][i] = hbh2;
-    fig_3_data['hb3'][i] = hbh3;
-    fig_3_data['hb4'][i] = hbh4;
-    fig_3_data['hb5'][i] = hbh5;
-    fig_3_data['hb6'][i] = hbh6;
-}
-"""
-
-resize_fig_3 = """
-var fig_3_min_val = 1;
-var fig_3_max_val = 0;
-for (var i = 0; i <= parseInt(iterations_to_run.text); i++){
-    if(fig_3_data['ll_ys'][i] > fig_3_max_val){ fig_3_max_val = fig_3_data['ll_ys'][i];}
-    if(fig_3_data['lm_ys'][i] > fig_3_max_val){ fig_3_max_val = fig_3_data['lm_ys'][i];}
-    if(fig_3_data['lr_ys'][i] > fig_3_max_val){ fig_3_max_val = fig_3_data['lr_ys'][i];}
-    if(fig_3_data['rl_ys'][i] > fig_3_max_val){ fig_3_max_val = fig_3_data['rl_ys'][i];}
-    if(fig_3_data['rm_ys'][i] > fig_3_max_val){ fig_3_max_val = fig_3_data['rm_ys'][i];}
-    if(fig_3_data['rr_ys'][i] > fig_3_max_val){ fig_3_max_val = fig_3_data['rr_ys'][i];}
-
-    if(fig_3_data['ll_ys'][i] < fig_3_min_val){ fig_3_min_val = fig_3_data['ll_ys'][i];}
-    if(fig_3_data['lm_ys'][i] < fig_3_min_val){ fig_3_min_val = fig_3_data['lm_ys'][i];}
-    if(fig_3_data['lr_ys'][i] < fig_3_min_val){ fig_3_min_val = fig_3_data['lr_ys'][i];}
-    if(fig_3_data['rl_ys'][i] < fig_3_min_val){ fig_3_min_val = fig_3_data['rl_ys'][i];}
-    if(fig_3_data['rm_ys'][i] < fig_3_min_val){ fig_3_min_val = fig_3_data['rm_ys'][i];}
-    if(fig_3_data['rr_ys'][i] < fig_3_min_val){ fig_3_min_val = fig_3_data['rr_ys'][i];}
-}
-
-fig_3_max_val = Math.round(fig_3_max_val * 10) / 10;
-fig_3_min_val = Math.round(fig_3_min_val * 10) / 10;
-var fig_3_buffer = 0.1;
-game_stats_figure_3.y_range.end = fig_3_max_val + fig_3_buffer;
-game_stats_figure_3.y_range.start = fig_3_min_val - fig_3_buffer;
-"""
-
+#</editor-fold>
+#<editor-fold update_game_stats_figure_3
 update_game_stats_figure_3 = """
-if(strategy_to_use.text == "Fictitious_Play"){
+function updateFig3(){
 
-    var fig_3_data = game_stats_figure_3_source.data;
-    var index = parseInt(nround.text);
+    let fig_3_data = game_stats_figure_3_source.data;
+    let index = parseInt(nround.text);
 
-    var freq_ll = DistributionColumnDataSource.data['freq'][0];
-    var freq_lm = DistributionColumnDataSource.data['freq'][1];
-    var freq_lr = DistributionColumnDataSource.data['freq'][2];
-    var freq_rl = DistributionColumnDataSource.data['freq'][3];
-    var freq_rm = DistributionColumnDataSource.data['freq'][4];
-    var freq_rr = DistributionColumnDataSource.data['freq'][5];
-    var chance_l_total = freq_ll + freq_lm + freq_lr;
-    var chance_r_total = freq_rl + freq_rm + freq_rr;
+    let freq_ll = freq[0];
+    let freq_lm = freq[1];
+    let freq_lr = freq[2];
+    let freq_rl = freq[3];
+    let freq_rm = freq[4];
+    let freq_rr = freq[5];
+    let chance_l_total = freq_ll + freq_lm + freq_lr;
+    let chance_r_total = freq_rl + freq_rm + freq_rr;
 
+    let chance_ll;
+    let chance_lm;
+    let chance_lr;
+    let chance_rl;
+    let chance_rm;
+    let chance_rr;
     if(chance_l_total != 0){
-        var chance_ll = freq_ll / chance_l_total;
-        var chance_lm = freq_lm / chance_l_total;
-        var chance_lr = freq_lr / chance_l_total;
+        chance_ll = freq_ll / chance_l_total;
+        chance_lm = freq_lm / chance_l_total;
+        chance_lr = freq_lr / chance_l_total;
     }
     else{
-        var chance_ll = 1/3;
-        var chance_lm = 1/3;
-        var chance_lr = 1/3;
+        chance_ll = 1/3;
+        chance_lm = 1/3;
+        chance_lr = 1/3;
     }
 
     if(chance_r_total != 0){
-        var chance_rl = freq_rl / chance_r_total;
-        var chance_rm = freq_rm / chance_r_total;
-        var chance_rr = freq_rr / chance_r_total;
+        chance_rl = freq_rl / chance_r_total;
+        chance_rm = freq_rm / chance_r_total;
+        chance_rr = freq_rr / chance_r_total;
     }
     else{
-        var chance_rl = 1/3;
-        var chance_rm = 1/3;
-        var chance_rr = 1/3;
+        chance_rl = 1/3;
+        chance_rm = 1/3;
+        chance_rr = 1/3;
     }
 
+    fig_3_data['ll_ys'][index] = ((chance_ll
+                                   * score_probabilities['Left']['LeftLeft'])
+                                  + (chance_lm
+                                     * score_probabilities['Left']['MiddleLeft'])
+                                  + (chance_lr
+                                     * score_probabilities['Left']['RightLeft']));
+    fig_3_data['lm_ys'][index] = ((chance_ll
+                                   * score_probabilities['Left']['LeftMiddle'])
+                                  + (chance_lm
+                                     * score_probabilities['Left']['MiddleMiddle'])
+                                  + (chance_lr
+                                     * score_probabilities['Left']['RightMiddle']));
+    fig_3_data['lr_ys'][index] = ((chance_ll
+                                   * score_probabilities['Left']['LeftRight'])
+                                  + (chance_lm
+                                     * score_probabilities['Left']['MiddleRight'])
+                                  + (chance_lr
+                                     * score_probabilities['Left']['RightRight']));
+    fig_3_data['rl_ys'][index] = ((chance_rl
+                                   * score_probabilities['Right']['LeftLeft'])
+                                  + (chance_rm
+                                     * score_probabilities['Right']['MiddleLeft'])
+                                  + (chance_rr
+                                     * score_probabilities['Right']['RightLeft']));
+    fig_3_data['rm_ys'][index] = ((chance_rl
+                                   * score_probabilities['Right']['LeftMiddle'])
+                                  + (chance_rm
+                                     * score_probabilities['Right']['MiddleMiddle'])
+                                  + (chance_rr
+                                     * score_probabilities['Right']['RightMiddle']));
+    fig_3_data['rr_ys'][index] = ((chance_rl
+                                   * score_probabilities['Right']['LeftRight'])
+                                  + (chance_rm
+                                     * score_probabilities['Right']['MiddleRight'])
+                                  + (chance_rr
+                                     * score_probabilities['Right']['RightRight']));
+    if(index == iters_to_run){
+        for(let i = 0; i <= iters_to_run; i++){
+            let fig_3_perceived_risks = [fig_3_data['ll_ys'][i],
+                                         fig_3_data['lm_ys'][i],
+                                         fig_3_data['lr_ys'][i],
+                                         fig_3_data['rl_ys'][i],
+                                         fig_3_data['rm_ys'][i],
+                                         fig_3_data['rr_ys'][i]];
 
+            let sorted_perceived_risks = fig_3_perceived_risks.sort((a, b) => b - a);
+            let hbh1 = ((sorted_perceived_risks[5]
+                         + sorted_perceived_risks[4]) / 2);
+            let hbh2 = ((sorted_perceived_risks[4]
+                         + sorted_perceived_risks[3]) / 2) - hbh1;
+            let hbh3 = ((sorted_perceived_risks[3]
+                         + sorted_perceived_risks[2]) / 2) - hbh2 - hbh1;
+            let hbh4 = (((sorted_perceived_risks[2]
+                          + sorted_perceived_risks[1]) / 2)
+                        - hbh3 - hbh2 - hbh1);
+            let hbh5 = (((sorted_perceived_risks[1]
+                          + sorted_perceived_risks[0]) / 2)
+                        - hbh4 - hbh3 - hbh2 - hbh1);
+            let hbh6 = 1 - hbh1 - hbh2 - hbh3 - hbh4 - hbh5;
+            fig_3_data['hb1'][i] = hbh1;
+            fig_3_data['hb2'][i] = hbh2;
+            fig_3_data['hb3'][i] = hbh3;
+            fig_3_data['hb4'][i] = hbh4;
+            fig_3_data['hb5'][i] = hbh5;
+            fig_3_data['hb6'][i] = hbh6;
+        }
 
-    var p = {'Right' : {'LeftLeft' : 0.55,
-                    'LeftMiddle' : 0.65,
-                    'LeftRight' : 0.93,
-                    'MiddleLeft' : 0.74,
-                    'MiddleMiddle' : 0.60,
-                    'MiddleRight' : 0.72,
-                    'RightLeft' : 0.95,
-                    'RightMiddle' : 0.73,
-                    'RightRight' : 0.70},
-         'Left' :  {'LeftLeft' : 0.67,
-                    'LeftMiddle' : 0.70,
-                    'LeftRight' : 0.96,
-                    'MiddleLeft' : 0.74,
-                    'MiddleMiddle' : 0.60,
-                    'MiddleRight' : 0.72,
-                    'RightLeft' : 0.87,
-                    'RightMiddle' : 0.65,
-                    'RightRight' : 0.61}};
+        let fig_3_min_val = 1;
+        let fig_3_max_val = 0;
+        for (var i = 0; i <= iters_to_run; i++){
+            if(fig_3_data['ll_ys'][i] > fig_3_max_val){
+                fig_3_max_val = fig_3_data['ll_ys'][i];
+            }
+            if(fig_3_data['lm_ys'][i] > fig_3_max_val){
+                fig_3_max_val = fig_3_data['lm_ys'][i];
+            }
+            if(fig_3_data['lr_ys'][i] > fig_3_max_val){
+                fig_3_max_val = fig_3_data['lr_ys'][i];
+            }
+            if(fig_3_data['rl_ys'][i] > fig_3_max_val){
+                fig_3_max_val = fig_3_data['rl_ys'][i];
+            }
+            if(fig_3_data['rm_ys'][i] > fig_3_max_val){
+                fig_3_max_val = fig_3_data['rm_ys'][i];
+            }
+            if(fig_3_data['rr_ys'][i] > fig_3_max_val){
+                fig_3_max_val = fig_3_data['rr_ys'][i];
+            }
 
-    fig_3_data['ll_ys'][index] = (chance_ll * p['Left']['LeftLeft']
-                                  + chance_lm * p['Left']['MiddleLeft']
-                                  + chance_lr * p['Left']['RightLeft']);
-    fig_3_data['lm_ys'][index] = (chance_ll * p['Left']['LeftMiddle']
-                                  + chance_lm * p['Left']['MiddleMiddle']
-                                  + chance_lr * p['Left']['RightMiddle']);
-    fig_3_data['lr_ys'][index] = (chance_ll * p['Left']['LeftRight']
-                                  + chance_lm * p['Left']['MiddleRight']
-                                  + chance_lr * p['Left']['RightRight']);
-    fig_3_data['rl_ys'][index] = (chance_rl * p['Right']['LeftLeft']
-                                  + chance_rm * p['Right']['MiddleLeft']
-                                  + chance_rr * p['Right']['RightLeft']);
-    fig_3_data['rm_ys'][index] = (chance_rl * p['Right']['LeftMiddle']
-                                  + chance_rm * p['Right']['MiddleMiddle']
-                                  + chance_rr * p['Right']['RightMiddle']);
-    fig_3_data['rr_ys'][index] = (chance_rl * p['Right']['LeftRight']
-                                  + chance_rm * p['Right']['MiddleRight']
-                                  + chance_rr * p['Right']['RightRight']);
+            if(fig_3_data['ll_ys'][i] < fig_3_min_val){
+                fig_3_min_val = fig_3_data['ll_ys'][i];
+            }
+            if(fig_3_data['lm_ys'][i] < fig_3_min_val){
+                fig_3_min_val = fig_3_data['lm_ys'][i];
+            }
+            if(fig_3_data['lr_ys'][i] < fig_3_min_val){
+                fig_3_min_val = fig_3_data['lr_ys'][i];
+            }
+            if(fig_3_data['rl_ys'][i] < fig_3_min_val){
+                fig_3_min_val = fig_3_data['rl_ys'][i];
+            }
+            if(fig_3_data['rm_ys'][i] < fig_3_min_val){
+                fig_3_min_val = fig_3_data['rm_ys'][i];
+            }
+            if(fig_3_data['rr_ys'][i] < fig_3_min_val){
+                fig_3_min_val = fig_3_data['rr_ys'][i];
+            }
+        }
 
-    if(index == parseInt(iterations_to_run.text)){
-        """ + resize_fig_3_hbs + resize_fig_3 + """
+        fig_3_max_val = Math.round(fig_3_max_val * 10) / 10;
+        fig_3_min_val = Math.round(fig_3_min_val * 10) / 10;
+        const fig_3_buffer = 0.1;
+        game_stats_figure_3.y_range.end = fig_3_max_val + fig_3_buffer;
+        game_stats_figure_3.y_range.start = fig_3_min_val - fig_3_buffer;
     }
 
     game_stats_figure_3_source.change.emit();
 }
+
+if(strategy_to_use.text == "Fictitious_Play"){
+    updateFig3();
+}
 """
-
-
-
-
+#</editor-fold>
 
 automate_loop_iteration_main = (automate_loop_roll_kicker_action
                                 + automate_loop_handle_goalie_decision
@@ -761,9 +834,9 @@ automate_loop_iteration_main = (automate_loop_roll_kicker_action
                                 + update_game_stats_figure_2
                                 + update_game_stats_figure_3)
 
-automate_loop_iteration=(automate_loop_iteration_var_instantiations
-                         + automate_loop_iteration_main
-                         + automate_loop_iteration_display)
+automate_loop_iteration = (automate_loop_setup
+                           + automate_loop_iteration_main
+                           + automate_loop_iteration_display)
 
 b_automate_start_code = (automate_start_code_initial_gui_display
                          + automate_loop_iteration)

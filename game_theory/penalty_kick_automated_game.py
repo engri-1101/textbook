@@ -286,7 +286,22 @@ goalie_action = runOptimalMixedStrategy();
 #</editor-fold>
             #<editor-fold run_random_choices
 run_random_choices = """
-//TODO
+function runRandom(){
+    let action_roll = Math.random();
+    let action;
+    if(action_roll <= 1/3){
+        action = "Left";
+    }
+    else if(action_roll <= 2/3){
+        action = "Middle";
+    }
+    else{
+        action = "Right";
+    }
+    return action;
+}
+
+goalie_action = runRandom();
 """
             #</editor-fold>
             #<editor-fold run_goalie_cheats
@@ -475,6 +490,7 @@ function goalieFictitiousDecisionTracking(){
         perceived_risks[selected_pr_index + 1] = danger_goalie_middle.toString().substring(0, 8);
         perceived_risks[selected_pr_index + 2] = danger_goalie_right.toString().substring(0, 8);
     }
+    DistributionColumnDataSource.change.emit();
 }
 
 goalieFictitiousDecisionTracking();

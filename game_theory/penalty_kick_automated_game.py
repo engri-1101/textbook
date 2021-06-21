@@ -3,7 +3,6 @@ from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
 from bokeh.models.widgets import Div
 
 #<editor-fold Code Strings:
-    #Has Been worked On?: Yes
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
 //Change visibilities of game items:
@@ -23,7 +22,6 @@ strategy_dropdown.visible = true;
 automation_table.visible = true;
 """
     #</editor-fold>
-    #Has Been worked On?: Yes
     #<editor-fold automate_start_code Initial Gui Display Code String:
 automate_start_code_initial_gui_display = """
 //Change visibilities of game items:
@@ -41,7 +39,6 @@ automation_table.visible = false;
 automation_distribution_table.visible = true;
 """
     #</editor-fold>
-    #Has Been worked On?:
     #<editor-fold automate_loop Code Strings:
         #<editor-fold automate_loop_setup:
 create_automate_loop_constants = """
@@ -87,9 +84,7 @@ let rounds_played = 0;
 automate_loop_setup = (create_automate_loop_constants
                        + create_automate_loop_state_lets)
         #</editor-fold>
-
-
-#<editor-fold automate_loop_iteration_display
+        #<editor-fold automate_loop_iteration_display
 automate_loop_iteration_display = """
 const game_text = txt.data['text'];
 
@@ -107,7 +102,7 @@ game_text[1] = 'Total score: ' + game_score;
 txt.change.emit();
 """
 #</editor-fold>
-#<editor-fold automate_loop_roll_kicker_action
+        #<editor-fold automate_loop_roll_kicker_action
 automate_loop_roll_kicker_action = """
 function rollKickerAction(){
     let action_roll = Math.random();
@@ -155,8 +150,8 @@ function rollKickerAction(){
 [kicker_foot, kicker_kick] = rollKickerAction();
 """
 #</editor-fold>
-#<editor-fold automate_loop_handle_goalie_decision
-    #<editor-fold run_fictitious_play
+        #<editor-fold automate_loop_handle_goalie_decision
+            #<editor-fold run_fictitious_play
 run_fictitious_play = """
 //Handle Goalie Decision
 function runFictitiousPlay(){
@@ -262,7 +257,7 @@ function runFictitiousPlay(){
  danger_goalie_middle, danger_goalie_right] = runFictitiousPlay();
 """
 #</editor-fold>
-    #<editor-fold run_optimal_mixed_strategy
+            #<editor-fold run_optimal_mixed_strategy
 run_optimal_mixed_strategy = """
 function runOptimalMixedStrategy(){
     let action_roll = Math.random();
@@ -289,16 +284,32 @@ function runOptimalMixedStrategy(){
 goalie_action = runOptimalMixedStrategy();
 """
 #</editor-fold>
+            #<editor-fold run_random_choices
+run_random_choices = """
+//TODO
+"""
+            #</editor-fold>
+            #<editor-fold run_goalie_cheats
+run_goalie_cheats = """
+//TODO
+"""
+            #</editor-fold>
 automate_loop_handle_goalie_decision = """
 if(strategy_to_use.text == "Fictitious_Play"){
     """ + run_fictitious_play + """
 }
-else{
+else if(strategy_to_use.text == "Mixed_Strategy"){
     """ + run_optimal_mixed_strategy + """
 }
+else if(strategy_to_use.text == "Random"){
+    """ + run_random_choices + """
+}
+else if(strategy_to_use.text == "Goalie_Cheats"){
+    """ + run_goalie_cheats + """
+}
 """
-#</editor-fold>
-#<editor-fold automate_loop_handle_scoring
+        #</editor-fold>
+        #<editor-fold automate_loop_handle_scoring
 automate_loop_handle_scoring = """
 function scoring(){
     const scoring_chance = dist_data['striker_score_chance'];
@@ -364,7 +375,7 @@ function scoring(){
 [goal, game_score, rounds_played] = scoring();
 """
 #</editor-fold>
-#<editor-fold automate_loop_animation
+        #<editor-fold automate_loop_animation
 automate_loop_animation = """
 function doAnimation(){
     let animation_roll = Math.random();
@@ -424,7 +435,7 @@ function doAnimation(){
 doAnimation();
 """
 #</editor-fold>
-#<editor-fold automate_loop_update_fictitious_decision_tracking
+        #<editor-fold automate_loop_update_fictitious_decision_tracking
 automate_loop_update_fictitious_decision_tracking = """
 function goalieFictitiousDecisionTracking(){
     const perceived_risks = dist_data['goalie_perceived_risks'];
@@ -469,7 +480,7 @@ function goalieFictitiousDecisionTracking(){
 goalieFictitiousDecisionTracking();
 """
 #</editor-fold>
-#<editor-fold update_game_stats_figure_1
+        #<editor-fold update_game_stats_figure_1
 update_game_stats_figure_1 = """
 
 function updateFig1(){
@@ -606,7 +617,7 @@ function updateFig1(){
 updateFig1();
 """
 #</editor-fold>
-#<editor-fold update_game_stats_figure_2
+        #<editor-fold update_game_stats_figure_2
 update_game_stats_figure_2 = """
 function updateFig2(){
     const fig_2_data = game_stats_figure_2_source.data;
@@ -656,7 +667,7 @@ function updateFig2(){
 updateFig2();
 """
 #</editor-fold>
-#<editor-fold update_game_stats_figure_3
+        #<editor-fold update_game_stats_figure_3
 update_game_stats_figure_3 = """
 function updateFig3(){
 
@@ -841,7 +852,6 @@ automate_loop_iteration = (automate_loop_setup
 b_automate_start_code = (automate_start_code_initial_gui_display
                          + automate_loop_iteration)
     #</editor-fold>
-    #Has Been worked On?: Yes
     #<editor-fold aim_slider_callback Code String:
 aim_slider_callback_code = """
 //Get the chances array to modify:
@@ -864,7 +874,6 @@ chances[5] = RR_aim_slider.value / total;
 ColumnDataSourceToChange.change.emit();
 """
     #</editor-fold>
-    #Has Been worked On?: Yes
     #<editor-fold iterations_slider_callback Code String:
 iterations_slider_code = """
 
@@ -959,7 +968,6 @@ fig_3_data['hb6'] = hb6_ys;
 game_stats_figure_3_source.change.emit();
 """
     #</editor-fold>
-    #Has Been worked On?: Yes
     #<editor-fold strategy_dropdown_callback Code String:
 strategy_dropdown_code = """
 //Set the label of the dropdown (the text displayed) to the selected item:
@@ -1237,13 +1245,17 @@ def create_gamestate_divs(iterations_to_run_start_text = "50",
 #<editor-fold create_strategy_dropdown():
 def create_strategy_dropdown(fictitious_play_text = "Fictitious_Play",
                              mixed_strategy_text = "Mixed_Strategy",
+                             true_random_text = "Random",
+                             goalie_cheats_text = "Goalie_Cheats",
                              dropdown_label = "CPU strategy to Use",
                              dropdown_button_type = "warning",
                              dropdown_disabled = False,
                              dropdown_visibility = False):
     #CPU Strategy to Use Dropdown:
     menu = [(fictitious_play_text, fictitious_play_text),
-            (mixed_strategy_text, mixed_strategy_text)]
+            (mixed_strategy_text, mixed_strategy_text),
+            (true_random_text, true_random_text),
+            (goalie_cheats_text, goalie_cheats_text)]
     strategy_dropdown = Dropdown(label = dropdown_label, menu = menu,
                                  button_type = dropdown_button_type,
                                  disabled = dropdown_disabled,

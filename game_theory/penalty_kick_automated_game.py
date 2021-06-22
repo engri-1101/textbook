@@ -4,6 +4,10 @@ from bokeh.models.widgets import Div
 from ortools.linear_solver import pywraplp as OR
 from bokeh.models.glyphs import Text
 from bokeh.layouts import row, column, gridplot
+from main_game_figure import game_figure_setup, Game_fig_configs
+from game_stats_figure_1 import stats_figure_1_setup, Stats_fig_1_configs
+from game_stats_figure_2 import stats_figure_2_setup, Stats_fig_2_configs
+from game_stats_figure_3 import stats_figure_3_setup, Stats_fig_3_configs
 #<editor-fold Code Strings:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
@@ -1803,5 +1807,280 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
     grid1 = gridplot([[gui_row]],
                      plot_width = plot_width,
                      plot_height = plot_height)
+    return grid1
+#</editor-fold>
+
+#<editor-fold make_game():
+#Needs:
+#    from main_game_figure import game_figure_setup, Game_fig_configs
+#    from game_stats_figure_1 import stats_figure_1_setup, Stats_fig_1_configs
+#    from game_stats_figure_2 import stats_figure_2_setup, Stats_fig_2_configs
+#    from game_stats_figure_3 import stats_figure_3_setup, Stats_fig_3_configs
+default_game_fig_configs = Game_fig_configs()
+default_fig_1_configs = Stats_fig_1_configs()
+default_fig_2_configs = Stats_fig_2_configs()
+default_fig_3_configs = Stats_fig_3_configs()
+
+def make_game(game_figure_configs = default_game_fig_configs,
+              stats_figure_1_configs = default_fig_1_configs,
+              stats_figure_2_configs = default_fig_2_configs,
+              stats_figure_3_configs = default_fig_3_configs):
+    (game_figure, goalie_head, goalie_body,
+    ball) = game_figure_setup(game_figure_configs)
+
+    (game_stats_figure_1, game_stats_figure_1_source, ll_scored_bar,
+     lm_scored_bar, lr_scored_bar, rl_scored_bar, rm_scored_bar,
+     rr_scored_bar, ll_blocked_left_bar, lm_blocked_left_bar,
+     lr_blocked_left_bar, rl_blocked_left_bar, rm_blocked_left_bar,
+     rr_blocked_left_bar, ll_blocked_middle_bar, lm_blocked_middle_bar,
+     lr_blocked_middle_bar, rl_blocked_middle_bar, rm_blocked_middle_bar,
+     rr_blocked_middle_bar, ll_blocked_right_bar, lm_blocked_right_bar,
+     lr_blocked_right_bar, rl_blocked_right_bar, rm_blocked_right_bar,
+     rr_blocked_right_bar) = stats_figure_1_setup(stats_figure_1_configs)
+
+    (game_stats_figure_2,
+     game_stats_figure_2_source) = stats_figure_2_setup(stats_figure_2_configs)
+
+    (game_stats_figure_3,
+     game_stats_figure_3_source) = stats_figure_3_setup(stats_figure_3_configs)
+
+    scr_text = create_scr_text();
+    labels = create_labels();
+
+    game_figure.add_glyph(scr_text, labels);
+
+    (iterations_to_run, strategy_to_use, ll_scored, lm_scored, lr_scored,
+     rl_scored, rm_scored, rr_scored, ll_blocked_left, lm_blocked_left,
+     lr_blocked_left, rl_blocked_left, rm_blocked_left, rr_blocked_left,
+     ll_blocked_middle, lm_blocked_middle, lr_blocked_middle,
+     rl_blocked_middle, rm_blocked_middle, rr_blocked_middle, ll_blocked_right,
+     lm_blocked_right, lr_blocked_right, rl_blocked_right, rm_blocked_right,
+     rr_blocked_right, nround, score, kicker_foot,
+     kicker_kick) = create_gamestate_divs()
+
+    (b_automate, b_start_automate,
+    b_auto_next, b_make_counter) = create_buttons()
+
+    (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
+    RR_aim_slider, iterations_slider) = create_sliders()
+
+    strategy_dropdown = create_strategy_dropdown()
+
+    automation_distribution_table_source = create_distribution_table_source()
+    automation_distribution_table = create_distribution_table(automation_distribution_table_source)
+
+    automation_table_source = create_automation_table_source()
+    automation_table = create_automation_table(automation_table_source)
+
+    args_dict = dict(b_automate = b_automate,
+                     LL_aim_slider = LL_aim_slider,
+                     LM_aim_slider = LM_aim_slider,
+                     LR_aim_slider = LR_aim_slider,
+                     RL_aim_slider = RL_aim_slider,
+                     RM_aim_slider = RM_aim_slider,
+                     RR_aim_slider = RR_aim_slider,
+                     iterations_slider = iterations_slider,
+                     strategy_dropdown = strategy_dropdown,
+                     automation_table = automation_table, txt = scr_text)
+    b_automate_setup(b_automate = b_automate, args_dict = args_dict)
+
+    args_dict = dict(ll_aim_slider = LL_aim_slider,
+                     lm_aim_slider = LM_aim_slider,
+                     lr_aim_slider = LR_aim_slider,
+                     rl_aim_slider = RL_aim_slider,
+                     rm_aim_slider = RM_aim_slider,
+                     rr_aim_slider = RR_aim_slider,
+                     b_start_automate = b_start_automate,
+                     b_make_counter = b_make_counter,
+                     automation_table = automation_table,
+                     automation_table_source = automation_table_source)
+    goalie_counter_source = b_make_counter_setup(b_make_counter, args_dict)
+
+    args_dict = dict(b_start_automate = b_start_automate,
+                     b_auto_next = b_auto_next,
+                     LL_aim_slider = LL_aim_slider,
+                     LM_aim_slider = LM_aim_slider,
+                     LR_aim_slider = LR_aim_slider,
+                     RL_aim_slider = RL_aim_slider,
+                     RM_aim_slider = RM_aim_slider,
+                     RR_aim_slider = RR_aim_slider,
+                     iterations_slider = iterations_slider,
+                     strategy_dropdown = strategy_dropdown,
+                     automation_table = automation_table,
+                     automation_distribution_table = automation_distribution_table,
+                     ChancesColumnDataSource = automation_table_source,
+                     DistributionColumnDataSource = automation_distribution_table_source,
+                     txt = scr_text, strategy_to_use = strategy_to_use,
+                     nround = nround, iterations_to_run = iterations_to_run,
+                     game_figure = game_figure,
+                     game_stats_figure_1 = game_stats_figure_1,
+                     game_stats_figure_2 = game_stats_figure_2,
+                     game_stats_figure_3 = game_stats_figure_3, score = score,
+                     ball = ball, goalie_head = goalie_head,
+                     goalie_body = goalie_body,
+                     game_stats_figure_1_source = game_stats_figure_1_source,
+                     ll_scored_bar = ll_scored_bar,
+                     lm_scored_bar = lm_scored_bar,
+                     lr_scored_bar = lr_scored_bar,
+                     rl_scored_bar = rl_scored_bar,
+                     rm_scored_bar = rm_scored_bar,
+                     rr_scored_bar = rr_scored_bar, ll_scored = ll_scored,
+                     lm_scored = lm_scored, lr_scored = lr_scored,
+                     rl_scored = rl_scored, rm_scored = rm_scored,
+                     rr_scored = rr_scored,
+                    ll_blocked_left_bar = ll_blocked_left_bar,
+                     lm_blocked_left_bar = lm_blocked_left_bar,
+                     lr_blocked_left_bar = lr_blocked_left_bar,
+                     rl_blocked_left_bar = rl_blocked_left_bar,
+                     rm_blocked_left_bar = rm_blocked_left_bar,
+                     rr_blocked_left_bar = rr_blocked_left_bar,
+                     ll_blocked_left = ll_blocked_left,
+                     lm_blocked_left = lm_blocked_left,
+                     lr_blocked_left = lr_blocked_left,
+                     rl_blocked_left = rl_blocked_left,
+                     rm_blocked_left = rm_blocked_left,
+                     rr_blocked_left = rr_blocked_left,
+                     ll_blocked_middle_bar = ll_blocked_middle_bar,
+                     lm_blocked_middle_bar = lm_blocked_middle_bar,
+                     lr_blocked_middle_bar = lr_blocked_middle_bar,
+                     rl_blocked_middle_bar = rl_blocked_middle_bar,
+                     rm_blocked_middle_bar = rm_blocked_middle_bar,
+                     rr_blocked_middle_bar = rr_blocked_middle_bar,
+                     ll_blocked_middle = ll_blocked_middle,
+                     lm_blocked_middle = lm_blocked_middle,
+                     lr_blocked_middle = lr_blocked_middle,
+                     rl_blocked_middle = rl_blocked_middle,
+                     rm_blocked_middle = rm_blocked_middle,
+                     rr_blocked_middle = rr_blocked_middle,
+                     ll_blocked_right_bar = ll_blocked_right_bar,
+                     lm_blocked_right_bar = lm_blocked_right_bar,
+                     lr_blocked_right_bar = lr_blocked_right_bar,
+                     rl_blocked_right_bar = rl_blocked_right_bar,
+                     rm_blocked_right_bar = rm_blocked_right_bar,
+                     rr_blocked_right_bar = rr_blocked_right_bar,
+                     ll_blocked_right = ll_blocked_right,
+                     lm_blocked_right = lm_blocked_right,
+                     lr_blocked_right = lr_blocked_right,
+                     rl_blocked_right = rl_blocked_right,
+                     rm_blocked_right = rm_blocked_right,
+                     rr_blocked_right = rr_blocked_right,
+                     game_stats_figure_2_source = game_stats_figure_2_source,
+                     game_stats_figure_3_source = game_stats_figure_3_source,
+                     goalie_counter_source = goalie_counter_source)
+    b_start_automate_setup(b_start_automate = b_start_automate,
+                           args_dict = args_dict)
+
+    args_dict = dict(ChancesColumnDataSource = automation_table_source,
+                     DistributionColumnDataSource = automation_distribution_table_source,
+                     txt = scr_text, strategy_to_use = strategy_to_use,
+                     nround = nround, iterations_to_run = iterations_to_run,
+                     b_auto_next = b_auto_next, game_figure = game_figure,
+                     automation_distribution_table = automation_distribution_table,
+                     game_stats_figure_1 = game_stats_figure_1,
+                     game_stats_figure_2 = game_stats_figure_2,
+                     game_stats_figure_3 = game_stats_figure_3, score = score,
+                     ball = ball, goalie_head = goalie_head,
+                     goalie_body = goalie_body,
+                     game_stats_figure_1_source = game_stats_figure_1_source,
+                     ll_scored_bar = ll_scored_bar,
+                     lm_scored_bar = lm_scored_bar,
+                     lr_scored_bar = lr_scored_bar,
+                     rl_scored_bar = rl_scored_bar,
+                     rm_scored_bar = rm_scored_bar,
+                     rr_scored_bar = rr_scored_bar,
+                     ll_scored = ll_scored, lm_scored = lm_scored,
+                     lr_scored = lr_scored, rl_scored = rl_scored,
+                     rm_scored = rm_scored, rr_scored = rr_scored,
+                     ll_blocked_left_bar = ll_blocked_left_bar,
+                     lm_blocked_left_bar = lm_blocked_left_bar,
+                     lr_blocked_left_bar = lr_blocked_left_bar,
+                     rl_blocked_left_bar = rl_blocked_left_bar,
+                     rm_blocked_left_bar = rm_blocked_left_bar,
+                     rr_blocked_left_bar = rr_blocked_left_bar,
+                     ll_blocked_left = ll_blocked_left,
+                     lm_blocked_left = lm_blocked_left,
+                     lr_blocked_left = lr_blocked_left,
+                     rl_blocked_left = rl_blocked_left,
+                     rm_blocked_left = rm_blocked_left,
+                     rr_blocked_left = rr_blocked_left,
+                     ll_blocked_middle_bar = ll_blocked_middle_bar,
+                     lm_blocked_middle_bar = lm_blocked_middle_bar,
+                     lr_blocked_middle_bar = lr_blocked_middle_bar,
+                     rl_blocked_middle_bar = rl_blocked_middle_bar,
+                     rm_blocked_middle_bar = rm_blocked_middle_bar,
+                     rr_blocked_middle_bar = rr_blocked_middle_bar,
+                     ll_blocked_middle = ll_blocked_middle,
+                     lm_blocked_middle = lm_blocked_middle,
+                     lr_blocked_middle = lr_blocked_middle,
+                     rl_blocked_middle = rl_blocked_middle,
+                     rm_blocked_middle = rm_blocked_middle,
+                     rr_blocked_middle = rr_blocked_middle,
+                     ll_blocked_right_bar = ll_blocked_right_bar,
+                     lm_blocked_right_bar = lm_blocked_right_bar,
+                     lr_blocked_right_bar = lr_blocked_right_bar,
+                     rl_blocked_right_bar = rl_blocked_right_bar,
+                     rm_blocked_right_bar = rm_blocked_right_bar,
+                     rr_blocked_right_bar = rr_blocked_right_bar,
+                     ll_blocked_right = ll_blocked_right,
+                     lm_blocked_right = lm_blocked_right,
+                     lr_blocked_right = lr_blocked_right,
+                     rl_blocked_right = rl_blocked_right,
+                     rm_blocked_right = rm_blocked_right,
+                     rr_blocked_right = rr_blocked_right,
+                     game_stats_figure_2_source = game_stats_figure_2_source,
+                     game_stats_figure_3_source = game_stats_figure_3_source,
+                     goalie_counter_source = goalie_counter_source)
+    b_auto_next_setup(b_auto_next = b_auto_next, args_dict = args_dict)
+
+    aim_sliders_setup(ll_aim_slider = LL_aim_slider,
+                      lm_aim_slider = LM_aim_slider,
+                      lr_aim_slider = LR_aim_slider,
+                      rl_aim_slider = RL_aim_slider,
+                      rm_aim_slider = RM_aim_slider,
+                      rr_aim_slider = RR_aim_slider,
+                      automation_table_source = automation_table_source)
+
+    args_dict = dict(iterations_to_run = iterations_to_run,
+                     game_stats_figure_1 = game_stats_figure_1,
+                     game_stats_figure_2 = game_stats_figure_2,
+                     game_stats_figure_3 = game_stats_figure_3,
+                     game_stats_figure_2_source = game_stats_figure_2_source,
+                     game_stats_figure_3_source = game_stats_figure_3_source)
+    iterations_slider_setup(iterations_slider = iterations_slider,
+                            args_dict = args_dict)
+
+    args_dict = dict(strategy_dropdown = strategy_dropdown,
+                     strategy_to_use = strategy_to_use,
+                     b_start_automate = b_start_automate,
+                     b_make_counter = b_make_counter,
+                     automation_table = automation_table,
+                     ll_aim_slider = LL_aim_slider,
+                     lm_aim_slider = LM_aim_slider,
+                     lr_aim_slider = LR_aim_slider,
+                     rl_aim_slider = RL_aim_slider,
+                     rm_aim_slider = RM_aim_slider,
+                     rr_aim_slider = RR_aim_slider)
+    strategy_dropdown_setup(strategy_dropdown = strategy_dropdown,
+                            args_dict = args_dict)
+
+    grid1 = format_layout(b_automate = b_automate,
+                          iterations_slider = iterations_slider,
+                          b_auto_next = b_auto_next,
+                          strategy_dropdown = strategy_dropdown,
+                          b_start_automate = b_start_automate,
+                          b_make_counter = b_make_counter,
+                          LL_aim_slider = LL_aim_slider,
+                          LM_aim_slider = LM_aim_slider,
+                          LR_aim_slider = LR_aim_slider,
+                          RL_aim_slider = RL_aim_slider,
+                          RM_aim_slider = RM_aim_slider,
+                          RR_aim_slider = RR_aim_slider,
+                          game_stats_figure_1 = game_stats_figure_1,
+                          game_stats_figure_2 = game_stats_figure_2,
+                          game_stats_figure_3 = game_stats_figure_3,
+                          game_figure = game_figure,
+                          automation_table = automation_table,
+                          automation_distribution_table = automation_distribution_table)
+
     return grid1
 #</editor-fold>

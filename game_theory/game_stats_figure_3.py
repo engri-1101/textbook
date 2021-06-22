@@ -200,53 +200,97 @@ fig_3_custom_tooltip = """
 """
 #</editor-fold>
 
-def stats_figure_3_setup(figure_base_tools = "box_zoom, wheel_zoom, pan",
-                         figure_toolbar_location = "below",
-                         figure_title = "Goalie Perceived Risks Over Iterations",
-                         figure_width = 300, figure_height = 240,
-                         figure_x_range = (0, 50), figure_y_range = (0, 1),
-                         figure_initial_visibility = False,
-                         figure_sizing_mode = "stretch_both",
-                         figure_title_font_size = '8pt',
-                         figure_x_axis_visibility = True,
-                         figure_y_axis_visibility = True,
-                         figure_xgrid_line_color = None,
-                         figure_ygrid_line_color = None,
-                         figure_outline_line_color = None,
-                         figure_background_color = "white",
-                         plot_dot_size = 5, plot_ll_dot_color = "#C8AFAF",
-                         plot_lm_dot_color = "#C8C8AF",
-                         plot_lr_dot_color = "#AFC8AF",
-                         plot_rl_dot_color = "#AFC8C8",
-                         plot_rm_dot_color = "#AFAFC8",
-                         plot_rr_dot_color = "#C8AFC8",
-                         plot_ll_dot_outline_color = "#AF9696",
-                         plot_lm_dot_outline_color = "#AFAF96",
-                         plot_lr_dot_outline_color = "#96AF96",
-                         plot_rl_dot_outline_color = "#96AFAF",
-                         plot_rm_dot_outline_color = "#9696AF",
-                         plot_rr_dot_outline_color = "#AF96AF",
-                         plot_highlight_dot_size = 10,
-                         plot_highlight_dot_outline_color = "#000000",
-                         plot_highlight_dot_color = "#000000",
-                         hitbox_alpha = 0):
+#<editor-fold Stats_fig_3_configs():
+class Stats_fig_3_configs():
+    def __init__(self, figure_base_tools = "box_zoom, wheel_zoom, pan",
+                 figure_toolbar_location = "below",
+                 figure_title = "Goalie Perceived Risks Over Iterations",
+                 figure_width = 300, figure_height = 240,
+                 figure_x_range = (0, 50), figure_y_range = (0, 1),
+                 figure_initial_visibility = False,
+                 figure_sizing_mode = "stretch_both",
+                 figure_title_font_size = '8pt',
+                 figure_x_axis_visibility = True,
+                 figure_y_axis_visibility = True,
+                 figure_xgrid_line_color = None,
+                figure_ygrid_line_color = None,
+                 figure_outline_line_color = None,
+                 figure_background_color = "white",
+                 plot_dot_size = 5,
+                 plot_ll_dot_color = "#C8AFAF",
+                 plot_lm_dot_color = "#C8C8AF",
+                 plot_lr_dot_color = "#AFC8AF",
+                 plot_rl_dot_color = "#AFC8C8",
+                 plot_rm_dot_color = "#AFAFC8",
+                 plot_rr_dot_color = "#C8AFC8",
+                 plot_ll_dot_outline_color = "#AF9696",
+                 plot_lm_dot_outline_color = "#AFAF96",
+                 plot_lr_dot_outline_color = "#96AF96",
+                 plot_rl_dot_outline_color = "#96AFAF",
+                 plot_rm_dot_outline_color = "#9696AF",
+                 plot_rr_dot_outline_color = "#AF96AF",
+                 plot_highlight_dot_size = 10,
+                 plot_highlight_dot_outline_color = "#000000",
+                 plot_highlight_dot_color = "#000000",
+                 hitbox_alpha = 0):
+        #<editor-fold figure:
+        self.figure_base_tools = figure_base_tools
+        self.figure_toolbar_location = figure_toolbar_location
+        self.figure_title = figure_title
+        self.figure_width = figure_width
+        self.figure_height = figure_height
+        self.figure_x_range = figure_x_range
+        self.figure_y_range = figure_y_range
+        self.figure_initial_visibility = figure_initial_visibility
+        self.figure_sizing_mode = figure_sizing_mode
+        self.figure_title_font_size = figure_title_font_size
+        self.figure_x_axis_visibility = figure_x_axis_visibility
+        self.figure_y_axis_visibility = figure_y_axis_visibility
+        self.figure_xgrid_line_color = figure_xgrid_line_color
+        self.figure_ygrid_line_color = figure_ygrid_line_color
+        self.figure_outline_line_color = figure_outline_line_color
+        self.figure_background_color = figure_background_color
+        #</editor-fold>
+        #<editor-fold plot:
+        self.plot_dot_size = plot_dot_size
+        self.plot_ll_dot_color = plot_ll_dot_color
+        self.plot_lm_dot_color = plot_lm_dot_color
+        self.plot_lr_dot_color = plot_lr_dot_color
+        self.plot_rl_dot_color = plot_rl_dot_color
+        self.plot_rm_dot_color = plot_rm_dot_color
+        self.plot_rr_dot_color = plot_rr_dot_color
+        self.plot_ll_dot_outline_color = plot_ll_dot_outline_color
+        self.plot_lm_dot_outline_color = plot_lm_dot_outline_color
+        self.plot_lr_dot_outline_color = plot_lr_dot_outline_color
+        self.plot_rl_dot_outline_color = plot_rl_dot_outline_color
+        self.plot_rm_dot_outline_color = plot_rm_dot_outline_color
+        self.plot_rr_dot_outline_color = plot_rr_dot_outline_color
+        self.plot_highlight_dot_size = plot_highlight_dot_size
+        self.plot_highlight_dot_outline_color = plot_highlight_dot_outline_color
+        self.plot_highlight_dot_color = plot_highlight_dot_color
+        #</editor-fold>
+        self.hitbox_alpha = hitbox_alpha
+#</editor-fold>
+
+#<editor-fold stats_figure_3_setup:
+def stats_figure_3_setup(fig_configs):
     #<editor-fold Figure Creation:
-    game_stats_figure_3 = figure(tools = figure_base_tools,
-                                 toolbar_location = figure_toolbar_location,
-                                 title = figure_title,
-                                 plot_width = figure_width,
-                                 plot_height = figure_height,
-                                 x_range = figure_x_range,
-                                 y_range = figure_y_range,
-                                 visible = figure_initial_visibility,
-                                 sizing_mode = figure_sizing_mode)
-    game_stats_figure_3.title.text_font_size = figure_title_font_size
-    game_stats_figure_3.xaxis.visible = figure_x_axis_visibility
-    game_stats_figure_3.yaxis.visible = figure_y_axis_visibility
-    game_stats_figure_3.xgrid.grid_line_color = figure_xgrid_line_color
-    game_stats_figure_3.ygrid.grid_line_color = figure_ygrid_line_color
-    game_stats_figure_3.outline_line_color = figure_outline_line_color
-    game_stats_figure_3.background_fill_color = figure_background_color
+    game_stats_figure_3 = figure(tools = fig_configs.figure_base_tools,
+                                 toolbar_location = fig_configs.figure_toolbar_location,
+                                 title = fig_configs.figure_title,
+                                 plot_width = fig_configs.figure_width,
+                                 plot_height = fig_configs.figure_height,
+                                 x_range = fig_configs.figure_x_range,
+                                 y_range = fig_configs.figure_y_range,
+                                 visible = fig_configs.figure_initial_visibility,
+                                 sizing_mode = fig_configs.figure_sizing_mode)
+    game_stats_figure_3.title.text_font_size = fig_configs.figure_title_font_size
+    game_stats_figure_3.xaxis.visible = fig_configs.figure_x_axis_visibility
+    game_stats_figure_3.yaxis.visible = fig_configs.figure_y_axis_visibility
+    game_stats_figure_3.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
+    game_stats_figure_3.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
+    game_stats_figure_3.outline_line_color = fig_configs.figure_outline_line_color
+    game_stats_figure_3.background_fill_color = fig_configs.figure_background_color
     #</editor-fold>
     #<editor-fold ColumnDataSource Creation:
         #<editor-fold Create Base Values:
@@ -329,71 +373,71 @@ def stats_figure_3_setup(figure_base_tools = "box_zoom, wheel_zoom, pan",
     #<editor-fold Plot Figure Data Points:
     game_stats_figure_3.circle_dot('xs', 'll_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_dot_size,
-                                   color = plot_ll_dot_outline_color,
-                                   fill_color = plot_ll_dot_color)
+                                   size = fig_configs.plot_dot_size,
+                                   line_color = fig_configs.plot_ll_dot_outline_color,
+                                   fill_color = fig_configs.plot_ll_dot_color)
     game_stats_figure_3.circle_dot('xs', 'lm_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_dot_size,
-                                   color = plot_lm_dot_outline_color,
-                                   fill_color = plot_lm_dot_color)
+                                   size = fig_configs.plot_dot_size,
+                                   line_color = fig_configs.plot_lm_dot_outline_color,
+                                   fill_color = fig_configs.plot_lm_dot_color)
     game_stats_figure_3.circle_dot('xs', 'lr_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_dot_size,
-                                   color = plot_lr_dot_outline_color,
-                                   fill_color = plot_lr_dot_color)
+                                   size = fig_configs.plot_dot_size,
+                                   line_color = fig_configs.plot_lr_dot_outline_color,
+                                   fill_color = fig_configs.plot_lr_dot_color)
     game_stats_figure_3.circle_dot('xs', 'rl_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_dot_size,
-                                   color = plot_rl_dot_outline_color,
-                                   fill_color = plot_rl_dot_color)
+                                   size = fig_configs.plot_dot_size,
+                                   line_color = fig_configs.plot_rl_dot_outline_color,
+                                   fill_color = fig_configs.plot_rl_dot_color)
     game_stats_figure_3.circle_dot('xs', 'rm_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_dot_size,
-                                   color = plot_rm_dot_outline_color,
-                                   fill_color = plot_rm_dot_color)
+                                   size = fig_configs.plot_dot_size,
+                                   line_color = fig_configs.plot_rm_dot_outline_color,
+                                   fill_color = fig_configs.plot_rm_dot_color)
     game_stats_figure_3.circle_dot('xs', 'rr_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_dot_size,
-                                   color = plot_rr_dot_outline_color,
-                                   fill_color = plot_rr_dot_color)
+                                   size = fig_configs.plot_dot_size,
+                                   line_color = fig_configs.plot_rr_dot_outline_color,
+                                   fill_color = fig_configs.plot_rr_dot_color)
 
     #Plot Highlight Points For Figure:
     game_stats_figure_3.circle_dot('xs', 'll_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_highlight_dot_size,
-                                   color = plot_highlight_dot_outline_color,
-                                   fill_color = plot_highlight_dot_color,
+                                   size = fig_configs.plot_highlight_dot_size,
+                                   line_color = fig_configs.plot_highlight_dot_outline_color,
+                                   fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = 'll_highlight_alphas')
     game_stats_figure_3.circle_dot('xs', 'lm_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_highlight_dot_size,
-                                   color = plot_highlight_dot_outline_color,
-                                   fill_color = plot_highlight_dot_color,
+                                   size = fig_configs.plot_highlight_dot_size,
+                                   line_color = fig_configs.plot_highlight_dot_outline_color,
+                                   fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = 'lm_highlight_alphas')
     game_stats_figure_3.circle_dot('xs', 'lr_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_highlight_dot_size,
-                                   color = plot_highlight_dot_outline_color,
-                                   fill_color = plot_highlight_dot_color,
+                                   size = fig_configs.plot_highlight_dot_size,
+                                   line_color = fig_configs.plot_highlight_dot_outline_color,
+                                   fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = 'lr_highlight_alphas')
     game_stats_figure_3.circle_dot('xs', 'rl_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_highlight_dot_size,
-                                   color = plot_highlight_dot_outline_color,
-                                   fill_color = plot_highlight_dot_color,
+                                   size = fig_configs.plot_highlight_dot_size,
+                                   line_color = fig_configs.plot_highlight_dot_outline_color,
+                                   fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = 'rl_highlight_alphas')
     game_stats_figure_3.circle_dot('xs', 'rm_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_highlight_dot_size,
-                                   color = plot_highlight_dot_outline_color,
-                                   fill_color = plot_highlight_dot_color,
+                                   size = fig_configs.plot_highlight_dot_size,
+                                   line_color = fig_configs.plot_highlight_dot_outline_color,
+                                   fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = 'rm_highlight_alphas')
     game_stats_figure_3.circle_dot('xs', 'rr_ys',
                                    source = game_stats_figure_3_source,
-                                   size = plot_highlight_dot_size,
-                                   color = plot_highlight_dot_outline_color,
-                                   fill_color = plot_highlight_dot_color,
+                                   size = fig_configs.plot_highlight_dot_size,
+                                   line_color = fig_configs.plot_highlight_dot_outline_color,
+                                   fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = 'rr_highlight_alphas')
     #</editor-fold>
     #<editor-fold CustomJSTransform Definitions For Custom HoverTool:
@@ -414,27 +458,27 @@ def stats_figure_3_setup(figure_base_tools = "box_zoom, wheel_zoom, pan",
     #<editor-fold Plot Invisible Hitboxes:
     game_stats_figure_3.rect(x = 'xs', y = transform('hb1', hb1_get_center),
                              source = game_stats_figure_3_source, width = 1,
-                             height = 'hb1', alpha = hitbox_alpha,
+                             height = 'hb1', alpha = fig_configs.hitbox_alpha,
                              fill_alpha = 0, name = '5')
     game_stats_figure_3.rect(x = 'xs', y = transform('hb2', hb2_get_center),
                              source = game_stats_figure_3_source, width = 1,
-                             height = 'hb2', alpha = hitbox_alpha,
+                             height = 'hb2', alpha = fig_configs.hitbox_alpha,
                              fill_alpha = 0, name = '4')
     game_stats_figure_3.rect(x = 'xs', y = transform('hb3', hb3_get_center),
                              source = game_stats_figure_3_source, width = 1,
-                             height = 'hb3', alpha = hitbox_alpha,
+                             height = 'hb3', alpha = fig_configs.hitbox_alpha,
                              fill_alpha = 0, name = '3')
     game_stats_figure_3.rect(x = 'xs', y = transform('hb4', hb4_get_center),
                              source = game_stats_figure_3_source, width = 1,
-                             height = 'hb4', alpha = hitbox_alpha,
+                             height = 'hb4', alpha = fig_configs.hitbox_alpha,
                              fill_alpha = 0, name = '2')
     game_stats_figure_3.rect(x = 'xs', y = transform('hb5', hb5_get_center),
                              source = game_stats_figure_3_source, width = 1,
-                             height = 'hb5', alpha = hitbox_alpha,
+                             height = 'hb5', alpha = fig_configs.hitbox_alpha,
                              fill_alpha = 0, name = '1')
     game_stats_figure_3.rect(x = 'xs', y = transform('hb6', hb6_get_center),
                              source = game_stats_figure_3_source, width = 1,
-                             height = 'hb6', alpha = hitbox_alpha,
+                             height = 'hb6', alpha = fig_configs.hitbox_alpha,
                              fill_alpha = 0, name = '0')
     #</editor-fold>
     #<editor-fold CustomJSHover Creation:
@@ -456,3 +500,4 @@ def stats_figure_3_setup(figure_base_tools = "box_zoom, wheel_zoom, pan",
                                             point_policy = "follow_mouse"))
     #</editor-fold>
     return (game_stats_figure_3, game_stats_figure_3_source)
+#</editor-fold>

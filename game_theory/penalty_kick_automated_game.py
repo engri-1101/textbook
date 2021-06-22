@@ -1611,34 +1611,29 @@ def create_automation_table(source,
 #<editor-fold create_scr_text():
 #Needs:
 #    from bokeh.models import ColumnDataSource
-def create_scr_text(xs = [2, 70, 2, 14, 14],
-                    ys = [86, 86, 5, 40, 32],
-                    text_ln_1 = 'Rounds played: 0',
-                    text_ln_2 = 'Total score: 0',
-                    text_ln_3 = '', text_ln_4 = '',
-                    text_ln_5 = ''):
+def create_scr_text(configs):
 
-    scr_text = ColumnDataSource({'x' : xs, 'y' : ys, 'text' : [text_ln_1,
-                                                               text_ln_2,
-                                                               text_ln_3,
-                                                               text_ln_4,
-                                                               text_ln_5]})
+    scr_text = ColumnDataSource({'x' : configs.scr_text_xs,
+                                 'y' : configs.scr_text_ys,
+                                 'text' : [configs.scr_text_ln_1,
+                                           configs.scr_text_ln_2,
+                                           configs.scr_text_ln_3,
+                                           configs.scr_text_ln_4,
+                                           configs.scr_text_ln_5]})
 
     return scr_text;
 #</editor-fold>
 #<editor-fold create_labels():
 #Needs:
 #    from bokeh.models.glyphs import Text
-def create_labels(text_color = "whitesmoke",
-                  text_font_size = "15pt",
-                  text_x_offset = 0,
-                  text_y_offset = +9,
-                  text_baseline = "ideographic",
-                  text_align = 'left'):
-    labels = Text(x = "x", y = "y", text = 'text', text_color = text_color,
-                  text_font_size = text_font_size, x_offset = text_x_offset,
-                  y_offset = text_y_offset, text_baseline = text_baseline,
-                  text_align = text_align)
+def create_labels(configs):
+    labels = Text(x = "x", y = "y", text = 'text',
+                  text_color = configs.labels_text_color,
+                  text_font_size = configs.labels_text_font_size,
+                  x_offset = configs.labels_text_x_offset,
+                  y_offset = configs.labels_text_y_offset,
+                  text_baseline = configs.labels_text_baseline,
+                  text_align = configs.labels_text_align)
     return labels;
 #</editor-fold>
 #<editor-fold b_automate_setup():
@@ -1810,6 +1805,35 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
     return grid1
 #</editor-fold>
 
+#<editor-fold scr_text and labels configs:
+class Scr_text_and_labels_configs:
+    def __init__(self, scr_text_xs = [2, 70, 2, 14, 14],
+                 scr_text_ys = [86, 86, 5, 40, 32],
+                 scr_text_ln_1 = 'Rounds played: 0',
+                 scr_text_ln_2 = 'Total score: 0', scr_text_ln_3 = '',
+                 scr_text_ln_4 = '', scr_text_ln_5 = '',
+                 labels_text_color = "whitesmoke",
+                 labels_text_font_size = "15pt",
+                 labels_text_x_offset = 0,
+                 labels_text_y_offset = +9,
+                 labels_text_baseline = "ideographic",
+                 labels_text_align = 'left'):
+        self.scr_text_xs = scr_text_xs
+        self.scr_text_ys = scr_text_ys
+        self.scr_text_ln_1 = scr_text_ln_1
+        self.scr_text_ln_2 = scr_text_ln_2
+        self.scr_text_ln_3 = scr_text_ln_3
+        self.scr_text_ln_4 = scr_text_ln_4
+        self.scr_text_ln_5 = scr_text_ln_5
+        self.labels_text_color = labels_text_color
+        self.labels_text_font_size = labels_text_font_size
+        self.labels_text_x_offset = labels_text_x_offset
+        self.labels_text_y_offset = labels_text_y_offset
+        self.labels_text_baseline = labels_text_baseline
+        self.labels_text_align = labels_text_align
+
+
+#</editor-fold>
 #<editor-fold make_game():
 #Needs:
 #    from main_game_figure import game_figure_setup, Game_fig_configs
@@ -1820,11 +1844,14 @@ default_game_fig_configs = Game_fig_configs()
 default_fig_1_configs = Stats_fig_1_configs()
 default_fig_2_configs = Stats_fig_2_configs()
 default_fig_3_configs = Stats_fig_3_configs()
+default_scr_text_and_labels_configs = Scr_text_and_labels_configs()
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
               stats_figure_2_configs = default_fig_2_configs,
-              stats_figure_3_configs = default_fig_3_configs):
+              stats_figure_3_configs = default_fig_3_configs,
+              scrtxt_labels_configs = default_scr_text_and_labels_configs):
+    #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
 
@@ -1843,12 +1870,13 @@ def make_game(game_figure_configs = default_game_fig_configs,
 
     (game_stats_figure_3,
      game_stats_figure_3_source) = stats_figure_3_setup(stats_figure_3_configs)
-
-    scr_text = create_scr_text();
-    labels = create_labels();
+     #</editor-fold>
+    #<editor-fold scr_text and labels:
+    scr_text = create_scr_text(scrtxt_labels_configs);
+    labels = create_labels(scrtxt_labels_configs);
 
     game_figure.add_glyph(scr_text, labels);
-
+    #</editor-fold>
     (iterations_to_run, strategy_to_use, ll_scored, lm_scored, lr_scored,
      rl_scored, rm_scored, rr_scored, ll_blocked_left, lm_blocked_left,
      lr_blocked_left, rl_blocked_left, rm_blocked_left, rr_blocked_left,

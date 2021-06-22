@@ -1021,9 +1021,11 @@ strategy_dropdown.label = this.item;
 strategy_to_use.text = this.item;
 //Set the start automate button to be visible:
 if(this.item != "Goalie_Cheats"){
+    b_make_counter.visible = false;
     b_start_automate.visible = true;
 }
 else{
+    b_start_automate.visible = false;
     b_make_counter.visible = true;
 }
 """
@@ -1596,8 +1598,8 @@ def b_auto_next_setup(b_auto_next, args_dict):
 #</editor-fold>
 #<editor-fold b_make_counter_setup():
 def b_make_counter_setup(b_make_counter, args_dict):
-    goalie_counter_source = ColumnDataSource(data = dict(chances_l = [1,0,0],
-                                                         chances_r = [1,0,0]))
+    goalie_counter_source = ColumnDataSource(data = dict(chances_l = [1, 0, 0],
+                                                         chances_r = [1, 0, 0]))
     args_dict['goalie_counter_source'] = goalie_counter_source
     b_make_counter_click = CustomJS(args = args_dict,
                                     code = b_make_counter_click_code)

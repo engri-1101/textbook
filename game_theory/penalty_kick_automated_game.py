@@ -1017,9 +1017,19 @@ game_stats_figure_3_source.change.emit();
 strategy_dropdown_code = """
 //Set the label of the dropdown (the text displayed) to the selected item:
 strategy_dropdown.label = this.item;
+
 //Set the text of the strategy_to_use div to the selected item:
 strategy_to_use.text = this.item;
-//Set the start automate button to be visible:
+
+//Sets the aim sliders to be visible:
+ll_aim_slider.visible = true;
+lm_aim_slider.visible = true;
+lr_aim_slider.visible = true;
+rl_aim_slider.visible = true;
+rm_aim_slider.visible = true;
+rr_aim_slider.visible = true;
+
+//Toggles button visibilities based off selected item:
 if(this.item != "Goalie_Cheats"){
     b_make_counter.visible = false;
     b_start_automate.visible = true;

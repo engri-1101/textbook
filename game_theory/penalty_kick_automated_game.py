@@ -306,7 +306,36 @@ goalie_action = runRandom();
             #</editor-fold>
             #<editor-fold run_goalie_cheats
 run_goalie_cheats = """
-//TODO
+function runGoalieCheats(){
+    const counter_chances_l = goalie_counter_source.data['chances_l'];
+    const counter_chances_r = goalie_counter_source.data['chances_r'];
+    let action;
+    if(kicker_foot == 'Left'){
+        if(counter_chances_l[0] == 1){
+            action = "Left";
+        }
+        else if(counter_chances_l[1] == 1){
+            action = "Middle";
+        }
+        else{
+            action = "Right";
+        }
+    }
+    else{
+        if(counter_chances_r[0] == 1){
+            action = "Left";
+        }
+        else if(counter_chances_r[1] == 1){
+            action = "Middle";
+        }
+        else{
+            action = "Right";
+        }
+    }
+    return action;
+}
+
+goalie_action = runGoalieCheats();
 """
             #</editor-fold>
 automate_loop_handle_goalie_decision = """

@@ -991,7 +991,17 @@ strategy_dropdown.label = this.item;
 //Set the text of the strategy_to_use div to the selected item:
 strategy_to_use.text = this.item;
 //Set the start automate button to be visible:
-b_start_automate.visible = true;
+if(this.item != "Goalie_Cheats"){
+    b_start_automate.visible = true;
+}
+else{
+    b_make_counter.visible = true;
+}
+"""
+    #</editor-fold>
+    #<editor-fold b_make_counter callback Code String:
+b_make_counter_click = """
+
 """
     #</editor-fold>
 #</editor-fold>
@@ -1016,7 +1026,13 @@ def create_buttons(b_automate_label = "Automate",
                    b_auto_next_sizing_mode = "scale_width",
                    b_auto_next_width_policy = "fit",
                    b_auto_next_disabled = False,
-                   b_auto_next_visibility = False):
+                   b_auto_next_visibility = False,
+                   b_make_counter_label = "Make Counter",
+                   b_make_counter_button_type = "success",
+                   b_make_counter_sizing_mode = "scale_width",
+                   b_make_counter_width_policy = "fit",
+                   b_make_counter_disabled = False,
+                   b_make_counter_visibility = False):
 
     b_automate = Button(label = b_automate_label,
                         button_type = b_automate_button_type,
@@ -1038,8 +1054,13 @@ def create_buttons(b_automate_label = "Automate",
                          width_policy = b_auto_next_width_policy,
                          disabled = b_auto_next_disabled,
                          visible = b_auto_next_visibility)
-
-    return b_automate, b_start_automate, b_auto_next
+    b_make_counter = Button(label = b_make_counter_label,
+                            button_type = b_make_counter_button_type,
+                            sizing_mode = b_make_counter_sizing_mode,
+                            width_policy = b_make_counter_width_policy,
+                            disabled = b_make_counter_disabled,
+                            visible = b_make_counter_visibility)
+    return b_automate, b_start_automate, b_auto_next, b_make_counter
 #</editor-fold>
 #<editor-fold create_sliders():
 #Needs:
@@ -1450,6 +1471,12 @@ def b_auto_next_setup(b_auto_next, args_dict):
                                  code = automate_loop_iteration)
     b_auto_next.js_on_click(b_auto_next_click)
 #</editor-fold>
+#<editor-fold b_make_counter_setup():
+def b_make_counter_setup(b_make_counter, args_dict):
+    b_make_counter_click = CustomJS(args = args_dict,
+                                    code = make_counter)
+    b_make_counter.js_on_click(b_make_counter_click)
+#</editor-fold>
 #<editor-fold aim_sliders_setup():
 #Needs:
 #   from bokeh.models import CustomJS
@@ -1492,70 +1519,4 @@ def strategy_dropdown_setup(strategy_dropdown, args_dict):
                                           code = strategy_dropdown_code)
     strategy_dropdown.js_on_event("menu_item_click",
                                   strategy_dropdown_callback)
-#</editor-fold>
-#<editor-fold create_optimal_mixed_counter_strategy():
-def create_optimal_mixed_counter_strategy(striker_ll_chance,
-                                          striker_lm_chance,
-                                          striker_lr_chance,
-                                          striker_rl_chance,
-                                          striker_rm_chance,
-                                          striker_rr_chance):
-    m1 = OR.Solver('left_subgame_counter_strategy', OR.Solver.CLP_LINEAR_PROGRAMMING);
-
-    LL = m1.NumVar(0, 1, 'LL');
-    LM = m1.NumVar(0, 1, 'LM');
-    LR = m1.NumVar(0, 1, 'LR');
-    Lz = m1.NumVar(-m1.infinity(), m1.infinity(), 'Lz');
-
-    m1.Minimize(Lz);
-
-    m1.Add(LL + LM + LR == 1);
-    m1.Add((LL * (striker_ll_chance * 0.67
-                  + striker_lm_chance * 0.74
-                  + striker_lr_chance * 0.87))
-           + (LM * (striker_ll_chance * 0.70
-                    + striker_lm_chance * 0.60
-                    + striker_lr_chance * 0.65))
-           + (LR * (striker_ll_chance * 0.96
-                    + striker_lm_chance * 0.72
-                    + striker_lr_chance * 0.61)) <= Lz);
-
-    m2 = OR.Solver('right_subgame_counter_strategy', OR.Solver.CLP_LINEAR_PROGRAMMING);
-
-    RL = m2.NumVar(0, 1, 'RL');
-    RM = m2.NumVar(0, 1, 'RM');
-    RR = m2.NumVar(0, 1, 'RR');
-    Rz = m2.NumVar(-m2.infinity(), m2.infinity(), 'Rz');
-
-    m2.Minimize(Rz);
-
-    m2.Add(RL + RM + RR == 1);
-    m2.Add((RL * (striker_rl_chance * 0.55
-                  + striker_rm_chance * 0.74
-                  + striker_rr_chance * 0.95))
-            + (RM * (striker_rl_chance * 0.65
-                     + striker_rm_chance * 0.60
-                     + striker_rr_chance * 0.73))
-            + (RR * (striker_rl_chance * 0.93
-                     + striker_rm_chance * 0.72
-                     + striker_rr_chance * 0.70)) <= Rz);
-
-    m1.Solve()
-    m2.Solve()
-    print('Solution:')
-    print('    Left Subgame:')
-    print('        Objective value =', m1.Objective().Value())
-    for var in m1.variables():
-        print('        ' + var.name(), ':', var.solution_value())
-    print('    Right Subgame:')
-    print('        Objective value =', m2.Objective().Value())
-    for var in m2.variables():
-        print('        ' + var.name(), ':', var.solution_value())
-
-    return [m1.variables()[0].solution_value(),
-            m1.variables()[1].solution_value(),
-            m1.variables()[2].solution_value(),
-            m2.variables()[0].solution_value(),
-            m2.variables()[1].solution_value(),
-            m2.variables()[2].solution_value()]
 #</editor-fold>

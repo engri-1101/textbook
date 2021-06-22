@@ -3,6 +3,7 @@ from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
 from bokeh.models.widgets import Div
 from ortools.linear_solver import pywraplp as OR
 from bokeh.models.glyphs import Text
+from bokeh.layouts import row, column, gridplot
 #<editor-fold Code Strings:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
@@ -1199,7 +1200,7 @@ def create_buttons(b_automate_label = "Automate",
                             width_policy = b_make_counter_width_policy,
                             disabled = b_make_counter_disabled,
                             visible = b_make_counter_visibility)
-                            
+
     return b_automate, b_start_automate, b_auto_next, b_make_counter
 #</editor-fold>
 #<editor-fold create_sliders():
@@ -1714,4 +1715,93 @@ def strategy_dropdown_setup(strategy_dropdown, args_dict):
                                           code = strategy_dropdown_code)
     strategy_dropdown.js_on_event("menu_item_click",
                                   strategy_dropdown_callback)
+#</editor-fold>
+#<editor-fold format_layout():
+#Needs:
+#    from bokeh.layouts import row, column, gridplot
+def format_layout(b_automate, iterations_slider, b_auto_next,
+                  strategy_dropdown, b_start_automate, b_make_counter,
+                  LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider,
+                  RM_aim_slider, RR_aim_slider, game_stats_figure_1,
+                  game_stats_figure_2, game_stats_figure_3,
+                  game_figure, automation_table, automation_distribution_table,
+                  automate_button_row_max_width = 400,
+                  automate_button_row_sizing_mode = 'stretch_width',
+                  strategy_dropdown_row_max_width = 400,
+                  strategy_dropdown_row_sizing_mode = 'stretch_width',
+                  start_automate_row_max_width = 400,
+                  start_automate_row_sizing_mode = 'stretch_width',
+                  automate_aim_rows_max_width = 400,
+                  automate_aim_rows_sizing_mode = 'stretch_width',
+                  game_stats_row_1_max_width = 600,
+                  game_stats_row_1_sizing_mode = 'stretch_width',
+                  game_stats_row_2_max_width = 600,
+                  game_stats_row_2_sizing_mode = 'stretch_width',
+                  gui_column1_max_width = 600,
+                  gui_column1_sizing_mode = 'stretch_width',
+                  gui_column2_min_width = 761, gui_column2_max_width = 761,
+                  gui_column2_sizing_mode = 'stretch_width',
+                  gui_row_max_width = 1400,
+                  gui_row_sizing_mode = 'stretch_width',
+                  plot_width = 1200, plot_height = 480):
+
+    automate_button_row = row(b_automate, iterations_slider, b_auto_next,
+                              max_width = automate_button_row_max_width,
+                              sizing_mode = automate_button_row_sizing_mode)
+
+    strategy_dropdown_row = row(strategy_dropdown,
+                                max_width = strategy_dropdown_row_max_width,
+                                sizing_mode = strategy_dropdown_row_sizing_mode)
+
+    start_automate_row = row(b_start_automate, b_make_counter,
+                             max_width = start_automate_row_max_width,
+                             sizing_mode = start_automate_row_sizing_mode)
+
+    automate_LL_aim_row = row(LL_aim_slider,
+                              max_width = automate_aim_rows_max_width,
+                              sizing_mode = automate_aim_rows_sizing_mode)
+    automate_LM_aim_row = row(LM_aim_slider,
+                              max_width = automate_aim_rows_max_width,
+                              sizing_mode = automate_aim_rows_sizing_mode)
+    automate_LR_aim_row = row(LR_aim_slider,
+                              max_width = automate_aim_rows_max_width,
+                              sizing_mode = automate_aim_rows_sizing_mode)
+    automate_RL_aim_row = row(RL_aim_slider,
+                              max_width = automate_aim_rows_max_width,
+                              sizing_mode = automate_aim_rows_sizing_mode)
+    automate_RM_aim_row = row(RM_aim_slider,
+                              max_width = automate_aim_rows_max_width,
+                              sizing_mode = automate_aim_rows_sizing_mode)
+    automate_RR_aim_row = row(RR_aim_slider,
+                              max_width = automate_aim_rows_max_width,
+                              sizing_mode = automate_aim_rows_sizing_mode)
+
+    game_stats_row_1 = row(game_stats_figure_1, game_stats_figure_2,
+                           max_width = game_stats_row_1_max_width,
+                           sizing_mode = game_stats_row_1_sizing_mode)
+    game_stats_row_2 = row(game_stats_figure_3,
+                           max_width = game_stats_row_2_max_width,
+                           sizing_mode = game_stats_row_2_sizing_mode)
+
+    gui_column1 = column(game_figure, game_stats_row_1, game_stats_row_2,
+                         max_width = gui_column1_max_width,
+                         sizing_mode = gui_column1_sizing_mode)
+    gui_column2 = column(automate_button_row, strategy_dropdown_row,
+                         start_automate_row, automate_LL_aim_row,
+                         automate_LM_aim_row, automate_LR_aim_row,
+                         automate_RL_aim_row, automate_RM_aim_row,
+                         automate_RR_aim_row, automation_table,
+                         automation_distribution_table,
+                         min_width = gui_column2_min_width,
+                         max_width = gui_column2_max_width,
+                         sizing_mode = gui_column2_sizing_mode)
+
+    gui_row = row(gui_column1, gui_column2,
+                  max_width = gui_row_max_width,
+                  sizing_mode = gui_row_sizing_mode)
+
+    grid1 = gridplot([[gui_row]],
+                     plot_width = plot_width,
+                     plot_height = plot_height)
+    return grid1
 #</editor-fold>

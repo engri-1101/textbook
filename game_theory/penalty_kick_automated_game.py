@@ -1029,6 +1029,9 @@ rl_aim_slider.visible = true;
 rm_aim_slider.visible = true;
 rr_aim_slider.visible = true;
 
+//Sets the automation_table to be visible:
+automation_table.visible = true;
+
 //Toggles button visibilities based off selected item:
 if(this.item != "Goalie_Cheats"){
     b_make_counter.visible = false;
@@ -1043,6 +1046,9 @@ else{
     #<editor-fold b_make_counter callback Code String:
 b_make_counter_click_code = """
 const chances = automation_table_source.data['chances'];
+
+//Hides the automation_table as it is un-needed:
+automation_table.visible = false;
 
 //Make sliders invisible to prevent changes being made to chances:
 ll_aim_slider.visible = false;

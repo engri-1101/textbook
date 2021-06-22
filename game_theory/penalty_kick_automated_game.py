@@ -1000,8 +1000,102 @@ else{
 """
     #</editor-fold>
     #<editor-fold b_make_counter callback Code String:
-b_make_counter_click = """
+b_make_counter_click_code = """
+const chances = automation_table_source.data['chances'];
 
+//Make sliders invisible to prevent changes being made to chances:
+ll_aim_slider.visible = false;
+lm_aim_slider.visible = false;
+lr_aim_slider.visible = false;
+rl_aim_slider.visible = false;
+rm_aim_slider.visible = false;
+rr_aim_slider.visible = false;
+
+//Take chance values:
+const ll_chance = chances[0];
+const lm_chance = chances[1];
+const lr_chance = chances[2];
+const rl_chance = chances[3];
+const rm_chance = chances[4];
+const rr_chance = chances[5];
+
+//Left side decision making:
+const goalie_ll = ll_chance * 0.67 + lm_chance * 0.74 + lr_chance * 0.87;
+const goalie_lm = ll_chance * 0.70 + lm_chance * 0.60 + lr_chance * 0.65;
+const goalie_lr = ll_chance * 0.96 + lm_chance * 0.72 + lr_chance * 0.61;
+let goalie_ll_coeff = 1;
+let goalie_lm_coeff = 0;
+let goalie_lr_coeff = 0;
+let goalie_l_obj = goalie_ll * goalie_ll_coeff;
+
+//Get optimal pure counter strategy. This works because the average risk for
+//each position is constant (The chance of scoring given a striker shot
+//direction and goalie decision is constant, and the striker's chance of aiming
+//in each way is also constant, so the average risk for each position cannot
+//change), so the optimal mixed strategy for the goalie is just to constantly
+//go to the location with the lowest risk (LP would be the minimum of each of
+//the decision variables multiplied by their risk, subject to the decision
+//variables adding up to 1, which would just end up with the lowest risk
+//position being chosen).
+
+if(goalie_ll > goalie_lm){
+    goalie_ll_coeff = 0;
+    goalie_lm_coeff = 1;
+    goalie_l_obj = goalie_lm * goalie_lm_coeff;
+
+    if(goalie_lm > goalie_lr){
+        goalie_lm_coeff = 0;
+        goalie_lr_coeff = 1;
+        goalie_l_obj = goalie_lr * goalie_lr_coeff;
+    }
+}
+else if(goalie_ll > goalie_lr){
+    goalie_ll_coeff = 0;
+    goalie_lr_coeff = 1;
+    goalie_l_obj = goalie_lr * goalie_lr_coeff;
+}
+
+//else do nothing.
+
+//Right side decision making:
+const goalie_rl = rl_chance * 0.55 + rm_chance * 0.74 + rr_chance * 0.95;
+const goalie_rm = rl_chance * 0.65 + rm_chance * 0.60 + rr_chance * 0.73;
+const goalie_rr = rl_chance * 0.93 + rm_chance * 0.72 + rr_chance * 0.70;
+let goalie_rl_coeff = 1;
+let goalie_rm_coeff = 0;
+let goalie_rr_coeff = 0;
+let goalie_r_obj = goalie_rl * goalie_rl_coeff;
+
+if(goalie_rl > goalie_rm){
+    goalie_rl_coeff = 0;
+    goalie_rm_coeff = 1;
+    goalie_r_obj = goalie_rm * goalie_rm_coeff;
+
+    if(goalie_rm > goalie_rr){
+        goalie_rm_coeff = 0;
+        goalie_rr_coeff = 1;
+        goalie_r_obj = goalie_rr * goalie_rr_coeff;
+    }
+}
+else if(goalie_rl > goalie_rr){
+    goalie_rl_coeff = 0;
+    goalie_rr_coeff = 1;
+    goalie_r_obj = goalie_rr * goalie_rr_coeff;
+}
+//else do nothing.
+
+//Set Goalie chances:
+goalie_counter_source.data['chances_l'][0] = goalie_ll_coeff;
+goalie_counter_source.data['chances_l'][1] = goalie_lm_coeff;
+goalie_counter_source.data['chances_l'][2] = goalie_lr_coeff;
+goalie_counter_source.data['chances_r'][0] = goalie_rl_coeff;
+goalie_counter_source.data['chances_r'][1] = goalie_rm_coeff;
+goalie_counter_source.data['chances_r'][2] = goalie_rr_coeff;
+
+goalie_counter_source.change.emit();
+
+b_start_automate.visible = true;
+b_make_counter.visible = false;
 """
     #</editor-fold>
 #</editor-fold>
@@ -1473,9 +1567,13 @@ def b_auto_next_setup(b_auto_next, args_dict):
 #</editor-fold>
 #<editor-fold b_make_counter_setup():
 def b_make_counter_setup(b_make_counter, args_dict):
+    goalie_counter_source = ColumnDataSource(data = dict(chances_l = [1,0,0],
+                                                         chances_r = [1,0,0]))
+    args_dict['goalie_counter_source'] = goalie_counter_source
     b_make_counter_click = CustomJS(args = args_dict,
-                                    code = make_counter)
+                                    code = b_make_counter_click_code)
     b_make_counter.js_on_click(b_make_counter_click)
+    return goalie_counter_source
 #</editor-fold>
 #<editor-fold aim_sliders_setup():
 #Needs:

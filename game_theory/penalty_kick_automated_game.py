@@ -1346,7 +1346,13 @@ def create_gamestate_divs(iterations_to_run_start_text = "50",
                           lr_blocked_right_visibility = False,
                           rl_blocked_right_visibility = False,
                           rm_blocked_right_visibility = False,
-                          rr_blocked_right_visibility = False):
+                          rr_blocked_right_visibility = False,
+                          nround_text = '0', nround_visibility = False,
+                          score_text = '0', score_visibility = False,
+                          kicker_foot_text = '',
+                          kicker_foot_visibility = False,
+                          kicker_kick_text = '',
+                          kicker_kick_visibility = False):
 
     iterations_to_run = Div(text = iterations_to_run_start_text,
                             visible = iterations_to_run_visibility)
@@ -1406,6 +1412,13 @@ def create_gamestate_divs(iterations_to_run_start_text = "50",
     rr_blocked_right = Div(text = rr_blocked_right_start_text,
                            visible = rr_blocked_right_visibility)
 
+    nround = Div(text = nround_text, visible = nround_visibility)
+    score = Div(text = score_text, visible = score_visibility)
+    kicker_foot = Div(text = kicker_foot_text,
+                      visible = kicker_foot_visibility)
+    kicker_kick = Div(text = kicker_kick_text,
+                      visible = kicker_kick_visibility)
+
     return (iterations_to_run, strategy_to_use,
             ll_scored, lm_scored, lr_scored,
             rl_scored, rm_scored, rr_scored,
@@ -1414,7 +1427,8 @@ def create_gamestate_divs(iterations_to_run_start_text = "50",
             ll_blocked_middle, lm_blocked_middle, lr_blocked_middle,
             rl_blocked_middle, rm_blocked_middle, rr_blocked_middle,
             ll_blocked_right, lm_blocked_right, lr_blocked_right,
-            rl_blocked_right, rm_blocked_right, rr_blocked_right)
+            rl_blocked_right, rm_blocked_right, rr_blocked_right,
+            nround, score, kicker_foot, kicker_kick)
 #</editor-fold>
 #<editor-fold create_strategy_dropdown():
 def create_strategy_dropdown(fictitious_play_text = "Fictitious_Play",

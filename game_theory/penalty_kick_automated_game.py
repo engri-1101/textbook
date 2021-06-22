@@ -1598,6 +1598,22 @@ def create_automation_table(source,
                                  visible = table_visibility)
     return automation_table
 #</editor-fold>
+#<editor-fold create_scr_text():
+def create_scr_text(xs = [2, 70, 2, 14, 14],
+                    ys = [86, 86, 5, 40, 32],
+                    text_ln_1 = 'Rounds played: 0',
+                    text_ln_2 = 'Total score: 0',
+                    text_ln_3 = '', text_ln_4 = '',
+                    text_ln_5 = ''):
+
+    scr_text = ColumnDataSource({'x' : xs, 'y' : ys, 'text' : [text_ln_1,
+                                                               text_ln_2,
+                                                               text_ln_3,
+                                                               text_ln_4,
+                                                               text_ln_5]})
+
+    return scr_text;
+#</editor-fold>
 #<editor-fold b_automate_setup():
 #Needs:
 #   from bokeh.models import CustomJS

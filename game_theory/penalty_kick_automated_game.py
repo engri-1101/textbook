@@ -7,10 +7,6 @@ from ortools.linear_solver import pywraplp as OR
 b_automate_code = """
 //Change visibilities of game items:
 b_automate.visible = false;
-b_start.visible = false;
-b_fl.visible = false;
-b_fr.visible = false;
-b_next.visible = false;
 LL_aim_slider.visible = true;
 LM_aim_slider.visible = true;
 LR_aim_slider.visible = true;

@@ -2,6 +2,7 @@ from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
                           TableColumn, DataTable, CustomJS)
 from bokeh.models.widgets import Div
 from ortools.linear_solver import pywraplp as OR
+from bokeh.models.glyphs import Text
 #<editor-fold Code Strings:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
@@ -1191,12 +1192,14 @@ def create_buttons(b_automate_label = "Automate",
                          width_policy = b_auto_next_width_policy,
                          disabled = b_auto_next_disabled,
                          visible = b_auto_next_visibility)
+
     b_make_counter = Button(label = b_make_counter_label,
                             button_type = b_make_counter_button_type,
                             sizing_mode = b_make_counter_sizing_mode,
                             width_policy = b_make_counter_width_policy,
                             disabled = b_make_counter_disabled,
                             visible = b_make_counter_visibility)
+                            
     return b_automate, b_start_automate, b_auto_next, b_make_counter
 #</editor-fold>
 #<editor-fold create_sliders():
@@ -1431,6 +1434,8 @@ def create_gamestate_divs(iterations_to_run_start_text = "50",
             nround, score, kicker_foot, kicker_kick)
 #</editor-fold>
 #<editor-fold create_strategy_dropdown():
+#Needs:
+#    from bokeh.models import DropDown
 def create_strategy_dropdown(fictitious_play_text = "Fictitious_Play",
                              mixed_strategy_text = "Mixed_Strategy",
                              true_random_text = "Random",
@@ -1599,6 +1604,8 @@ def create_automation_table(source,
     return automation_table
 #</editor-fold>
 #<editor-fold create_scr_text():
+#Needs:
+#    from bokeh.models import ColumnDataSource
 def create_scr_text(xs = [2, 70, 2, 14, 14],
                     ys = [86, 86, 5, 40, 32],
                     text_ln_1 = 'Rounds played: 0',
@@ -1613,6 +1620,21 @@ def create_scr_text(xs = [2, 70, 2, 14, 14],
                                                                text_ln_5]})
 
     return scr_text;
+#</editor-fold>
+#<editor-fold create_labels():
+#Needs:
+#    from bokeh.models.glyphs import Text
+def create_labels(text_color = "whitesmoke",
+                  text_font_size = "15pt",
+                  text_x_offset = 0,
+                  text_y_offset = +9,
+                  text_baseline = "ideographic",
+                  text_align = 'left'):
+    labels = Text(x = "x", y = "y", text = 'text', text_color = text_color,
+                  text_font_size = text_font_size, x_offset = text_x_offset,
+                  y_offset = text_y_offset, text_baseline = text_baseline,
+                  text_align = text_align)
+    return labels;
 #</editor-fold>
 #<editor-fold b_automate_setup():
 #Needs:
@@ -1639,6 +1661,8 @@ def b_auto_next_setup(b_auto_next, args_dict):
     b_auto_next.js_on_click(b_auto_next_click)
 #</editor-fold>
 #<editor-fold b_make_counter_setup():
+#Needs:
+#    from bokeh.models import ColumnDataSource, CustomJS
 def b_make_counter_setup(b_make_counter, args_dict):
     goalie_counter_source = ColumnDataSource(data = dict(chances_l = [1, 0, 0],
                                                          chances_r = [1, 0, 0]))
@@ -1675,7 +1699,7 @@ def aim_sliders_setup(ll_aim_slider, lm_aim_slider, lr_aim_slider,
 #</editor-fold>
 #<editor-fold iterations_slider_setup():
 #Needs:
-#   from bokeh.models import CustomJS
+#    from bokeh.models import CustomJS
 def iterations_slider_setup(iterations_slider, args_dict):
     iterations_slider_callback = CustomJS(args = args_dict,
                                           code = iterations_slider_code)
@@ -1684,7 +1708,7 @@ def iterations_slider_setup(iterations_slider, args_dict):
 #</editor-fold>
 #<editor-fold strategy_dropdown_setup():
 #Needs:
-#   from bokeh.models import CustomJS
+#    from bokeh.models import CustomJS
 def strategy_dropdown_setup(strategy_dropdown, args_dict):
     strategy_dropdown_callback = CustomJS(args = args_dict,
                                           code = strategy_dropdown_code)

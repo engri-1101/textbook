@@ -1303,129 +1303,74 @@ def create_sliders(ll_aim_slider_start = 0, ll_aim_slider_end = 1,
 #<editor-fold create_gamestate_divs():
 #Needs:
 #   from bokeh.models.widgets import Div
-def create_gamestate_divs(iterations_to_run_start_text = "50",
-                          iterations_to_run_visibility = False,
-                          strategy_to_use_start_text = "Not Set",
-                          strategy_to_use_visibility = False,
-                          ll_scored_start_text = "0",
-                          lm_scored_start_text = "0",
-                          lr_scored_start_text = "0",
-                          rl_scored_start_text = "0",
-                          rm_scored_start_text = "0",
-                          rr_scored_start_text = "0",
-                          ll_scored_visibility = False,
-                          lm_scored_visibility = False,
-                          lr_scored_visibility = False,
-                          rl_scored_visibility = False,
-                          rm_scored_visibility = False,
-                          rr_scored_visibility = False,
-                          ll_blocked_left_start_text = "0",
-                          lm_blocked_left_start_text = "0",
-                          lr_blocked_left_start_text = "0",
-                          rl_blocked_left_start_text = "0",
-                          rm_blocked_left_start_text = "0",
-                          rr_blocked_left_start_text = "0",
-                          ll_blocked_left_visibility = False,
-                          lm_blocked_left_visibility = False,
-                          lr_blocked_left_visibility = False,
-                          rl_blocked_left_visibility = False,
-                          rm_blocked_left_visibility = False,
-                          rr_blocked_left_visibility = False,
-                          ll_blocked_middle_start_text = "0",
-                          lm_blocked_middle_start_text = "0",
-                          lr_blocked_middle_start_text = "0",
-                          rl_blocked_middle_start_text = "0",
-                          rm_blocked_middle_start_text = "0",
-                          rr_blocked_middle_start_text = "0",
-                          ll_blocked_middle_visibility = False,
-                          lm_blocked_middle_visibility = False,
-                          lr_blocked_middle_visibility = False,
-                          rl_blocked_middle_visibility = False,
-                          rm_blocked_middle_visibility = False,
-                          rr_blocked_middle_visibility = False,
-                          ll_blocked_right_start_text = "0",
-                          lm_blocked_right_start_text = "0",
-                          lr_blocked_right_start_text = "0",
-                          rl_blocked_right_start_text = "0",
-                          rm_blocked_right_start_text = "0",
-                          rr_blocked_right_start_text = "0",
-                          ll_blocked_right_visibility = False,
-                          lm_blocked_right_visibility = False,
-                          lr_blocked_right_visibility = False,
-                          rl_blocked_right_visibility = False,
-                          rm_blocked_right_visibility = False,
-                          rr_blocked_right_visibility = False,
-                          nround_text = '0', nround_visibility = False,
-                          score_text = '0', score_visibility = False,
-                          kicker_foot_text = '',
-                          kicker_foot_visibility = False,
-                          kicker_kick_text = '',
-                          kicker_kick_visibility = False):
+def create_gamestate_divs(configs):
 
-    iterations_to_run = Div(text = iterations_to_run_start_text,
-                            visible = iterations_to_run_visibility)
+    iterations_to_run = Div(text = configs.iterations_to_run_start_text,
+                            visible = configs.iterations_to_run_visibility)
 
-    strategy_to_use = Div(text = strategy_to_use_start_text,
-                          visible = strategy_to_use_visibility)
+    strategy_to_use = Div(text = configs.strategy_to_use_start_text,
+                          visible = configs.strategy_to_use_visibility)
 
-    ll_scored = Div(text = ll_scored_start_text,
-                    visible = ll_scored_visibility)
-    lm_scored = Div(text = lm_scored_start_text,
-                    visible = lm_scored_visibility)
-    lr_scored = Div(text = lr_scored_start_text,
-                    visible = lr_scored_visibility)
-    rl_scored = Div(text = rl_scored_start_text,
-                    visible = rl_scored_visibility)
-    rm_scored = Div(text = rm_scored_start_text,
-                    visible = rm_scored_visibility)
-    rr_scored = Div(text = rr_scored_start_text,
-                    visible = rr_scored_visibility)
+    ll_scored = Div(text = configs.ll_scored_start_text,
+                    visible = configs.ll_scored_visibility)
+    lm_scored = Div(text = configs.lm_scored_start_text,
+                    visible = configs.lm_scored_visibility)
+    lr_scored = Div(text = configs.lr_scored_start_text,
+                    visible = configs.lr_scored_visibility)
+    rl_scored = Div(text = configs.rl_scored_start_text,
+                    visible = configs.rl_scored_visibility)
+    rm_scored = Div(text = configs.rm_scored_start_text,
+                    visible = configs.rm_scored_visibility)
+    rr_scored = Div(text = configs.rr_scored_start_text,
+                    visible = configs.rr_scored_visibility)
 
-    ll_blocked_left = Div(text = ll_blocked_left_start_text,
-                          visible = ll_blocked_left_visibility)
-    lm_blocked_left = Div(text = lm_blocked_left_start_text,
-                          visible = lm_blocked_left_visibility)
-    lr_blocked_left = Div(text = lr_blocked_left_start_text,
-                          visible = lr_blocked_left_visibility)
-    rl_blocked_left = Div(text = rl_blocked_left_start_text,
-                          visible = rl_blocked_left_visibility)
-    rm_blocked_left = Div(text = rm_blocked_left_start_text,
-                          visible = rm_blocked_left_visibility)
-    rr_blocked_left = Div(text = rr_blocked_left_start_text,
-                          visible = rr_blocked_left_visibility)
+    ll_blocked_left = Div(text = configs.ll_blocked_left_start_text,
+                          visible = configs.ll_blocked_left_visibility)
+    lm_blocked_left = Div(text = configs.lm_blocked_left_start_text,
+                          visible = configs.lm_blocked_left_visibility)
+    lr_blocked_left = Div(text = configs.lr_blocked_left_start_text,
+                          visible = configs.lr_blocked_left_visibility)
+    rl_blocked_left = Div(text = configs.rl_blocked_left_start_text,
+                          visible = configs.rl_blocked_left_visibility)
+    rm_blocked_left = Div(text = configs.rm_blocked_left_start_text,
+                          visible = configs.rm_blocked_left_visibility)
+    rr_blocked_left = Div(text = configs.rr_blocked_left_start_text,
+                          visible = configs.rr_blocked_left_visibility)
 
-    ll_blocked_middle = Div(text = ll_blocked_middle_start_text,
-                            visible = ll_blocked_middle_visibility)
-    lm_blocked_middle = Div(text = lm_blocked_middle_start_text,
-                            visible = lm_blocked_middle_visibility)
-    lr_blocked_middle = Div(text = lr_blocked_middle_start_text,
-                            visible = lr_blocked_middle_visibility)
-    rl_blocked_middle = Div(text = rl_blocked_middle_start_text,
-                            visible = rl_blocked_middle_visibility)
-    rm_blocked_middle = Div(text = rm_blocked_middle_start_text,
-                            visible = rm_blocked_middle_visibility)
-    rr_blocked_middle = Div(text = rr_blocked_middle_start_text,
-                            visible = rr_blocked_middle_visibility)
+    ll_blocked_middle = Div(text = configs.ll_blocked_middle_start_text,
+                            visible = configs.ll_blocked_middle_visibility)
+    lm_blocked_middle = Div(text = configs.lm_blocked_middle_start_text,
+                            visible = configs.lm_blocked_middle_visibility)
+    lr_blocked_middle = Div(text = configs.lr_blocked_middle_start_text,
+                            visible = configs.lr_blocked_middle_visibility)
+    rl_blocked_middle = Div(text = configs.rl_blocked_middle_start_text,
+                            visible = configs.rl_blocked_middle_visibility)
+    rm_blocked_middle = Div(text = configs.rm_blocked_middle_start_text,
+                            visible = configs.rm_blocked_middle_visibility)
+    rr_blocked_middle = Div(text = configs.rr_blocked_middle_start_text,
+                            visible = configs.rr_blocked_middle_visibility)
 
-    ll_blocked_right = Div(text = ll_blocked_right_start_text,
-                           visible = ll_blocked_right_visibility)
-    lm_blocked_right = Div(text = lm_blocked_right_start_text,
-                           visible = lm_blocked_right_visibility)
-    lr_blocked_right = Div(text = lr_blocked_right_start_text,
-                           visible = lr_blocked_right_visibility)
-    rl_blocked_right = Div(text = rl_blocked_right_start_text,
-                           visible = rl_blocked_right_visibility)
-    rm_blocked_right = Div(text = rm_blocked_right_start_text,
-                           visible = rm_blocked_right_visibility)
-    rr_blocked_right = Div(text = rr_blocked_right_start_text,
-                           visible = rr_blocked_right_visibility)
+    ll_blocked_right = Div(text = configs.ll_blocked_right_start_text,
+                           visible = configs.ll_blocked_right_visibility)
+    lm_blocked_right = Div(text = configs.lm_blocked_right_start_text,
+                           visible = configs.lm_blocked_right_visibility)
+    lr_blocked_right = Div(text = configs.lr_blocked_right_start_text,
+                           visible = configs.lr_blocked_right_visibility)
+    rl_blocked_right = Div(text = configs.rl_blocked_right_start_text,
+                           visible = configs.rl_blocked_right_visibility)
+    rm_blocked_right = Div(text = configs.rm_blocked_right_start_text,
+                           visible = configs.rm_blocked_right_visibility)
+    rr_blocked_right = Div(text = configs.rr_blocked_right_start_text,
+                           visible = configs.rr_blocked_right_visibility)
 
-    nround = Div(text = nround_text, visible = nround_visibility)
-    score = Div(text = score_text, visible = score_visibility)
-    kicker_foot = Div(text = kicker_foot_text,
-                      visible = kicker_foot_visibility)
-    kicker_kick = Div(text = kicker_kick_text,
-                      visible = kicker_kick_visibility)
+    nround = Div(text = configs.nround_text,
+                 visible = configs.nround_visibility)
+    score = Div(text = configs.score_text,
+                visible = configs.score_visibility)
+    kicker_foot = Div(text = configs.kicker_foot_text,
+                      visible = configs.kicker_foot_visibility)
+    kicker_kick = Div(text = configs.kicker_kick_text,
+                      visible = configs.kicker_kick_visibility)
 
     return (iterations_to_run, strategy_to_use,
             ll_scored, lm_scored, lr_scored,
@@ -1831,8 +1776,127 @@ class Scr_text_and_labels_configs:
         self.labels_text_y_offset = labels_text_y_offset
         self.labels_text_baseline = labels_text_baseline
         self.labels_text_align = labels_text_align
-
-
+#</editor-fold>
+#<editor-fold Gamestate_divs_configs:
+class Gamestate_divs_configs:
+    def __init__(self, iterations_to_run_start_text = "50",
+                 iterations_to_run_visibility = False,
+                 strategy_to_use_start_text = "Not Set",
+                 strategy_to_use_visibility = False,
+                 ll_scored_start_text = "0",
+                 lm_scored_start_text = "0",
+                 lr_scored_start_text = "0",
+                 rl_scored_start_text = "0",
+                 rm_scored_start_text = "0",
+                 rr_scored_start_text = "0",
+                 ll_scored_visibility = False,
+                 lm_scored_visibility = False,
+                 lr_scored_visibility = False,
+                 rl_scored_visibility = False,
+                 rm_scored_visibility = False,
+                 rr_scored_visibility = False,
+                 ll_blocked_left_start_text = "0",
+                 lm_blocked_left_start_text = "0",
+                 lr_blocked_left_start_text = "0",
+                 rl_blocked_left_start_text = "0",
+                 rm_blocked_left_start_text = "0",
+                 rr_blocked_left_start_text = "0",
+                 ll_blocked_left_visibility = False,
+                 lm_blocked_left_visibility = False,
+                 lr_blocked_left_visibility = False,
+                 rl_blocked_left_visibility = False,
+                 rm_blocked_left_visibility = False,
+                 rr_blocked_left_visibility = False,
+                 ll_blocked_middle_start_text = "0",
+                 lm_blocked_middle_start_text = "0",
+                 lr_blocked_middle_start_text = "0",
+                 rl_blocked_middle_start_text = "0",
+                 rm_blocked_middle_start_text = "0",
+                 rr_blocked_middle_start_text = "0",
+                 ll_blocked_middle_visibility = False,
+                 lm_blocked_middle_visibility = False,
+                 lr_blocked_middle_visibility = False,
+                 rl_blocked_middle_visibility = False,
+                 rm_blocked_middle_visibility = False,
+                 rr_blocked_middle_visibility = False,
+                 ll_blocked_right_start_text = "0",
+                 lm_blocked_right_start_text = "0",
+                 lr_blocked_right_start_text = "0",
+                 rl_blocked_right_start_text = "0",
+                 rm_blocked_right_start_text = "0",
+                 rr_blocked_right_start_text = "0",
+                 ll_blocked_right_visibility = False,
+                 lm_blocked_right_visibility = False,
+                 lr_blocked_right_visibility = False,
+                 rl_blocked_right_visibility = False,
+                 rm_blocked_right_visibility = False,
+                 rr_blocked_right_visibility = False,
+                 nround_text = '0', nround_visibility = False,
+                 score_text = '0', score_visibility = False,
+                 kicker_foot_text = '',
+                 kicker_foot_visibility = False,
+                 kicker_kick_text = '',
+                 kicker_kick_visibility = False):
+        self.iterations_to_run_start_text = iterations_to_run_start_text
+        self.iterations_to_run_visibility = iterations_to_run_visibility
+        self.strategy_to_use_start_text = strategy_to_use_start_text
+        self.strategy_to_use_visibility = strategy_to_use_visibility
+        self.ll_scored_start_text = ll_scored_start_text
+        self.lm_scored_start_text = lm_scored_start_text
+        self.lr_scored_start_text = lr_scored_start_text
+        self.rl_scored_start_text = rl_scored_start_text
+        self.rm_scored_start_text = rm_scored_start_text
+        self.rr_scored_start_text = rr_scored_start_text
+        self.ll_scored_visibility = ll_scored_visibility
+        self.lm_scored_visibility = lm_scored_visibility
+        self.lr_scored_visibility = lr_scored_visibility
+        self.rl_scored_visibility = rl_scored_visibility
+        self.rm_scored_visibility = rm_scored_visibility
+        self.rr_scored_visibility = rr_scored_visibility
+        self.ll_blocked_left_start_text = ll_blocked_left_start_text
+        self.lm_blocked_left_start_text = lm_blocked_left_start_text
+        self.lr_blocked_left_start_text = lr_blocked_left_start_text
+        self.rl_blocked_left_start_text = rl_blocked_left_start_text
+        self.rm_blocked_left_start_text = rm_blocked_left_start_text
+        self.rr_blocked_left_start_text = rr_blocked_left_start_text
+        self.ll_blocked_left_visibility = ll_blocked_left_visibility
+        self.lm_blocked_left_visibility = lm_blocked_left_visibility
+        self.lr_blocked_left_visibility = lr_blocked_left_visibility
+        self.rl_blocked_left_visibility = rl_blocked_left_visibility
+        self.rm_blocked_left_visibility = rm_blocked_left_visibility
+        self.rr_blocked_left_visibility = rr_blocked_left_visibility
+        self.ll_blocked_middle_start_text = ll_blocked_middle_start_text
+        self.lm_blocked_middle_start_text = lm_blocked_middle_start_text
+        self.lr_blocked_middle_start_text = lr_blocked_middle_start_text
+        self.rl_blocked_middle_start_text = rl_blocked_middle_start_text
+        self.rm_blocked_middle_start_text = rm_blocked_middle_start_text
+        self.rr_blocked_middle_start_text = rr_blocked_middle_start_text
+        self.ll_blocked_middle_visibility = ll_blocked_middle_visibility
+        self.lm_blocked_middle_visibility = lm_blocked_middle_visibility
+        self.lr_blocked_middle_visibility = lr_blocked_middle_visibility
+        self.rl_blocked_middle_visibility = rl_blocked_middle_visibility
+        self.rm_blocked_middle_visibility = rm_blocked_middle_visibility
+        self.rr_blocked_middle_visibility = rr_blocked_middle_visibility
+        self.ll_blocked_right_start_text = ll_blocked_right_start_text
+        self.lm_blocked_right_start_text = lm_blocked_right_start_text
+        self.lr_blocked_right_start_text = lr_blocked_right_start_text
+        self.rl_blocked_right_start_text = rl_blocked_right_start_text
+        self.rm_blocked_right_start_text = rm_blocked_right_start_text
+        self.rr_blocked_right_start_text = rr_blocked_right_start_text
+        self.ll_blocked_right_visibility = ll_blocked_right_visibility
+        self.lm_blocked_right_visibility = lm_blocked_right_visibility
+        self.lr_blocked_right_visibility = lr_blocked_right_visibility
+        self.rl_blocked_right_visibility = rl_blocked_right_visibility
+        self.rm_blocked_right_visibility = rm_blocked_right_visibility
+        self.rr_blocked_right_visibility = rr_blocked_right_visibility
+        self.nround_text = nround_text
+        self.nround_visibility = nround_visibility
+        self.score_text = score_text
+        self.score_visibility = score_visibility
+        self.kicker_foot_text = kicker_foot_text
+        self.kicker_foot_visibility = kicker_foot_visibility
+        self.kicker_kick_text = kicker_kick_text
+        self.kicker_kick_visibility = kicker_kick_visibility
 #</editor-fold>
 #<editor-fold make_game():
 #Needs:
@@ -1845,12 +1909,14 @@ default_fig_1_configs = Stats_fig_1_configs()
 default_fig_2_configs = Stats_fig_2_configs()
 default_fig_3_configs = Stats_fig_3_configs()
 default_scr_text_and_labels_configs = Scr_text_and_labels_configs()
+default_gamestate_divs_configs = Gamestate_divs_configs()
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
               stats_figure_2_configs = default_fig_2_configs,
               stats_figure_3_configs = default_fig_3_configs,
-              scrtxt_labels_configs = default_scr_text_and_labels_configs):
+              scrtxt_labels_configs = default_scr_text_and_labels_configs,
+              divs_configs = default_gamestate_divs_configs):
     #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
@@ -1884,7 +1950,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
      rl_blocked_middle, rm_blocked_middle, rr_blocked_middle, ll_blocked_right,
      lm_blocked_right, lr_blocked_right, rl_blocked_right, rm_blocked_right,
      rr_blocked_right, nround, score, kicker_foot,
-     kicker_kick) = create_gamestate_divs()
+     kicker_kick) = create_gamestate_divs(divs_configs)
 
     (b_automate, b_start_automate,
     b_auto_next, b_make_counter) = create_buttons()

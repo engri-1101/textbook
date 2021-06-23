@@ -1187,91 +1187,58 @@ def create_buttons(configs):
 #<editor-fold create_sliders():
 #Needs:
 #   from bokeh.models import Slider
-def create_sliders(ll_aim_slider_start = 0, ll_aim_slider_end = 1,
-                   ll_aim_slider_value = 1/6, ll_aim_slider_step = 0.01,
-                   ll_aim_slider_title = "LL Aim Weight",
-                   ll_aim_slider_disabled = False,
-                   ll_aim_slider_visibility = False,
-                   lm_aim_slider_start = 0, lm_aim_slider_end = 1,
-                   lm_aim_slider_value = 1/6, lm_aim_slider_step = 0.01,
-                   lm_aim_slider_title = "LM Aim Weight",
-                   lm_aim_slider_disabled = False,
-                   lm_aim_slider_visibility = False,
-                   lr_aim_slider_start = 0, lr_aim_slider_end = 1,
-                   lr_aim_slider_value = 1/6, lr_aim_slider_step = 0.01,
-                   lr_aim_slider_title = "LR Aim Weight",
-                   lr_aim_slider_disabled = False,
-                   lr_aim_slider_visibility = False,
-                   rl_aim_slider_start = 0, rl_aim_slider_end = 1,
-                   rl_aim_slider_value = 1/6, rl_aim_slider_step = 0.01,
-                   rl_aim_slider_title = "RL Aim Weight",
-                   rl_aim_slider_disabled = False,
-                   rl_aim_slider_visibility = False,
-                   rm_aim_slider_start = 0, rm_aim_slider_end = 1,
-                   rm_aim_slider_value = 1/6, rm_aim_slider_step = 0.01,
-                   rm_aim_slider_title = "RM Aim Weight",
-                   rm_aim_slider_disabled = False,
-                   rm_aim_slider_visibility = False,
-                   rr_aim_slider_start = 0, rr_aim_slider_end = 1,
-                   rr_aim_slider_value = 1/6, rr_aim_slider_step = 0.01,
-                   rr_aim_slider_title = "RR Aim Weight",
-                   rr_aim_slider_disabled = False,
-                   rr_aim_slider_visibility = False,
-                   iterations_slider_start = 10, iterations_slider_end = 500,
-                   iterations_slider_value = 50,
-                   iterations_slider_title = "Iterations To Run",
-                   iterations_slider_disabled = False,
-                   iterations_slider_visibility = False):
+def create_sliders(configs):
 
-    ll_aim_slider = Slider(start = ll_aim_slider_start,
-                           end = ll_aim_slider_end,
-                           value = ll_aim_slider_value,
-                           step = ll_aim_slider_step,
-                           title = ll_aim_slider_title,
-                           disabled = ll_aim_slider_disabled,
-                           visible = ll_aim_slider_visibility)
-    lm_aim_slider = Slider(start = lm_aim_slider_start,
-                           end = lm_aim_slider_end,
-                           value = lm_aim_slider_value,
-                           step = lm_aim_slider_step,
-                           title = lm_aim_slider_title,
-                           disabled = lm_aim_slider_disabled,
-                           visible = lm_aim_slider_visibility)
-    lr_aim_slider = Slider(start = lr_aim_slider_start,
-                           end = lr_aim_slider_end,
-                           value = lr_aim_slider_value,
-                           step = lr_aim_slider_step,
-                           title = lr_aim_slider_title,
-                           disabled = lr_aim_slider_disabled,
-                           visible = lr_aim_slider_visibility)
-    rl_aim_slider = Slider(start = rl_aim_slider_start,
-                           end = rl_aim_slider_end,
-                           value = rl_aim_slider_value,
-                           step = rl_aim_slider_step,
-                           title = rl_aim_slider_title,
-                           disabled = rl_aim_slider_disabled,
-                           visible = rl_aim_slider_visibility)
-    rm_aim_slider = Slider(start = rm_aim_slider_start,
-                           end = rm_aim_slider_end,
-                           value = rm_aim_slider_value,
-                           step = rm_aim_slider_step,
-                           title = rm_aim_slider_title,
-                           disabled = rm_aim_slider_disabled,
-                           visible = rm_aim_slider_visibility)
-    rr_aim_slider = Slider(start = rr_aim_slider_start,
-                           end = rr_aim_slider_end,
-                           value = rr_aim_slider_value,
-                           step = rr_aim_slider_step,
-                           title = rr_aim_slider_title,
-                           disabled = rr_aim_slider_disabled,
-                           visible = rr_aim_slider_visibility)
+    ll_aim_slider = Slider(start = configs.ll_aim_slider_start,
+                           end = configs.ll_aim_slider_end,
+                           value = configs.ll_aim_slider_value,
+                           step = configs.ll_aim_slider_step,
+                           title = configs.ll_aim_slider_title,
+                           disabled = configs.ll_aim_slider_disabled,
+                           visible = configs.ll_aim_slider_visibility)
+    lm_aim_slider = Slider(start = configs.lm_aim_slider_start,
+                           end = configs.lm_aim_slider_end,
+                           value = configs.lm_aim_slider_value,
+                           step = configs.lm_aim_slider_step,
+                           title = configs.lm_aim_slider_title,
+                           disabled = configs.lm_aim_slider_disabled,
+                           visible = configs.lm_aim_slider_visibility)
+    lr_aim_slider = Slider(start = configs.lr_aim_slider_start,
+                           end = configs.lr_aim_slider_end,
+                           value = configs.lr_aim_slider_value,
+                           step = configs.lr_aim_slider_step,
+                           title = configs.lr_aim_slider_title,
+                           disabled = configs.lr_aim_slider_disabled,
+                           visible = configs.lr_aim_slider_visibility)
+    rl_aim_slider = Slider(start = configs.rl_aim_slider_start,
+                           end = configs.rl_aim_slider_end,
+                           value = configs.rl_aim_slider_value,
+                           step = configs.rl_aim_slider_step,
+                           title = configs.rl_aim_slider_title,
+                           disabled = configs.rl_aim_slider_disabled,
+                           visible = configs.rl_aim_slider_visibility)
+    rm_aim_slider = Slider(start = configs.rm_aim_slider_start,
+                           end = configs.rm_aim_slider_end,
+                           value = configs.rm_aim_slider_value,
+                           step = configs.rm_aim_slider_step,
+                           title = configs.rm_aim_slider_title,
+                           disabled = configs.rm_aim_slider_disabled,
+                           visible = configs.rm_aim_slider_visibility)
+    rr_aim_slider = Slider(start = configs.rr_aim_slider_start,
+                           end = configs.rr_aim_slider_end,
+                           value = configs.rr_aim_slider_value,
+                           step = configs.rr_aim_slider_step,
+                           title = configs.rr_aim_slider_title,
+                           disabled = configs.rr_aim_slider_disabled,
+                           visible = configs.rr_aim_slider_visibility)
 
-    iterations_slider = Slider(start = iterations_slider_start,
-                               end = iterations_slider_end,
-                               value = iterations_slider_value, step = 1,
-                               title = iterations_slider_title,
-                               disabled = iterations_slider_disabled,
-                               visible = iterations_slider_visibility)
+    iterations_slider = Slider(start = configs.iterations_slider_start,
+                               end = configs.iterations_slider_end,
+                               value = configs.iterations_slider_value,
+                               step = configs.iterations_slider_step,
+                               title = configs.iterations_slider_title,
+                               disabled = configs.iterations_slider_disabled,
+                               visible = configs.iterations_slider_visibility)
 
     return (ll_aim_slider, lm_aim_slider, lr_aim_slider,
             rl_aim_slider, rm_aim_slider, rr_aim_slider,
@@ -1924,6 +1891,99 @@ class Button_configs:
         self.b_make_counter_disabled = b_make_counter_disabled
         self.b_make_counter_visibility = b_make_counter_visibility
 #</editor-fold>
+#<editor-fold Slider_configs:
+class Slider_configs:
+    def __init__(self, ll_aim_slider_start = 0, ll_aim_slider_end = 1,
+                 ll_aim_slider_value = 1/6, ll_aim_slider_step = 0.01,
+                 ll_aim_slider_title = "LL Aim Weight",
+                 ll_aim_slider_disabled = False,
+                 ll_aim_slider_visibility = False,
+                 lm_aim_slider_start = 0, lm_aim_slider_end = 1,
+                 lm_aim_slider_value = 1/6, lm_aim_slider_step = 0.01,
+                 lm_aim_slider_title = "LM Aim Weight",
+                 lm_aim_slider_disabled = False,
+                 lm_aim_slider_visibility = False,
+                 lr_aim_slider_start = 0, lr_aim_slider_end = 1,
+                 lr_aim_slider_value = 1/6, lr_aim_slider_step = 0.01,
+                 lr_aim_slider_title = "LR Aim Weight",
+                 lr_aim_slider_disabled = False,
+                 lr_aim_slider_visibility = False,
+                 rl_aim_slider_start = 0, rl_aim_slider_end = 1,
+                 rl_aim_slider_value = 1/6, rl_aim_slider_step = 0.01,
+                 rl_aim_slider_title = "RL Aim Weight",
+                 rl_aim_slider_disabled = False,
+                 rl_aim_slider_visibility = False,
+                 rm_aim_slider_start = 0, rm_aim_slider_end = 1,
+                 rm_aim_slider_value = 1/6, rm_aim_slider_step = 0.01,
+                 rm_aim_slider_title = "RM Aim Weight",
+                 rm_aim_slider_disabled = False,
+                 rm_aim_slider_visibility = False,
+                 rr_aim_slider_start = 0, rr_aim_slider_end = 1,
+                 rr_aim_slider_value = 1/6, rr_aim_slider_step = 0.01,
+                 rr_aim_slider_title = "RR Aim Weight",
+                 rr_aim_slider_disabled = False,
+                 rr_aim_slider_visibility = False,
+                 iterations_slider_start = 10, iterations_slider_end = 500,
+                 iterations_slider_value = 50, iterations_slider_step = 1,
+                 iterations_slider_title = "Iterations To Run",
+                 iterations_slider_disabled = False,
+                 iterations_slider_visibility = False):
+        self.ll_aim_slider_start = ll_aim_slider_start
+        self.ll_aim_slider_end = ll_aim_slider_end
+        self.ll_aim_slider_value = ll_aim_slider_value
+        self.ll_aim_slider_step = ll_aim_slider_step
+        self.ll_aim_slider_title = ll_aim_slider_title
+        self.ll_aim_slider_disabled = ll_aim_slider_disabled
+        self.ll_aim_slider_visibility = ll_aim_slider_visibility
+
+        self.lm_aim_slider_start = lm_aim_slider_start
+        self.lm_aim_slider_end = lm_aim_slider_end
+        self.lm_aim_slider_value = lm_aim_slider_value
+        self.lm_aim_slider_step = lm_aim_slider_step
+        self.lm_aim_slider_title = lm_aim_slider_title
+        self.lm_aim_slider_disabled = lm_aim_slider_disabled
+        self.lm_aim_slider_visibility = lm_aim_slider_visibility
+
+        self.lr_aim_slider_start = lr_aim_slider_start
+        self.lr_aim_slider_end = lr_aim_slider_end
+        self.lr_aim_slider_value = lr_aim_slider_value
+        self.lr_aim_slider_step = lr_aim_slider_step
+        self.lr_aim_slider_title = lr_aim_slider_title
+        self.lr_aim_slider_disabled = lr_aim_slider_disabled
+        self.lr_aim_slider_visibility = lr_aim_slider_visibility
+
+        self.rl_aim_slider_start = rl_aim_slider_start
+        self.rl_aim_slider_end = rl_aim_slider_end
+        self.rl_aim_slider_value = rl_aim_slider_value
+        self.rl_aim_slider_step = rl_aim_slider_step
+        self.rl_aim_slider_title = rl_aim_slider_title
+        self.rl_aim_slider_disabled = rl_aim_slider_disabled
+        self.rl_aim_slider_visibility = rl_aim_slider_visibility
+
+        self.rm_aim_slider_start = rm_aim_slider_start
+        self.rm_aim_slider_end = rm_aim_slider_end
+        self.rm_aim_slider_value = rm_aim_slider_value
+        self.rm_aim_slider_step = rm_aim_slider_step
+        self.rm_aim_slider_title = rm_aim_slider_title
+        self.rm_aim_slider_disabled = rm_aim_slider_disabled
+        self.rm_aim_slider_visibility = rm_aim_slider_visibility
+
+        self.rr_aim_slider_start = rr_aim_slider_start
+        self.rr_aim_slider_end = rr_aim_slider_end
+        self.rr_aim_slider_value = rr_aim_slider_value
+        self.rr_aim_slider_step = rr_aim_slider_step
+        self.rr_aim_slider_title = rr_aim_slider_title
+        self.rr_aim_slider_disabled = rr_aim_slider_disabled
+        self.rr_aim_slider_visibility = rr_aim_slider_visibility
+
+        self.iterations_slider_start = iterations_slider_start
+        self.iterations_slider_end = iterations_slider_end
+        self.iterations_slider_value = iterations_slider_value
+        self.iterations_slider_step = iterations_slider_step
+        self.iterations_slider_title = iterations_slider_title
+        self.iterations_slider_disabled = iterations_slider_disabled
+        self.iterations_slider_visibility = iterations_slider_visibility
+#</editor-fold>
 
 #<editor-fold make_game():
 #Needs:
@@ -1938,6 +1998,7 @@ default_fig_3_configs = Stats_fig_3_configs()
 default_scr_text_and_labels_configs = Scr_text_and_labels_configs()
 default_gamestate_divs_configs = Gamestate_divs_configs()
 default_button_configs = Button_configs()
+default_slider_configs = Slider_configs()
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
@@ -1945,7 +2006,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_3_configs = default_fig_3_configs,
               scrtxt_labels_configs = default_scr_text_and_labels_configs,
               divs_configs = default_gamestate_divs_configs,
-              button_configs = default_button_configs):
+              button_configs = default_button_configs,
+              slider_configs = default_slider_configs):
     #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
@@ -1986,10 +2048,10 @@ def make_game(game_figure_configs = default_game_fig_configs,
     (b_automate, b_start_automate,
     b_auto_next, b_make_counter) = create_buttons(button_configs)
     #</editor-fold>
-    
+    #<editor-fold sliders:
     (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
-    RR_aim_slider, iterations_slider) = create_sliders()
-
+    RR_aim_slider, iterations_slider) = create_sliders(slider_configs)
+    #</editor-fold>
     strategy_dropdown = create_strategy_dropdown()
 
     automation_distribution_table_source = create_distribution_table_source()

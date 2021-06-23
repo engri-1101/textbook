@@ -1413,29 +1413,23 @@ def create_distribution_table(source, configs):
 #<editor-fold create_automation_table_source():
 #Needs:
 #   from bokeh.models import ColumnDataSource
-def create_automation_table_source(ll_base_chance = 1/6,
-                                   lm_base_chance = 1/6,
-                                   lr_base_chance = 1/6,
-                                   rl_base_chance = 1/6,
-                                   rm_base_chance = 1/6,
-                                   rr_base_chance = 1/6,
-                                   footedness_left_text = "Left",
-                                   footedness_right_text = "Right",
-                                   aim_direction_left_text = "Left",
-                                   aim_direction_middle_text = "Middle",
-                                   aim_direction_right_text = "Right"):
+def create_automation_table_source(configs):
 
-    data = dict(footedness = [footedness_left_text, footedness_left_text,
-                              footedness_left_text, footedness_right_text,
-                              footedness_right_text, footedness_right_text],
-                aim_direction = [aim_direction_left_text,
-                                 aim_direction_middle_text,
-                                 aim_direction_right_text,
-                                 aim_direction_left_text,
-                                 aim_direction_middle_text,
-                                 aim_direction_right_text],
-                chances = [ll_base_chance, lm_base_chance, lr_base_chance,
-                           rl_base_chance, rm_base_chance, rr_base_chance])
+    data = dict(footedness = [configs.footedness_left_text,
+                              configs.footedness_left_text,
+                              configs.footedness_left_text,
+                              configs.footedness_right_text,
+                              configs.footedness_right_text,
+                              configs.footedness_right_text],
+                aim_direction = [configs.aim_direction_left_text,
+                                 configs.aim_direction_middle_text,
+                                 configs.aim_direction_right_text,
+                                 configs.aim_direction_left_text,
+                                 configs.aim_direction_middle_text,
+                                 configs.aim_direction_right_text],
+                chances = [configs.ll_base_chance, configs.lm_base_chance,
+                           configs.lr_base_chance, configs.rl_base_chance,
+                           configs.rm_base_chance, configs.rr_base_chance])
 
     automation_table_source = ColumnDataSource(data)
     return automation_table_source
@@ -1443,27 +1437,22 @@ def create_automation_table_source(ll_base_chance = 1/6,
 #<editor-fold create_automation_table():
 #Needs:
 #   from bokeh.models import TableColumn, DataTable
-def create_automation_table(source,
-                            footedness_column_title = "Striker Footedness",
-                            aim_direction_column_title = "Striker Aim Direction",
-                            chances_column_title = "Chance", table_width = 600,
-                            table_height = 280,
-                            table_autosize_mode = "force_fit",
-                            table_visibility = False):
+def create_automation_table(source, configs):
 
     footedness_column = TableColumn(field = "footedness",
-                                    title = footedness_column_title)
+                                    title = configs.footedness_column_title)
     aim_direction_column = TableColumn(field = "aim_direction",
-                                       title = aim_direction_column_title)
+                                       title = configs.aim_direction_column_title)
     chances_column = TableColumn(field = "chances",
-                                 title = chances_column_title)
+                                 title = configs.chances_column_title)
 
     columns = [footedness_column, aim_direction_column, chances_column]
 
     automation_table = DataTable(source = source, columns = columns,
-                                 width = table_width, height = table_height,
-                                 autosize_mode = table_autosize_mode,
-                                 visible = table_visibility)
+                                 width = configs.table_width,
+                                 height = configs.table_height,
+                                 autosize_mode = configs.table_autosize_mode,
+                                 visible = configs.table_visibility)
     return automation_table
 #</editor-fold>
 #<editor-fold create_scr_text():
@@ -2021,6 +2010,42 @@ class Distribution_table_configs:
         self.table_visibility = table_visibility
         self.table_fit_columns = table_fit_columns
 #</editor-fold>
+#<editor-fold Automation_table_configs:
+class Automation_table_configs:
+    def __init__(self, ll_base_chance = 1/6, lm_base_chance = 1/6,
+                 lr_base_chance = 1/6, rl_base_chance = 1/6,
+                 rm_base_chance = 1/6, rr_base_chance = 1/6,
+                 footedness_left_text = "Left",
+                 footedness_right_text = "Right",
+                 aim_direction_left_text = "Left",
+                 aim_direction_middle_text = "Middle",
+                 aim_direction_right_text = "Right",
+                 footedness_column_title = "Striker Footedness",
+                 aim_direction_column_title = "Striker Aim Direction",
+                 chances_column_title = "Chance", table_width = 600,
+                 table_height = 280,
+                 table_autosize_mode = "force_fit",
+                 table_visibility = False):
+        self.ll_base_chance = ll_base_chance
+        self.lm_base_chance = lm_base_chance
+        self.lr_base_chance = lr_base_chance
+        self.rl_base_chance = rl_base_chance
+        self.rm_base_chance = rm_base_chance
+        self.rr_base_chance = rr_base_chance
+        self.footedness_left_text = footedness_left_text
+        self.footedness_right_text = footedness_right_text
+        self.aim_direction_left_text = aim_direction_left_text
+        self.aim_direction_middle_text = aim_direction_middle_text
+        self.aim_direction_right_text = aim_direction_right_text
+
+        self.footedness_column_title = footedness_column_title
+        self.aim_direction_column_title = aim_direction_column_title
+        self.chances_column_title = chances_column_title
+        self.table_width = table_width
+        self.table_height = table_height
+        self.table_autosize_mode = table_autosize_mode
+        self.table_visibility = table_visibility
+#</editor-fold>
 
 #<editor-fold make_game():
 #Needs:
@@ -2038,6 +2063,7 @@ default_button_configs = Button_configs()
 default_slider_configs = Slider_configs()
 default_strategy_dropdown_configs = Strategy_dropdown_configs()
 default_distribution_table_configs = Distribution_table_configs()
+default_automation_table_configs = Automation_table_configs()
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
@@ -2048,8 +2074,10 @@ def make_game(game_figure_configs = default_game_fig_configs,
               button_configs = default_button_configs,
               slider_configs = default_slider_configs,
               strategy_dropdown_configs = default_strategy_dropdown_configs,
-              distribution_table_configs = default_distribution_table_configs):
-    #<editor-fold figure setups:
+              distribution_table_configs = default_distribution_table_configs,
+              automation_table_configs = default_automation_table_configs):
+    #<editor-fold create objects used in game:
+        #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
 
@@ -2068,14 +2096,14 @@ def make_game(game_figure_configs = default_game_fig_configs,
 
     (game_stats_figure_3,
      game_stats_figure_3_source) = stats_figure_3_setup(stats_figure_3_configs)
-     #</editor-fold>
-    #<editor-fold scr_text and labels:
+        #</editor-fold>
+        #<editor-fold scr_text and labels:
     scr_text = create_scr_text(scrtxt_labels_configs);
     labels = create_labels(scrtxt_labels_configs);
 
     game_figure.add_glyph(scr_text, labels);
-    #</editor-fold>
-    #<editor-fold divs:
+        #</editor-fold>
+        #<editor-fold divs:
     (iterations_to_run, strategy_to_use, ll_scored, lm_scored, lr_scored,
      rl_scored, rm_scored, rr_scored, ll_blocked_left, lm_blocked_left,
      lr_blocked_left, rl_blocked_left, rm_blocked_left, rr_blocked_left,
@@ -2084,26 +2112,29 @@ def make_game(game_figure_configs = default_game_fig_configs,
      lm_blocked_right, lr_blocked_right, rl_blocked_right, rm_blocked_right,
      rr_blocked_right, nround, score, kicker_foot,
      kicker_kick) = create_gamestate_divs(divs_configs)
-     #</editor-fold>
-    #<editor-fold buttons:
+        #</editor-fold>
+        #<editor-fold buttons:
     (b_automate, b_start_automate,
     b_auto_next, b_make_counter) = create_buttons(button_configs)
-    #</editor-fold>
-    #<editor-fold sliders:
+        #</editor-fold>
+        #<editor-fold sliders:
     (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
     RR_aim_slider, iterations_slider) = create_sliders(slider_configs)
-    #</editor-fold>
-    #<editor-fold strategy_dropdown:
+        #</editor-fold>
+        #<editor-fold strategy_dropdown:
     strategy_dropdown = create_strategy_dropdown(strategy_dropdown_configs)
-    #</editor-fold>
-    #<editor-fold automation_distribution_table:
+        #</editor-fold>
+        #<editor-fold automation_distribution_table:
     automation_distribution_table_source = create_distribution_table_source(distribution_table_configs)
     automation_distribution_table = create_distribution_table(automation_distribution_table_source,
                                                               distribution_table_configs)
+        #</editor-fold>
+        #<editor-fold automation_table:
+    automation_table_source = create_automation_table_source(automation_table_configs)
+    automation_table = create_automation_table(automation_table_source,
+                                               automation_table_configs)
+        #</editor-fold>
     #</editor-fold>
-    automation_table_source = create_automation_table_source()
-    automation_table = create_automation_table(automation_table_source)
-
     args_dict = dict(b_automate = b_automate,
                      LL_aim_slider = LL_aim_slider,
                      LM_aim_slider = LM_aim_slider,

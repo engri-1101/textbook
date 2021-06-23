@@ -1152,58 +1152,35 @@ b_make_counter.visible = false;
 #<editor-fold create_buttons():
 #Needs:
 #   from bokeh.models import Button
-def create_buttons(b_automate_label = "Automate",
-                   b_automate_button_type = "success",
-                   b_automate_sizing_mode = "scale_width",
-                   b_automate_width_policy = "fit",
-                   b_automate_disabled = False,
-                   b_automate_visibility = True,
-                   b_start_automate_label = "Start",
-                   b_start_automate_button_type = "success",
-                   b_start_automate_sizing_mode = "scale_width",
-                   b_start_automate_width_policy = "fit",
-                   b_start_automate_disabled = False,
-                   b_start_automate_visibility = False,
-                   b_auto_next_label = "Next",
-                   b_auto_next_button_type = "success",
-                   b_auto_next_sizing_mode = "scale_width",
-                   b_auto_next_width_policy = "fit",
-                   b_auto_next_disabled = False,
-                   b_auto_next_visibility = False,
-                   b_make_counter_label = "Make Counter",
-                   b_make_counter_button_type = "success",
-                   b_make_counter_sizing_mode = "scale_width",
-                   b_make_counter_width_policy = "fit",
-                   b_make_counter_disabled = False,
-                   b_make_counter_visibility = False):
+def create_buttons(configs):
 
-    b_automate = Button(label = b_automate_label,
-                        button_type = b_automate_button_type,
-                        sizing_mode = b_automate_sizing_mode,
-                        width_policy = b_automate_width_policy,
-                        disabled = b_automate_disabled,
-                        visible = b_automate_visibility)
+    b_automate = Button(label = configs.b_automate_label,
+                        button_type = configs.b_automate_button_type,
+                        sizing_mode = configs.b_automate_sizing_mode,
+                        width_policy = configs.b_automate_width_policy,
+                        disabled = configs.b_automate_disabled,
+                        visible = configs.b_automate_visibility)
 
-    b_start_automate = Button(label = b_start_automate_label,
-                              button_type = b_start_automate_button_type,
-                              sizing_mode = b_start_automate_sizing_mode,
-                              width_policy = b_start_automate_width_policy,
-                              disabled = b_start_automate_disabled,
-                              visible = b_start_automate_visibility)
+    b_start_automate = Button(label = configs.b_start_automate_label,
+                              button_type = configs.b_start_automate_button_type,
+                              sizing_mode = configs.b_start_automate_sizing_mode,
+                              width_policy = configs.b_start_automate_width_policy,
+                              disabled = configs.b_start_automate_disabled,
+                              visible = configs.b_start_automate_visibility)
 
-    b_auto_next = Button(label = b_auto_next_label,
-                         button_type = b_auto_next_button_type,
-                         sizing_mode = b_auto_next_sizing_mode,
-                         width_policy = b_auto_next_width_policy,
-                         disabled = b_auto_next_disabled,
-                         visible = b_auto_next_visibility)
+    b_auto_next = Button(label = configs.b_auto_next_label,
+                         button_type = configs.b_auto_next_button_type,
+                         sizing_mode = configs.b_auto_next_sizing_mode,
+                         width_policy = configs.b_auto_next_width_policy,
+                         disabled = configs.b_auto_next_disabled,
+                         visible = configs.b_auto_next_visibility)
 
-    b_make_counter = Button(label = b_make_counter_label,
-                            button_type = b_make_counter_button_type,
-                            sizing_mode = b_make_counter_sizing_mode,
-                            width_policy = b_make_counter_width_policy,
-                            disabled = b_make_counter_disabled,
-                            visible = b_make_counter_visibility)
+    b_make_counter = Button(label = configs.b_make_counter_label,
+                            button_type = configs.b_make_counter_button_type,
+                            sizing_mode = configs.b_make_counter_sizing_mode,
+                            width_policy = configs.b_make_counter_width_policy,
+                            disabled = configs.b_make_counter_disabled,
+                            visible = configs.b_make_counter_visibility)
 
     return b_automate, b_start_automate, b_auto_next, b_make_counter
 #</editor-fold>
@@ -1898,6 +1875,56 @@ class Gamestate_divs_configs:
         self.kicker_kick_text = kicker_kick_text
         self.kicker_kick_visibility = kicker_kick_visibility
 #</editor-fold>
+#<editor-fold Button_configs:
+class Button_configs:
+    def __init__(self, b_automate_label = "Automate",
+                 b_automate_button_type = "success",
+                 b_automate_sizing_mode = "scale_width",
+                 b_automate_width_policy = "fit",
+                 b_automate_disabled = False, b_automate_visibility = True,
+                 b_start_automate_label = "Start",
+                 b_start_automate_button_type = "success",
+                 b_start_automate_sizing_mode = "scale_width",
+                 b_start_automate_width_policy = "fit",
+                 b_start_automate_disabled = False,
+                 b_start_automate_visibility = False,
+                 b_auto_next_label = "Next",
+                 b_auto_next_button_type = "success",
+                 b_auto_next_sizing_mode = "scale_width",
+                 b_auto_next_width_policy = "fit",
+                 b_auto_next_disabled = False, b_auto_next_visibility = False,
+                 b_make_counter_label = "Make Counter",
+                 b_make_counter_button_type = "success",
+                 b_make_counter_sizing_mode = "scale_width",
+                 b_make_counter_width_policy = "fit",
+                 b_make_counter_disabled = False,
+                 b_make_counter_visibility = False):
+        self.b_automate_label = b_automate_label
+        self.b_automate_button_type = b_automate_button_type
+        self.b_automate_sizing_mode = b_automate_sizing_mode
+        self.b_automate_width_policy = b_automate_width_policy
+        self.b_automate_disabled = b_automate_disabled
+        self.b_automate_visibility = b_automate_visibility
+        self.b_start_automate_label = b_start_automate_label
+        self.b_start_automate_button_type = b_start_automate_button_type
+        self.b_start_automate_sizing_mode = b_start_automate_sizing_mode
+        self.b_start_automate_width_policy = b_start_automate_width_policy
+        self.b_start_automate_disabled = b_start_automate_disabled
+        self.b_start_automate_visibility = b_start_automate_visibility
+        self.b_auto_next_label = b_auto_next_label
+        self.b_auto_next_button_type = b_auto_next_button_type
+        self.b_auto_next_sizing_mode = b_auto_next_sizing_mode
+        self.b_auto_next_width_policy = b_auto_next_width_policy
+        self.b_auto_next_disabled = b_auto_next_disabled
+        self.b_auto_next_visibility = b_auto_next_visibility
+        self.b_make_counter_label = b_make_counter_label
+        self.b_make_counter_button_type = b_make_counter_button_type
+        self.b_make_counter_sizing_mode = b_make_counter_sizing_mode
+        self.b_make_counter_width_policy = b_make_counter_width_policy
+        self.b_make_counter_disabled = b_make_counter_disabled
+        self.b_make_counter_visibility = b_make_counter_visibility
+#</editor-fold>
+
 #<editor-fold make_game():
 #Needs:
 #    from main_game_figure import game_figure_setup, Game_fig_configs
@@ -1910,13 +1937,15 @@ default_fig_2_configs = Stats_fig_2_configs()
 default_fig_3_configs = Stats_fig_3_configs()
 default_scr_text_and_labels_configs = Scr_text_and_labels_configs()
 default_gamestate_divs_configs = Gamestate_divs_configs()
+default_button_configs = Button_configs()
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
               stats_figure_2_configs = default_fig_2_configs,
               stats_figure_3_configs = default_fig_3_configs,
               scrtxt_labels_configs = default_scr_text_and_labels_configs,
-              divs_configs = default_gamestate_divs_configs):
+              divs_configs = default_gamestate_divs_configs,
+              button_configs = default_button_configs):
     #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
@@ -1943,6 +1972,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
 
     game_figure.add_glyph(scr_text, labels);
     #</editor-fold>
+    #<editor-fold divs:
     (iterations_to_run, strategy_to_use, ll_scored, lm_scored, lr_scored,
      rl_scored, rm_scored, rr_scored, ll_blocked_left, lm_blocked_left,
      lr_blocked_left, rl_blocked_left, rm_blocked_left, rr_blocked_left,
@@ -1951,10 +1981,12 @@ def make_game(game_figure_configs = default_game_fig_configs,
      lm_blocked_right, lr_blocked_right, rl_blocked_right, rm_blocked_right,
      rr_blocked_right, nround, score, kicker_foot,
      kicker_kick) = create_gamestate_divs(divs_configs)
-
+     #</editor-fold>
+    #<editor-fold buttons:
     (b_automate, b_start_automate,
-    b_auto_next, b_make_counter) = create_buttons()
-
+    b_auto_next, b_make_counter) = create_buttons(button_configs)
+    #</editor-fold>
+    
     (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
     RR_aim_slider, iterations_slider) = create_sliders()
 

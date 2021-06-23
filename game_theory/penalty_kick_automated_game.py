@@ -1024,12 +1024,12 @@ strategy_dropdown.label = this.item;
 strategy_to_use.text = this.item;
 
 //Sets the aim sliders to be visible:
-ll_aim_slider.visible = true;
-lm_aim_slider.visible = true;
-lr_aim_slider.visible = true;
-rl_aim_slider.visible = true;
-rm_aim_slider.visible = true;
-rr_aim_slider.visible = true;
+LL_aim_slider.visible = true;
+LM_aim_slider.visible = true;
+LR_aim_slider.visible = true;
+RL_aim_slider.visible = true;
+RM_aim_slider.visible = true;
+RR_aim_slider.visible = true;
 
 //Sets the automation_table to be visible:
 automation_table.visible = true;
@@ -1053,12 +1053,12 @@ const chances = automation_table_source.data['chances'];
 automation_table.visible = false;
 
 //Make sliders invisible to prevent changes being made to chances:
-ll_aim_slider.visible = false;
-lm_aim_slider.visible = false;
-lr_aim_slider.visible = false;
-rl_aim_slider.visible = false;
-rm_aim_slider.visible = false;
-rr_aim_slider.visible = false;
+LL_aim_slider.visible = false;
+LM_aim_slider.visible = false;
+LR_aim_slider.visible = false;
+RL_aim_slider.visible = false;
+RM_aim_slider.visible = false;
+RR_aim_slider.visible = false;
 
 //Take chance values:
 const ll_chance = chances[0];
@@ -2065,6 +2065,14 @@ default_strategy_dropdown_configs = Strategy_dropdown_configs()
 default_distribution_table_configs = Distribution_table_configs()
 default_automation_table_configs = Automation_table_configs()
 
+def __add_aim_sliders(args_dict, aim_sliders):
+    args_dict['LL_aim_slider'] = aim_sliders[0]
+    args_dict['LM_aim_slider'] = aim_sliders[1]
+    args_dict['LR_aim_slider'] = aim_sliders[2]
+    args_dict['RL_aim_slider'] = aim_sliders[3]
+    args_dict['RM_aim_slider'] = aim_sliders[4]
+    args_dict['RR_aim_slider'] = aim_sliders[5]
+
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
               stats_figure_2_configs = default_fig_2_configs,
@@ -2135,38 +2143,24 @@ def make_game(game_figure_configs = default_game_fig_configs,
                                                automation_table_configs)
         #</editor-fold>
     #</editor-fold>
+    aim_sliders = [LL_aim_slider, LM_aim_slider, LR_aim_slider,
+                   RL_aim_slider, RM_aim_slider, RR_aim_slider]
     args_dict = dict(b_automate = b_automate,
-                     LL_aim_slider = LL_aim_slider,
-                     LM_aim_slider = LM_aim_slider,
-                     LR_aim_slider = LR_aim_slider,
-                     RL_aim_slider = RL_aim_slider,
-                     RM_aim_slider = RM_aim_slider,
-                     RR_aim_slider = RR_aim_slider,
                      iterations_slider = iterations_slider,
                      strategy_dropdown = strategy_dropdown,
                      automation_table = automation_table, txt = scr_text)
+    __add_aim_sliders(args_dict, aim_sliders)
     b_automate_setup(b_automate = b_automate, args_dict = args_dict)
 
-    args_dict = dict(ll_aim_slider = LL_aim_slider,
-                     lm_aim_slider = LM_aim_slider,
-                     lr_aim_slider = LR_aim_slider,
-                     rl_aim_slider = RL_aim_slider,
-                     rm_aim_slider = RM_aim_slider,
-                     rr_aim_slider = RR_aim_slider,
-                     b_start_automate = b_start_automate,
+    args_dict = dict(b_start_automate = b_start_automate,
                      b_make_counter = b_make_counter,
                      automation_table = automation_table,
                      automation_table_source = automation_table_source)
+    __add_aim_sliders(args_dict, aim_sliders)
     goalie_counter_source = b_make_counter_setup(b_make_counter, args_dict)
 
     args_dict = dict(b_start_automate = b_start_automate,
                      b_auto_next = b_auto_next,
-                     LL_aim_slider = LL_aim_slider,
-                     LM_aim_slider = LM_aim_slider,
-                     LR_aim_slider = LR_aim_slider,
-                     RL_aim_slider = RL_aim_slider,
-                     RM_aim_slider = RM_aim_slider,
-                     RR_aim_slider = RR_aim_slider,
                      iterations_slider = iterations_slider,
                      strategy_dropdown = strategy_dropdown,
                      automation_table = automation_table,
@@ -2230,6 +2224,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
                      game_stats_figure_2_source = game_stats_figure_2_source,
                      game_stats_figure_3_source = game_stats_figure_3_source,
                      goalie_counter_source = goalie_counter_source)
+    __add_aim_sliders(args_dict, aim_sliders)
     b_start_automate_setup(b_start_automate = b_start_automate,
                            args_dict = args_dict)
 
@@ -2316,13 +2311,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
                      strategy_to_use = strategy_to_use,
                      b_start_automate = b_start_automate,
                      b_make_counter = b_make_counter,
-                     automation_table = automation_table,
-                     ll_aim_slider = LL_aim_slider,
-                     lm_aim_slider = LM_aim_slider,
-                     lr_aim_slider = LR_aim_slider,
-                     rl_aim_slider = RL_aim_slider,
-                     rm_aim_slider = RM_aim_slider,
-                     rr_aim_slider = RR_aim_slider)
+                     automation_table = automation_table)
+    __add_aim_sliders(args_dict, aim_sliders)
     strategy_dropdown_setup(strategy_dropdown = strategy_dropdown,
                             args_dict = args_dict)
 

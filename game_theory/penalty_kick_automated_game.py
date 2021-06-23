@@ -1330,23 +1330,16 @@ def create_gamestate_divs(configs):
 #<editor-fold create_strategy_dropdown():
 #Needs:
 #    from bokeh.models import DropDown
-def create_strategy_dropdown(fictitious_play_text = "Fictitious_Play",
-                             mixed_strategy_text = "Mixed_Strategy",
-                             true_random_text = "Random",
-                             goalie_cheats_text = "Goalie_Cheats",
-                             dropdown_label = "CPU strategy to Use",
-                             dropdown_button_type = "warning",
-                             dropdown_disabled = False,
-                             dropdown_visibility = False):
+def create_strategy_dropdown(configs):
     #CPU Strategy to Use Dropdown:
-    menu = [(fictitious_play_text, fictitious_play_text),
-            (mixed_strategy_text, mixed_strategy_text),
-            (true_random_text, true_random_text),
-            (goalie_cheats_text, goalie_cheats_text)]
-    strategy_dropdown = Dropdown(label = dropdown_label, menu = menu,
-                                 button_type = dropdown_button_type,
-                                 disabled = dropdown_disabled,
-                                 visible = dropdown_visibility)
+    menu = [(configs.fictitious_play_text, configs.fictitious_play_text),
+            (configs.mixed_strategy_text, configs.mixed_strategy_text),
+            (configs.true_random_text, configs.true_random_text),
+            (configs.goalie_cheats_text, configs.goalie_cheats_text)]
+    strategy_dropdown = Dropdown(label = configs.dropdown_label, menu = menu,
+                                 button_type = configs.dropdown_button_type,
+                                 disabled = configs.dropdown_disabled,
+                                 visible = configs.dropdown_visibility)
     return strategy_dropdown
 #</editor-fold>
 #<editor-fold create_distribution_table_source():
@@ -1984,6 +1977,24 @@ class Slider_configs:
         self.iterations_slider_disabled = iterations_slider_disabled
         self.iterations_slider_visibility = iterations_slider_visibility
 #</editor-fold>
+#<editor-fold Strategy_dropdown_configs:
+class Strategy_dropdown_configs:
+    def __init__(self, fictitious_play_text = "Fictitious_Play",
+                 mixed_strategy_text = "Mixed_Strategy",
+                 true_random_text = "Random",
+                 goalie_cheats_text = "Goalie_Cheats",
+                 dropdown_label = "CPU strategy to Use",
+                 dropdown_button_type = "warning", dropdown_disabled = False,
+                 dropdown_visibility = False):
+        self.fictitious_play_text = fictitious_play_text
+        self.mixed_strategy_text = mixed_strategy_text
+        self.true_random_text = true_random_text
+        self.goalie_cheats_text = goalie_cheats_text
+        self.dropdown_label = dropdown_label
+        self.dropdown_button_type = dropdown_button_type
+        self.dropdown_disabled = dropdown_disabled
+        self.dropdown_visibility = dropdown_visibility
+#</editor-fold>
 
 #<editor-fold make_game():
 #Needs:
@@ -1999,6 +2010,7 @@ default_scr_text_and_labels_configs = Scr_text_and_labels_configs()
 default_gamestate_divs_configs = Gamestate_divs_configs()
 default_button_configs = Button_configs()
 default_slider_configs = Slider_configs()
+default_strategy_dropdown_configs = Strategy_dropdown_configs()
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
@@ -2007,7 +2019,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
               scrtxt_labels_configs = default_scr_text_and_labels_configs,
               divs_configs = default_gamestate_divs_configs,
               button_configs = default_button_configs,
-              slider_configs = default_slider_configs):
+              slider_configs = default_slider_configs,
+              strategy_dropdown_configs = default_strategy_dropdown_configs):
     #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
@@ -2052,8 +2065,10 @@ def make_game(game_figure_configs = default_game_fig_configs,
     (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
     RR_aim_slider, iterations_slider) = create_sliders(slider_configs)
     #</editor-fold>
-    strategy_dropdown = create_strategy_dropdown()
-
+    #<editor-fold strategy_dropdown:
+    strategy_dropdown = create_strategy_dropdown(strategy_dropdown_configs)
+    #</editor-fold>
+    
     automation_distribution_table_source = create_distribution_table_source()
     automation_distribution_table = create_distribution_table(automation_distribution_table_source)
 

@@ -47,60 +47,93 @@ for(var i = 0; i < xs.length; i++) {
 return new_xs;
 """
 #</editor-fold>
+#<editor-fold hb_ga Code Strings:
+ll_ga_code = """
+let new_alphas = new Array(xs.length).fill(0);
+for(let i = 0; i < xs.length; i++){
+    if(xs[i] == 1){
+        new_alphas[i] = 1;
+    }
+}
+return new_alphas;
+"""
+lm_ga_code = """
+let new_alphas = new Array(xs.length).fill(0);
+for(let i = 0; i < xs.length; i++){
+    if(xs[i] == 2){
+        new_alphas[i] = 1;
+    }
+}
+return new_alphas;
+"""
+lr_ga_code = """
+let new_alphas = new Array(xs.length).fill(0);
+for(let i = 0; i < xs.length; i++){
+    if(xs[i] == 3){
+        new_alphas[i] = 1;
+    }
+}
+return new_alphas;
+"""
+rl_ga_code = """
+let new_alphas = new Array(xs.length).fill(0);
+for(let i = 0; i < xs.length; i++){
+    if(xs[i] == 4){
+        new_alphas[i] = 1;
+    }
+}
+return new_alphas;
+"""
+rm_ga_code = """
+let new_alphas = new Array(xs.length).fill(0);
+for(let i = 0; i < xs.length; i++){
+    if(xs[i] == 5){
+        new_alphas[i] = 1;
+    }
+}
+return new_alphas;
+"""
+rr_ga_code = """
+let new_alphas = new Array(xs.length).fill(0);
+for(let i = 0; i < xs.length; i++){
+    if(xs[i] == 6){
+        new_alphas[i] = 1;
+    }
+}
+return new_alphas;
+"""
+#</editor-fold>
 #<editor-fold Custom Hover Code Strings:
     #<editor-fold xs Code String:
 fig_3_xs_code = """
-var index = special_vars.index;
-var name = special_vars.name;
-var data = source.data;
+let index = special_vars.index;
+let name = special_vars.name;
+let data = source.data;
 const length = data['xs'].length;
-const column = ['ll',
-                'lm',
-                'lr',
-                'rl',
-                'rm',
-                'rr'];
+const column = [1,
+                2,
+                3,
+                4,
+                5,
+                6];
 const values = [data['ll_ys'][index],
                 data['lm_ys'][index],
                 data['lr_ys'][index],
                 data['rl_ys'][index],
                 data['rm_ys'][index],
                 data['rr_ys'][index]];
-var sorted_values = [data['ll_ys'][index],
+let sorted_values = [data['ll_ys'][index],
                      data['lm_ys'][index],
                      data['lr_ys'][index],
                      data['rl_ys'][index],
                      data['rm_ys'][index],
                      data['rr_ys'][index]];
 sorted_values = sorted_values.sort((a, b) => b - a);
-var selected = column[values.indexOf(sorted_values[parseInt(name)])];
+let selected = column[values.indexOf(sorted_values[parseInt(name)])];
 
-for(var i = 0; i < length; i++){
-    data['ll_highlight_alphas'][i] = 0;
-    data['lm_highlight_alphas'][i] = 0;
-    data['lr_highlight_alphas'][i] = 0;
-    data['rl_highlight_alphas'][i] = 0;
-    data['rm_highlight_alphas'][i] = 0;
-    data['rr_highlight_alphas'][i] = 0;
-}
-if(selected == 'll'){
-    data['ll_highlight_alphas'][index] = 1;
-}
-else if(selected == 'lm'){
-    data['lm_highlight_alphas'][index] = 1;
-}
-else if(selected == 'lr'){
-    data['lr_highlight_alphas'][index] = 1;
-}
-else if(selected == 'rl'){
-    data['rl_highlight_alphas'][index] = 1;
-}
-else if(selected == 'rm'){
-    data['rm_highlight_alphas'][index] = 1;
-}
-else if(selected == 'rr'){
-    data['rr_highlight_alphas'][index] = 1;
-}
+data['highlight_alphas'] = new Array(length).fill(0);
+data['highlight_alphas'][index] = selected;
+
 source.change.emit();
 
 return index.toString();
@@ -272,6 +305,15 @@ class Stats_fig_3_configs():
         self.hitbox_alpha = hitbox_alpha
 #</editor-fold>
 
+#<editor-fold Get Alpha Transforms:
+ll_highlight_get_alpha = CustomJSTransform(v_func = ll_ga_code)
+lm_highlight_get_alpha = CustomJSTransform(v_func = lm_ga_code)
+lr_highlight_get_alpha = CustomJSTransform(v_func = lr_ga_code)
+rl_highlight_get_alpha = CustomJSTransform(v_func = rl_ga_code)
+rm_highlight_get_alpha = CustomJSTransform(v_func = rm_ga_code)
+rr_highlight_get_alpha = CustomJSTransform(v_func = rr_ga_code)
+#</editor-fold>
+
 #<editor-fold stats_figure_3_setup:
 def stats_figure_3_setup(fig_configs):
     #<editor-fold Figure Creation:
@@ -303,12 +345,7 @@ def stats_figure_3_setup(fig_configs):
     source_rm_ys = []
     source_rr_ys = []
 
-    ll_highlight_alphas = []
-    lm_highlight_alphas = []
-    lr_highlight_alphas = []
-    rl_highlight_alphas = []
-    rm_highlight_alphas = []
-    rr_highlight_alphas = []
+    highlight_alphas = []
 
     source_hb1_ys = []
     source_hb2_ys = []
@@ -327,12 +364,7 @@ def stats_figure_3_setup(fig_configs):
         source_rm_ys.append(0)
         source_rr_ys.append(0)
 
-        ll_highlight_alphas.append(0)
-        lm_highlight_alphas.append(0)
-        lr_highlight_alphas.append(0)
-        rl_highlight_alphas.append(0)
-        rm_highlight_alphas.append(0)
-        rr_highlight_alphas.append(0)
+        highlight_alphas.append(0)
 
         source_hb1_ys.append(0)
         source_hb2_ys.append(0)
@@ -360,12 +392,7 @@ def stats_figure_3_setup(fig_configs):
                        hb3 = source_hb3_ys, hb4 = source_hb4_ys,
                        hb5 = source_hb5_ys, hb6 = source_hb6_ys,
 
-                       ll_highlight_alphas = ll_highlight_alphas,
-                       lm_highlight_alphas = lm_highlight_alphas,
-                       lr_highlight_alphas = lr_highlight_alphas,
-                       rl_highlight_alphas = rl_highlight_alphas,
-                       rm_highlight_alphas = rm_highlight_alphas,
-                       rr_highlight_alphas = rr_highlight_alphas)
+                       highlight_alphas = highlight_alphas)
 
     game_stats_figure_3_source = ColumnDataSource(data = source_data)
         #</editor-fold>
@@ -408,37 +435,43 @@ def stats_figure_3_setup(fig_configs):
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
-                                   alpha = 'll_highlight_alphas')
+                                   alpha = transform('highlight_alphas',
+                                                     ll_highlight_get_alpha))
     game_stats_figure_3.circle_dot('xs', 'lm_ys',
                                    source = game_stats_figure_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
-                                   alpha = 'lm_highlight_alphas')
+                                   alpha = transform('highlight_alphas',
+                                                     lm_highlight_get_alpha))
     game_stats_figure_3.circle_dot('xs', 'lr_ys',
                                    source = game_stats_figure_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
-                                   alpha = 'lr_highlight_alphas')
+                                   alpha = transform('highlight_alphas',
+                                                     lr_highlight_get_alpha))
     game_stats_figure_3.circle_dot('xs', 'rl_ys',
                                    source = game_stats_figure_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
-                                   alpha = 'rl_highlight_alphas')
+                                   alpha = transform('highlight_alphas',
+                                                     rl_highlight_get_alpha))
     game_stats_figure_3.circle_dot('xs', 'rm_ys',
                                    source = game_stats_figure_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
-                                   alpha = 'rm_highlight_alphas')
+                                   alpha = transform('highlight_alphas',
+                                                     rm_highlight_get_alpha))
     game_stats_figure_3.circle_dot('xs', 'rr_ys',
                                    source = game_stats_figure_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
-                                   alpha = 'rr_highlight_alphas')
+                                   alpha = transform('highlight_alphas',
+                                                     rr_highlight_get_alpha))
     #</editor-fold>
     #<editor-fold CustomJSTransform Definitions For Custom HoverTool:
     hb_gc_args_dict = dict(source = game_stats_figure_3_source)

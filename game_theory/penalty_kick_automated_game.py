@@ -961,13 +961,8 @@ let hb4_ys = new Array(array_length).fill(0);
 let hb5_ys = new Array(array_length).fill(0);
 let hb6_ys = new Array(array_length).fill(0);
 let heights = new Array(array_length).fill(iterations * 2);
-let highlight_alphas = new Array(array_length).fill(0);
-let ll_highlight_alphas = new Array(array_length).fill(0);
-let lm_highlight_alphas = new Array(array_length).fill(0);
-let lr_highlight_alphas = new Array(array_length).fill(0);
-let rl_highlight_alphas = new Array(array_length).fill(0);
-let rm_highlight_alphas = new Array(array_length).fill(0);
-let rr_highlight_alphas = new Array(array_length).fill(0);
+let fig2_highlight_alphas = new Array(array_length).fill(0);
+let fig3_highlight_alphas = new Array(array_length).fill(0);
 
 //Update previously created arrays with their correct values:
 for (let i = 0; i <= iterations; i++){
@@ -988,7 +983,7 @@ const fig_2_data = game_stats_figure_2_source.data;
 fig_2_data['xs'] = xs_2;
 fig_2_data['ys'] = ys;
 fig_2_data['heights'] = heights;
-fig_2_data['highlight_alphas'] = highlight_alphas;
+fig_2_data['highlight_alphas'] = fig2_highlight_alphas;
 game_stats_figure_2_source.change.emit();
 
 //Update game_stats_figure_3_source.data with its new arrays:
@@ -1000,12 +995,7 @@ fig_3_data['lr_ys'] = lr_ys;
 fig_3_data['rl_ys'] = rl_ys;
 fig_3_data['rm_ys'] = rm_ys;
 fig_3_data['rr_ys'] = rr_ys;
-fig_3_data['ll_highlight_alphas'] = ll_highlight_alphas;
-fig_3_data['lm_highlight_alphas'] = lm_highlight_alphas;
-fig_3_data['lr_highlight_alphas'] = lr_highlight_alphas;
-fig_3_data['rl_highlight_alphas'] = rl_highlight_alphas;
-fig_3_data['rm_highlight_alphas'] = rm_highlight_alphas;
-fig_3_data['rr_highlight_alphas'] = rr_highlight_alphas;
+fig_3_data['highlight_alphas'] = fig3_highlight_alphas;
 fig_3_data['hb1'] = hb1_ys;
 fig_3_data['hb2'] = hb2_ys;
 fig_3_data['hb3'] = hb3_ys;
@@ -2078,6 +2068,7 @@ class Layout_configs:
 #    from game_stats_figure_1 import stats_figure_1_setup, Stats_fig_1_configs
 #    from game_stats_figure_2 import stats_figure_2_setup, Stats_fig_2_configs
 #    from game_stats_figure_3 import stats_figure_3_setup, Stats_fig_3_configs
+#<editor-fold Define defaults:
 default_game_fig_configs = Game_fig_configs()
 default_fig_1_configs = Stats_fig_1_configs()
 default_fig_2_configs = Stats_fig_2_configs()
@@ -2090,7 +2081,7 @@ default_strategy_dropdown_configs = Strategy_dropdown_configs()
 default_distribution_table_configs = Distribution_table_configs()
 default_automation_table_configs = Automation_table_configs()
 default_layout_configs = Layout_configs()
-
+#</editor-fold>
 #<editor-fold Helpers:
 def __add_aim_sliders(args_dict, aim_sliders):
     args_dict['LL_aim_slider'] = aim_sliders[0]
@@ -2308,7 +2299,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
         #</editor-fold>
     #</editor-fold>
 
-    #<editor-fold
+    #<editor-fold format game layout:
     grid1 = format_layout(b_automate = b_automate,
                           iterations_slider = iterations_slider,
                           b_auto_next = b_auto_next,

@@ -1345,24 +1345,20 @@ def create_strategy_dropdown(configs):
 #<editor-fold create_distribution_table_source():
 #Needs:
 #   from bokeh.models import ColumnDataSource
-def create_distribution_table_source(footedness_left_text = "Left",
-                                     footedness_right_text = "Right",
-                                     aim_direction_left_text = "Left",
-                                     aim_direction_middle_text = "Middle",
-                                     aim_direction_right_text = "Right"):
+def create_distribution_table_source(configs):
     #Make Automation Distribution Tracking Table:
-    distribution_data = dict(footedness = [footedness_left_text,
-                                           footedness_left_text,
-                                           footedness_left_text,
-                                           footedness_right_text,
-                                           footedness_right_text,
-                                           footedness_right_text],
-                             aim_direction = [aim_direction_left_text,
-                                              aim_direction_middle_text,
-                                              aim_direction_right_text,
-                                              aim_direction_left_text,
-                                              aim_direction_middle_text,
-                                              aim_direction_right_text],
+    distribution_data = dict(footedness = [configs.footedness_left_text,
+                                           configs.footedness_left_text,
+                                           configs.footedness_left_text,
+                                           configs.footedness_right_text,
+                                           configs.footedness_right_text,
+                                           configs.footedness_right_text],
+                             aim_direction = [configs.aim_direction_left_text,
+                                              configs.aim_direction_middle_text,
+                                              configs.aim_direction_right_text,
+                                              configs.aim_direction_left_text,
+                                              configs.aim_direction_middle_text,
+                                              configs.aim_direction_right_text],
                              freq = [0, 0, 0, 0, 0, 0],
                              decisions = [0, 0, 0, 0, 0, 0],
                              goalie_perceived_risks = [0, 0, 0, 0, 0, 0],
@@ -1376,49 +1372,29 @@ def create_distribution_table_source(footedness_left_text = "Left",
 #<editor-fold create_distribution_table():
 #Needs:
 #   from bokeh.models import TableColumn, DataTable
-def create_distribution_table(source,
-                              footedness_column_title = "Striker Footedness",
-                              footedness_column_width = 101,
-                              aim_direction_column_title = "Striker Aim Direction",
-                              aim_direction_column_width = 107,
-                              freq_column_title = "Frequency",
-                              freq_column_width = 60,
-                              decisions_column_title = "Goalie Decisions",
-                              decisions_column_width = 90,
-                              perceived_risks_column_title = "Goalie Perceived Risks",
-                              perceived_risks_column_width = 130,
-                              score_chance_column_title = "Striker's Score Chance",
-                              score_chance_column_width = 120,
-                              score_roll_column_title = "Striker's Score Roll",
-                              score_roll_column_width = 103,
-                              table_width = 711,
-                              table_height = 280,
-                              table_autosize_mode = "force_fit",
-                              table_sizing_mode = "scale_width",
-                              table_visibility = False,
-                              table_fit_columns = False):
+def create_distribution_table(source, configs):
 
     footedness_column = TableColumn(field = "footedness",
-                                    title = footedness_column_title,
-                                    width = footedness_column_width)
+                                    title = configs.footedness_column_title,
+                                    width = configs.footedness_column_width)
     aim_direction_column = TableColumn(field = "aim_direction",
-                                       title = aim_direction_column_title,
-                                       width = aim_direction_column_width)
+                                       title = configs.aim_direction_column_title,
+                                       width = configs.aim_direction_column_width)
     freq_column = TableColumn(field = "freq",
-                              title = freq_column_title,
-                              width = freq_column_width)
+                              title = configs.freq_column_title,
+                              width = configs.freq_column_width)
     decisions_column = TableColumn(field = "decisions",
-                                   title = decisions_column_title,
-                                   width = decisions_column_width)
+                                   title = configs.decisions_column_title,
+                                   width = configs.decisions_column_width)
     perceived_risks_column =  TableColumn(field = "goalie_perceived_risks",
-                                          title = perceived_risks_column_title,
-                                          width = perceived_risks_column_width)
+                                          title = configs.perceived_risks_column_title,
+                                          width = configs.perceived_risks_column_width)
     score_chance_column = TableColumn(field = "striker_score_chance",
-                                      title = score_chance_column_title,
-                                      width = score_chance_column_width)
+                                      title = configs.score_chance_column_title,
+                                      width = configs.score_chance_column_width)
     score_roll_column = TableColumn(field = "striker_score_roll",
-                                    title = score_roll_column_title,
-                                    width = score_roll_column_width)
+                                    title = configs.score_roll_column_title,
+                                    width = configs.score_roll_column_width)
     distribution_columns = [footedness_column, aim_direction_column,
                             freq_column, decisions_column,
                             perceived_risks_column, score_chance_column,
@@ -1426,12 +1402,12 @@ def create_distribution_table(source,
 
     automation_distribution_table = DataTable(source = source,
                                               columns = distribution_columns,
-                                              width = table_width,
-                                              height = table_height,
-                                              autosize_mode = table_autosize_mode,
-                                              sizing_mode = table_sizing_mode,
-                                              visible = table_visibility,
-                                              fit_columns = table_fit_columns)
+                                              width = configs.table_width,
+                                              height = configs.table_height,
+                                              autosize_mode = configs.table_autosize_mode,
+                                              sizing_mode = configs.table_sizing_mode,
+                                              visible = configs.table_visibility,
+                                              fit_columns = configs.table_fit_columns)
     return automation_distribution_table
 #</editor-fold>
 #<editor-fold create_automation_table_source():
@@ -1995,6 +1971,56 @@ class Strategy_dropdown_configs:
         self.dropdown_disabled = dropdown_disabled
         self.dropdown_visibility = dropdown_visibility
 #</editor-fold>
+#<editor-fold Distribution_table_configs:
+class Distribution_table_configs:
+    def __init__(self, footedness_left_text = "Left",
+                 footedness_right_text = "Right",
+                 aim_direction_left_text = "Left",
+                 aim_direction_middle_text = "Middle",
+                 aim_direction_right_text = "Right",
+                 footedness_column_title = "Striker Footedness",
+                 footedness_column_width = 101,
+                 aim_direction_column_title = "Striker Aim Direction",
+                 aim_direction_column_width = 107,
+                 freq_column_title = "Frequency", freq_column_width = 60,
+                 decisions_column_title = "Goalie Decisions",
+                 decisions_column_width = 90,
+                 perceived_risks_column_title = "Goalie Perceived Risks",
+                 perceived_risks_column_width = 130,
+                 score_chance_column_title = "Striker's Score Chance",
+                 score_chance_column_width = 120,
+                 score_roll_column_title = "Striker's Score Roll",
+                 score_roll_column_width = 103, table_width = 711,
+                 table_height = 280, table_autosize_mode = "force_fit",
+                 table_sizing_mode = "scale_width", table_visibility = False,
+                 table_fit_columns = False):
+        self.footedness_left_text = footedness_left_text
+        self.footedness_right_text = footedness_right_text
+        self.aim_direction_left_text = aim_direction_left_text
+        self.aim_direction_middle_text = aim_direction_middle_text
+        self.aim_direction_right_text = aim_direction_right_text
+
+        self.footedness_column_title = footedness_column_title
+        self.footedness_column_width = footedness_column_width
+        self.aim_direction_column_title = aim_direction_column_title
+        self.aim_direction_column_width = aim_direction_column_width
+        self.freq_column_title = freq_column_title
+        self.freq_column_width = freq_column_width
+        self.decisions_column_title = decisions_column_title
+        self.decisions_column_width = decisions_column_width
+        self.perceived_risks_column_title = perceived_risks_column_title
+        self.perceived_risks_column_width = perceived_risks_column_width
+        self.score_chance_column_title = score_chance_column_title
+        self.score_chance_column_width = score_chance_column_width
+        self.score_roll_column_title = score_roll_column_title
+        self.score_roll_column_width = score_roll_column_width
+        self.table_width = table_width
+        self.table_height = table_height
+        self.table_autosize_mode = table_autosize_mode
+        self.table_sizing_mode = table_sizing_mode
+        self.table_visibility = table_visibility
+        self.table_fit_columns = table_fit_columns
+#</editor-fold>
 
 #<editor-fold make_game():
 #Needs:
@@ -2011,6 +2037,7 @@ default_gamestate_divs_configs = Gamestate_divs_configs()
 default_button_configs = Button_configs()
 default_slider_configs = Slider_configs()
 default_strategy_dropdown_configs = Strategy_dropdown_configs()
+default_distribution_table_configs = Distribution_table_configs()
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
@@ -2020,7 +2047,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
               divs_configs = default_gamestate_divs_configs,
               button_configs = default_button_configs,
               slider_configs = default_slider_configs,
-              strategy_dropdown_configs = default_strategy_dropdown_configs):
+              strategy_dropdown_configs = default_strategy_dropdown_configs,
+              distribution_table_configs = default_distribution_table_configs):
     #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
@@ -2068,10 +2096,11 @@ def make_game(game_figure_configs = default_game_fig_configs,
     #<editor-fold strategy_dropdown:
     strategy_dropdown = create_strategy_dropdown(strategy_dropdown_configs)
     #</editor-fold>
-    
-    automation_distribution_table_source = create_distribution_table_source()
-    automation_distribution_table = create_distribution_table(automation_distribution_table_source)
-
+    #<editor-fold automation_distribution_table:
+    automation_distribution_table_source = create_distribution_table_source(distribution_table_configs)
+    automation_distribution_table = create_distribution_table(automation_distribution_table_source,
+                                                              distribution_table_configs)
+    #</editor-fold>
     automation_table_source = create_automation_table_source()
     automation_table = create_automation_table(automation_table_source)
 

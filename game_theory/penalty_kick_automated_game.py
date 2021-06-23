@@ -1571,84 +1571,66 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
                   RM_aim_slider, RR_aim_slider, game_stats_figure_1,
                   game_stats_figure_2, game_stats_figure_3,
                   game_figure, automation_table, automation_distribution_table,
-                  automate_button_row_max_width = 400,
-                  automate_button_row_sizing_mode = 'stretch_width',
-                  strategy_dropdown_row_max_width = 400,
-                  strategy_dropdown_row_sizing_mode = 'stretch_width',
-                  start_automate_row_max_width = 400,
-                  start_automate_row_sizing_mode = 'stretch_width',
-                  automate_aim_rows_max_width = 400,
-                  automate_aim_rows_sizing_mode = 'stretch_width',
-                  game_stats_row_1_max_width = 600,
-                  game_stats_row_1_sizing_mode = 'stretch_width',
-                  game_stats_row_2_max_width = 600,
-                  game_stats_row_2_sizing_mode = 'stretch_width',
-                  gui_column1_max_width = 600,
-                  gui_column1_sizing_mode = 'stretch_width',
-                  gui_column2_min_width = 761, gui_column2_max_width = 761,
-                  gui_column2_sizing_mode = 'stretch_width',
-                  gui_row_max_width = 1400,
-                  gui_row_sizing_mode = 'stretch_width',
-                  plot_width = 1200, plot_height = 480):
+                  configs):
 
     automate_button_row = row(b_automate, iterations_slider, b_auto_next,
-                              max_width = automate_button_row_max_width,
-                              sizing_mode = automate_button_row_sizing_mode)
+                              max_width = configs.automate_button_row_max_width,
+                              sizing_mode = configs.automate_button_row_sizing_mode)
 
     strategy_dropdown_row = row(strategy_dropdown,
-                                max_width = strategy_dropdown_row_max_width,
-                                sizing_mode = strategy_dropdown_row_sizing_mode)
+                                max_width = configs.strategy_dropdown_row_max_width,
+                                sizing_mode = configs.strategy_dropdown_row_sizing_mode)
 
     start_automate_row = row(b_start_automate, b_make_counter,
-                             max_width = start_automate_row_max_width,
-                             sizing_mode = start_automate_row_sizing_mode)
+                             max_width = configs.start_automate_row_max_width,
+                             sizing_mode = configs.start_automate_row_sizing_mode)
 
     automate_LL_aim_row = row(LL_aim_slider,
-                              max_width = automate_aim_rows_max_width,
-                              sizing_mode = automate_aim_rows_sizing_mode)
+                              max_width = configs.automate_aim_rows_max_width,
+                              sizing_mode = configs.automate_aim_rows_sizing_mode)
     automate_LM_aim_row = row(LM_aim_slider,
-                              max_width = automate_aim_rows_max_width,
-                              sizing_mode = automate_aim_rows_sizing_mode)
+                              max_width = configs.automate_aim_rows_max_width,
+                              sizing_mode = configs.automate_aim_rows_sizing_mode)
     automate_LR_aim_row = row(LR_aim_slider,
-                              max_width = automate_aim_rows_max_width,
-                              sizing_mode = automate_aim_rows_sizing_mode)
+                              max_width = configs.automate_aim_rows_max_width,
+                              sizing_mode = configs.automate_aim_rows_sizing_mode)
     automate_RL_aim_row = row(RL_aim_slider,
-                              max_width = automate_aim_rows_max_width,
-                              sizing_mode = automate_aim_rows_sizing_mode)
+                              max_width = configs.automate_aim_rows_max_width,
+                              sizing_mode = configs.automate_aim_rows_sizing_mode)
     automate_RM_aim_row = row(RM_aim_slider,
-                              max_width = automate_aim_rows_max_width,
-                              sizing_mode = automate_aim_rows_sizing_mode)
+                              max_width = configs.automate_aim_rows_max_width,
+                              sizing_mode = configs.automate_aim_rows_sizing_mode)
     automate_RR_aim_row = row(RR_aim_slider,
-                              max_width = automate_aim_rows_max_width,
-                              sizing_mode = automate_aim_rows_sizing_mode)
+                              max_width = configs.automate_aim_rows_max_width,
+                              sizing_mode = configs.automate_aim_rows_sizing_mode)
 
     game_stats_row_1 = row(game_stats_figure_1, game_stats_figure_2,
-                           max_width = game_stats_row_1_max_width,
-                           sizing_mode = game_stats_row_1_sizing_mode)
+                           max_width = configs.game_stats_row_1_max_width,
+                           sizing_mode = configs.game_stats_row_1_sizing_mode)
     game_stats_row_2 = row(game_stats_figure_3,
-                           max_width = game_stats_row_2_max_width,
-                           sizing_mode = game_stats_row_2_sizing_mode)
+                           max_width = configs.game_stats_row_2_max_width,
+                           sizing_mode = configs.game_stats_row_2_sizing_mode)
 
     gui_column1 = column(game_figure, game_stats_row_1, game_stats_row_2,
-                         max_width = gui_column1_max_width,
-                         sizing_mode = gui_column1_sizing_mode)
+                         max_width = configs.gui_column1_max_width,
+                         sizing_mode = configs.gui_column1_sizing_mode)
     gui_column2 = column(automate_button_row, strategy_dropdown_row,
                          start_automate_row, automate_LL_aim_row,
                          automate_LM_aim_row, automate_LR_aim_row,
                          automate_RL_aim_row, automate_RM_aim_row,
                          automate_RR_aim_row, automation_table,
                          automation_distribution_table,
-                         min_width = gui_column2_min_width,
-                         max_width = gui_column2_max_width,
-                         sizing_mode = gui_column2_sizing_mode)
+                         min_width = configs.gui_column2_min_width,
+                         max_width = configs.gui_column2_max_width,
+                         sizing_mode = configs.gui_column2_sizing_mode)
 
     gui_row = row(gui_column1, gui_column2,
-                  max_width = gui_row_max_width,
-                  sizing_mode = gui_row_sizing_mode)
+                  max_width = configs.gui_row_max_width,
+                  sizing_mode = configs.gui_row_sizing_mode)
 
     grid1 = gridplot([[gui_row]],
-                     plot_width = plot_width,
-                     plot_height = plot_height)
+                     plot_width = configs.plot_width,
+                     plot_height = configs.plot_height)
     return grid1
 #</editor-fold>
 
@@ -2046,6 +2028,49 @@ class Automation_table_configs:
         self.table_autosize_mode = table_autosize_mode
         self.table_visibility = table_visibility
 #</editor-fold>
+#<editor-fold layout_configs:
+class Layout_configs:
+    def __init__(self, automate_button_row_max_width = 400,
+                 automate_button_row_sizing_mode = 'stretch_width',
+                 strategy_dropdown_row_max_width = 400,
+                 strategy_dropdown_row_sizing_mode = 'stretch_width',
+                 start_automate_row_max_width = 400,
+                 start_automate_row_sizing_mode = 'stretch_width',
+                 automate_aim_rows_max_width = 400,
+                 automate_aim_rows_sizing_mode = 'stretch_width',
+                 game_stats_row_1_max_width = 600,
+                 game_stats_row_1_sizing_mode = 'stretch_width',
+                 game_stats_row_2_max_width = 600,
+                 game_stats_row_2_sizing_mode = 'stretch_width',
+                 gui_column1_max_width = 600,
+                 gui_column1_sizing_mode = 'stretch_width',
+                 gui_column2_min_width = 761, gui_column2_max_width = 761,
+                 gui_column2_sizing_mode = 'stretch_width',
+                 gui_row_max_width = 1400,
+                 gui_row_sizing_mode = 'stretch_width',
+                 plot_width = 1200, plot_height = 480):
+        self.automate_button_row_max_width = automate_button_row_max_width
+        self.automate_button_row_sizing_mode = automate_button_row_sizing_mode
+        self.strategy_dropdown_row_max_width = strategy_dropdown_row_max_width
+        self.strategy_dropdown_row_sizing_mode = strategy_dropdown_row_sizing_mode
+        self.start_automate_row_max_width = start_automate_row_max_width
+        self.start_automate_row_sizing_mode = start_automate_row_sizing_mode
+        self.automate_aim_rows_max_width = automate_aim_rows_max_width
+        self.automate_aim_rows_sizing_mode = automate_aim_rows_sizing_mode
+        self.game_stats_row_1_max_width = game_stats_row_1_max_width
+        self.game_stats_row_1_sizing_mode = game_stats_row_1_sizing_mode
+        self.game_stats_row_2_max_width = game_stats_row_2_max_width
+        self.game_stats_row_2_sizing_mode = game_stats_row_2_sizing_mode
+        self.gui_column1_max_width = gui_column1_max_width
+        self.gui_column1_sizing_mode = gui_column1_sizing_mode
+        self.gui_column2_min_width = gui_column2_min_width
+        self.gui_column2_max_width = gui_column2_max_width
+        self.gui_column2_sizing_mode = gui_column2_sizing_mode
+        self.gui_row_max_width = gui_row_max_width
+        self.gui_row_sizing_mode = gui_row_sizing_mode
+        self.plot_width = plot_width
+        self.plot_height = plot_height
+#</editor-fold>
 
 #<editor-fold make_game():
 #Needs:
@@ -2064,6 +2089,7 @@ default_slider_configs = Slider_configs()
 default_strategy_dropdown_configs = Strategy_dropdown_configs()
 default_distribution_table_configs = Distribution_table_configs()
 default_automation_table_configs = Automation_table_configs()
+default_layout_configs = Layout_configs()
 
 #<editor-fold Helpers:
 def __add_aim_sliders(args_dict, aim_sliders):
@@ -2092,7 +2118,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
               slider_configs = default_slider_configs,
               strategy_dropdown_configs = default_strategy_dropdown_configs,
               distribution_table_configs = default_distribution_table_configs,
-              automation_table_configs = default_automation_table_configs):
+              automation_table_configs = default_automation_table_configs,
+              layout_configs = default_layout_configs):
     #<editor-fold create objects used in game:
         #<editor-fold figure setups:
     (game_figure, goalie_head, goalie_body,
@@ -2157,9 +2184,10 @@ def make_game(game_figure_configs = default_game_fig_configs,
                    RL_aim_slider, RM_aim_slider, RR_aim_slider]
     stat_figs = [game_stats_figure_1, game_stats_figure_2, game_stats_figure_3]
     stat_fig_sources = [game_stats_figure_2_source, game_stats_figure_3_source]
-
     #</editor-fold>
 
+    #<editor-fold setup created objects:
+        #<editor-fold b_automate setup:
     args_dict = dict(b_automate = b_automate,
                      iterations_slider = iterations_slider,
                      strategy_dropdown = strategy_dropdown,
@@ -2167,7 +2195,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
     __add_aim_sliders(args_dict, aim_sliders)
 
     b_automate_setup(b_automate = b_automate, args_dict = args_dict)
-
+        #</editor-fold>
+        #<editor-fold b_make_counter setup:
     args_dict = dict(b_start_automate = b_start_automate,
                      b_make_counter = b_make_counter,
                      automation_table = automation_table,
@@ -2175,6 +2204,9 @@ def make_game(game_figure_configs = default_game_fig_configs,
     __add_aim_sliders(args_dict, aim_sliders)
 
     goalie_counter_source = b_make_counter_setup(b_make_counter, args_dict)
+        #</editor-fold>
+        #<editor-fold main game setup:
+            #<editor-fold loop_dict:
     loop_dict =  dict(ChancesColumnDataSource = automation_table_source,
                       DistributionColumnDataSource = automation_distribution_table_source,
                       strategy_to_use = strategy_to_use, nround = nround,
@@ -2228,7 +2260,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
                       game_stats_figure_1_source = game_stats_figure_1_source)
     __add_stat_figs(loop_dict, stat_figs)
     __add_stat_fig_sources(loop_dict, stat_fig_sources)
-
+            #</editor-fold>
+            #<editor-fold b_start_automate setup:
     args_dict = loop_dict.copy()
     args_dict['b_start_automate'] = b_start_automate
     args_dict['iterations_slider'] = iterations_slider
@@ -2238,11 +2271,14 @@ def make_game(game_figure_configs = default_game_fig_configs,
 
     b_start_automate_setup(b_start_automate = b_start_automate,
                            args_dict = args_dict)
-
+            #</editor-fold>
+            #<editor-fold b_auto_next setup:
     args_dict = loop_dict
 
     b_auto_next_setup(b_auto_next = b_auto_next, args_dict = args_dict)
-
+            #</editor-fold>
+        #</editor-fold>
+        #<editor-fold aim_sliders setup:
     aim_sliders_setup(ll_aim_slider = LL_aim_slider,
                       lm_aim_slider = LM_aim_slider,
                       lr_aim_slider = LR_aim_slider,
@@ -2250,14 +2286,16 @@ def make_game(game_figure_configs = default_game_fig_configs,
                       rm_aim_slider = RM_aim_slider,
                       rr_aim_slider = RR_aim_slider,
                       automation_table_source = automation_table_source)
-
+        #</editor-fold>
+        #<editor-fold iterations_slider setup:
     args_dict = dict(iterations_to_run = iterations_to_run)
     __add_stat_figs(args_dict, stat_figs)
     __add_stat_fig_sources(args_dict, stat_fig_sources)
 
     iterations_slider_setup(iterations_slider = iterations_slider,
                             args_dict = args_dict)
-
+        #</editor-fold>
+        #<editor-fold strategy_dropdown setup:
     args_dict = dict(strategy_dropdown = strategy_dropdown,
                      strategy_to_use = strategy_to_use,
                      b_start_automate = b_start_automate,
@@ -2267,7 +2305,10 @@ def make_game(game_figure_configs = default_game_fig_configs,
 
     strategy_dropdown_setup(strategy_dropdown = strategy_dropdown,
                             args_dict = args_dict)
+        #</editor-fold>
+    #</editor-fold>
 
+    #<editor-fold
     grid1 = format_layout(b_automate = b_automate,
                           iterations_slider = iterations_slider,
                           b_auto_next = b_auto_next,
@@ -2285,7 +2326,9 @@ def make_game(game_figure_configs = default_game_fig_configs,
                           game_stats_figure_3 = game_stats_figure_3,
                           game_figure = game_figure,
                           automation_table = automation_table,
-                          automation_distribution_table = automation_distribution_table)
+                          automation_distribution_table = automation_distribution_table,
+                          configs = layout_configs)
+    #</editor-fold>
 
     return grid1
 #</editor-fold>

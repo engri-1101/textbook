@@ -2073,64 +2073,6 @@ def __add_aim_sliders(args_dict, aim_sliders):
     args_dict['RL_aim_slider'] = aim_sliders[3]
     args_dict['RM_aim_slider'] = aim_sliders[4]
     args_dict['RR_aim_slider'] = aim_sliders[5]
-def __add_fig_1_components(args_dict, fig_1_components):
-    fig_1_scored_bars = fig_1_components[0]
-    args_dict['ll_scored_bar'] = fig_1_scored_bars[0]
-    args_dict['lm_scored_bar'] = fig_1_scored_bars[1]
-    args_dict['lr_scored_bar'] = fig_1_scored_bars[2]
-    args_dict['rl_scored_bar'] = fig_1_scored_bars[3]
-    args_dict['rm_scored_bar'] = fig_1_scored_bars[4]
-    args_dict['rr_scored_bar'] = fig_1_scored_bars[5]
-    fig_1_scored_divs = fig_1_components[1]
-    args_dict['ll_scored'] = fig_1_scored_divs[0]
-    args_dict['lm_scored'] = fig_1_scored_divs[1]
-    args_dict['lr_scored'] = fig_1_scored_divs[2]
-    args_dict['rl_scored'] = fig_1_scored_divs[3]
-    args_dict['rm_scored'] = fig_1_scored_divs[4]
-    args_dict['rr_scored'] = fig_1_scored_divs[5]
-    fig_1_bl_divs = fig_1_components[2]
-    args_dict['ll_blocked_left'] = fig_1_bl_divs[0]
-    args_dict['lm_blocked_left'] = fig_1_bl_divs[1]
-    args_dict['lr_blocked_left'] = fig_1_bl_divs[2]
-    args_dict['rl_blocked_left'] = fig_1_bl_divs[3]
-    args_dict['rm_blocked_left'] = fig_1_bl_divs[4]
-    args_dict['rr_blocked_left'] = fig_1_bl_divs[5]
-    fig_1_bm_divs = fig_1_components[3]
-    args_dict['ll_blocked_middle'] = fig_1_bm_divs[0]
-    args_dict['lm_blocked_middle'] = fig_1_bm_divs[1]
-    args_dict['lr_blocked_middle'] = fig_1_bm_divs[2]
-    args_dict['rl_blocked_middle'] = fig_1_bm_divs[3]
-    args_dict['rm_blocked_middle'] = fig_1_bm_divs[4]
-    args_dict['rr_blocked_middle'] = fig_1_bm_divs[5]
-    fig_1_br_divs = fig_1_components[4]
-    args_dict['ll_blocked_right'] = fig_1_br_divs[0]
-    args_dict['lm_blocked_right'] = fig_1_br_divs[1]
-    args_dict['lr_blocked_right'] = fig_1_br_divs[2]
-    args_dict['rl_blocked_right'] = fig_1_br_divs[3]
-    args_dict['rm_blocked_right'] = fig_1_br_divs[4]
-    args_dict['rr_blocked_right'] = fig_1_br_divs[5]
-    fig_1_bl_bars = fig_1_components[5]
-    args_dict['ll_blocked_left_bar'] = fig_1_bl_bars[0]
-    args_dict['lm_blocked_left_bar'] = fig_1_bl_bars[1]
-    args_dict['lr_blocked_left_bar'] = fig_1_bl_bars[2]
-    args_dict['rl_blocked_left_bar'] = fig_1_bl_bars[3]
-    args_dict['rm_blocked_left_bar'] = fig_1_bl_bars[4]
-    args_dict['rr_blocked_left_bar'] = fig_1_bl_bars[5]
-    fig_1_bm_bars = fig_1_components[6]
-    args_dict['ll_blocked_middle_bar'] = fig_1_bm_bars[0]
-    args_dict['lm_blocked_middle_bar'] = fig_1_bm_bars[1]
-    args_dict['lr_blocked_middle_bar'] = fig_1_bm_bars[2]
-    args_dict['rl_blocked_middle_bar'] = fig_1_bm_bars[3]
-    args_dict['rm_blocked_middle_bar'] = fig_1_bm_bars[4]
-    args_dict['rr_blocked_middle_bar'] = fig_1_bm_bars[5]
-    fig_1_br_bars = fig_1_components[7]
-    args_dict['ll_blocked_right_bar'] = fig_1_br_bars[0]
-    args_dict['lm_blocked_right_bar'] = fig_1_br_bars[1]
-    args_dict['lr_blocked_right_bar'] = fig_1_br_bars[2]
-    args_dict['rl_blocked_right_bar'] = fig_1_br_bars[3]
-    args_dict['rm_blocked_right_bar'] = fig_1_br_bars[4]
-    args_dict['rr_blocked_right_bar'] = fig_1_br_bars[5]
-    args_dict['game_stats_figure_1_source'] = fig_1_components[8]
 def __add_stat_figs(args_dict, stat_figs):
     args_dict['game_stats_figure_1'] = stat_figs[0]
     args_dict['game_stats_figure_2'] = stat_figs[1]
@@ -2213,27 +2155,6 @@ def make_game(game_figure_configs = default_game_fig_configs,
     #<editor-fold Setup for using helpers to add to argsdicts:
     aim_sliders = [LL_aim_slider, LM_aim_slider, LR_aim_slider,
                    RL_aim_slider, RM_aim_slider, RR_aim_slider]
-    fig_1_components = [[ll_scored_bar, lm_scored_bar, lr_scored_bar,
-                         rl_scored_bar, rm_scored_bar, rr_scored_bar],
-                        [ll_scored, lm_scored, lr_scored,
-                         rl_scored, rm_scored, rr_scored],
-                        [ll_blocked_left, lm_blocked_left, lr_blocked_left,
-                         rl_blocked_left, rm_blocked_left, rr_blocked_left],
-                        [ll_blocked_middle, lm_blocked_middle,
-                         lr_blocked_middle, rl_blocked_middle,
-                         rm_blocked_middle, rr_blocked_middle],
-                        [ll_blocked_right, lm_blocked_right, lr_blocked_right,
-                         rl_blocked_right, rm_blocked_right, rr_blocked_right],
-                        [ll_blocked_left_bar, lm_blocked_left_bar,
-                         lr_blocked_left_bar, rl_blocked_left_bar,
-                         rm_blocked_left_bar, rr_blocked_left_bar],
-                        [ll_blocked_middle_bar, lm_blocked_middle_bar,
-                         lr_blocked_middle_bar, rl_blocked_middle_bar,
-                         rm_blocked_middle_bar, rr_blocked_middle_bar],
-                        [ll_blocked_right_bar, lm_blocked_right_bar,
-                         lr_blocked_right_bar, rl_blocked_right_bar,
-                         rm_blocked_right_bar, rr_blocked_right_bar],
-                         game_stats_figure_1_source]
     stat_figs = [game_stats_figure_1, game_stats_figure_2, game_stats_figure_3]
     stat_fig_sources = [game_stats_figure_2_source, game_stats_figure_3_source]
 
@@ -2254,41 +2175,71 @@ def make_game(game_figure_configs = default_game_fig_configs,
     __add_aim_sliders(args_dict, aim_sliders)
 
     goalie_counter_source = b_make_counter_setup(b_make_counter, args_dict)
+    loop_dict =  dict(ChancesColumnDataSource = automation_table_source,
+                      DistributionColumnDataSource = automation_distribution_table_source,
+                      strategy_to_use = strategy_to_use, nround = nround,
+                      iterations_to_run = iterations_to_run, txt = scr_text,
+                      b_auto_next = b_auto_next, game_figure = game_figure,
+                      automation_distribution_table = automation_distribution_table,
+                      goalie_head = goalie_head, goalie_body = goalie_body,
+                      goalie_counter_source = goalie_counter_source,
+                      ll_scored_bar = ll_scored_bar, ll_scored = ll_scored,
+                      lm_scored_bar = lm_scored_bar, lm_scored = lm_scored,
+                      lr_scored_bar = lr_scored_bar, lr_scored = lr_scored,
+                      rl_scored_bar = rl_scored_bar, rl_scored = rl_scored,
+                      rm_scored_bar = rm_scored_bar, rm_scored = rm_scored,
+                      rr_scored_bar = rr_scored_bar, rr_scored = rr_scored,
+                      ll_blocked_left_bar = ll_blocked_left_bar, ball = ball,
+                      lm_blocked_left_bar = lm_blocked_left_bar, score = score,
+                      lr_blocked_left_bar = lr_blocked_left_bar,
+                      rl_blocked_left_bar = rl_blocked_left_bar,
+                      rm_blocked_left_bar = rm_blocked_left_bar,
+                      rr_blocked_left_bar = rr_blocked_left_bar,
+                      ll_blocked_left = ll_blocked_left,
+                      lm_blocked_left = lm_blocked_left,
+                      lr_blocked_left = lr_blocked_left,
+                      rl_blocked_left = rl_blocked_left,
+                      rm_blocked_left = rm_blocked_left,
+                      rr_blocked_left = rr_blocked_left,
+                      ll_blocked_middle_bar = ll_blocked_middle_bar,
+                      lm_blocked_middle_bar = lm_blocked_middle_bar,
+                      lr_blocked_middle_bar = lr_blocked_middle_bar,
+                      rl_blocked_middle_bar = rl_blocked_middle_bar,
+                      rm_blocked_middle_bar = rm_blocked_middle_bar,
+                      rr_blocked_middle_bar = rr_blocked_middle_bar,
+                      ll_blocked_middle = ll_blocked_middle,
+                      lm_blocked_middle = lm_blocked_middle,
+                      lr_blocked_middle = lr_blocked_middle,
+                      rl_blocked_middle = rl_blocked_middle,
+                      rm_blocked_middle = rm_blocked_middle,
+                      rr_blocked_middle = rr_blocked_middle,
+                      ll_blocked_right_bar = ll_blocked_right_bar,
+                      lm_blocked_right_bar = lm_blocked_right_bar,
+                      lr_blocked_right_bar = lr_blocked_right_bar,
+                      rl_blocked_right_bar = rl_blocked_right_bar,
+                      rm_blocked_right_bar = rm_blocked_right_bar,
+                      rr_blocked_right_bar = rr_blocked_right_bar,
+                      ll_blocked_right = ll_blocked_right,
+                      lm_blocked_right = lm_blocked_right,
+                      lr_blocked_right = lr_blocked_right,
+                      rl_blocked_right = rl_blocked_right,
+                      rm_blocked_right = rm_blocked_right,
+                      rr_blocked_right = rr_blocked_right,
+                      game_stats_figure_1_source = game_stats_figure_1_source)
+    __add_stat_figs(loop_dict, stat_figs)
+    __add_stat_fig_sources(loop_dict, stat_fig_sources)
 
-    args_dict = dict(b_start_automate = b_start_automate,
-                     b_auto_next = b_auto_next,
-                     iterations_slider = iterations_slider,
-                     strategy_dropdown = strategy_dropdown,
-                     automation_table = automation_table,
-                     automation_distribution_table = automation_distribution_table,
-                     ChancesColumnDataSource = automation_table_source,
-                     DistributionColumnDataSource = automation_distribution_table_source,
-                     txt = scr_text, strategy_to_use = strategy_to_use,
-                     nround = nround, iterations_to_run = iterations_to_run,
-                     game_figure = game_figure,
-                     score = score, ball = ball, goalie_head = goalie_head,
-                     goalie_body = goalie_body,
-                     goalie_counter_source = goalie_counter_source)
+    args_dict = loop_dict.copy()
+    args_dict['b_start_automate'] = b_start_automate
+    args_dict['iterations_slider'] = iterations_slider
+    args_dict['strategy_dropdown'] = strategy_dropdown
+    args_dict['automation_table'] = automation_table
     __add_aim_sliders(args_dict, aim_sliders)
-    __add_fig_1_components(args_dict, fig_1_components)
-    __add_stat_figs(args_dict, stat_figs)
-    __add_stat_fig_sources(args_dict, stat_fig_sources)
 
     b_start_automate_setup(b_start_automate = b_start_automate,
                            args_dict = args_dict)
 
-    args_dict = dict(ChancesColumnDataSource = automation_table_source,
-                     DistributionColumnDataSource = automation_distribution_table_source,
-                     txt = scr_text, strategy_to_use = strategy_to_use,
-                     nround = nround, iterations_to_run = iterations_to_run,
-                     b_auto_next = b_auto_next, game_figure = game_figure,
-                     automation_distribution_table = automation_distribution_table,
-                     score = score, ball = ball, goalie_head = goalie_head,
-                     goalie_body = goalie_body,
-                     goalie_counter_source = goalie_counter_source)
-    __add_fig_1_components(args_dict, fig_1_components)
-    __add_stat_figs(args_dict, stat_figs)
-    __add_stat_fig_sources(args_dict, stat_fig_sources)
+    args_dict = loop_dict
 
     b_auto_next_setup(b_auto_next = b_auto_next, args_dict = args_dict)
 

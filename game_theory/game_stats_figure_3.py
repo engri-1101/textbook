@@ -1,106 +1,120 @@
 from bokeh.plotting import figure
 from bokeh.models import (CustomJSHover, ColumnDataSource, CustomJSTransform,
-                          HoverTool)
+                          HoverTool, Div)
 from bokeh.transform import transform
+
+highlight_index = Div(text = "0")
 
 #<editor-fold hb_gc Code Strings:
 hb1_gc_code = """
-var new_xs = new Array(xs.length);
-for(var i = 0; i < xs.length; i++) {
+let new_xs = new Array(xs.length);
+for(let i = 0; i < xs.length; i++) {
     new_xs[i] = xs[i]/2;
 }
 return new_xs;
 """
 hb2_gc_code = """
-var new_xs = new Array(xs.length);
-for(var i = 0; i < xs.length; i++) {
+let new_xs = new Array(xs.length);
+for(let i = 0; i < xs.length; i++) {
     new_xs[i] = xs[i]/2 + source.data['hb1'][i];
 }
 return new_xs;
 """
 hb3_gc_code = """
-var new_xs = new Array(xs.length);
-for(var i = 0; i < xs.length; i++) {
+let new_xs = new Array(xs.length);
+for(let i = 0; i < xs.length; i++) {
     new_xs[i] = xs[i]/2 + source.data['hb2'][i] + source.data['hb1'][i];
 }
 return new_xs;
 """
 hb4_gc_code = """
-var new_xs = new Array(xs.length);
-for(var i = 0; i < xs.length; i++) {
+let new_xs = new Array(xs.length);
+for(let i = 0; i < xs.length; i++) {
     new_xs[i] = xs[i]/2 + source.data['hb3'][i] + source.data['hb2'][i] + source.data['hb1'][i];
 }
 return new_xs;
 """
 hb5_gc_code = """
-var new_xs = new Array(xs.length);
-for(var i = 0; i < xs.length; i++) {
+let new_xs = new Array(xs.length);
+for(let i = 0; i < xs.length; i++) {
     new_xs[i] = xs[i]/2 + source.data['hb4'][i] + source.data['hb3'][i] + source.data['hb2'][i] + source.data['hb1'][i];
 }
 return new_xs;
 """
 hb6_gc_code = """
-var new_xs = new Array(xs.length);
-for(var i = 0; i < xs.length; i++) {
+let new_xs = new Array(xs.length);
+for(let i = 0; i < xs.length; i++) {
     new_xs[i] = xs[i]/2 + source.data['hb5'][i] + source.data['hb4'][i] + source.data['hb3'][i] + source.data['hb2'][i] + source.data['hb1'][i];
 }
 return new_xs;
 """
 #</editor-fold>
-#<editor-fold hb_ga Code Strings:
+#<editor-fold highlight_get_alpha Code Strings:
 ll_ga_code = """
-let new_alphas = new Array(xs.length).fill(0);
-for(let i = 0; i < xs.length; i++){
-    if(xs[i] == 1){
-        new_alphas[i] = 1;
-    }
+const index = parseInt(highlight_index.text);
+if(xs[index] == 1){
+    let new_alphas = new Array(xs.length).fill(0);
+    new_alphas[index] = 1;
+    return new_alphas;
 }
-return new_alphas;
+else{
+    return alphas_zeroes
+}
 """
 lm_ga_code = """
-let new_alphas = new Array(xs.length).fill(0);
-for(let i = 0; i < xs.length; i++){
-    if(xs[i] == 2){
-        new_alphas[i] = 1;
-    }
+const index = parseInt(highlight_index.text);
+if(xs[index] == 2){
+    let new_alphas = new Array(xs.length).fill(0);
+    new_alphas[index] = 1;
+    return new_alphas;
 }
-return new_alphas;
+else{
+    return alphas_zeroes
+}
 """
 lr_ga_code = """
-let new_alphas = new Array(xs.length).fill(0);
-for(let i = 0; i < xs.length; i++){
-    if(xs[i] == 3){
-        new_alphas[i] = 1;
-    }
+const index = parseInt(highlight_index.text);
+if(xs[index] == 3){
+    let new_alphas = new Array(xs.length).fill(0);
+    new_alphas[index] = 1;
+    return new_alphas;
 }
-return new_alphas;
+else{
+    return alphas_zeroes
+}
 """
 rl_ga_code = """
-let new_alphas = new Array(xs.length).fill(0);
-for(let i = 0; i < xs.length; i++){
-    if(xs[i] == 4){
-        new_alphas[i] = 1;
-    }
+const index = parseInt(highlight_index.text);
+if(xs[index] == 4){
+    let new_alphas = new Array(xs.length).fill(0);
+    new_alphas[index] = 1;
+    return new_alphas;
 }
-return new_alphas;
+else{
+    return alphas_zeroes
+}
 """
 rm_ga_code = """
-let new_alphas = new Array(xs.length).fill(0);
-for(let i = 0; i < xs.length; i++){
-    if(xs[i] == 5){
-        new_alphas[i] = 1;
-    }
+const index = parseInt(highlight_index.text);
+if(xs[index] == 5){
+    let new_alphas = new Array(xs.length).fill(0);
+    new_alphas[index] = 1;
+    return new_alphas;
 }
-return new_alphas;
+else{
+    return alphas_zeroes
+}
 """
 rr_ga_code = """
-let new_alphas = new Array(xs.length).fill(0);
-for(let i = 0; i < xs.length; i++){
-    if(xs[i] == 6){
-        new_alphas[i] = 1;
-    }
+const index = parseInt(highlight_index.text);
+if(xs[index] == 6){
+    let new_alphas = new Array(xs.length).fill(0);
+    new_alphas[index] = 1;
+    return new_alphas;
 }
-return new_alphas;
+else{
+    return alphas_zeroes
+}
 """
 #</editor-fold>
 #<editor-fold Custom Hover Code Strings:
@@ -131,7 +145,9 @@ let sorted_values = [data['ll_ys'][index],
 sorted_values = sorted_values.sort((a, b) => b - a);
 let selected = column[values.indexOf(sorted_values[parseInt(name)])];
 
-data['highlight_alphas'] = new Array(length).fill(0);
+data['highlight_alphas'][parseInt(highlight_index.text)] = 0;
+highlight_index.text = index.toString();
+//data['highlight_alphas'] = new Array(length).fill(0);
 data['highlight_alphas'][index] = selected;
 
 source.change.emit();
@@ -141,9 +157,9 @@ return index.toString();
     #</editor-fold>
     #<editor-fold ys Code String:
 fig_3_ys_code = """
-var index = special_vars.index;
-var name = special_vars.name;
-var data = source.data;
+let index = special_vars.index;
+let name = special_vars.name;
+let data = source.data;
 const length = data['xs'].length;
 const column = ['ll',
                 'lm',
@@ -157,40 +173,40 @@ const values = [data['ll_ys'][index],
                 data['rl_ys'][index],
                 data['rm_ys'][index],
                 data['rr_ys'][index]];
-var sorted_values = [data['ll_ys'][index],
+let sorted_values = [data['ll_ys'][index],
                      data['lm_ys'][index],
                      data['lr_ys'][index],
                      data['rl_ys'][index],
                      data['rm_ys'][index],
                      data['rr_ys'][index]];
 sorted_values = sorted_values.sort((a, b) => b - a);
-var selected = column[values.indexOf(sorted_values[parseInt(name)])];
+let selected = column[values.indexOf(sorted_values[parseInt(name)])];
 
 if(selected == 'll'){
-    return(source.data['ll_ys'][index].toString());
+    return(source.data['ll_ys'][index].toString().substring(0, 5));
 }
 else if(selected == 'lm'){
-    return(source.data['lm_ys'][index].toString());
+    return(source.data['lm_ys'][index].toString().substring(0, 5));
 }
 else if(selected == 'lr'){
-    return(source.data['lr_ys'][index].toString());
+    return(source.data['lr_ys'][index].toString().substring(0, 5));
 }
 else if(selected == 'rl'){
-    return(source.data['rl_ys'][index].toString());
+    return(source.data['rl_ys'][index].toString().substring(0, 5));
 }
 else if(selected == 'rm'){
-    return(source.data['rm_ys'][index].toString());
+    return(source.data['rm_ys'][index].toString().substring(0, 5));
 }
 else if(selected == 'rr'){
-    return(source.data['rr_ys'][index].toString());
+    return(source.data['rr_ys'][index].toString().substring(0, 5));
 }
 """
     #</editor-fold>
     #<editor-fold selected Code String:
 fig_3_selected_code = """
-var index = special_vars.index;
-var name = special_vars.name;
-var data = source.data;
+let index = special_vars.index;
+let name = special_vars.name;
+let data = source.data;
 const length = data['xs'].length;
 const column = ['ll',
                 'lm',
@@ -204,14 +220,14 @@ const values = [data['ll_ys'][index],
                 data['rl_ys'][index],
                 data['rm_ys'][index],
                 data['rr_ys'][index]];
-var sorted_values = [data['ll_ys'][index],
+let sorted_values = [data['ll_ys'][index],
                      data['lm_ys'][index],
                      data['lr_ys'][index],
                      data['rl_ys'][index],
                      data['rm_ys'][index],
                      data['rr_ys'][index]];
 sorted_values = sorted_values.sort((a, b) => b - a);
-var selected = column[values.indexOf(sorted_values[parseInt(name)])];
+let selected = column[values.indexOf(sorted_values[parseInt(name)])];
 return(selected);
 """
     #</editor-fold>
@@ -305,15 +321,6 @@ class Stats_fig_3_configs():
         self.hitbox_alpha = hitbox_alpha
 #</editor-fold>
 
-#<editor-fold Get Alpha Transforms:
-ll_highlight_get_alpha = CustomJSTransform(v_func = ll_ga_code)
-lm_highlight_get_alpha = CustomJSTransform(v_func = lm_ga_code)
-lr_highlight_get_alpha = CustomJSTransform(v_func = lr_ga_code)
-rl_highlight_get_alpha = CustomJSTransform(v_func = rl_ga_code)
-rm_highlight_get_alpha = CustomJSTransform(v_func = rm_ga_code)
-rr_highlight_get_alpha = CustomJSTransform(v_func = rr_ga_code)
-#</editor-fold>
-
 #<editor-fold stats_figure_3_setup:
 def stats_figure_3_setup(fig_configs):
     #<editor-fold Figure Creation:
@@ -346,6 +353,7 @@ def stats_figure_3_setup(fig_configs):
     source_rr_ys = []
 
     highlight_alphas = []
+    alphas_zeroes = []
 
     source_hb1_ys = []
     source_hb2_ys = []
@@ -365,6 +373,7 @@ def stats_figure_3_setup(fig_configs):
         source_rr_ys.append(0)
 
         highlight_alphas.append(0)
+        alphas_zeroes.append(0)
 
         source_hb1_ys.append(0)
         source_hb2_ys.append(0)
@@ -392,10 +401,19 @@ def stats_figure_3_setup(fig_configs):
                        hb3 = source_hb3_ys, hb4 = source_hb4_ys,
                        hb5 = source_hb5_ys, hb6 = source_hb6_ys,
 
-                       highlight_alphas = highlight_alphas)
+                       highlight_alphas = highlight_alphas,
+                       alphas_zeroes = alphas_zeroes)
 
     game_stats_figure_3_source = ColumnDataSource(data = source_data)
         #</editor-fold>
+    #</editor-fold>
+    #<editor-fold Get Alpha Transforms:
+    ll_highlight_get_alpha = CustomJSTransform(v_func = ll_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
+    lm_highlight_get_alpha = CustomJSTransform(v_func = lm_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
+    lr_highlight_get_alpha = CustomJSTransform(v_func = lr_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
+    rl_highlight_get_alpha = CustomJSTransform(v_func = rl_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
+    rm_highlight_get_alpha = CustomJSTransform(v_func = rm_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
+    rr_highlight_get_alpha = CustomJSTransform(v_func = rr_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
     #</editor-fold>
     #<editor-fold Plot Figure Data Points:
     game_stats_figure_3.circle_dot('xs', 'll_ys',
@@ -517,7 +535,8 @@ def stats_figure_3_setup(fig_configs):
     #<editor-fold CustomJSHover Creation:
     customjshover_args_dict = dict(source = game_stats_figure_3_source)
     fig_3_xs_custom = CustomJSHover(code = fig_3_xs_code,
-                                    args = customjshover_args_dict)
+                                    args = dict(source = game_stats_figure_3_source,
+                                                highlight_index = highlight_index))
     fig_3_ys_custom = CustomJSHover(code = fig_3_ys_code,
                                     args = customjshover_args_dict)
     fig_3_selected_custom = CustomJSHover(code = fig_3_selected_code,

@@ -963,6 +963,7 @@ let hb6_ys = new Array(array_length).fill(0);
 let heights = new Array(array_length).fill(iterations * 2);
 let fig2_highlight_alphas = new Array(array_length).fill(0);
 let fig3_highlight_alphas = new Array(array_length).fill(0);
+let fig3_alphas_zeroes = new Array(array_length).fill(0);
 
 //Update previously created arrays with their correct values:
 for (let i = 0; i <= iterations; i++){
@@ -996,6 +997,7 @@ fig_3_data['rl_ys'] = rl_ys;
 fig_3_data['rm_ys'] = rm_ys;
 fig_3_data['rr_ys'] = rr_ys;
 fig_3_data['highlight_alphas'] = fig3_highlight_alphas;
+fig_3_data['alphas_zeroes'] = fig3_alphas_zeroes;
 fig_3_data['hb1'] = hb1_ys;
 fig_3_data['hb2'] = hb2_ys;
 fig_3_data['hb3'] = hb3_ys;

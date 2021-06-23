@@ -8,43 +8,47 @@ highlight_index = Div(text = "0")
 #<editor-fold hb_gc Code Strings:
 hb1_gc_code = """
 let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++) {
+for(let i = 0; i < xs.length; i++){
     new_xs[i] = xs[i]/2;
 }
 return new_xs;
 """
 hb2_gc_code = """
 let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++) {
+for(let i = 0; i < xs.length; i++){
     new_xs[i] = xs[i]/2 + source.data['hb1'][i];
 }
 return new_xs;
 """
 hb3_gc_code = """
 let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++) {
+for(let i = 0; i < xs.length; i++){
     new_xs[i] = xs[i]/2 + source.data['hb2'][i] + source.data['hb1'][i];
 }
 return new_xs;
 """
 hb4_gc_code = """
 let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++) {
-    new_xs[i] = xs[i]/2 + source.data['hb3'][i] + source.data['hb2'][i] + source.data['hb1'][i];
+for(let i = 0; i < xs.length; i++){
+    new_xs[i] = (xs[i]/2 + source.data['hb3'][i] + source.data['hb2'][i]
+                 + source.data['hb1'][i]);
 }
 return new_xs;
 """
 hb5_gc_code = """
 let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++) {
-    new_xs[i] = xs[i]/2 + source.data['hb4'][i] + source.data['hb3'][i] + source.data['hb2'][i] + source.data['hb1'][i];
+for(let i = 0; i < xs.length; i++){
+    new_xs[i] = (xs[i]/2 + source.data['hb4'][i] + source.data['hb3'][i]
+                 + source.data['hb2'][i] + source.data['hb1'][i]);
 }
 return new_xs;
 """
 hb6_gc_code = """
 let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++) {
-    new_xs[i] = xs[i]/2 + source.data['hb5'][i] + source.data['hb4'][i] + source.data['hb3'][i] + source.data['hb2'][i] + source.data['hb1'][i];
+for(let i = 0; i < xs.length; i++){
+    new_xs[i] = (xs[i]/2 + source.data['hb5'][i] + source.data['hb4'][i]
+                 + source.data['hb3'][i] + source.data['hb2'][i]
+                 + source.data['hb1'][i]);
 }
 return new_xs;
 """
@@ -58,7 +62,7 @@ if(xs[index] == 1){
     return new_alphas;
 }
 else{
-    return alphas_zeroes
+    return alphas_zeroes;
 }
 """
 lm_ga_code = """
@@ -69,7 +73,7 @@ if(xs[index] == 2){
     return new_alphas;
 }
 else{
-    return alphas_zeroes
+    return alphas_zeroes;
 }
 """
 lr_ga_code = """
@@ -80,7 +84,7 @@ if(xs[index] == 3){
     return new_alphas;
 }
 else{
-    return alphas_zeroes
+    return alphas_zeroes;
 }
 """
 rl_ga_code = """
@@ -91,7 +95,7 @@ if(xs[index] == 4){
     return new_alphas;
 }
 else{
-    return alphas_zeroes
+    return alphas_zeroes;
 }
 """
 rm_ga_code = """
@@ -102,7 +106,7 @@ if(xs[index] == 5){
     return new_alphas;
 }
 else{
-    return alphas_zeroes
+    return alphas_zeroes;
 }
 """
 rr_ga_code = """
@@ -113,7 +117,7 @@ if(xs[index] == 6){
     return new_alphas;
 }
 else{
-    return alphas_zeroes
+    return alphas_zeroes;
 }
 """
 #</editor-fold>
@@ -262,7 +266,7 @@ class Stats_fig_3_configs():
                  figure_x_axis_visibility = True,
                  figure_y_axis_visibility = True,
                  figure_xgrid_line_color = None,
-                figure_ygrid_line_color = None,
+                 figure_ygrid_line_color = None,
                  figure_outline_line_color = None,
                  figure_background_color = "white",
                  plot_dot_size = 5,
@@ -408,12 +412,20 @@ def stats_figure_3_setup(fig_configs):
         #</editor-fold>
     #</editor-fold>
     #<editor-fold Get Alpha Transforms:
-    ll_highlight_get_alpha = CustomJSTransform(v_func = ll_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
-    lm_highlight_get_alpha = CustomJSTransform(v_func = lm_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
-    lr_highlight_get_alpha = CustomJSTransform(v_func = lr_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
-    rl_highlight_get_alpha = CustomJSTransform(v_func = rl_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
-    rm_highlight_get_alpha = CustomJSTransform(v_func = rm_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
-    rr_highlight_get_alpha = CustomJSTransform(v_func = rr_ga_code, args = dict(highlight_index = highlight_index, alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes']))
+    alpha_tform_args_dict = dict(highlight_index = highlight_index,
+                                 alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes'])
+    ll_highlight_get_alpha = CustomJSTransform(v_func = ll_ga_code,
+                                               args = alpha_tform_args_dict)
+    lm_highlight_get_alpha = CustomJSTransform(v_func = lm_ga_code,
+                                               args = alpha_tform_args_dict)
+    lr_highlight_get_alpha = CustomJSTransform(v_func = lr_ga_code,
+                                               args = alpha_tform_args_dict)
+    rl_highlight_get_alpha = CustomJSTransform(v_func = rl_ga_code,
+                                               args = alpha_tform_args_dict)
+    rm_highlight_get_alpha = CustomJSTransform(v_func = rm_ga_code,
+                                               args = alpha_tform_args_dict)
+    rr_highlight_get_alpha = CustomJSTransform(v_func = rr_ga_code,
+                                               args = alpha_tform_args_dict)
     #</editor-fold>
     #<editor-fold Plot Figure Data Points:
     game_stats_figure_3.circle_dot('xs', 'll_ys',
@@ -507,40 +519,54 @@ def stats_figure_3_setup(fig_configs):
                                        v_func = hb6_gc_code)
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
-    game_stats_figure_3.rect(x = 'xs', y = transform('hb1', hb1_get_center),
-                             source = game_stats_figure_3_source, width = 1,
-                             height = 'hb1', alpha = fig_configs.hitbox_alpha,
-                             fill_alpha = 0, name = '5')
-    game_stats_figure_3.rect(x = 'xs', y = transform('hb2', hb2_get_center),
-                             source = game_stats_figure_3_source, width = 1,
-                             height = 'hb2', alpha = fig_configs.hitbox_alpha,
-                             fill_alpha = 0, name = '4')
-    game_stats_figure_3.rect(x = 'xs', y = transform('hb3', hb3_get_center),
-                             source = game_stats_figure_3_source, width = 1,
-                             height = 'hb3', alpha = fig_configs.hitbox_alpha,
-                             fill_alpha = 0, name = '3')
-    game_stats_figure_3.rect(x = 'xs', y = transform('hb4', hb4_get_center),
-                             source = game_stats_figure_3_source, width = 1,
-                             height = 'hb4', alpha = fig_configs.hitbox_alpha,
-                             fill_alpha = 0, name = '2')
-    game_stats_figure_3.rect(x = 'xs', y = transform('hb5', hb5_get_center),
-                             source = game_stats_figure_3_source, width = 1,
-                             height = 'hb5', alpha = fig_configs.hitbox_alpha,
-                             fill_alpha = 0, name = '1')
-    game_stats_figure_3.rect(x = 'xs', y = transform('hb6', hb6_get_center),
-                             source = game_stats_figure_3_source, width = 1,
-                             height = 'hb6', alpha = fig_configs.hitbox_alpha,
-                             fill_alpha = 0, name = '0')
+    hb1s = game_stats_figure_3.rect(x = 'xs',
+                                    y = transform('hb1', hb1_get_center),
+                                    source = game_stats_figure_3_source,
+                                    width = 1, height = 'hb1',
+                                    alpha = fig_configs.hitbox_alpha,
+                                    fill_alpha = 0, name = '5')
+    hb2s = game_stats_figure_3.rect(x = 'xs',
+                                    y = transform('hb2', hb2_get_center),
+                                    source = game_stats_figure_3_source,
+                                    width = 1, height = 'hb2',
+                                    alpha = fig_configs.hitbox_alpha,
+                                    fill_alpha = 0, name = '4')
+    hb3s = game_stats_figure_3.rect(x = 'xs',
+                                    y = transform('hb3', hb3_get_center),
+                                    source = game_stats_figure_3_source,
+                                    width = 1, height = 'hb3',
+                                    alpha = fig_configs.hitbox_alpha,
+                                    fill_alpha = 0, name = '3')
+    hb4s = game_stats_figure_3.rect(x = 'xs',
+                                    y = transform('hb4', hb4_get_center),
+                                    source = game_stats_figure_3_source,
+                                    width = 1, height = 'hb4',
+                                    alpha = fig_configs.hitbox_alpha,
+                                    fill_alpha = 0, name = '2')
+    hb5s = game_stats_figure_3.rect(x = 'xs',
+                                    y = transform('hb5', hb5_get_center),
+                                    source = game_stats_figure_3_source,
+                                    width = 1, height = 'hb5',
+                                    alpha = fig_configs.hitbox_alpha,
+                                    fill_alpha = 0, name = '1')
+    hb6s = game_stats_figure_3.rect(x = 'xs',
+                                    y = transform('hb6', hb6_get_center),
+                                    source = game_stats_figure_3_source,
+                                    width = 1, height = 'hb6',
+                                    alpha = fig_configs.hitbox_alpha,
+                                    fill_alpha = 0, name = '0')
     #</editor-fold>
     #<editor-fold CustomJSHover Creation:
-    customjshover_args_dict = dict(source = game_stats_figure_3_source)
+    hover_main_args_dict = dict(source = game_stats_figure_3_source)
+    hover_xs_args_dict = hover_main_args_dict.copy()
+    hover_xs_args_dict['highlight_index'] = highlight_index
+
     fig_3_xs_custom = CustomJSHover(code = fig_3_xs_code,
-                                    args = dict(source = game_stats_figure_3_source,
-                                                highlight_index = highlight_index))
+                                    args = hover_xs_args_dict)
     fig_3_ys_custom = CustomJSHover(code = fig_3_ys_code,
-                                    args = customjshover_args_dict)
+                                    args = hover_main_args_dict)
     fig_3_selected_custom = CustomJSHover(code = fig_3_selected_code,
-                                          args = customjshover_args_dict)
+                                          args = hover_main_args_dict)
     #</editor-fold>
     #<editor-fold Custom HoverTool Creation:
     hovertool_formatters = { '@xs' : fig_3_xs_custom,
@@ -549,7 +575,9 @@ def stats_figure_3_setup(fig_configs):
     game_stats_figure_3.add_tools(HoverTool(tooltips = fig_3_custom_tooltip,
                                             formatters = hovertool_formatters,
                                             mode = "mouse",
-                                            point_policy = "follow_mouse"))
+                                            point_policy = "follow_mouse",
+                                            renderers = [hb1s, hb2s, hb3s,
+                                                         hb4s, hb5s, hb6s]))
     #</editor-fold>
     return (game_stats_figure_3, game_stats_figure_3_source)
 #</editor-fold>

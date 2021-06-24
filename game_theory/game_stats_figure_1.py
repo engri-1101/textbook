@@ -4,7 +4,6 @@ from bokeh.models import (CustomJSHover, ColumnDataSource,
 
 #<editor-fold Custom HoverTool tooltip code string:
 fig_1_custom_tooltip = """
-
     <div @hovershow{custom}>
         <span style='font-size: 10px;'>Closest Data Coords:</span>
         <span style='font-size: 10px;'>@hoverxy{custom}</span>
@@ -17,34 +16,33 @@ fig_1_custom_tooltip = """
         <span style='font-size: 10px;'>Hovered (x,y):</span>
         <span style='font-size: 10px;'>($x,$y)</span>
     </div>
-
 """
 #</editor-fold>
 #<editor-fold CustomJSHover Code Strings:
     #<editor-fold custom_hover_coordinates_code:
 custom_hover_coordinates_code = """
-var x = special_vars.x;
-var y = special_vars.y;
+const x = special_vars.x;
+const y = special_vars.y;
 
-var modified_x;
-var modified_y;
-var index = 0;
+let modified_x;
+let modified_y;
+let index = 0;
 
 const data = game_stats_figure_1_source.data;
 
-for(var i = 6; i >= 1; i--){
+for(let i = 6; i >= 1; i--){
     if(x < i){
         modified_x = (i - 0.5);
         index = (3*i - 2);
     }
 }
 
-var closest_y;
+let closest_y;
 
-var scored_val = data['scored_y'][index];
-var blockedl_val = data['blockedl_y'][index];
-var blockedm_val = data['blockedm_y'][index];
-var blockedr_val = data['blockedr_y'][index];
+const scored_val = data['scored_y'][index];
+const blockedl_val = data['blockedl_y'][index];
+const blockedm_val = data['blockedm_y'][index];
+const blockedr_val = data['blockedr_y'][index];
 
 closest_y = scored_val;
 
@@ -61,53 +59,48 @@ if((y > closest_y
     closest_y = blockedr_val;
 }
 
-
 modified_y = closest_y;
 
-return("(" + modified_x.toString() + ","
-       + modified_y.toString() + ")" );
+return("(" + modified_x.toString() + "," + modified_y.toString() + ")" );
 """
     #</editor-fold>
     #<editor-fold custom_hover_hovering_code:
 custom_hover_hovering_code = """
-var x = special_vars.x;
-var y = special_vars.y;
+const x = special_vars.x;
+const y = special_vars.y;
 
-var modified_x;
-var modified_y;
-var index = 0;
+let modified_x;
+let modified_y;
+let index = 0;
 
 const data = game_stats_figure_1_source.data;
 
-for(var i = 6; i >= 1; i--){
+for(let i = 6; i >= 1; i--){
     if(x < i){
         modified_x = (i - 0.5);
         index = (3*i - 2);
     }
 }
 
-var closest_y;
+let closest_y;
 
-var scored_val = data['scored_y'][index];
-var blockedl_val = data['blockedl_y'][index];
-var blockedm_val = data['blockedm_y'][index];
-var blockedr_val = data['blockedr_y'][index];
+const scored_val = data['scored_y'][index];
+const blockedl_val = data['blockedl_y'][index];
+const blockedm_val = data['blockedm_y'][index];
+const blockedr_val = data['blockedr_y'][index];
 
 closest_y = scored_val;
-var hovering = "Scored";
+let hovering = "Scored";
 
-if((y > closest_y
-    && blockedl_val != scored_val)){
+if((y > closest_y && blockedl_val != scored_val)){
     closest_y = blockedl_val;
     hovering = "Goalie Left";
 }
-if((y > closest_y
-    && blockedm_val != blockedl_val)){
+if((y > closest_y && blockedm_val != blockedl_val)){
     closest_y = blockedm_val;
     hovering = "Goalie Middle";
 }
-if((y > closest_y
-    && blockedr_val != blockedm_val)){
+if((y > closest_y && blockedr_val != blockedm_val)){
     closest_y = blockedr_val;
     hovering = "Goalie Right";
 }
@@ -117,24 +110,24 @@ return(hovering);
     #</editor-fold>
     #<editor-fold custom_hover_code:
 custom_hover_code = """
-var index = special_vars.index;
+const index = special_vars.index;
 const data = game_stats_figure_1_source.data;
 
 if(data['hovershow'][index] == 0){
     return " hidden ";
 }
 
-var y = special_vars.y;
+const y = special_vars.y;
 
-var closest_y;
+let closest_y;
 
-var scored_val = data['scored_y'][index];
-var blockedl_val = data['blockedl_y'][index];
-var blockedm_val = data['blockedm_y'][index];
-var blockedr_val = data['blockedr_y'][index];
+const scored_val = data['scored_y'][index];
+const blockedl_val = data['blockedl_y'][index];
+const blockedm_val = data['blockedm_y'][index];
+const blockedr_val = data['blockedr_y'][index];
 
 closest_y = scored_val;
-var hovering = "scored_y";
+let hovering = "scored_y";
 
 if((y > closest_y
     && blockedl_val != scored_val)){

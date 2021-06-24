@@ -54,72 +54,54 @@ def hb_gc_code(hbno):
     return code_string
 #</editor-fold>
 #<editor-fold highlight_get_alpha Code Strings:
-ll_ga_code = """
-const index = parseInt(highlight_index.text);
-if(xs[index] == 1){
-    let new_alphas = new Array(xs.length).fill(0);
-    new_alphas[index] = 1;
-    return new_alphas;
-}
-else{
-    return alphas_zeroes;
-}
-"""
-lm_ga_code = """
-const index = parseInt(highlight_index.text);
-if(xs[index] == 2){
-    let new_alphas = new Array(xs.length).fill(0);
-    new_alphas[index] = 1;
-    return new_alphas;
-}
-else{
-    return alphas_zeroes;
-}
-"""
-lr_ga_code = """
-const index = parseInt(highlight_index.text);
-if(xs[index] == 3){
-    let new_alphas = new Array(xs.length).fill(0);
-    new_alphas[index] = 1;
-    return new_alphas;
-}
-else{
-    return alphas_zeroes;
-}
-"""
-rl_ga_code = """
-const index = parseInt(highlight_index.text);
-if(xs[index] == 4){
-    let new_alphas = new Array(xs.length).fill(0);
-    new_alphas[index] = 1;
-    return new_alphas;
-}
-else{
-    return alphas_zeroes;
-}
-"""
-rm_ga_code = """
-const index = parseInt(highlight_index.text);
-if(xs[index] == 5){
-    let new_alphas = new Array(xs.length).fill(0);
-    new_alphas[index] = 1;
-    return new_alphas;
-}
-else{
-    return alphas_zeroes;
-}
-"""
-rr_ga_code = """
-const index = parseInt(highlight_index.text);
-if(xs[index] == 6){
-    let new_alphas = new Array(xs.length).fill(0);
-    new_alphas[index] = 1;
-    return new_alphas;
-}
-else{
-    return alphas_zeroes;
-}
-"""
+def sfga_get_alpha_code(sfga):
+    """sfga_get_alpha_code is a function used to obtain the correct v_func code
+    string for the CustomJSTransform being used to process the
+    'highlight_alphas' column of game_stats_figure_3_source.data for use in
+    highlighting the correct dots on the plot according to the user's mouse
+    position. When given the correct args and used in a v_func, the code string
+    returned by this function will return a modified version of the
+    'highlight_alphas' column to each set of invisible highlight plot dots.
+    The modified version will contain an array of ints, containing at most a
+    single value of 1, with all other items in the array being 0. The returned
+    array will only have the value of 1 if the original 'highlight_alphas'
+    column contained the int corresponding to the dot's sfga pair (Striker
+    Foot, Goalie Action pair) in the index being checked by the v_func.
+    Setting the highlight alphas of all highlight dots other than the
+    indicated highlighted dot to zero makes it so that they are hidden to the
+    user, giving the effect of highlighting the user's hovered dot.
+
+
+    Keyword Argument:
+
+    sfga - A string, either 'll', 'lm', 'lr', 'rl', 'rm', or 'rr'. The value
+    used should correspond to the sfga pair associated with the set of
+    highlight dots the returned v_func code string will be used for.
+
+
+    Returns:
+
+    string - A JavaScript code string that will work as the v_func for a bokeh
+    CustomJSTransform being used to set the alphas of a set of highlight dots.
+    """
+    #Get highlight value from sfga:
+    sfgas = ['ll', 'lm', 'lr', 'rl', 'rm', 'rr']
+    highlight_val = sfgas.index(sfga) + 1
+    highlight_val = str(highlight_val)
+
+    #Create and return code string:
+    code_string = """
+    const index = parseInt(highlight_index.text);
+    if(xs[index] == """ + highlight_val + """){
+        let new_alphas = new Array(xs.length).fill(0);
+        new_alphas[index] = 1;
+        return new_alphas;
+    }
+    else{
+        return alphas_zeroes;
+    }
+    """
+    return code_string
 #</editor-fold>
 #<editor-fold Custom Hover Code Strings:
     #<editor-fold xs Code String:
@@ -414,17 +396,17 @@ def stats_figure_3_setup(fig_configs):
     #<editor-fold Get Alpha Transforms:
     alpha_tform_args_dict = dict(highlight_index = highlight_index,
                                  alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes'])
-    ll_highlight_get_alpha = CustomJSTransform(v_func = ll_ga_code,
+    ll_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('ll'),
                                                args = alpha_tform_args_dict)
-    lm_highlight_get_alpha = CustomJSTransform(v_func = lm_ga_code,
+    lm_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('lm'),
                                                args = alpha_tform_args_dict)
-    lr_highlight_get_alpha = CustomJSTransform(v_func = lr_ga_code,
+    lr_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('lr'),
                                                args = alpha_tform_args_dict)
-    rl_highlight_get_alpha = CustomJSTransform(v_func = rl_ga_code,
+    rl_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('rl'),
                                                args = alpha_tform_args_dict)
-    rm_highlight_get_alpha = CustomJSTransform(v_func = rm_ga_code,
+    rm_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('rm'),
                                                args = alpha_tform_args_dict)
-    rr_highlight_get_alpha = CustomJSTransform(v_func = rr_ga_code,
+    rr_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('rr'),
                                                args = alpha_tform_args_dict)
     #</editor-fold>
     #<editor-fold Plot Figure Data Points:

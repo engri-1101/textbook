@@ -3,6 +3,8 @@ from bokeh.models import (CustomJSHover, ColumnDataSource, CustomJSTransform,
                           HoverTool, Div)
 from bokeh.transform import transform
 
+#Create a div used by the figure to determine the highlighted index for
+#hovering.
 highlight_index = Div(text = "0")
 
 #<editor-fold Code String Function hb_gc_code:
@@ -105,6 +107,7 @@ def sfga_get_alpha_code(sfga):
 #</editor-fold>
 #<editor-fold Custom Hover Code Strings:
     #<editor-fold Shared Code String Parts:
+#Selects the corresponding datapoint to the hovered hitbox.
 select_sorted_value = """
 
 const values = [data['ll_ys'][index],
@@ -123,7 +126,7 @@ sorted_values = sorted_values.sort((a, b) => b - a);
 let selected = column[values.indexOf(sorted_values[parseInt(name)])];
 
 """
-
+#Setup code for the code string.
 custom_hover_code_setup = """
 let index = special_vars.index;
 let name = special_vars.name;
@@ -133,6 +136,9 @@ const length = data['xs'].length;
 """
     #</editor-fold>
     #<editor-fold xs Code String:
+    #obtains the iteration number of the selected data point and makes changes
+    #necessary for the other hover functions and the highlighting functionality
+    #of the figure.
 fig_3_xs_code = custom_hover_code_setup + """
 const column = [1, 2, 3, 4, 5, 6];
 """ + select_sorted_value + """
@@ -146,6 +152,7 @@ return index.toString();
 """
     #</editor-fold>
     #<editor-fold ys Code String:
+    #Obtains the y value of the selected data point.
 fig_3_ys_code = custom_hover_code_setup + """
 const column = ['ll', 'lm', 'lr', 'rl', 'rm', 'rr'];
 """ + select_sorted_value + """
@@ -153,6 +160,7 @@ return(source.data[selected + "_ys"][index].toString().substring(0, 5));
 """
     #</editor-fold>
     #<editor-fold selected Code String:
+    #Obtains the SF-GA associated with the selected data point
 fig_3_selected_code = custom_hover_code_setup + """
 const column = ['ll', 'lm', 'lr', 'rl', 'rm', 'rr'];
 """ + select_sorted_value + """
@@ -160,7 +168,10 @@ return(selected);
 """
     #</editor-fold>
 #</editor-fold>
-#<editor-fold Cusstom Hover Tooltip Code String:
+#<editor-fold Custom Hover Tooltip Code String:
+#Note: some of the columns used by the hovertool don't need to actually be
+#those columns (ll_ys, lm_ys). They were used because the hovertool needs an
+#actual column in the source.
 fig_3_custom_tooltip = """
 <div>
     <span style='font-size: 10px;'>Iteration:</span>
@@ -171,7 +182,7 @@ fig_3_custom_tooltip = """
     <span style='font-size: 10px;'>@ll_ys{custom}</span>
 </div>
 <div>
-    <span style='font-size: 10px;'>Risk Type:</span>
+    <span style='font-size: 10px;'>Risk SF-GA:</span>
     <span style='font-size: 10px;'>@lm_ys{custom}</span>
 </div>
 """
@@ -179,6 +190,14 @@ fig_3_custom_tooltip = """
 
 #<editor-fold Stats_fig_3_configs():
 class Stats_fig_3_configs():
+    """Objects of this class are used to organize and pass parameters to
+    Stats Figure 3. All arguments are mutable, and default values for them are
+    the currently decided values being used to make the game. The main purpose
+    of the configurability provided through the use of this class is to make it
+    easier to test changes. Any changes that improve the game should be made
+    directly to the default values of the arguments in this class after
+    successful testing.
+    """
     def __init__(self, figure_base_tools = "box_zoom, wheel_zoom, pan",
                  figure_toolbar_location = "below",
                  figure_title = "Goalie Perceived Risks Over Iterations",
@@ -251,7 +270,26 @@ class Stats_fig_3_configs():
 
 #<editor-fold stats_figure_3_setup:
 def stats_figure_3_setup(fig_configs):
+    """Fully creates and sets up stats figure 3 for use in the main game. Stats
+    Figure 3 displays the goalie's perceived risks determined through
+    fictitious play within the demo, according to game iteration.
+
+
+    Keyword Argument:
+
+    fig_configs - An oject of type Stats_fig_3_configs containing the user's
+    desired figure values within its attributes.
+
+
+    Returns:
+
+    game_stats_figure_3 - The Game stats Bokeh figure displaying the data.
+
+    game_stats_figure_3_source - The ColumnDataSource used by
+    game_stats_figure_3.
+    """
     #<editor-fold Figure Creation:
+    #Create and configure the main aspects of the figure:
     game_stats_figure_3 = figure(tools = fig_configs.figure_base_tools,
                                  toolbar_location = fig_configs.figure_toolbar_location,
                                  title = fig_configs.figure_title,
@@ -271,6 +309,7 @@ def stats_figure_3_setup(fig_configs):
     #</editor-fold>
     #<editor-fold ColumnDataSource Creation:
         #<editor-fold Create Base Values:
+        #Create initial values for game_stats_figure_3_source
     source_xs = []
 
     source_ll_ys = []
@@ -319,6 +358,7 @@ def stats_figure_3_setup(fig_configs):
     source_rr_ys[0] = ((1/3 * 0.93) + (1/3 * 0.72) + (1/3 * 0.70))
         #</editor-fold>
         #<editor-fold Make Data Source Using Base Values:
+        #Create game_stats_figure_3_source with the values that were created.
     source_data = dict(xs = source_xs,
 
                        ll_ys = source_ll_ys, lm_ys = source_lm_ys,
@@ -336,6 +376,9 @@ def stats_figure_3_setup(fig_configs):
         #</editor-fold>
     #</editor-fold>
     #<editor-fold Get Alpha Transforms:
+    #Create the CustomJSTransforms that are used by the figure to update the
+    #highlight dots according to the values contained within the
+    #game_stats_figure_3_source column 'highlight_alphas'
     alpha_tform_args_dict = dict(highlight_index = highlight_index,
                                  alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes'])
     ll_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('ll'),
@@ -352,6 +395,7 @@ def stats_figure_3_setup(fig_configs):
                                                args = alpha_tform_args_dict)
     #</editor-fold>
     #<editor-fold Plot Figure Data Points:
+    #Create the Data Points for the figure:
     game_stats_figure_3.circle_dot('xs', 'll_ys',
                                    source = game_stats_figure_3_source,
                                    size = fig_configs.plot_dot_size,
@@ -428,6 +472,9 @@ def stats_figure_3_setup(fig_configs):
                                                      rr_highlight_get_alpha))
     #</editor-fold>
     #<editor-fold CustomJSTransform Definitions For Custom HoverTool:
+    #Create the CustomJSTransforms that are used to update the y coordinates of
+    #the centers of the invisible hitboxes used to determine the user's
+    #highlighted data points.
     hb_gc_args_dict = dict(source = game_stats_figure_3_source)
     hb1_get_center = CustomJSTransform(v_func = hb_gc_code(1))
     hb2_get_center = CustomJSTransform(args = hb_gc_args_dict,
@@ -442,6 +489,7 @@ def stats_figure_3_setup(fig_configs):
                                        v_func = hb_gc_code(6))
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
+    #Create the invisible hitboxes for the figure:
     hb1s = game_stats_figure_3.rect(x = 'xs',
                                     y = transform('hb1', hb1_get_center),
                                     source = game_stats_figure_3_source,
@@ -480,6 +528,8 @@ def stats_figure_3_setup(fig_configs):
                                     fill_alpha = 0, name = '0')
     #</editor-fold>
     #<editor-fold CustomJSHover Creation:
+    #Create the CustomJSHovers used to format the data for the figure's
+    #custom HoverTool:
     hover_main_args_dict = dict(source = game_stats_figure_3_source)
     hover_xs_args_dict = hover_main_args_dict.copy()
     hover_xs_args_dict['highlight_index'] = highlight_index
@@ -492,6 +542,7 @@ def stats_figure_3_setup(fig_configs):
                                           args = hover_main_args_dict)
     #</editor-fold>
     #<editor-fold Custom HoverTool Creation:
+    #Create the Custom HoverTool and add it to the figure:
     hovertool_formatters = { '@xs' : fig_3_xs_custom,
                              '@ll_ys' : fig_3_ys_custom,
                              '@lm_ys' : fig_3_selected_custom}

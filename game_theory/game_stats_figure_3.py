@@ -169,6 +169,7 @@ return(selected);
     #</editor-fold>
 #</editor-fold>
 #<editor-fold Custom Hover Tooltip Code String:
+#Code below is for how the custom HoverTool displays the information.
 #Note: some of the columns used by the hovertool don't need to actually be
 #those columns (ll_ys, lm_ys). They were used because the hovertool needs an
 #actual column in the source.

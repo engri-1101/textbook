@@ -531,30 +531,7 @@ goalieFictitiousDecisionTracking();
 update_game_stats_figure_1 = """
 
 function updateFig1(){
-    let scored_bars = [ll_scored_bar, lm_scored_bar, lr_scored_bar,
-                       rl_scored_bar, rm_scored_bar, rr_scored_bar];
-    let scored_texts = [ll_scored, lm_scored, lr_scored,
-                        rl_scored, rm_scored, rr_scored];
-
-    let blockedl_bars = [ll_blocked_left_bar, lm_blocked_left_bar,
-                         lr_blocked_left_bar, rl_blocked_left_bar,
-                         rm_blocked_left_bar, rr_blocked_left_bar];
-    let blockedl_texts = [ll_blocked_left, lm_blocked_left, lr_blocked_left,
-                          rl_blocked_left, rm_blocked_left, rr_blocked_left];
-
-    let blockedm_bars = [ll_blocked_middle_bar, lm_blocked_middle_bar,
-                         lr_blocked_middle_bar, rl_blocked_middle_bar,
-                         rm_blocked_middle_bar, rr_blocked_middle_bar];
-    let blockedm_texts = [ll_blocked_middle, lm_blocked_middle,
-                          lr_blocked_middle, rl_blocked_middle,
-                          rm_blocked_middle, rr_blocked_middle];
-
-    let blockedr_bars = [ll_blocked_right_bar, lm_blocked_right_bar,
-                         lr_blocked_right_bar, rl_blocked_right_bar,
-                         rm_blocked_right_bar, rr_blocked_right_bar];
-    let blockedr_texts = [ll_blocked_right, lm_blocked_right, lr_blocked_right,
-                          rl_blocked_right, rm_blocked_right, rr_blocked_right];
-
+    const fig_1_data = game_stats_figure_1_source.data;
     let selected_bar = 0;
 
     if (kicker_foot == 'Right'){
@@ -569,96 +546,34 @@ function updateFig1(){
     }
 
     if(goal == 1){
-        let new_score = parseInt(scored_texts[selected_bar].text);
-        new_score += 1;
-        scored_texts[selected_bar].text = new_score.toString();
+        fig_1_data['scored_y'][selected_bar] += 1;
     }
     else{
-        if(goalie_action == 'Left'){
-            let new_blockedl = parseInt(blockedl_texts[selected_bar].text);
-            new_blockedl += 1;
-            blockedl_texts[selected_bar].text = new_blockedl.toString();
+        if(goalie_action == "Left"){
+            fig_1_data['blockedl_y'][selected_bar] += 1;
         }
-        else if(goalie_action == 'Middle'){
-            let new_blockedm = parseInt(blockedm_texts[selected_bar].text);
-            new_blockedm += 1;
-            blockedm_texts[selected_bar].text = new_blockedm.toString();
+        else if(goalie_action == "Middle"){
+            fig_1_data['blockedm_y'][selected_bar] += 1;
         }
         else{
-            let new_blockedr = parseInt(blockedr_texts[selected_bar].text);
-            new_blockedr += 1;
-            blockedr_texts[selected_bar].text = new_blockedr.toString();
+            fig_1_data['blockedr_y'][selected_bar] += 1;
         }
     }
-
-    let scored_bar_height = parseInt(scored_texts[selected_bar].text);
-    scored_bars[selected_bar].height = scored_bar_height;
-    scored_bars[selected_bar].y = scored_bar_height / 2;
-
-    let blockedl_bar_height = parseInt(blockedl_texts[selected_bar].text);
-    blockedl_bars[selected_bar].height = blockedl_bar_height;
-    blockedl_bars[selected_bar].y = scored_bar_height + blockedl_bar_height/2;
-
-    let blockedm_bar_height = parseInt(blockedm_texts[selected_bar].text);
-    blockedm_bars[selected_bar].height = blockedm_bar_height;
-    blockedm_bars[selected_bar].y = (scored_bar_height
-                                     + blockedl_bar_height
-                                     + blockedm_bar_height/2);
-
-    let blockedr_bar_height = parseInt(blockedr_texts[selected_bar].text);
-    blockedr_bars[selected_bar].height = blockedr_bar_height;
-    blockedr_bars[selected_bar].y = (scored_bar_height
-                                     + blockedl_bar_height
-                                     + blockedm_bar_height
-                                     + blockedr_bar_height/2);
-
-    let new_graph_height = 0;
-    for (let i = 0; i <= 5; i++){
-        let possible_graph_height = (Math.round((parseInt(scored_texts[i].text)
-                                                 + parseInt(blockedl_texts[i].text)
-                                                 + parseInt(blockedm_texts[i].text)
-                                                 + parseInt(blockedr_texts[i].text))
-                                                * 5/4));
-        if(possible_graph_height > new_graph_height){
-           new_graph_height = possible_graph_height;
-        }
-    }
-    game_stats_figure_1.y_range.end = new_graph_height;
+    game_stats_figure_1_source.change.emit();
 
     if(parseInt(nround.text) >= iters_to_run){
-        const fig_1_data = game_stats_figure_1_source.data;
-
-        for (let i = 0; i <= 5; i++){
-            const scored_y_height = parseInt(scored_texts[i].text);
-            const blockedl_height = (parseInt(blockedl_texts[i].text)
-                                     + scored_y_height);
-            const blockedm_height = (parseInt(blockedm_texts[i].text)
-                                     + blockedl_height);
-            const blockedr_height = (parseInt(blockedr_texts[i].text)
-                                     + blockedm_height);
-
-            const index0 = i * 3;
-            const index1 = index0 + 1;
-            const index2 = index1 + 1;
-
-            fig_1_data['scored_y'][index0] = scored_y_height;
-            fig_1_data['scored_y'][index1] = scored_y_height;
-            fig_1_data['scored_y'][index2] = scored_y_height;
-
-            fig_1_data['blockedl_y'][index0] = blockedl_height;
-            fig_1_data['blockedl_y'][index1] = blockedl_height;
-            fig_1_data['blockedl_y'][index2] = blockedl_height;
-
-            fig_1_data['blockedm_y'][index0] = blockedm_height;
-            fig_1_data['blockedm_y'][index1] = blockedm_height;
-            fig_1_data['blockedm_y'][index2] = blockedm_height;
-
-            fig_1_data['blockedr_y'][index0] = blockedr_height;
-            fig_1_data['blockedr_y'][index1] = blockedr_height;
-            fig_1_data['blockedr_y'][index2] = blockedr_height;
+        let grid_max = 0;
+        for(let i=0; i<=5; i++){
+            const possible_max = Math.round(((fig_1_data['scored_y'][i]
+                                              + fig_1_data['blockedl_y'][i]
+                                              + fig_1_data['blockedm_y'][i]
+                                              + fig_1_data['blockedr_y'][i])
+                                             * 5/4));
+            if(grid_max < possible_max){
+                grid_max = possible_max;
+            }
         }
-
-        game_stats_figure_1_source.change.emit();
+        game_stats_figure_1.y_range.end = grid_max;
     }
 }
 updateFig1();
@@ -2118,15 +2033,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
     (game_figure, goalie_head, goalie_body,
     ball) = game_figure_setup(game_figure_configs)
 
-    (game_stats_figure_1, game_stats_figure_1_source, ll_scored_bar,
-     lm_scored_bar, lr_scored_bar, rl_scored_bar, rm_scored_bar,
-     rr_scored_bar, ll_blocked_left_bar, lm_blocked_left_bar,
-     lr_blocked_left_bar, rl_blocked_left_bar, rm_blocked_left_bar,
-     rr_blocked_left_bar, ll_blocked_middle_bar, lm_blocked_middle_bar,
-     lr_blocked_middle_bar, rl_blocked_middle_bar, rm_blocked_middle_bar,
-     rr_blocked_middle_bar, ll_blocked_right_bar, lm_blocked_right_bar,
-     lr_blocked_right_bar, rl_blocked_right_bar, rm_blocked_right_bar,
-     rr_blocked_right_bar) = stats_figure_1_setup(stats_figure_1_configs)
+    (game_stats_figure_1,
+     game_stats_figure_1_source) = stats_figure_1_setup(stats_figure_1_configs)
 
     (game_stats_figure_2,
      game_stats_figure_2_source) = stats_figure_2_setup(stats_figure_2_configs)
@@ -2208,42 +2116,26 @@ def make_game(game_figure_configs = default_game_fig_configs,
                       automation_distribution_table = automation_distribution_table,
                       goalie_head = goalie_head, goalie_body = goalie_body,
                       goalie_counter_source = goalie_counter_source,
-                      ll_scored_bar = ll_scored_bar, ll_scored = ll_scored,
-                      lm_scored_bar = lm_scored_bar, lm_scored = lm_scored,
-                      lr_scored_bar = lr_scored_bar, lr_scored = lr_scored,
-                      rl_scored_bar = rl_scored_bar, rl_scored = rl_scored,
-                      rm_scored_bar = rm_scored_bar, rm_scored = rm_scored,
-                      rr_scored_bar = rr_scored_bar, rr_scored = rr_scored,
-                      ll_blocked_left_bar = ll_blocked_left_bar, ball = ball,
-                      lm_blocked_left_bar = lm_blocked_left_bar, score = score,
-                      lr_blocked_left_bar = lr_blocked_left_bar,
-                      rl_blocked_left_bar = rl_blocked_left_bar,
-                      rm_blocked_left_bar = rm_blocked_left_bar,
-                      rr_blocked_left_bar = rr_blocked_left_bar,
+                      ll_scored = ll_scored,
+                      lm_scored = lm_scored,
+                      lr_scored = lr_scored,
+                      rl_scored = rl_scored,
+                      rm_scored = rm_scored,
+                      rr_scored = rr_scored,
+                      ball = ball,
+                      score = score,
                       ll_blocked_left = ll_blocked_left,
                       lm_blocked_left = lm_blocked_left,
                       lr_blocked_left = lr_blocked_left,
                       rl_blocked_left = rl_blocked_left,
                       rm_blocked_left = rm_blocked_left,
                       rr_blocked_left = rr_blocked_left,
-                      ll_blocked_middle_bar = ll_blocked_middle_bar,
-                      lm_blocked_middle_bar = lm_blocked_middle_bar,
-                      lr_blocked_middle_bar = lr_blocked_middle_bar,
-                      rl_blocked_middle_bar = rl_blocked_middle_bar,
-                      rm_blocked_middle_bar = rm_blocked_middle_bar,
-                      rr_blocked_middle_bar = rr_blocked_middle_bar,
                       ll_blocked_middle = ll_blocked_middle,
                       lm_blocked_middle = lm_blocked_middle,
                       lr_blocked_middle = lr_blocked_middle,
                       rl_blocked_middle = rl_blocked_middle,
                       rm_blocked_middle = rm_blocked_middle,
                       rr_blocked_middle = rr_blocked_middle,
-                      ll_blocked_right_bar = ll_blocked_right_bar,
-                      lm_blocked_right_bar = lm_blocked_right_bar,
-                      lr_blocked_right_bar = lr_blocked_right_bar,
-                      rl_blocked_right_bar = rl_blocked_right_bar,
-                      rm_blocked_right_bar = rm_blocked_right_bar,
-                      rr_blocked_right_bar = rr_blocked_right_bar,
                       ll_blocked_right = ll_blocked_right,
                       lm_blocked_right = lm_blocked_right,
                       lr_blocked_right = lr_blocked_right,

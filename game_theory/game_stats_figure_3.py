@@ -104,18 +104,9 @@ def sfga_get_alpha_code(sfga):
     return code_string
 #</editor-fold>
 #<editor-fold Custom Hover Code Strings:
-    #<editor-fold xs Code String:
-fig_3_xs_code = """
-let index = special_vars.index;
-let name = special_vars.name;
-let data = source.data;
-const length = data['xs'].length;
-const column = [1,
-                2,
-                3,
-                4,
-                5,
-                6];
+    #<editor-fold Shared Code String Parts:
+select_sorted_value = """
+
 const values = [data['ll_ys'][index],
                 data['lm_ys'][index],
                 data['lr_ys'][index],
@@ -131,6 +122,24 @@ let sorted_values = [data['ll_ys'][index],
 sorted_values = sorted_values.sort((a, b) => b - a);
 let selected = column[values.indexOf(sorted_values[parseInt(name)])];
 
+"""
+
+custom_hover_code_setup = """
+let index = special_vars.index;
+let name = special_vars.name;
+let data = source.data;
+const length = data['xs'].length;
+
+"""
+    #<editor-fold xs Code String:
+fig_3_xs_code = custom_hover_code_setup + """
+const column = [1,
+                2,
+                3,
+                4,
+                5,
+                6];
+""" + select_sorted_value + """
 data['highlight_alphas'][parseInt(highlight_index.text)] = 0;
 highlight_index.text = index.toString();
 //data['highlight_alphas'] = new Array(length).fill(0);
@@ -142,32 +151,14 @@ return index.toString();
 """
     #</editor-fold>
     #<editor-fold ys Code String:
-fig_3_ys_code = """
-let index = special_vars.index;
-let name = special_vars.name;
-let data = source.data;
-const length = data['xs'].length;
+fig_3_ys_code = custom_hover_code_setup + """
 const column = ['ll',
                 'lm',
                 'lr',
                 'rl',
                 'rm',
                 'rr'];
-const values = [data['ll_ys'][index],
-                data['lm_ys'][index],
-                data['lr_ys'][index],
-                data['rl_ys'][index],
-                data['rm_ys'][index],
-                data['rr_ys'][index]];
-let sorted_values = [data['ll_ys'][index],
-                     data['lm_ys'][index],
-                     data['lr_ys'][index],
-                     data['rl_ys'][index],
-                     data['rm_ys'][index],
-                     data['rr_ys'][index]];
-sorted_values = sorted_values.sort((a, b) => b - a);
-let selected = column[values.indexOf(sorted_values[parseInt(name)])];
-
+""" + select_sorted_value + """
 if(selected == 'll'){
     return(source.data['ll_ys'][index].toString().substring(0, 5));
 }
@@ -189,31 +180,14 @@ else if(selected == 'rr'){
 """
     #</editor-fold>
     #<editor-fold selected Code String:
-fig_3_selected_code = """
-let index = special_vars.index;
-let name = special_vars.name;
-let data = source.data;
-const length = data['xs'].length;
+fig_3_selected_code = custom_hover_code_setup + """
 const column = ['ll',
                 'lm',
                 'lr',
                 'rl',
                 'rm',
                 'rr'];
-const values = [data['ll_ys'][index],
-                data['lm_ys'][index],
-                data['lr_ys'][index],
-                data['rl_ys'][index],
-                data['rm_ys'][index],
-                data['rr_ys'][index]];
-let sorted_values = [data['ll_ys'][index],
-                     data['lm_ys'][index],
-                     data['lr_ys'][index],
-                     data['rl_ys'][index],
-                     data['rm_ys'][index],
-                     data['rr_ys'][index]];
-sorted_values = sorted_values.sort((a, b) => b - a);
-let selected = column[values.indexOf(sorted_values[parseInt(name)])];
+""" + select_sorted_value + """
 return(selected);
 """
     #</editor-fold>

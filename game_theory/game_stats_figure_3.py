@@ -131,18 +131,13 @@ let data = source.data;
 const length = data['xs'].length;
 
 """
+    #</editor-fold>
     #<editor-fold xs Code String:
 fig_3_xs_code = custom_hover_code_setup + """
-const column = [1,
-                2,
-                3,
-                4,
-                5,
-                6];
+const column = [1, 2, 3, 4, 5, 6];
 """ + select_sorted_value + """
 data['highlight_alphas'][parseInt(highlight_index.text)] = 0;
 highlight_index.text = index.toString();
-//data['highlight_alphas'] = new Array(length).fill(0);
 data['highlight_alphas'][index] = selected;
 
 source.change.emit();
@@ -152,41 +147,14 @@ return index.toString();
     #</editor-fold>
     #<editor-fold ys Code String:
 fig_3_ys_code = custom_hover_code_setup + """
-const column = ['ll',
-                'lm',
-                'lr',
-                'rl',
-                'rm',
-                'rr'];
+const column = ['ll', 'lm', 'lr', 'rl', 'rm', 'rr'];
 """ + select_sorted_value + """
-if(selected == 'll'){
-    return(source.data['ll_ys'][index].toString().substring(0, 5));
-}
-else if(selected == 'lm'){
-    return(source.data['lm_ys'][index].toString().substring(0, 5));
-}
-else if(selected == 'lr'){
-    return(source.data['lr_ys'][index].toString().substring(0, 5));
-}
-else if(selected == 'rl'){
-    return(source.data['rl_ys'][index].toString().substring(0, 5));
-}
-else if(selected == 'rm'){
-    return(source.data['rm_ys'][index].toString().substring(0, 5));
-}
-else if(selected == 'rr'){
-    return(source.data['rr_ys'][index].toString().substring(0, 5));
-}
+return(source.data[selected + "_ys"][index].toString().substring(0, 5));
 """
     #</editor-fold>
     #<editor-fold selected Code String:
 fig_3_selected_code = custom_hover_code_setup + """
-const column = ['ll',
-                'lm',
-                'lr',
-                'rl',
-                'rm',
-                'rr'];
+const column = ['ll', 'lm', 'lr', 'rl', 'rm', 'rr'];
 """ + select_sorted_value + """
 return(selected);
 """

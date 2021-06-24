@@ -5,53 +5,53 @@ from bokeh.transform import transform
 
 highlight_index = Div(text = "0")
 
-#<editor-fold hb_gc Code Strings:
-hb1_gc_code = """
-let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++){
-    new_xs[i] = xs[i]/2;
-}
-return new_xs;
-"""
-hb2_gc_code = """
-let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++){
-    new_xs[i] = xs[i]/2 + source.data['hb1'][i];
-}
-return new_xs;
-"""
-hb3_gc_code = """
-let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++){
-    new_xs[i] = xs[i]/2 + source.data['hb2'][i] + source.data['hb1'][i];
-}
-return new_xs;
-"""
-hb4_gc_code = """
-let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++){
-    new_xs[i] = (xs[i]/2 + source.data['hb3'][i] + source.data['hb2'][i]
-                 + source.data['hb1'][i]);
-}
-return new_xs;
-"""
-hb5_gc_code = """
-let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++){
-    new_xs[i] = (xs[i]/2 + source.data['hb4'][i] + source.data['hb3'][i]
-                 + source.data['hb2'][i] + source.data['hb1'][i]);
-}
-return new_xs;
-"""
-hb6_gc_code = """
-let new_xs = new Array(xs.length);
-for(let i = 0; i < xs.length; i++){
-    new_xs[i] = (xs[i]/2 + source.data['hb5'][i] + source.data['hb4'][i]
-                 + source.data['hb3'][i] + source.data['hb2'][i]
-                 + source.data['hb1'][i]);
-}
-return new_xs;
-"""
+#<editor-fold Code String Function hb_gc_code:
+def hb_gc_code(hbno):
+    """hb_gc_code is a function used to obtain the correct v_func code string
+    for the CustomJSTransform being used to get the center y coordinates of a
+    given set of hbs (hitboxes). When calling the function for an hb (they are
+    labeled hb1 through hb6), the parameter hbno should be the number of that
+    hb  (E.g hbno should be 4 for hb4).
+
+
+    Keyword Argument:
+
+    hbno - An int, either 1, 2, 3, 4, 5, or 6. Should correspond to the int in
+    the hb name.
+
+
+    Returns:
+
+    string - A JavaScript code string that will work as the v_func for a bokeh
+    CustomJSTransform being used to obtain the y coordinates of the centers of
+    a set of hbs.
+    """
+    #Create new_xs, the line of code that changes between hb v_funcs:
+    new_xs = "new_xs[i] = xs[i]/2"
+
+    #Create Source_dats to organize the possible additions to the new_xs line:
+    source_dats = [" + source.data['hb1'][i]",
+                   " + source.data['hb2'][i]",
+                   " + source.data['hb3'][i]",
+                   " + source.data['hb4'][i]",
+                   " + source.data['hb5'][i]"]
+
+    #Make necessary changes to new_xs:
+    hbno -= 2
+    while(hbno >= 0):
+        new_xs += source_dats[hbno]
+        hbno -= 1
+    new_xs += ";"
+
+    #Create and return the full code string:
+    code_string = """
+    let new_xs = new Array(xs.length);
+    for(let i = 0; i < xs.length; i++){
+        """ + new_xs + """
+    }
+    return new_xs;
+    """
+    return code_string
 #</editor-fold>
 #<editor-fold highlight_get_alpha Code Strings:
 ll_ga_code = """
@@ -505,18 +505,17 @@ def stats_figure_3_setup(fig_configs):
     #</editor-fold>
     #<editor-fold CustomJSTransform Definitions For Custom HoverTool:
     hb_gc_args_dict = dict(source = game_stats_figure_3_source)
-
-    hb1_get_center = CustomJSTransform(v_func = hb1_gc_code)
+    hb1_get_center = CustomJSTransform(v_func = hb_gc_code(1))
     hb2_get_center = CustomJSTransform(args = hb_gc_args_dict,
-                                       v_func = hb2_gc_code)
+                                       v_func = hb_gc_code(2))
     hb3_get_center = CustomJSTransform(args = hb_gc_args_dict,
-                                       v_func = hb3_gc_code)
+                                       v_func = hb_gc_code(3))
     hb4_get_center = CustomJSTransform(args = hb_gc_args_dict,
-                                       v_func = hb4_gc_code)
+                                       v_func = hb_gc_code(4))
     hb5_get_center = CustomJSTransform(args = hb_gc_args_dict,
-                                       v_func = hb5_gc_code)
+                                       v_func = hb_gc_code(5))
     hb6_get_center = CustomJSTransform(args = hb_gc_args_dict,
-                                       v_func = hb6_gc_code)
+                                       v_func = hb_gc_code(6))
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
     hb1s = game_stats_figure_3.rect(x = 'xs',

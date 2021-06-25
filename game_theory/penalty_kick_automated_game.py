@@ -402,13 +402,19 @@ function scoring(){
 
         if(strategy_to_use.text == "Fictitious_Play"){
             game_stats_figure_1.visible = true;
-            game_stats_figure_2.visible = true;
-            game_stats_figure_3.visible = true;
+            game_stats_figure_2.visible = false;
+            game_stats_figure_3.visible = false;
+            b_fig_1.visible = true;
+            b_fig_2.visible = true;
+            b_fig_3.visible = true;
         }
         else{
             game_stats_figure_1.visible = true;
-            game_stats_figure_2.visible = true;
+            game_stats_figure_2.visible = false;
             game_stats_figure_3.visible = false;
+            b_fig_1.visible = true;
+            b_fig_2.visible = true;
+            b_fig_3.visible = false;
         }
     }
     nround.text = rounds_played.toString();
@@ -622,6 +628,8 @@ function updateFig2(){
         //Resize Graph:
         game_stats_figure_2.y_range.end = fig_2_max_val + buffer;
         game_stats_figure_2.y_range.start = fig_2_min_val - buffer;
+        game_stats_figure_2.x_range.start -= 0.5;
+        game_stats_figure_2.x_range.end += 0.5;
 
         game_stats_figure_2_source.change.emit();
     }
@@ -785,8 +793,11 @@ function updateFig3(){
         fig_3_max_val = Math.round(fig_3_max_val * 10) / 10;
         fig_3_min_val = Math.round(fig_3_min_val * 10) / 10;
         const fig_3_buffer = 0.1;
-        game_stats_figure_3.y_range.end = fig_3_max_val + fig_3_buffer;
+        game_stats_figure_3.y_range.end = Math.min(fig_3_max_val + fig_3_buffer,
+                                                   1);
         game_stats_figure_3.y_range.start = fig_3_min_val - fig_3_buffer;
+        game_stats_figure_3.x_range.start -= 0.5;
+        game_stats_figure_3.x_range.end += 0.5;
     }
 
     game_stats_figure_3_source.change.emit();
@@ -1054,6 +1065,36 @@ b_start_automate.visible = true;
 b_make_counter.visible = false;
 """
     #</editor-fold>
+    #<editor-fold b_fig_1 callback Code String:
+b_fig_1_click_code = """
+b_fig_1.disabled = true;
+b_fig_2.disabled = false;
+b_fig_3.disabled = false;
+game_stats_figure_1.visible = true;
+game_stats_figure_2.visible = false;
+game_stats_figure_3.visible = false;
+"""
+    #</editor-fold>
+    #<editor-fold b_fig_2 callback Code String:
+b_fig_2_click_code = """
+b_fig_1.disabled = false;
+b_fig_2.disabled = true;
+b_fig_3.disabled = false;
+game_stats_figure_1.visible = false;
+game_stats_figure_2.visible = true;
+game_stats_figure_3.visible = false;
+"""
+    #</editor-fold>
+    #<editor-fold b_fig_3 callback Code String:
+b_fig_3_click_code = """
+b_fig_1.disabled = false;
+b_fig_2.disabled = false;
+b_fig_3.disabled = true;
+game_stats_figure_1.visible = false;
+game_stats_figure_2.visible = false;
+game_stats_figure_3.visible = true;
+"""
+    #</editor-fold>
 #</editor-fold>
 
 #<editor-fold create_buttons():
@@ -1088,8 +1129,29 @@ def create_buttons(configs):
                             width_policy = configs.b_make_counter_width_policy,
                             disabled = configs.b_make_counter_disabled,
                             visible = configs.b_make_counter_visibility)
+    b_fig_1 = Button(label = configs.b_fig_1_label,
+                     button_type = configs.b_fig_1_button_type,
+                     sizing_mode = configs.b_fig_1_sizing_mode,
+                     width_policy = configs.b_fig_1_width_policy,
+                     disabled = configs.b_fig_1_disabled,
+                     visible = configs.b_fig_1_visibility)
 
-    return b_automate, b_start_automate, b_auto_next, b_make_counter
+    b_fig_2 = Button(label = configs.b_fig_2_label,
+                     button_type = configs.b_fig_2_button_type,
+                     sizing_mode = configs.b_fig_2_sizing_mode,
+                     width_policy = configs.b_fig_2_width_policy,
+                     disabled = configs.b_fig_2_disabled,
+                     visible = configs.b_fig_2_visibility)
+
+    b_fig_3 = Button(label = configs.b_fig_3_label,
+                     button_type = configs.b_fig_3_button_type,
+                     sizing_mode = configs.b_fig_3_sizing_mode,
+                     width_policy = configs.b_fig_3_width_policy,
+                     disabled = configs.b_fig_3_disabled,
+                     visible = configs.b_fig_3_visibility)
+
+    return (b_automate, b_start_automate, b_auto_next, b_make_counter,
+            b_fig_1, b_fig_2, b_fig_3)
 #</editor-fold>
 #<editor-fold create_sliders():
 #Needs:
@@ -1366,6 +1428,20 @@ def b_make_counter_setup(b_make_counter, args_dict):
     b_make_counter.js_on_click(b_make_counter_click)
     return goalie_counter_source
 #</editor-fold>
+#<editor-fold b_figs_setup():
+#Needs:
+#    from bokeh.models import CustomJS
+def b_figs_setup(b_fig_1, b_fig_2, b_fig_3, args_dict):
+    b_fig_1_click = CustomJS(args = args_dict,
+                             code = b_fig_1_click_code)
+    b_fig_2_click = CustomJS(args = args_dict,
+                             code = b_fig_2_click_code)
+    b_fig_3_click = CustomJS(args = args_dict,
+                             code = b_fig_3_click_code)
+    b_fig_1.js_on_click(b_fig_1_click)
+    b_fig_2.js_on_click(b_fig_2_click)
+    b_fig_3.js_on_click(b_fig_3_click)
+#</editor-fold>
 #<editor-fold aim_sliders_setup():
 #Needs:
 #   from bokeh.models import CustomJS
@@ -1418,7 +1494,7 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
                   RM_aim_slider, RR_aim_slider, game_stats_figure_1,
                   game_stats_figure_2, game_stats_figure_3,
                   game_figure, automation_table, automation_distribution_table,
-                  configs):
+                  b_fig_1, b_fig_2, b_fig_3, configs):
 
     automate_button_row = row(b_automate, iterations_slider, b_auto_next,
                               max_width = configs.automate_button_row_max_width,
@@ -1458,10 +1534,18 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
                            max_width = configs.game_stats_row_2_max_width,
                            sizing_mode = configs.game_stats_row_2_sizing_mode)
 
+    b_fig_1_row = row(b_fig_1, max_width = configs.b_fig_rows_max_width,
+                      sizing_mode = configs.b_fig_rows_sizing_mode)
+    b_fig_2_row = row(b_fig_2, max_width = configs.b_fig_rows_max_width,
+                      sizing_mode = configs.b_fig_rows_sizing_mode)
+    b_fig_3_row = row(b_fig_3, max_width = configs.b_fig_rows_max_width,
+                      sizing_mode = configs.b_fig_rows_sizing_mode)
+
     gui_column1 = column(game_figure, game_stats_row_1, game_stats_row_2,
                          max_width = configs.gui_column1_max_width,
                          sizing_mode = configs.gui_column1_sizing_mode)
-    gui_column2 = column(automate_button_row, strategy_dropdown_row,
+    gui_column2 = column(b_fig_1_row, b_fig_2_row, b_fig_3_row,
+                         automate_button_row, strategy_dropdown_row,
                          start_automate_row, automate_LL_aim_row,
                          automate_LM_aim_row, automate_LR_aim_row,
                          automate_RL_aim_row, automate_RM_aim_row,
@@ -1556,7 +1640,25 @@ class Button_configs:
                  b_make_counter_sizing_mode = "scale_width",
                  b_make_counter_width_policy = "fit",
                  b_make_counter_disabled = False,
-                 b_make_counter_visibility = False):
+                 b_make_counter_visibility = False,
+                 b_fig_1_label = "Figure 1",
+                 b_fig_1_button_type = "success",
+                 b_fig_1_sizing_mode = "scale_width",
+                 b_fig_1_width_policy = "fit",
+                 b_fig_1_disabled = True,
+                 b_fig_1_visibility = False,
+                 b_fig_2_label = "Figure 2",
+                 b_fig_2_button_type = "success",
+                 b_fig_2_sizing_mode = "scale_width",
+                 b_fig_2_width_policy = "fit",
+                 b_fig_2_disabled = False,
+                 b_fig_2_visibility = False,
+                 b_fig_3_label = "Figure 3",
+                 b_fig_3_button_type = "success",
+                 b_fig_3_sizing_mode = "scale_width",
+                 b_fig_3_width_policy = "fit",
+                 b_fig_3_disabled = False,
+                 b_fig_3_visibility = False):
         self.b_automate_label = b_automate_label
         self.b_automate_button_type = b_automate_button_type
         self.b_automate_sizing_mode = b_automate_sizing_mode
@@ -1581,6 +1683,24 @@ class Button_configs:
         self.b_make_counter_width_policy = b_make_counter_width_policy
         self.b_make_counter_disabled = b_make_counter_disabled
         self.b_make_counter_visibility = b_make_counter_visibility
+        self.b_fig_1_label = b_fig_1_label
+        self.b_fig_1_button_type = b_fig_1_button_type
+        self.b_fig_1_sizing_mode = b_fig_1_sizing_mode
+        self.b_fig_1_width_policy = b_fig_1_width_policy
+        self.b_fig_1_disabled = b_fig_1_disabled
+        self.b_fig_1_visibility = b_fig_1_visibility
+        self.b_fig_2_label = b_fig_2_label
+        self.b_fig_2_button_type = b_fig_2_button_type
+        self.b_fig_2_sizing_mode = b_fig_2_sizing_mode
+        self.b_fig_2_width_policy = b_fig_2_width_policy
+        self.b_fig_2_disabled = b_fig_2_disabled
+        self.b_fig_2_visibility = b_fig_2_visibility
+        self.b_fig_3_label = b_fig_3_label
+        self.b_fig_3_button_type = b_fig_3_button_type
+        self.b_fig_3_sizing_mode = b_fig_3_sizing_mode
+        self.b_fig_3_width_policy = b_fig_3_width_policy
+        self.b_fig_3_disabled = b_fig_3_disabled
+        self.b_fig_3_visibility = b_fig_3_visibility
 #</editor-fold>
 #<editor-fold Slider_configs:
 class Slider_configs:
@@ -1799,7 +1919,9 @@ class Layout_configs:
                  gui_column2_sizing_mode = 'stretch_width',
                  gui_row_max_width = 1400,
                  gui_row_sizing_mode = 'stretch_width',
-                 plot_width = 1200, plot_height = 480):
+                 plot_width = 1200, plot_height = 480,
+                 b_fig_rows_max_width = 400,
+                 b_fig_rows_sizing_mode = 'stretch_width'):
         self.automate_button_row_max_width = automate_button_row_max_width
         self.automate_button_row_sizing_mode = automate_button_row_sizing_mode
         self.strategy_dropdown_row_max_width = strategy_dropdown_row_max_width
@@ -1821,6 +1943,8 @@ class Layout_configs:
         self.gui_row_sizing_mode = gui_row_sizing_mode
         self.plot_width = plot_width
         self.plot_height = plot_height
+        self.b_fig_rows_max_width = b_fig_rows_max_width
+        self.b_fig_rows_sizing_mode = b_fig_rows_sizing_mode
 #</editor-fold>
 
 #<editor-fold make_game():
@@ -1898,7 +2022,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
         #</editor-fold>
         #<editor-fold buttons:
     (b_automate, b_start_automate,
-    b_auto_next, b_make_counter) = create_buttons(button_configs)
+     b_auto_next, b_make_counter, b_fig_1,
+     b_fig_2, b_fig_3) = create_buttons(button_configs)
         #</editor-fold>
         #<editor-fold sliders:
     (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
@@ -1944,6 +2069,14 @@ def make_game(game_figure_configs = default_game_fig_configs,
 
     goalie_counter_source = b_make_counter_setup(b_make_counter, args_dict)
         #</editor-fold>
+        #<editor-fold b_figs_setup:
+    args_dict = dict(b_fig_1 = b_fig_1, b_fig_2 = b_fig_2, b_fig_3 = b_fig_3,
+                     game_stats_figure_1 = game_stats_figure_1,
+                     game_stats_figure_2 = game_stats_figure_2,
+                     game_stats_figure_3 = game_stats_figure_3)
+    b_figs_setup(b_fig_1 = b_fig_1, b_fig_2 = b_fig_2, b_fig_3 = b_fig_3,
+                 args_dict = args_dict)
+        #</editor-fold>
         #<editor-fold main game setup:
             #<editor-fold loop_dict:
     loop_dict =  dict(ChancesColumnDataSource = automation_table_source,
@@ -1954,8 +2087,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
                       automation_distribution_table = automation_distribution_table,
                       goalie_head = goalie_head, goalie_body = goalie_body,
                       goalie_counter_source = goalie_counter_source,
-                      ball = ball,
-                      score = score,
+                      ball = ball, score = score, b_fig_1 = b_fig_1,
+                      b_fig_2 = b_fig_2, b_fig_3 = b_fig_3,
                       game_stats_figure_1_source = game_stats_figure_1_source)
     __add_stat_figs(loop_dict, stat_figs)
     __add_stat_fig_sources(loop_dict, stat_fig_sources)
@@ -2026,7 +2159,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
                           game_figure = game_figure,
                           automation_table = automation_table,
                           automation_distribution_table = automation_distribution_table,
-                          configs = layout_configs)
+                          b_fig_1 = b_fig_1, b_fig_2 = b_fig_2,
+                          b_fig_3 = b_fig_3, configs = layout_configs)
     #</editor-fold>
 
     return grid1

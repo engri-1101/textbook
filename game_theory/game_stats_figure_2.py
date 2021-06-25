@@ -133,18 +133,21 @@ def stats_figure_2_setup(fig_configs):
     #Create initial values for game_stats_figure_2_source
     source_xs = []
     source_ys = []
+    source_chance_ys = []
     source_heights = []
     source_highlight_alphas = []
     #Fill the Lists
     for i in range(51):
         source_xs.append(i)
         source_ys.append(0)
+        source_chance_ys.append(0)
         source_heights.append(100)
         source_highlight_alphas.append(0)
 
     #Create game_stats_figure_2_source with the values that were created.
     source_data = dict(xs = source_xs,
                        ys = source_ys,
+                       chance_ys = source_chance_ys,
                        heights = source_heights,
                        highlight_alphas = source_highlight_alphas)
     game_stats_figure_2_source = ColumnDataSource(data = source_data)
@@ -156,6 +159,11 @@ def stats_figure_2_setup(fig_configs):
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_dot_outline_color,
                                    fill_color = fig_configs.plot_dot_color)
+    game_stats_figure_2.circle_dot('xs', 'chance_ys',
+                                   source = game_stats_figure_2_source,
+                                   size = 1,
+                                   line_color = "black",
+                                   fill_color = "black")
     #</editor-fold>
     #<editor-fold Plot Figure Highlight Points:
     #Plot Highlight Points For Figure:

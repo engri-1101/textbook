@@ -81,6 +81,8 @@ let kicker_kick = 'none';
 let goal = 1;
 let game_score = 0;
 let rounds_played = 0;
+
+let scored_chance = 0;
 """
 
 automate_loop_setup = (create_automate_loop_constants
@@ -183,7 +185,6 @@ function runFictitiousPlay(){
             cr = freq[2] / tsr;
         }
     }
-
     else{
         tsr = freq[3] + freq[4] + freq[5];
         sfprobsdict = score_probabilities['Right'];
@@ -422,9 +423,9 @@ function scoring(){
     let current_game_score = parseInt(score.text) + round_score;
     score.text = current_game_score.toString();
 
-    return [round_score, current_game_score, rounds_played];
+    return [round_score, current_game_score, rounds_played, score_chance];
 }
-[goal, game_score, rounds_played] = scoring();
+[goal, game_score, rounds_played, scored_chance] = scoring();
 """
 #</editor-fold>
         #<editor-fold automate_loop_animation
@@ -593,6 +594,7 @@ function updateFig2(){
     let nround_val = parseInt(nround.text);
 
     fig_2_data['ys'][nround_val] = parseInt(score.text);
+    fig_2_data['chance_ys'][nround_val] = fig_2_data['chance_ys'][nround_val - 1] + (2 * scored_chance - 1);
     game_stats_figure_2_source.change.emit();
 
     if(nround_val >= iters_to_run){
@@ -874,6 +876,7 @@ const array_length = iterations + 1;
 let xs_2 = [];
 let xs_3 = [];
 let ys = new Array(array_length).fill(0);
+let chance_ys = new Array(array_length).fill(0);
 let ll_ys = new Array(array_length).fill(0);
 let lm_ys = new Array(array_length).fill(0);
 let lr_ys = new Array(array_length).fill(0);
@@ -909,6 +912,7 @@ rr_ys[0] = 1/3 * (0.93 + 0.72 + 0.70);
 const fig_2_data = game_stats_figure_2_source.data;
 fig_2_data['xs'] = xs_2;
 fig_2_data['ys'] = ys;
+fig_2_data['chance_ys'] = chance_ys;
 fig_2_data['heights'] = heights;
 fig_2_data['highlight_alphas'] = fig2_highlight_alphas;
 game_stats_figure_2_source.change.emit();
@@ -1735,7 +1739,7 @@ class Slider_configs:
                  rr_aim_slider_disabled = False,
                  rr_aim_slider_visibility = False,
                  iterations_slider_start = 10, iterations_slider_end = 500,
-                 iterations_slider_value = 50, iterations_slider_step = 1,
+                 iterations_slider_value = 50, iterations_slider_step = 10,
                  iterations_slider_title = "Iterations To Run",
                  iterations_slider_disabled = False,
                  iterations_slider_visibility = False):

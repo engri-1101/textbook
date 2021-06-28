@@ -413,6 +413,7 @@ function scoring(){
         game_stats_figure_4_source.data['directions'].shift();
         game_stats_figure_4_source.data['actions'].shift();
         game_stats_figure_4_source.data['highlight_alphas'].shift();
+        game_stats_figure_4_source.data['avgs_placeholder'].shift();
         game_stats_figure_4_source.change.emit();
         game_stats_figure_4.x_range.start -= 0.5;
         game_stats_figure_4.x_range.end += 0.5;
@@ -919,6 +920,7 @@ let feet_4 = new Array(array_length).fill(null);
 let directions_4 = new Array(array_length).fill(null);
 let actions_4 = new Array(array_length).fill(null);
 let highlight_alphas_4 = new Array(array_length).fill(0);
+let avgs_placeholder = new Array(array_length).fill(0);
 
 //Update previously created arrays with their correct values:
 for (let i = 0; i <= iterations; i++){
@@ -969,6 +971,7 @@ game_stats_figure_4_source.data['feet'] = feet_4;
 game_stats_figure_4_source.data['directions'] = directions_4;
 game_stats_figure_4_source.data['actions'] = actions_4;
 game_stats_figure_4_source.data['highlight_alphas'] = highlight_alphas_4;
+game_stats_figure_4_source.data['avgs_placeholder'] = avgs_placeholder;
 game_stats_figure_4_source.change.emit();
 """
     #</editor-fold>

@@ -34,6 +34,30 @@ data['highlight_alphas'][index] = 1;
 source.change.emit();
 return data['ys'][index].toString();"""
 #</editor-fold>
+#<editor-fold avgs_custom_code:
+avgs_custom_code = """
+const index = special_vars.index;
+const data = source.data;
+let val;
+
+function avgRecursive(index){
+    let val = data['ys'][index];
+    if(index > 0){
+        val += (index * avgRecursive(index - 1));
+        val = val/(index + 1);
+    }
+    return val;
+}
+
+if(index == 0){
+    val = data['ys'][0];
+}
+else{
+    val = avgRecursive(index);
+}
+return (val.toString().substring(0,5));
+"""
+#</editor-fold>
 #<editor-fold Custom Hover Tooltip:
 fig_4_custom_tooltip="""
 <div>
@@ -55,6 +79,10 @@ fig_4_custom_tooltip="""
 <div>
     <span style='font-size: 10px;'>Score Chance:</span>
     <span style='font-size: 10px;'>@ys{custom}</span>
+</div>
+<div>
+    <span style='font-size: 10px;'>Avg Score Chance:</span>
+    <span style='font-size: 10px;'>@avgs_placeholder{custom}</span>
 </div>
 """
 #</editor-fold>
@@ -159,6 +187,7 @@ def stats_figure_4_setup(fig_configs):
     source_directions = []
     source_actions = []
     source_highlights = []
+    source_avgs_placeholder = []
     #Fill the Lists
     for i in range(51):
         source_xs.append(i)
@@ -167,14 +196,15 @@ def stats_figure_4_setup(fig_configs):
         source_directions.append(None)
         source_actions.append(None)
         source_highlights.append(0)
+        source_avgs_placeholder.append(0)
     #Create game_stats_figure_4_source with the values that were created.
     source_data = dict(xs = source_xs,
                        ys = source_ys,
                        feet = source_feet,
                        directions = source_directions,
                        actions = source_actions,
-                       highlight_alphas = source_highlights)
-
+                       highlight_alphas = source_highlights,
+                       avgs_placeholder = source_avgs_placeholder)
     game_stats_figure_4_source = ColumnDataSource(data = source_data)
 
     #Plot data points:
@@ -192,9 +222,9 @@ def stats_figure_4_setup(fig_configs):
                                    fill_color = fig_configs.plot_highlight_dot_color)
     #Plot averages line:
     get_avgs = CustomJSTransform(v_func = get_averages)
-    game_stats_figure_4.line('xs', transform('ys', get_avgs),
-                             source = game_stats_figure_4_source,
-                             line_color = fig_configs.plot_avgs_line_color)
+    avgs_line = game_stats_figure_4.line('xs', transform('ys', get_avgs),
+                                         source = game_stats_figure_4_source,
+                                         line_color = fig_configs.plot_avgs_line_color)
 
     #Plot guiding lines:
     for foot in footedness_dicts:
@@ -216,7 +246,11 @@ def stats_figure_4_setup(fig_configs):
     hover_main_args_dict = dict(source = game_stats_figure_4_source)
     fig_4_ys_custom = CustomJSHover(code = fig_4_ys_code,
                                     args = hover_main_args_dict)
-    hovertool_formatters = {'@ys' : fig_4_ys_custom,}
+    fig_4_avgs_custom = CustomJSHover(code = avgs_custom_code,
+                                      args = hover_main_args_dict)
+    hovertool_formatters = {'@ys' : fig_4_ys_custom,
+                            '@avgs_placeholder' : fig_4_avgs_custom}
+
     game_stats_figure_4.add_tools(HoverTool(tooltips = fig_4_custom_tooltip,
                                             formatters = hovertool_formatters,
                                             mode = "mouse",

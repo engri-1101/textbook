@@ -8,6 +8,7 @@ from main_game_figure import game_figure_setup, Game_fig_configs
 from game_stats_figure_1 import stats_figure_1_setup, Stats_fig_1_configs
 from game_stats_figure_2 import stats_figure_2_setup, Stats_fig_2_configs
 from game_stats_figure_3 import stats_figure_3_setup, Stats_fig_3_configs
+from game_stats_figure_4 import stats_figure_4_setup, Stats_fig_4_configs
 #<editor-fold Code Strings:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
@@ -368,6 +369,9 @@ function scoring(){
     let rounds_played = (parseInt(nround.text) + 1);
     let round_score;
 
+    game_stats_figure_4_source.data['ys'][rounds_played] = score_chance;
+    game_stats_figure_4_source.change.emit()
+
     if(score_roll <= score_chance){
         round_score = 1;
     }
@@ -400,22 +404,28 @@ function scoring(){
         b_auto_next.visible = false;
         game_figure.visible = false;
         automation_distribution_table.visible = false;
-
+        game_stats_figure_4_source.data['xs'].shift();
+        game_stats_figure_4_source.data['ys'].shift();
+        game_stats_figure_4_source.change.emit();
         if(strategy_to_use.text == "Fictitious_Play"){
             game_stats_figure_1.visible = true;
             game_stats_figure_2.visible = false;
             game_stats_figure_3.visible = false;
+            game_stats_figure_4.visible = false;
             b_fig_1.visible = true;
             b_fig_2.visible = true;
             b_fig_3.visible = true;
+            b_fig_4.visible = true;
         }
         else{
             game_stats_figure_1.visible = true;
             game_stats_figure_2.visible = false;
             game_stats_figure_3.visible = false;
+            game_stats_figure_4.visible = false;
             b_fig_1.visible = true;
             b_fig_2.visible = true;
             b_fig_3.visible = false;
+            b_fig_4.visible = true;
         }
     }
     nround.text = rounds_played.toString();
@@ -870,11 +880,13 @@ game_stats_figure_2.y_range.end = iterations;
 //be the amount of iterations.
 game_stats_figure_2.x_range.end = iterations;
 game_stats_figure_3.x_range.end = iterations;
-
+game_stats_figure_4.x_range.end = iterations;
 //Initiate arrays to update lengths and values of data in sources:
 const array_length = iterations + 1;
 let xs_2 = [];
 let xs_3 = [];
+let xs_4 = [];
+
 let ys = new Array(array_length).fill(0);
 let chance_ys = new Array(array_length).fill(0);
 let ll_ys = new Array(array_length).fill(0);
@@ -893,11 +905,13 @@ let heights = new Array(array_length).fill(iterations * 2);
 let fig2_highlight_alphas = new Array(array_length).fill(0);
 let fig3_highlight_alphas = new Array(array_length).fill(0);
 let fig3_alphas_zeroes = new Array(array_length).fill(0);
+let ys_4 = new Array(array_length).fill(0);
 
 //Update previously created arrays with their correct values:
 for (let i = 0; i <= iterations; i++){
     xs_2.push(i);
     xs_3.push(i);
+    xs_4.push(i);
 }
 
 //Write the correct initial values for the arrays that need it:
@@ -935,6 +949,10 @@ fig_3_data['hb4'] = hb4_ys;
 fig_3_data['hb5'] = hb5_ys;
 fig_3_data['hb6'] = hb6_ys;
 game_stats_figure_3_source.change.emit();
+
+game_stats_figure_4_source.data['xs'] = xs_4;
+game_stats_figure_4_source.data['ys'] = ys_4;
+game_stats_figure_4_source.change.emit();
 """
     #</editor-fold>
     #<editor-fold strategy_dropdown_callback Code String:
@@ -1074,9 +1092,11 @@ b_fig_1_click_code = """
 b_fig_1.disabled = true;
 b_fig_2.disabled = false;
 b_fig_3.disabled = false;
+b_fig_4.disabled = false;
 game_stats_figure_1.visible = true;
 game_stats_figure_2.visible = false;
 game_stats_figure_3.visible = false;
+game_stats_figure_4.visible = false;
 """
     #</editor-fold>
     #<editor-fold b_fig_2 callback Code String:
@@ -1084,9 +1104,11 @@ b_fig_2_click_code = """
 b_fig_1.disabled = false;
 b_fig_2.disabled = true;
 b_fig_3.disabled = false;
+b_fig_4.disabled = false;
 game_stats_figure_1.visible = false;
 game_stats_figure_2.visible = true;
 game_stats_figure_3.visible = false;
+game_stats_figure_4.visible = false;
 """
     #</editor-fold>
     #<editor-fold b_fig_3 callback Code String:
@@ -1094,9 +1116,23 @@ b_fig_3_click_code = """
 b_fig_1.disabled = false;
 b_fig_2.disabled = false;
 b_fig_3.disabled = true;
+b_fig_4.disabled = false;
 game_stats_figure_1.visible = false;
 game_stats_figure_2.visible = false;
 game_stats_figure_3.visible = true;
+game_stats_figure_4.visible = false;
+"""
+    #</editor-fold>
+    #<editor-fold b_fig_4 callback Code String:
+b_fig_4_click_code = """
+b_fig_1.disabled = false;
+b_fig_2.disabled = false;
+b_fig_3.disabled = false;
+b_fig_4.disabled = true;
+game_stats_figure_1.visible = false;
+game_stats_figure_2.visible = false;
+game_stats_figure_3.visible = false;
+game_stats_figure_4.visible = true;
 """
     #</editor-fold>
 #</editor-fold>
@@ -1153,9 +1189,15 @@ def create_buttons(configs):
                      width_policy = configs.b_fig_3_width_policy,
                      disabled = configs.b_fig_3_disabled,
                      visible = configs.b_fig_3_visibility)
+    b_fig_4 = Button(label = configs.b_fig_4_label,
+                     button_type = configs.b_fig_4_button_type,
+                     sizing_mode = configs.b_fig_4_sizing_mode,
+                     width_policy = configs.b_fig_4_width_policy,
+                     disabled = configs.b_fig_4_disabled,
+                     visible = configs.b_fig_4_visibility)
 
     return (b_automate, b_start_automate, b_auto_next, b_make_counter,
-            b_fig_1, b_fig_2, b_fig_3)
+            b_fig_1, b_fig_2, b_fig_3, b_fig_4)
 #</editor-fold>
 #<editor-fold create_sliders():
 #Needs:
@@ -1435,16 +1477,19 @@ def b_make_counter_setup(b_make_counter, args_dict):
 #<editor-fold b_figs_setup():
 #Needs:
 #    from bokeh.models import CustomJS
-def b_figs_setup(b_fig_1, b_fig_2, b_fig_3, args_dict):
+def b_figs_setup(b_fig_1, b_fig_2, b_fig_3, b_fig_4, args_dict):
     b_fig_1_click = CustomJS(args = args_dict,
                              code = b_fig_1_click_code)
     b_fig_2_click = CustomJS(args = args_dict,
                              code = b_fig_2_click_code)
     b_fig_3_click = CustomJS(args = args_dict,
                              code = b_fig_3_click_code)
+    b_fig_4_click = CustomJS(args = args_dict,
+                            code = b_fig_4_click_code)
     b_fig_1.js_on_click(b_fig_1_click)
     b_fig_2.js_on_click(b_fig_2_click)
     b_fig_3.js_on_click(b_fig_3_click)
+    b_fig_4.js_on_click(b_fig_4_click)
 #</editor-fold>
 #<editor-fold aim_sliders_setup():
 #Needs:
@@ -1497,8 +1542,9 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
                   LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider,
                   RM_aim_slider, RR_aim_slider, game_stats_figure_1,
                   game_stats_figure_2, game_stats_figure_3,
+                  game_stats_figure_4,
                   game_figure, automation_table, automation_distribution_table,
-                  b_fig_1, b_fig_2, b_fig_3, configs):
+                  b_fig_1, b_fig_2, b_fig_3, b_fig_4, configs):
 
     automate_button_row = row(b_automate, iterations_slider, b_auto_next,
                               max_width = configs.automate_button_row_max_width,
@@ -1534,7 +1580,7 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
     game_stats_row_1 = row(game_stats_figure_1, game_stats_figure_2,
                            max_width = configs.game_stats_row_1_max_width,
                            sizing_mode = configs.game_stats_row_1_sizing_mode)
-    game_stats_row_2 = row(game_stats_figure_3,
+    game_stats_row_2 = row(game_stats_figure_3, game_stats_figure_4,
                            max_width = configs.game_stats_row_2_max_width,
                            sizing_mode = configs.game_stats_row_2_sizing_mode)
 
@@ -1544,11 +1590,13 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
                       sizing_mode = configs.b_fig_rows_sizing_mode)
     b_fig_3_row = row(b_fig_3, max_width = configs.b_fig_rows_max_width,
                       sizing_mode = configs.b_fig_rows_sizing_mode)
+    b_fig_4_row = row(b_fig_4, max_width = configs.b_fig_rows_max_width,
+                      sizing_mode = configs.b_fig_rows_sizing_mode)
 
     gui_column1 = column(game_figure, game_stats_row_1, game_stats_row_2,
                          max_width = configs.gui_column1_max_width,
                          sizing_mode = configs.gui_column1_sizing_mode)
-    gui_column2 = column(b_fig_1_row, b_fig_2_row, b_fig_3_row,
+    gui_column2 = column(b_fig_1_row, b_fig_2_row, b_fig_3_row, b_fig_4_row,
                          automate_button_row, strategy_dropdown_row,
                          start_automate_row, automate_LL_aim_row,
                          automate_LM_aim_row, automate_LR_aim_row,
@@ -1662,7 +1710,13 @@ class Button_configs:
                  b_fig_3_sizing_mode = "scale_width",
                  b_fig_3_width_policy = "fit",
                  b_fig_3_disabled = False,
-                 b_fig_3_visibility = False):
+                 b_fig_3_visibility = False,
+                 b_fig_4_label = "Figure 4",
+                 b_fig_4_button_type = "success",
+                 b_fig_4_sizing_mode = "scale_width",
+                 b_fig_4_width_policy = "fit",
+                 b_fig_4_disabled = False,
+                 b_fig_4_visibility = False):
         self.b_automate_label = b_automate_label
         self.b_automate_button_type = b_automate_button_type
         self.b_automate_sizing_mode = b_automate_sizing_mode
@@ -1705,6 +1759,12 @@ class Button_configs:
         self.b_fig_3_width_policy = b_fig_3_width_policy
         self.b_fig_3_disabled = b_fig_3_disabled
         self.b_fig_3_visibility = b_fig_3_visibility
+        self.b_fig_4_label = b_fig_4_label
+        self.b_fig_4_button_type = b_fig_4_button_type
+        self.b_fig_4_sizing_mode = b_fig_4_sizing_mode
+        self.b_fig_4_width_policy = b_fig_4_width_policy
+        self.b_fig_4_disabled = b_fig_4_disabled
+        self.b_fig_4_visibility = b_fig_4_visibility
 #</editor-fold>
 #<editor-fold Slider_configs:
 class Slider_configs:
@@ -1962,6 +2022,7 @@ default_game_fig_configs = Game_fig_configs()
 default_fig_1_configs = Stats_fig_1_configs()
 default_fig_2_configs = Stats_fig_2_configs()
 default_fig_3_configs = Stats_fig_3_configs()
+default_fig_4_configs = Stats_fig_4_configs()
 default_scr_text_and_labels_configs = Scr_text_and_labels_configs()
 default_gamestate_divs_configs = Gamestate_divs_configs()
 default_button_configs = Button_configs()
@@ -1983,15 +2044,18 @@ def __add_stat_figs(args_dict, stat_figs):
     args_dict['game_stats_figure_1'] = stat_figs[0]
     args_dict['game_stats_figure_2'] = stat_figs[1]
     args_dict['game_stats_figure_3'] = stat_figs[2]
+    args_dict['game_stats_figure_4'] = stat_figs[3]
 def __add_stat_fig_sources(args_dict, stat_fig_sources):
     args_dict['game_stats_figure_2_source'] = stat_fig_sources[0]
     args_dict['game_stats_figure_3_source'] = stat_fig_sources[1]
+    args_dict['game_stats_figure_4_source'] = stat_fig_sources[2]
 #</editor-fold>
 
 def make_game(game_figure_configs = default_game_fig_configs,
               stats_figure_1_configs = default_fig_1_configs,
               stats_figure_2_configs = default_fig_2_configs,
               stats_figure_3_configs = default_fig_3_configs,
+              stats_figure_4_configs = default_fig_4_configs,
               scrtxt_labels_configs = default_scr_text_and_labels_configs,
               divs_configs = default_gamestate_divs_configs,
               button_configs = default_button_configs,
@@ -2013,6 +2077,9 @@ def make_game(game_figure_configs = default_game_fig_configs,
 
     (game_stats_figure_3,
      game_stats_figure_3_source) = stats_figure_3_setup(stats_figure_3_configs)
+
+    (game_stats_figure_4,
+     game_stats_figure_4_source) = stats_figure_4_setup(stats_figure_4_configs)
         #</editor-fold>
         #<editor-fold scr_text and labels:
     scr_text = create_scr_text(scrtxt_labels_configs);
@@ -2027,7 +2094,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
         #<editor-fold buttons:
     (b_automate, b_start_automate,
      b_auto_next, b_make_counter, b_fig_1,
-     b_fig_2, b_fig_3) = create_buttons(button_configs)
+     b_fig_2, b_fig_3, b_fig_4) = create_buttons(button_configs)
         #</editor-fold>
         #<editor-fold sliders:
     (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
@@ -2050,8 +2117,10 @@ def make_game(game_figure_configs = default_game_fig_configs,
     #<editor-fold Setup for using helpers to add to argsdicts:
     aim_sliders = [LL_aim_slider, LM_aim_slider, LR_aim_slider,
                    RL_aim_slider, RM_aim_slider, RR_aim_slider]
-    stat_figs = [game_stats_figure_1, game_stats_figure_2, game_stats_figure_3]
-    stat_fig_sources = [game_stats_figure_2_source, game_stats_figure_3_source]
+    stat_figs = [game_stats_figure_1, game_stats_figure_2, game_stats_figure_3,
+                 game_stats_figure_4]
+    stat_fig_sources = [game_stats_figure_2_source, game_stats_figure_3_source,
+                        game_stats_figure_4_source]
     #</editor-fold>
 
     #<editor-fold setup created objects:
@@ -2075,10 +2144,13 @@ def make_game(game_figure_configs = default_game_fig_configs,
         #</editor-fold>
         #<editor-fold b_figs_setup:
     args_dict = dict(b_fig_1 = b_fig_1, b_fig_2 = b_fig_2, b_fig_3 = b_fig_3,
+                     b_fig_4 = b_fig_4,
                      game_stats_figure_1 = game_stats_figure_1,
                      game_stats_figure_2 = game_stats_figure_2,
-                     game_stats_figure_3 = game_stats_figure_3)
+                     game_stats_figure_3 = game_stats_figure_3,
+                     game_stats_figure_4 = game_stats_figure_4)
     b_figs_setup(b_fig_1 = b_fig_1, b_fig_2 = b_fig_2, b_fig_3 = b_fig_3,
+                 b_fig_4 = b_fig_4,
                  args_dict = args_dict)
         #</editor-fold>
         #<editor-fold main game setup:
@@ -2092,7 +2164,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
                       goalie_head = goalie_head, goalie_body = goalie_body,
                       goalie_counter_source = goalie_counter_source,
                       ball = ball, score = score, b_fig_1 = b_fig_1,
-                      b_fig_2 = b_fig_2, b_fig_3 = b_fig_3,
+                      b_fig_2 = b_fig_2, b_fig_3 = b_fig_3, b_fig_4 = b_fig_4,
                       game_stats_figure_1_source = game_stats_figure_1_source)
     __add_stat_figs(loop_dict, stat_figs)
     __add_stat_fig_sources(loop_dict, stat_fig_sources)
@@ -2160,11 +2232,13 @@ def make_game(game_figure_configs = default_game_fig_configs,
                           game_stats_figure_1 = game_stats_figure_1,
                           game_stats_figure_2 = game_stats_figure_2,
                           game_stats_figure_3 = game_stats_figure_3,
+                          game_stats_figure_4 = game_stats_figure_4,
                           game_figure = game_figure,
                           automation_table = automation_table,
                           automation_distribution_table = automation_distribution_table,
                           b_fig_1 = b_fig_1, b_fig_2 = b_fig_2,
-                          b_fig_3 = b_fig_3, configs = layout_configs)
+                          b_fig_3 = b_fig_3, b_fig_4 = b_fig_4,
+                          configs = layout_configs)
     #</editor-fold>
 
     return grid1

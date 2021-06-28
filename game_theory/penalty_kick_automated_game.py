@@ -370,6 +370,9 @@ function scoring(){
     let round_score;
 
     game_stats_figure_4_source.data['ys'][rounds_played] = score_chance;
+    game_stats_figure_4_source.data['feet'][rounds_played] = kicker_foot;
+    game_stats_figure_4_source.data['directions'][rounds_played] = kicker_kick;
+    game_stats_figure_4_source.data['actions'][rounds_played] = goalie_action;
     game_stats_figure_4_source.change.emit()
 
     if(score_roll <= score_chance){
@@ -406,7 +409,13 @@ function scoring(){
         automation_distribution_table.visible = false;
         game_stats_figure_4_source.data['xs'].shift();
         game_stats_figure_4_source.data['ys'].shift();
+        game_stats_figure_4_source.data['feet'].shift();
+        game_stats_figure_4_source.data['directions'].shift();
+        game_stats_figure_4_source.data['actions'].shift();
+        game_stats_figure_4_source.data['highlight_alphas'].shift();
         game_stats_figure_4_source.change.emit();
+        game_stats_figure_4.x_range.start -= 0.5;
+        game_stats_figure_4.x_range.end += 0.5;
         if(strategy_to_use.text == "Fictitious_Play"){
             game_stats_figure_1.visible = true;
             game_stats_figure_2.visible = false;
@@ -906,6 +915,10 @@ let fig2_highlight_alphas = new Array(array_length).fill(0);
 let fig3_highlight_alphas = new Array(array_length).fill(0);
 let fig3_alphas_zeroes = new Array(array_length).fill(0);
 let ys_4 = new Array(array_length).fill(0);
+let feet_4 = new Array(array_length).fill(null);
+let directions_4 = new Array(array_length).fill(null);
+let actions_4 = new Array(array_length).fill(null);
+let highlight_alphas_4 = new Array(array_length).fill(0);
 
 //Update previously created arrays with their correct values:
 for (let i = 0; i <= iterations; i++){
@@ -952,6 +965,10 @@ game_stats_figure_3_source.change.emit();
 
 game_stats_figure_4_source.data['xs'] = xs_4;
 game_stats_figure_4_source.data['ys'] = ys_4;
+game_stats_figure_4_source.data['feet'] = feet_4;
+game_stats_figure_4_source.data['directions'] = directions_4;
+game_stats_figure_4_source.data['actions'] = actions_4;
+game_stats_figure_4_source.data['highlight_alphas'] = highlight_alphas_4;
 game_stats_figure_4_source.change.emit();
 """
     #</editor-fold>

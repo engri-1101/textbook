@@ -1,5 +1,7 @@
 from bokeh.plotting import figure
-from bokeh.models import (CustomJSHover, ColumnDataSource, HoverTool)
+from bokeh.models import (CustomJSHover, ColumnDataSource, HoverTool,
+                          CustomJSTransform)
+from bokeh.transform import transform
 
 score_probabilities = {'Right' : {'LeftLeft' :     0.55,
                                   'LeftMiddle' :   0.65,
@@ -56,6 +58,20 @@ fig_4_custom_tooltip="""
 </div>
 """
 #</editor-fold>
+#<editor-fold Get Average Code String:
+get_averages = """
+let new_xs = new Array(xs.length);
+for(let i = 0; i < xs.length; i++){
+    if(i == 0){
+        new_xs[i] = xs[i];
+    }
+    else{
+        new_xs[i] = (xs[i] + i * new_xs[i-1]) / (i + 1);
+    }
+}
+return new_xs;
+"""
+#</editor-fold>
 
 class Stats_fig_4_configs:
     """Objects of this class are used to organize and pass parameters to
@@ -87,7 +103,8 @@ class Stats_fig_4_configs:
                  guiding_line_alpha = 0.1, hitbox_alpha = 0,
                  plot_highlight_dot_size = 10,
                  plot_highlight_dot_color = "#ECB841",
-                 plot_highlight_dot_outline_color = "#D8A42D"):
+                 plot_highlight_dot_outline_color = "#D8A42D",
+                 plot_avgs_line_color = "#000000"):
         #<editor-fold figure:
         self.figure_base_tools = figure_base_tools
         self.figure_toolbar_location = figure_toolbar_location
@@ -115,6 +132,7 @@ class Stats_fig_4_configs:
         self.plot_highlight_dot_size = plot_highlight_dot_size
         self.plot_highlight_dot_color = plot_highlight_dot_color
         self.plot_highlight_dot_outline_color = plot_highlight_dot_outline_color
+        self.plot_avgs_line_color = plot_avgs_line_color
         #</editor-fold>
 def stats_figure_4_setup(fig_configs):
     game_stats_figure_4 = figure(tools = fig_configs.figure_base_tools,
@@ -172,7 +190,11 @@ def stats_figure_4_setup(fig_configs):
                                    alpha = 'highlight_alphas',
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color)
-
+    #Plot averages line:
+    get_avgs = CustomJSTransform(v_func = get_averages)
+    game_stats_figure_4.line('xs', transform('ys', get_avgs),
+                             source = game_stats_figure_4_source,
+                             line_color = fig_configs.plot_avgs_line_color)
 
     #Plot guiding lines:
     for foot in footedness_dicts:

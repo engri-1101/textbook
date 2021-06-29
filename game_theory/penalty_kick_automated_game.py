@@ -1,5 +1,5 @@
 from bokeh.models import (Button, Slider, Dropdown, ColumnDataSource,
-                          TableColumn, DataTable, CustomJS)
+                          TableColumn, DataTable, CustomJS, TextInput)
 from bokeh.models.widgets import Div
 from ortools.linear_solver import pywraplp as OR
 from bokeh.models.glyphs import Text
@@ -9,17 +9,23 @@ from game_stats_figure_1 import stats_figure_1_setup, Stats_fig_1_configs
 from game_stats_figure_2 import stats_figure_2_setup, Stats_fig_2_configs
 from game_stats_figure_3 import stats_figure_3_setup, Stats_fig_3_configs
 from game_stats_figure_4 import stats_figure_4_setup, Stats_fig_4_configs
+
+JS_FLOAT_BUFFER = "0.0000001" # THIS VARIABLE SHOULD BE TREATED AS A CONSTANT.
+# JAVASCRIPT HAS SOME ISSUES WITH FLOATS, SO CHECKING FOR EQUALITY BETWEEN
+# NUMBERS AND THE SUMS (OR OTHER OPERATIONS) OF OTHER NUMBERS IS NOT SAFE.
+# IN ORDER TO WORK AROUND THIS ISSUE, INSTEAD OF CHECKING FOR EQUALITY, CHECK
+# THAT THE VALUE IS WITHIN A RANGE OF THE EXPECTED OUTCOME.
 #<editor-fold Code Strings:
     #<editor-fold b_automate Callback Code String:
 b_automate_code = """
 //Change visibilities of game items:
 b_automate.visible = false;
-LL_aim_slider.visible = true;
-LM_aim_slider.visible = true;
-LR_aim_slider.visible = true;
-RL_aim_slider.visible = true;
-RM_aim_slider.visible = true;
-RR_aim_slider.visible = true;
+ll_aim_text_input.visible = true;
+lm_aim_text_input.visible = true;
+lr_aim_text_input.visible = true;
+rl_aim_text_input.visible = true;
+rm_aim_text_input.visible = true;
+rr_aim_text_input.visible = true;
 iterations_slider.visible = true;
 strategy_dropdown.visible = true;
 automation_table.visible = true;
@@ -30,12 +36,12 @@ automate_start_code_initial_gui_display = """
 //Change visibilities of game items:
 b_start_automate.visible = false;
 b_auto_next.visible = true;
-LL_aim_slider.visible = false;
-LM_aim_slider.visible = false;
-LR_aim_slider.visible = false;
-RL_aim_slider.visible = false;
-RM_aim_slider.visible = false;
-RR_aim_slider.visible = false;
+ll_aim_text_input.visible = false;
+lm_aim_text_input.visible = false;
+lr_aim_text_input.visible = false;
+rl_aim_text_input.visible = false;
+rm_aim_text_input.visible = false;
+rr_aim_text_input.visible = false;
 iterations_slider.visible = false;
 strategy_dropdown.visible = false;
 automation_table.visible = false;
@@ -847,28 +853,6 @@ automate_loop_iteration = (automate_loop_setup
 b_automate_start_code = (automate_start_code_initial_gui_display
                          + automate_loop_iteration)
     #</editor-fold>
-    #<editor-fold aim_slider_callback Code String:
-aim_slider_callback_code = """
-//Get the chances array to modify:
-const chances = ColumnDataSourceToChange.data['chances'];
-
-//Get the current total of the sliders:
-const total = (LL_aim_slider.value + LM_aim_slider.value
-               + LR_aim_slider.value + RL_aim_slider.value
-               + RM_aim_slider.value + RR_aim_slider.value);
-
-//Set the chances array's values accordingly:
-chances[0] = LL_aim_slider.value / total;
-chances[1] = LM_aim_slider.value / total;
-chances[2] = LR_aim_slider.value / total;
-chances[3] = RL_aim_slider.value / total;
-chances[4] = RM_aim_slider.value / total;
-chances[5] = RR_aim_slider.value / total;
-
-//Emit changes:
-ColumnDataSourceToChange.change.emit();
-"""
-    #</editor-fold>
     #<editor-fold iterations_slider_callback Code String:
 iterations_slider_code = """
 
@@ -984,12 +968,12 @@ strategy_dropdown.label = this.item;
 strategy_to_use.text = this.item;
 
 //Sets the aim sliders to be visible:
-LL_aim_slider.visible = true;
-LM_aim_slider.visible = true;
-LR_aim_slider.visible = true;
-RL_aim_slider.visible = true;
-RM_aim_slider.visible = true;
-RR_aim_slider.visible = true;
+ll_aim_text_input.visible = true;
+lm_aim_text_input.visible = true;
+lr_aim_text_input.visible = true;
+rl_aim_text_input.visible = true;
+rm_aim_text_input.visible = true;
+rr_aim_text_input.visible = true;
 
 //Sets the automation_table to be visible:
 automation_table.visible = true;
@@ -997,11 +981,12 @@ automation_table.visible = true;
 //Toggles button visibilities based off selected item:
 if(this.item != "Goalie_Cheats"){
     b_make_counter.visible = false;
-    b_start_automate.visible = true;
+    counter_made.text = "1";
+    cpu_selected.text = "1";
 }
 else{
-    b_start_automate.visible = false;
-    b_make_counter.visible = true;
+    counter_made.text = "0";
+    cpu_selected.text = "1";
 }
 """
     #</editor-fold>
@@ -1012,13 +997,12 @@ const chances = automation_table_source.data['chances'];
 //Hides the automation_table as it is un-needed:
 automation_table.visible = false;
 
-//Make sliders invisible to prevent changes being made to chances:
-LL_aim_slider.visible = false;
-LM_aim_slider.visible = false;
-LR_aim_slider.visible = false;
-RL_aim_slider.visible = false;
-RM_aim_slider.visible = false;
-RR_aim_slider.visible = false;
+ll_aim_text_input.visible = false;
+lm_aim_text_input.visible = false;
+lr_aim_text_input.visible = false;
+rl_aim_text_input.visible = false;
+rm_aim_text_input.visible = false;
+rr_aim_text_input.visible = false;
 
 //Take chance values:
 const ll_chance = chances[0];
@@ -1103,8 +1087,68 @@ goalie_counter_source.data['chances_r'][2] = goalie_rr_coeff;
 
 goalie_counter_source.change.emit();
 
-b_start_automate.visible = true;
 b_make_counter.visible = false;
+
+counter_made.text = "1";
+"""
+    #</editor-fold>
+    #<editor-fold aim_inputs_callback Code String:
+aim_inputs_callback_code = """
+//Get the chances array to modify:
+const chances = table_source.data['chances'];
+
+//Hide start button:
+b_start_automate.visible = false;
+chances_valid.text = "0";
+
+//Check if inputs are valid:
+let is_valid;
+
+let ll_val = parseFloat(ll_aim_text_input.value);
+let lm_val = parseFloat(lm_aim_text_input.value);
+let lr_val = parseFloat(lr_aim_text_input.value);
+let rl_val = parseFloat(rl_aim_text_input.value);
+let rm_val = parseFloat(rm_aim_text_input.value);
+let rr_val = parseFloat(rr_aim_text_input.value);
+
+if(ll_val > 1){ is_valid = false; }
+if(lm_val > 1){ is_valid = false; }
+if(lr_val > 1){ is_valid = false; }
+if(rl_val > 1){ is_valid = false; }
+if(rm_val > 1){ is_valid = false; }
+if(rr_val > 1){ is_valid = false; }
+
+if(ll_val < 0){ is_valid = false; }
+if(lm_val < 0){ is_valid = false; }
+if(lr_val < 0){ is_valid = false; }
+if(rl_val < 0){ is_valid = false; }
+if(rm_val < 0){ is_valid = false; }
+if(rr_val < 0){ is_valid = false; }
+
+const total = (ll_val + lm_val + lr_val + rl_val + rm_val + rr_val)
+if(total >= 1 - """ + JS_FLOAT_BUFFER + """
+    && total <= 1 + """ + JS_FLOAT_BUFFER + """){
+    is_valid = true;
+}
+else{
+    is_valid = false;
+}
+
+chances[0] = ll_val;
+chances[1] = lm_val;
+chances[2] = lr_val;
+chances[3] = rl_val;
+chances[4] = rm_val;
+chances[5] = rr_val;
+table_source.change.emit();
+
+if(is_valid){
+    chances_valid.text = "1";
+}
+else{
+    chances_valid.text = "0";
+}
+return;
 """
     #</editor-fold>
     #<editor-fold b_fig_1 callback Code String:
@@ -1153,6 +1197,99 @@ game_stats_figure_1.visible = false;
 game_stats_figure_2.visible = false;
 game_stats_figure_3.visible = false;
 game_stats_figure_4.visible = true;
+"""
+    #</editor-fold>
+    #<editor-fold cpu_selected_change_code:
+cpu_selected_change_code = """
+if(parseInt(cpu_selected.text) == 1){
+    if(parseInt(chances_valid.text) == 1){
+        if(parseInt(counter_made.text) == 1){
+            b_start_automate.visible = true;
+        }
+        else{
+            b_start_automate.visible = false;
+        }
+    }
+    else{
+        b_start_automate.visible = false;
+    }
+}
+else{
+    b_start_automate.visible = false;
+}
+if(parseInt(counter_made.text) != 1){
+    if(parseInt(chances_valid.text) == 1){
+        b_make_counter.visible = true;
+    }
+    else{
+        b_make_counter.visible = false;
+    }
+}
+else{
+    b_make_counter.visible = false;
+}
+"""
+    #</editor-fold>
+    #<editor-fold chances_valid_change_code:
+chances_valid_change_code = """
+if(parseInt(cpu_selected.text) == 1){
+    if(parseInt(chances_valid.text) == 1){
+        if(parseInt(counter_made.text) == 1){
+            b_start_automate.visible = true;
+        }
+        else{
+            b_start_automate.visible = false;
+        }
+    }
+    else{
+        b_start_automate.visible = false;
+    }
+}
+else{
+    b_start_automate.visible = false;
+}
+if(parseInt(counter_made.text) != 1){
+    if(parseInt(chances_valid.text) == 1){
+        b_make_counter.visible = true;
+    }
+    else{
+        b_make_counter.visible = false;
+    }
+}
+else{
+    b_make_counter.visible = false;
+}
+"""
+    #</editor-fold>
+    #<editor-fold counter_made_change_code:
+counter_made_change_code = """
+if(parseInt(cpu_selected.text) == 1){
+    if(parseInt(chances_valid.text) == 1){
+        if(parseInt(counter_made.text) == 1){
+            b_start_automate.visible = true;
+        }
+        else{
+            b_start_automate.visible = false;
+        }
+    }
+    else{
+        b_start_automate.visible = false;
+    }
+}
+else{
+    b_start_automate.visible = false;
+}
+if(parseInt(counter_made.text) != 1){
+    if(parseInt(chances_valid.text) == 1){
+        b_make_counter.visible = true;
+    }
+    else{
+        b_make_counter.visible = false;
+    }
+}
+else{
+    b_make_counter.visible = false;
+}
 """
     #</editor-fold>
 #</editor-fold>
@@ -1223,50 +1360,6 @@ def create_buttons(configs):
 #Needs:
 #   from bokeh.models import Slider
 def create_sliders(configs):
-
-    ll_aim_slider = Slider(start = configs.ll_aim_slider_start,
-                           end = configs.ll_aim_slider_end,
-                           value = configs.ll_aim_slider_value,
-                           step = configs.ll_aim_slider_step,
-                           title = configs.ll_aim_slider_title,
-                           disabled = configs.ll_aim_slider_disabled,
-                           visible = configs.ll_aim_slider_visibility)
-    lm_aim_slider = Slider(start = configs.lm_aim_slider_start,
-                           end = configs.lm_aim_slider_end,
-                           value = configs.lm_aim_slider_value,
-                           step = configs.lm_aim_slider_step,
-                           title = configs.lm_aim_slider_title,
-                           disabled = configs.lm_aim_slider_disabled,
-                           visible = configs.lm_aim_slider_visibility)
-    lr_aim_slider = Slider(start = configs.lr_aim_slider_start,
-                           end = configs.lr_aim_slider_end,
-                           value = configs.lr_aim_slider_value,
-                           step = configs.lr_aim_slider_step,
-                           title = configs.lr_aim_slider_title,
-                           disabled = configs.lr_aim_slider_disabled,
-                           visible = configs.lr_aim_slider_visibility)
-    rl_aim_slider = Slider(start = configs.rl_aim_slider_start,
-                           end = configs.rl_aim_slider_end,
-                           value = configs.rl_aim_slider_value,
-                           step = configs.rl_aim_slider_step,
-                           title = configs.rl_aim_slider_title,
-                           disabled = configs.rl_aim_slider_disabled,
-                           visible = configs.rl_aim_slider_visibility)
-    rm_aim_slider = Slider(start = configs.rm_aim_slider_start,
-                           end = configs.rm_aim_slider_end,
-                           value = configs.rm_aim_slider_value,
-                           step = configs.rm_aim_slider_step,
-                           title = configs.rm_aim_slider_title,
-                           disabled = configs.rm_aim_slider_disabled,
-                           visible = configs.rm_aim_slider_visibility)
-    rr_aim_slider = Slider(start = configs.rr_aim_slider_start,
-                           end = configs.rr_aim_slider_end,
-                           value = configs.rr_aim_slider_value,
-                           step = configs.rr_aim_slider_step,
-                           title = configs.rr_aim_slider_title,
-                           disabled = configs.rr_aim_slider_disabled,
-                           visible = configs.rr_aim_slider_visibility)
-
     iterations_slider = Slider(start = configs.iterations_slider_start,
                                end = configs.iterations_slider_end,
                                value = configs.iterations_slider_value,
@@ -1275,9 +1368,7 @@ def create_sliders(configs):
                                disabled = configs.iterations_slider_disabled,
                                visible = configs.iterations_slider_visibility)
 
-    return (ll_aim_slider, lm_aim_slider, lr_aim_slider,
-            rl_aim_slider, rm_aim_slider, rr_aim_slider,
-            iterations_slider)
+    return (iterations_slider)
 #</editor-fold>
 #<editor-fold create_gamestate_divs():
 #Needs:
@@ -1298,9 +1389,13 @@ def create_gamestate_divs(configs):
                       visible = configs.kicker_foot_visibility)
     kicker_kick = Div(text = configs.kicker_kick_text,
                       visible = configs.kicker_kick_visibility)
+    cpu_selected = Div(text = "0", visible = False)
+    chances_valid = Div(text = "0", visible = False)
+    counter_made = Div(text = "1", visible = False)
 
     return (iterations_to_run, strategy_to_use,
-            nround, score, kicker_foot, kicker_kick)
+            nround, score, kicker_foot, kicker_kick,
+            cpu_selected, chances_valid, counter_made)
 #</editor-fold>
 #<editor-fold create_strategy_dropdown():
 #Needs:
@@ -1458,6 +1553,17 @@ def create_labels(configs):
                   text_align = configs.labels_text_align)
     return labels;
 #</editor-fold>
+#<editor-fold create_aim_TextInputs():
+def create_aim_TextInputs():
+    ll_aim_text_input = TextInput(value = str(0), title = "ll_aim_chance", visible = False)
+    lm_aim_text_input = TextInput(value = str(0), title = "lm_aim_chance", visible = False)
+    lr_aim_text_input = TextInput(value = str(0), title = "lr_aim_chance", visible = False)
+    rl_aim_text_input = TextInput(value = str(0), title = "rl_aim_chance", visible = False)
+    rm_aim_text_input = TextInput(value = str(0), title = "rm_aim_chance", visible = False)
+    rr_aim_text_input = TextInput(value = str(0), title = "rr_aim_chance", visible = False)
+    return (ll_aim_text_input, lm_aim_text_input, lr_aim_text_input,
+            rl_aim_text_input, rm_aim_text_input, rr_aim_text_input)
+#</editor-fold>
 #<editor-fold b_automate_setup():
 #Needs:
 #   from bokeh.models import CustomJS
@@ -1511,31 +1617,6 @@ def b_figs_setup(b_fig_1, b_fig_2, b_fig_3, b_fig_4, args_dict):
     b_fig_3.js_on_click(b_fig_3_click)
     b_fig_4.js_on_click(b_fig_4_click)
 #</editor-fold>
-#<editor-fold aim_sliders_setup():
-#Needs:
-#   from bokeh.models import CustomJS
-def aim_sliders_setup(ll_aim_slider, lm_aim_slider, lr_aim_slider,
-                      rl_aim_slider, rm_aim_slider, rr_aim_slider,
-                      automation_table_source):
-
-    args_dict = dict(ColumnDataSourceToChange = automation_table_source,
-                     LL_aim_slider = ll_aim_slider,
-                     LM_aim_slider = lm_aim_slider,
-                     LR_aim_slider = lr_aim_slider,
-                     RL_aim_slider = rl_aim_slider,
-                     RM_aim_slider = rm_aim_slider,
-                     RR_aim_slider = rr_aim_slider)
-
-    aim_slider_customjs = CustomJS(args = args_dict,
-                                   code = aim_slider_callback_code)
-
-    ll_aim_slider.js_on_change('value', aim_slider_customjs)
-    lm_aim_slider.js_on_change('value', aim_slider_customjs)
-    lr_aim_slider.js_on_change('value', aim_slider_customjs)
-    rl_aim_slider.js_on_change('value', aim_slider_customjs)
-    rm_aim_slider.js_on_change('value', aim_slider_customjs)
-    rr_aim_slider.js_on_change('value', aim_slider_customjs)
-#</editor-fold>
 #<editor-fold iterations_slider_setup():
 #Needs:
 #    from bokeh.models import CustomJS
@@ -1554,17 +1635,47 @@ def strategy_dropdown_setup(strategy_dropdown, args_dict):
     strategy_dropdown.js_on_event("menu_item_click",
                                   strategy_dropdown_callback)
 #</editor-fold>
+#<editor-fold aim_textInputs_setup():
+#Needs:
+#    from bokeh.models import CustomJS
+def aim_textInputs_setup(ll_aim_text_input, lm_aim_text_input,
+                         lr_aim_text_input, rl_aim_text_input,
+                         rm_aim_text_input, rr_aim_text_input,
+                         automation_table_source, chances_valid,
+                         b_start_automate):
+
+    args_dict = dict(table_source = automation_table_source,
+                     ll_aim_text_input = ll_aim_text_input,
+                     lm_aim_text_input = lm_aim_text_input,
+                     lr_aim_text_input = lr_aim_text_input,
+                     rl_aim_text_input = rl_aim_text_input,
+                     rm_aim_text_input = rm_aim_text_input,
+                     rr_aim_text_input = rr_aim_text_input,
+                     chances_valid = chances_valid,
+                     b_start_automate = b_start_automate)
+
+    aim_textInputs_customjs = CustomJS(args = args_dict,
+                                       code = aim_inputs_callback_code)
+
+    ll_aim_text_input.js_on_change('value', aim_textInputs_customjs)
+    lm_aim_text_input.js_on_change('value', aim_textInputs_customjs)
+    lr_aim_text_input.js_on_change('value', aim_textInputs_customjs)
+    rl_aim_text_input.js_on_change('value', aim_textInputs_customjs)
+    rm_aim_text_input.js_on_change('value', aim_textInputs_customjs)
+    rr_aim_text_input.js_on_change('value', aim_textInputs_customjs)
+#</editor-fold>
 #<editor-fold format_layout():
 #Needs:
 #    from bokeh.layouts import row, column, gridplot
 def format_layout(b_automate, iterations_slider, b_auto_next,
                   strategy_dropdown, b_start_automate, b_make_counter,
-                  LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider,
-                  RM_aim_slider, RR_aim_slider, game_stats_figure_1,
+                  game_stats_figure_1,
                   game_stats_figure_2, game_stats_figure_3,
                   game_stats_figure_4,
                   game_figure, automation_table, automation_distribution_table,
-                  b_fig_1, b_fig_2, b_fig_3, b_fig_4, configs):
+                  b_fig_1, b_fig_2, b_fig_3, b_fig_4, ll_aim_text_input,
+                  lm_aim_text_input, lr_aim_text_input, rl_aim_text_input,
+                  rm_aim_text_input, rr_aim_text_input, configs):
 
     automate_button_row = row(b_automate, iterations_slider, b_auto_next,
                               max_width = configs.automate_button_row_max_width,
@@ -1578,22 +1689,22 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
                              max_width = configs.start_automate_row_max_width,
                              sizing_mode = configs.start_automate_row_sizing_mode)
 
-    automate_LL_aim_row = row(LL_aim_slider,
+    automate_LL_aim_row = row(ll_aim_text_input,
                               max_width = configs.automate_aim_rows_max_width,
                               sizing_mode = configs.automate_aim_rows_sizing_mode)
-    automate_LM_aim_row = row(LM_aim_slider,
+    automate_LM_aim_row = row(lm_aim_text_input,
                               max_width = configs.automate_aim_rows_max_width,
                               sizing_mode = configs.automate_aim_rows_sizing_mode)
-    automate_LR_aim_row = row(LR_aim_slider,
+    automate_LR_aim_row = row(lr_aim_text_input,
                               max_width = configs.automate_aim_rows_max_width,
                               sizing_mode = configs.automate_aim_rows_sizing_mode)
-    automate_RL_aim_row = row(RL_aim_slider,
+    automate_RL_aim_row = row(rl_aim_text_input,
                               max_width = configs.automate_aim_rows_max_width,
                               sizing_mode = configs.automate_aim_rows_sizing_mode)
-    automate_RM_aim_row = row(RM_aim_slider,
+    automate_RM_aim_row = row(rm_aim_text_input,
                               max_width = configs.automate_aim_rows_max_width,
                               sizing_mode = configs.automate_aim_rows_sizing_mode)
-    automate_RR_aim_row = row(RR_aim_slider,
+    automate_RR_aim_row = row(rr_aim_text_input,
                               max_width = configs.automate_aim_rows_max_width,
                               sizing_mode = configs.automate_aim_rows_sizing_mode)
 
@@ -1636,7 +1747,6 @@ def format_layout(b_automate, iterations_slider, b_auto_next,
                      plot_height = configs.plot_height)
     return grid1
 #</editor-fold>
-
 #<editor-fold scr_text and labels configs:
 class Scr_text_and_labels_configs:
     def __init__(self, scr_text_xs = [2, 70, 2, 14, 14],
@@ -1788,89 +1898,12 @@ class Button_configs:
 #</editor-fold>
 #<editor-fold Slider_configs:
 class Slider_configs:
-    def __init__(self, ll_aim_slider_start = 0, ll_aim_slider_end = 1,
-                 ll_aim_slider_value = 1/6, ll_aim_slider_step = 0.01,
-                 ll_aim_slider_title = "LL Aim Weight",
-                 ll_aim_slider_disabled = False,
-                 ll_aim_slider_visibility = False,
-                 lm_aim_slider_start = 0, lm_aim_slider_end = 1,
-                 lm_aim_slider_value = 1/6, lm_aim_slider_step = 0.01,
-                 lm_aim_slider_title = "LM Aim Weight",
-                 lm_aim_slider_disabled = False,
-                 lm_aim_slider_visibility = False,
-                 lr_aim_slider_start = 0, lr_aim_slider_end = 1,
-                 lr_aim_slider_value = 1/6, lr_aim_slider_step = 0.01,
-                 lr_aim_slider_title = "LR Aim Weight",
-                 lr_aim_slider_disabled = False,
-                 lr_aim_slider_visibility = False,
-                 rl_aim_slider_start = 0, rl_aim_slider_end = 1,
-                 rl_aim_slider_value = 1/6, rl_aim_slider_step = 0.01,
-                 rl_aim_slider_title = "RL Aim Weight",
-                 rl_aim_slider_disabled = False,
-                 rl_aim_slider_visibility = False,
-                 rm_aim_slider_start = 0, rm_aim_slider_end = 1,
-                 rm_aim_slider_value = 1/6, rm_aim_slider_step = 0.01,
-                 rm_aim_slider_title = "RM Aim Weight",
-                 rm_aim_slider_disabled = False,
-                 rm_aim_slider_visibility = False,
-                 rr_aim_slider_start = 0, rr_aim_slider_end = 1,
-                 rr_aim_slider_value = 1/6, rr_aim_slider_step = 0.01,
-                 rr_aim_slider_title = "RR Aim Weight",
-                 rr_aim_slider_disabled = False,
-                 rr_aim_slider_visibility = False,
+    def __init__(self,
                  iterations_slider_start = 10, iterations_slider_end = 500,
                  iterations_slider_value = 50, iterations_slider_step = 10,
                  iterations_slider_title = "Iterations To Run",
                  iterations_slider_disabled = False,
                  iterations_slider_visibility = False):
-        self.ll_aim_slider_start = ll_aim_slider_start
-        self.ll_aim_slider_end = ll_aim_slider_end
-        self.ll_aim_slider_value = ll_aim_slider_value
-        self.ll_aim_slider_step = ll_aim_slider_step
-        self.ll_aim_slider_title = ll_aim_slider_title
-        self.ll_aim_slider_disabled = ll_aim_slider_disabled
-        self.ll_aim_slider_visibility = ll_aim_slider_visibility
-
-        self.lm_aim_slider_start = lm_aim_slider_start
-        self.lm_aim_slider_end = lm_aim_slider_end
-        self.lm_aim_slider_value = lm_aim_slider_value
-        self.lm_aim_slider_step = lm_aim_slider_step
-        self.lm_aim_slider_title = lm_aim_slider_title
-        self.lm_aim_slider_disabled = lm_aim_slider_disabled
-        self.lm_aim_slider_visibility = lm_aim_slider_visibility
-
-        self.lr_aim_slider_start = lr_aim_slider_start
-        self.lr_aim_slider_end = lr_aim_slider_end
-        self.lr_aim_slider_value = lr_aim_slider_value
-        self.lr_aim_slider_step = lr_aim_slider_step
-        self.lr_aim_slider_title = lr_aim_slider_title
-        self.lr_aim_slider_disabled = lr_aim_slider_disabled
-        self.lr_aim_slider_visibility = lr_aim_slider_visibility
-
-        self.rl_aim_slider_start = rl_aim_slider_start
-        self.rl_aim_slider_end = rl_aim_slider_end
-        self.rl_aim_slider_value = rl_aim_slider_value
-        self.rl_aim_slider_step = rl_aim_slider_step
-        self.rl_aim_slider_title = rl_aim_slider_title
-        self.rl_aim_slider_disabled = rl_aim_slider_disabled
-        self.rl_aim_slider_visibility = rl_aim_slider_visibility
-
-        self.rm_aim_slider_start = rm_aim_slider_start
-        self.rm_aim_slider_end = rm_aim_slider_end
-        self.rm_aim_slider_value = rm_aim_slider_value
-        self.rm_aim_slider_step = rm_aim_slider_step
-        self.rm_aim_slider_title = rm_aim_slider_title
-        self.rm_aim_slider_disabled = rm_aim_slider_disabled
-        self.rm_aim_slider_visibility = rm_aim_slider_visibility
-
-        self.rr_aim_slider_start = rr_aim_slider_start
-        self.rr_aim_slider_end = rr_aim_slider_end
-        self.rr_aim_slider_value = rr_aim_slider_value
-        self.rr_aim_slider_step = rr_aim_slider_step
-        self.rr_aim_slider_title = rr_aim_slider_title
-        self.rr_aim_slider_disabled = rr_aim_slider_disabled
-        self.rr_aim_slider_visibility = rr_aim_slider_visibility
-
         self.iterations_slider_start = iterations_slider_start
         self.iterations_slider_end = iterations_slider_end
         self.iterations_slider_value = iterations_slider_value
@@ -2030,7 +2063,21 @@ class Layout_configs:
         self.b_fig_rows_max_width = b_fig_rows_max_width
         self.b_fig_rows_sizing_mode = b_fig_rows_sizing_mode
 #</editor-fold>
-
+#<editor-fold cpu_selected_setup():
+def cpu_selected_setup(cpu_selected, args_dict):
+    cpu_selected.js_on_change('text', CustomJS(code = cpu_selected_change_code,
+                                               args = args_dict))
+#</editor-fold>
+#<editor-fold chances_valid_setup():
+def chances_valid_setup(chances_valid, args_dict):
+    chances_valid.js_on_change('text', CustomJS(code = chances_valid_change_code,
+                                               args = args_dict))
+#</editor-fold>
+#<editor-fold counter_made_setup():
+def counter_made_setup(counter_made, args_dict):
+    counter_made.js_on_change('text', CustomJS(code = counter_made_change_code,
+                                               args = args_dict))
+#</editor-fold>
 #<editor-fold make_game():
 #Needs:
 #    from main_game_figure import game_figure_setup, Game_fig_configs
@@ -2053,13 +2100,13 @@ default_automation_table_configs = Automation_table_configs()
 default_layout_configs = Layout_configs()
 #</editor-fold>
 #<editor-fold Helpers:
-def __add_aim_sliders(args_dict, aim_sliders):
-    args_dict['LL_aim_slider'] = aim_sliders[0]
-    args_dict['LM_aim_slider'] = aim_sliders[1]
-    args_dict['LR_aim_slider'] = aim_sliders[2]
-    args_dict['RL_aim_slider'] = aim_sliders[3]
-    args_dict['RM_aim_slider'] = aim_sliders[4]
-    args_dict['RR_aim_slider'] = aim_sliders[5]
+def __add_aim_textInputs(args_dict, aim_textInputs):
+    args_dict['ll_aim_text_input'] = aim_textInputs[0]
+    args_dict['lm_aim_text_input'] = aim_textInputs[1]
+    args_dict['lr_aim_text_input'] = aim_textInputs[2]
+    args_dict['rl_aim_text_input'] = aim_textInputs[3]
+    args_dict['rm_aim_text_input'] = aim_textInputs[4]
+    args_dict['rr_aim_text_input'] = aim_textInputs[5]
 def __add_stat_figs(args_dict, stat_figs):
     args_dict['game_stats_figure_1'] = stat_figs[0]
     args_dict['game_stats_figure_2'] = stat_figs[1]
@@ -2109,7 +2156,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
         #</editor-fold>
         #<editor-fold divs:
     (iterations_to_run, strategy_to_use, nround, score, kicker_foot,
-     kicker_kick) = create_gamestate_divs(divs_configs)
+     kicker_kick, cpu_selected, chances_valid,
+     counter_made) = create_gamestate_divs(divs_configs)
         #</editor-fold>
         #<editor-fold buttons:
     (b_automate, b_start_automate,
@@ -2117,8 +2165,12 @@ def make_game(game_figure_configs = default_game_fig_configs,
      b_fig_2, b_fig_3, b_fig_4) = create_buttons(button_configs)
         #</editor-fold>
         #<editor-fold sliders:
-    (LL_aim_slider, LM_aim_slider, LR_aim_slider, RL_aim_slider, RM_aim_slider,
-    RR_aim_slider, iterations_slider) = create_sliders(slider_configs)
+    (iterations_slider) = create_sliders(slider_configs)
+        #</editor-fold>
+        #<editor-fold aim textInputs:
+    (ll_aim_text_input, lm_aim_text_input, lr_aim_text_input,
+     rl_aim_text_input, rm_aim_text_input,
+     rr_aim_text_input) = create_aim_TextInputs()
         #</editor-fold>
         #<editor-fold strategy_dropdown:
     strategy_dropdown = create_strategy_dropdown(strategy_dropdown_configs)
@@ -2135,8 +2187,8 @@ def make_game(game_figure_configs = default_game_fig_configs,
         #</editor-fold>
     #</editor-fold>
     #<editor-fold Setup for using helpers to add to argsdicts:
-    aim_sliders = [LL_aim_slider, LM_aim_slider, LR_aim_slider,
-                   RL_aim_slider, RM_aim_slider, RR_aim_slider]
+    aim_textInputs = [ll_aim_text_input, lm_aim_text_input, lr_aim_text_input,
+                      rl_aim_text_input, rm_aim_text_input, rr_aim_text_input]
     stat_figs = [game_stats_figure_1, game_stats_figure_2, game_stats_figure_3,
                  game_stats_figure_4]
     stat_fig_sources = [game_stats_figure_2_source, game_stats_figure_3_source,
@@ -2149,16 +2201,30 @@ def make_game(game_figure_configs = default_game_fig_configs,
                      iterations_slider = iterations_slider,
                      strategy_dropdown = strategy_dropdown,
                      automation_table = automation_table, txt = scr_text)
-    __add_aim_sliders(args_dict, aim_sliders)
+    __add_aim_textInputs(args_dict, aim_textInputs)
 
     b_automate_setup(b_automate = b_automate, args_dict = args_dict)
+        #</editor-fold>
+        #<editor-fold b_start_automate_visibility setup:
+    args_dict = dict(b_start_automate = b_start_automate,
+                     b_make_counter = b_make_counter,
+                     cpu_selected = cpu_selected,
+                     counter_made = counter_made,
+                     chances_valid = chances_valid)
+    cpu_selected_setup(cpu_selected = cpu_selected,
+                       args_dict = args_dict)
+    chances_valid_setup(chances_valid = chances_valid,
+                        args_dict = args_dict)
+    counter_made_setup(counter_made = counter_made,
+                       args_dict = args_dict)
         #</editor-fold>
         #<editor-fold b_make_counter setup:
     args_dict = dict(b_start_automate = b_start_automate,
                      b_make_counter = b_make_counter,
                      automation_table = automation_table,
-                     automation_table_source = automation_table_source)
-    __add_aim_sliders(args_dict, aim_sliders)
+                     automation_table_source = automation_table_source,
+                     counter_made = counter_made)
+    __add_aim_textInputs(args_dict, aim_textInputs)
 
     goalie_counter_source = b_make_counter_setup(b_make_counter, args_dict)
         #</editor-fold>
@@ -2195,7 +2261,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
     args_dict['iterations_slider'] = iterations_slider
     args_dict['strategy_dropdown'] = strategy_dropdown
     args_dict['automation_table'] = automation_table
-    __add_aim_sliders(args_dict, aim_sliders)
+    __add_aim_textInputs(args_dict, aim_textInputs)
 
     b_start_automate_setup(b_start_automate = b_start_automate,
                            args_dict = args_dict)
@@ -2206,15 +2272,6 @@ def make_game(game_figure_configs = default_game_fig_configs,
     b_auto_next_setup(b_auto_next = b_auto_next, args_dict = args_dict)
             #</editor-fold>
         #</editor-fold>
-        #<editor-fold aim_sliders setup:
-    aim_sliders_setup(ll_aim_slider = LL_aim_slider,
-                      lm_aim_slider = LM_aim_slider,
-                      lr_aim_slider = LR_aim_slider,
-                      rl_aim_slider = RL_aim_slider,
-                      rm_aim_slider = RM_aim_slider,
-                      rr_aim_slider = RR_aim_slider,
-                      automation_table_source = automation_table_source)
-        #</editor-fold>
         #<editor-fold iterations_slider setup:
     args_dict = dict(iterations_to_run = iterations_to_run)
     __add_stat_figs(args_dict, stat_figs)
@@ -2223,13 +2280,25 @@ def make_game(game_figure_configs = default_game_fig_configs,
     iterations_slider_setup(iterations_slider = iterations_slider,
                             args_dict = args_dict)
         #</editor-fold>
+        #<editor-fold aim_textInputs_setup:
+    aim_textInputs_setup(ll_aim_text_input = ll_aim_text_input,
+                         lm_aim_text_input = lm_aim_text_input,
+                         lr_aim_text_input = lr_aim_text_input,
+                         rl_aim_text_input = rl_aim_text_input,
+                         rm_aim_text_input = rm_aim_text_input,
+                         rr_aim_text_input = rr_aim_text_input,
+                         chances_valid = chances_valid,
+                         automation_table_source = automation_table_source,
+                         b_start_automate = b_start_automate)
+        #</editor-fold>
         #<editor-fold strategy_dropdown setup:
     args_dict = dict(strategy_dropdown = strategy_dropdown,
                      strategy_to_use = strategy_to_use,
                      b_start_automate = b_start_automate,
                      b_make_counter = b_make_counter,
-                     automation_table = automation_table)
-    __add_aim_sliders(args_dict, aim_sliders)
+                     automation_table = automation_table,
+                     cpu_selected = cpu_selected, counter_made = counter_made)
+    __add_aim_textInputs(args_dict, aim_textInputs)
 
     strategy_dropdown_setup(strategy_dropdown = strategy_dropdown,
                             args_dict = args_dict)
@@ -2243,12 +2312,12 @@ def make_game(game_figure_configs = default_game_fig_configs,
                           strategy_dropdown = strategy_dropdown,
                           b_start_automate = b_start_automate,
                           b_make_counter = b_make_counter,
-                          LL_aim_slider = LL_aim_slider,
-                          LM_aim_slider = LM_aim_slider,
-                          LR_aim_slider = LR_aim_slider,
-                          RL_aim_slider = RL_aim_slider,
-                          RM_aim_slider = RM_aim_slider,
-                          RR_aim_slider = RR_aim_slider,
+                          ll_aim_text_input = ll_aim_text_input,
+                          lm_aim_text_input = lm_aim_text_input,
+                          lr_aim_text_input = lr_aim_text_input,
+                          rl_aim_text_input = rl_aim_text_input,
+                          rm_aim_text_input = rm_aim_text_input,
+                          rr_aim_text_input = rr_aim_text_input,
                           game_stats_figure_1 = game_stats_figure_1,
                           game_stats_figure_2 = game_stats_figure_2,
                           game_stats_figure_3 = game_stats_figure_3,

@@ -15,7 +15,6 @@ class max_flow:
         self.set_initial_flow() # set intial flow
         self.create_residual_graph() # create the residual graph
         self.pos = nx.get_node_attributes(self.G,'pos')
-        self.labels = nx.get_node_attributes(self.G, 'label')
 
     def set_initial_flow(self):
         """Set the intial flow on the graph G."""
@@ -29,10 +28,10 @@ class max_flow:
             label[(i,j)] = str( self.G.edges[i,j]["flow"] ) + " / " + str( self.G.edges[i,j]["cap"] )
         plt.figure()
         if colors is None:
-            nx.draw_networkx(self.G,self.pos,node_size=500,node_color='lightblue', labels=self.labels, with_labels=True)
+            nx.draw_networkx(self.G,self.pos,node_size=500,node_color='lightblue')
         else:
             colors = [colors[i] for i in self.G.nodes]
-            nx.draw_networkx(self.G,self.pos,node_size=500,node_color=colors, labels=self.labels, with_labels=True)
+            nx.draw_networkx(self.G,self.pos,node_size=500,node_color=colors)
         nx.draw_networkx_edge_labels(self.G,self.pos,edge_labels=label);
         plt.show()
 
@@ -57,10 +56,10 @@ class max_flow:
         self.create_residual_graph()
         plt.figure()
         if colors is None:
-            nx.draw_networkx(self.residual,self.pos,node_size=500,node_color='lightblue',connectionstyle='arc3, rad=0.1', labels=self.labels, with_labels=True)
+            nx.draw_networkx(self.residual,self.pos,node_size=500,node_color='lightblue',connectionstyle='arc3, rad=0.1')
         else:
             colors = [colors[i] for i in self.residual.nodes]
-            nx.draw_networkx(self.residual,self.pos,node_size=500,node_color=colors,connectionstyle='arc3, rad=0.1', labels=self.labels, with_labels=True)
+            nx.draw_networkx(self.residual,self.pos,node_size=500,node_color=colors,connectionstyle='arc3, rad=0.1')
         residualcap = nx.get_edge_attributes( self.residual, 'residual capacity' )
         nx.draw_networkx_edge_labels(self.residual,self.pos,edge_labels=residualcap,label_pos=0.66);
         plt.show()
@@ -159,11 +158,11 @@ class max_flow:
         return flow
 
     def get_checked_nodes(self):
-        """Returns a list of the nodes that are on the s-side of the min cut, using their labels."""
+        """Returns a list of the nodes that are on the s-side of the min cut."""
         checked = []
         for i in self.G.nodes:
             if self.G.nodes[i]["check"]:
-                checked.append(self.G.nodes[i]['label'])
+                checked.append(i)
         return checked
 
 
@@ -176,55 +175,77 @@ def add_infinite_capacities(G):
             G.edges[i,j]['cap'] = math.inf
     return G
 
-def max_density(G, edges, d):
-    """Formulate and solve the min cut instance of the maximum density problem with the given graph [G], graph edges [edges] and given density [d]."""
+
+def create_max_density(G, edges, d):
+    """Returns the graph of the min cut instance of the maximum density problem with the given graph [G], graph edges [edges] and given density [d]."""
     dirG = nx.DiGraph()
     sink_edges = []
-    #sink will be node 0
-    t=0
-    labels = {t: 't'}
     #add vertex nodes
-    for i in range(1, G.number_of_nodes()+1):
-        sink_edges.append((i, t, d))
-        labels[i] = str(i)
+    for i in G.nodes:
+        sink_edges.append((i, 't', d))
     source_edges = []
-    #edge to vertex edges
-    etv_edges = []
-    #source will be node (num of vertices + 1)
-    s = G.number_of_nodes()+1
-    labels[s] = 's'
-    count = s+1
+    etv_edges = []  #edge to vertex edges
+    edge_nodes = [] #list of all the edge nodes we need to add
     #total number of edges in the original graph that are not self loops
     total_edges = 0
+    #add source to edge node edges and edge to vertex node edges
     for e in edges:
         if e[0] != e[1]:
-            source_edges.append((s,count, 1))
-            etv_edges.append((count, e[0], math.inf))
-            etv_edges.append((count, e[1], math.inf))
-            labels[count] = str(e)
-            count += 1
+            edge_nodes.append(str(e))
+            source_edges.append(('s', str(e), 1))
+            etv_edges.append((str(e), e[0], math.inf))
+            etv_edges.append((str(e), e[1], math.inf))
             total_edges += 1
     dirG.add_weighted_edges_from(sink_edges, 'cap' )
     dirG.add_weighted_edges_from(source_edges, 'cap' )
     dirG.add_weighted_edges_from(etv_edges, 'cap' )
-    #assign labels to nodes
-    for k in labels:
-        dirG.nodes[k]['label'] = labels[k]
     #assign positions to nodes
-    for i in range(1, G.number_of_nodes()+1):
+    for i in G.nodes:
         dirG.nodes[i]['pos'] = (40, 100-i*10)
-    #last node index in the graph (index of last edge node)
-    edge_length = s+1+total_edges
-    for i in range(s+1, edge_length):
-        dirG.nodes[i]['pos'] = (20, 100-(i-(s+1))*10)
-    dirG.nodes[t]['pos'] = (60, edge_length*10//2)
-    dirG.nodes[s]['pos'] = (0, edge_length*10//2)
+    count = 0
+    for i in edge_nodes:
+        dirG.nodes[i]['pos'] = (20, 100-count*10)
+        count +=1
+    dirG.nodes['t']['pos'] = (60, len(edge_nodes)*10)
+    dirG.nodes['s']['pos'] = (0, len(edge_nodes)*10)
 
+    return dirG
+
+
+def solve_max_density(G):
+    """Solves the given graph [G] that represents a min-cut instance. Prints out the flow and min-cut. """
     #solve the min cut instance
-    ex= max_flow(dirG)
-    ex.ford_fulkerson(s=s, t=t, show=False)
-    print("Max flow value: " + str(ex.get_flow_value(t=t)))
+    ex= max_flow(G)
     ex.plot_flow()
-    ex.label(s=s, auto=True, show=False)
+    ex.ford_fulkerson(s='s', t='t', show=False)
+    print("Max flow value: " + str(ex.get_flow_value(t='t')))
+    ex.plot_flow()
+    ex.label(s='s', auto=True, show=False)
     print("Minimum s-t cut: " + str(ex.get_checked_nodes()))
     ex.plot_checked(residual=True)
+
+def solve_taxi(G, data):
+    """Solves the given graph [G] given that [data] is the taxi data imported in. Prints out the number of occurrences of each weekday in the cut. """
+    #solve the min cut instance
+    ex= max_flow(G)
+    #ex.plot_flow()
+    ex.ford_fulkerson(s='s', t='t', show=False)
+    print("Max flow value: " + str(ex.get_flow_value(t='t')))
+    #ex.plot_flow()
+    ex.label(s='s', auto=True, show=False)
+    dates = []
+    days = []
+    str_days = []
+    num_to_day = {0:'Mon', 1: 'Tues', 2:'Wed', 3:'Thur', 4:'Fri', 5:'Sat', 6:'Sun'}
+    for i in ex.get_checked_nodes():
+        if isinstance(i, int):
+            dates.append(i)
+            days.append(data['weekday'][i])
+            str_days.append(num_to_day[data['weekday'][i]])
+    #print("Minimum s-t cut using dates: " + str(dates))
+    #print("Minimum s-t cut using days: " + str(days))
+    count = {}
+    for i in range(7):
+        count[num_to_day[i]] = days.count(i)
+    print(count)
+    #ex.plot_checked(residual=True)

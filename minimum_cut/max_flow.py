@@ -25,14 +25,15 @@ class max_flow:
         """Plot the flow graph."""
         label = {}
         for i, j in self.G.edges:
-            label[(i,j)] = str( self.G.edges[i,j]["flow"] ) + " / " + str( self.G.edges[i,j]["cap"] )
-        plt.figure()
+            label[(i,j)] = str( round(self.G.edges[i,j]["flow"], 2) ) + " / " + str( self.G.edges[i,j]["cap"] )
+        plt.figure(figsize=(12,8))
         if colors is None:
-            nx.draw_networkx(self.G,self.pos,node_size=500,node_color='lightblue')
+            nx.draw_networkx(self.G,self.pos,node_size=700,node_color='lightblue',font_size=10)
         else:
             colors = [colors[i] for i in self.G.nodes]
-            nx.draw_networkx(self.G,self.pos,node_size=500,node_color=colors)
-        nx.draw_networkx_edge_labels(self.G,self.pos,edge_labels=label);
+            nx.draw_networkx(self.G,self.pos,node_size=700,node_color=colors,font_size=10)
+        # nx.draw_networkx_edge_labels(self.G,self.pos,edge_labels=label,font_size=9);
+        nx.draw_networkx_edge_labels(self.G,self.pos,edge_labels=label,label_pos=.66,font_size=9,bbox = dict(alpha=0),verticalalignment='bottom');
         plt.show()
 
     def create_residual_graph(self):
@@ -54,14 +55,14 @@ class max_flow:
     def plot_residual_graph(self, colors = None):
         """Plot the residual graph."""
         self.create_residual_graph()
-        plt.figure()
+        plt.figure(figsize=(12,8))
         if colors is None:
-            nx.draw_networkx(self.residual,self.pos,node_size=500,node_color='lightblue',connectionstyle='arc3, rad=0.1')
+            nx.draw_networkx(self.residual,self.pos,node_size=700,node_color='lightblue',connectionstyle='arc3, rad=0.1',font_size=10)
         else:
             colors = [colors[i] for i in self.residual.nodes]
-            nx.draw_networkx(self.residual,self.pos,node_size=500,node_color=colors,connectionstyle='arc3, rad=0.1')
-        residualcap = nx.get_edge_attributes( self.residual, 'residual capacity' )
-        nx.draw_networkx_edge_labels(self.residual,self.pos,edge_labels=residualcap,label_pos=0.66);
+            nx.draw_networkx(self.residual,self.pos,node_size=700,node_color=colors,connectionstyle='arc3, rad=0.1',font_size=10)
+        # residualcap = nx.get_edge_attributes( self.residual, 'residual capacity' )
+        # nx.draw_networkx_edge_labels(self.residual,self.pos,edge_labels=residualcap,label_pos=0.66,font_size=9);
         plt.show()
 
     def label(self, s='s', auto=True, show=False):
@@ -165,6 +166,27 @@ class max_flow:
                 checked.append(i)
         return checked
 
+    def label_from_t(self, s_cut):
+        """Labels nodes such that unreachable nodes from t are in the s-cut."""
+        for i in self.G.nodes:
+            self.G.nodes[i]["check"] = False
+        for i in s_cut:
+            self.G.nodes[i]['check'] = True
+
+    def plot_graph(self, colors = None):
+        """Plot the flow graph."""
+        label = {}
+        for i, j in self.G.edges:
+            label[(i,j)] = str( self.G.edges[i,j]["cap"])
+        plt.figure(figsize=(12,8))
+        if colors is None:
+            nx.draw_networkx(self.G,self.pos,node_size=700,node_color='lightblue',font_size=10)
+        else:
+            colors = [colors[i] for i in self.G.nodes]
+            nx.draw_networkx(self.G,self.pos,node_size=700,node_color=colors,font_size=10)
+        nx.draw_networkx_edge_labels(self.G,self.pos,edge_labels=label,font_size=9);
+        plt.show()
+
 
 def add_infinite_capacities(G):
     """Add infinite capacities on the arcs with no capacity given."""
@@ -216,11 +238,14 @@ def solve_max_density(G):
     """Solves the given graph [G] that represents a min-cut instance. Prints out the flow and min-cut. """
     #solve the min cut instance
     ex= max_flow(G)
-    ex.plot_flow()
+    ex.plot_graph()
     ex.ford_fulkerson(s='s', t='t', show=False)
     print("Max flow value: " + str(ex.get_flow_value(t='t')))
     ex.plot_flow()
-    ex.label(s='s', auto=True, show=False)
+    # ex.label(s='s', auto=True, show=False)
+    value, cut = nx.minimum_cut(G, 's', 't', capacity = 'cap')
+    s_cut, t_cut = cut
+    ex.label_from_t(s_cut)
     print("Minimum s-t cut: " + str(ex.get_checked_nodes()))
     ex.plot_checked(residual=True)
 

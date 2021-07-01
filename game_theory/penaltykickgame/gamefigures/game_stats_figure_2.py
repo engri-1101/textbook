@@ -92,7 +92,7 @@ class Stats_fig_2_configs:
 #</editor-fold>
 
 #<editor-fold stats_figure_2_setup:
-def stats_figure_2_setup(fig_configs):
+def stats_figure_2_setup(fig_configs, game_parts):
     """Fully creates and sets up Stats Figure 2 for use in the main game. Stats
     Figure 2 displays the player's score over the iterations played.
 
@@ -199,5 +199,6 @@ def stats_figure_2_setup(fig_configs):
                                             point_policy = "follow_mouse",
                                             renderers = [hbs]))
     #</editor-fold>
-    return (game_stats_figure_2, game_stats_figure_2_source)
+    game_parts.figures['game_stats_figure_2'] = game_stats_figure_2
+    game_parts.sources['game_stats_figure_2_source'] = game_stats_figure_2_source
 #</editor-fold>

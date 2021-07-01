@@ -119,7 +119,7 @@ class Game_fig_configs():
 #</editor-fold>
 
 #<editor-fold game_figure_setup:
-def game_figure_setup(fig_configs):
+def game_figure_setup(fig_configs, game_parts):
 
     game_figure = figure(tools = fig_configs.tools,
                          toolbar_location = fig_configs.toolbar_location,
@@ -198,6 +198,8 @@ def game_figure_setup(fig_configs):
                                angle = fig_configs.striker_body_angle,
                                fill_color = fig_configs.striker_body_color,
                                line_width =  fig_configs.striker_body_line_width)); #body
-
-    return game_figure, goalie_head, goalie_body, ball
+    game_parts.figures['game_figure'] = game_figure
+    game_parts.glyphs['goalie_head'] = goalie_head
+    game_parts.glyphs['goalie_body'] = goalie_body
+    game_parts.glyphs['ball'] = ball
 #</editor-fold>

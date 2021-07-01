@@ -270,7 +270,7 @@ class Stats_fig_3_configs():
 #</editor-fold>
 
 #<editor-fold stats_figure_3_setup:
-def stats_figure_3_setup(fig_configs):
+def stats_figure_3_setup(fig_configs, game_parts):
     """Fully creates and sets up stats figure 3 for use in the main game. Stats
     Figure 3 displays the goalie's perceived risks determined through
     fictitious play within the demo, according to game iteration.
@@ -554,5 +554,6 @@ def stats_figure_3_setup(fig_configs):
                                             renderers = [hb1s, hb2s, hb3s,
                                                          hb4s, hb5s, hb6s]))
     #</editor-fold>
-    return (game_stats_figure_3, game_stats_figure_3_source)
+    game_parts.figures['game_stats_figure_3'] = game_stats_figure_3
+    game_parts.sources['game_stats_figure_3_source'] = game_stats_figure_3_source
 #</editor-fold>

@@ -162,7 +162,7 @@ class Stats_fig_1_configs():
 #</editor-fold>
 
 #<editor-fold stats_figure_1_setup:
-def stats_figure_1_setup(fig_configs):
+def stats_figure_1_setup(fig_configs, game_parts):
     #<editor-fold Create Figure:
     game_stats_figure_1 = figure(tools = fig_configs.figure_base_tools,
                                  toolbar_location = fig_configs.figure_toolbar_location,
@@ -339,6 +339,7 @@ def stats_figure_1_setup(fig_configs):
                                                          blockedl_hbs,
                                                          blockedm_hbs,
                                                          blockedr_hbs]))
-    return(game_stats_figure_1, game_stats_figure_1_source)
+    game_parts.figures['game_stats_figure_1'] = game_stats_figure_1
+    game_parts.sources['game_stats_figure_1_source'] = game_stats_figure_1_source
     #</editor-fold>
  #</editor-fold>

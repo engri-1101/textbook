@@ -6,11 +6,11 @@ from bokeh.models import (CustomJSHover, ColumnDataSource, HoverTool)
 #the hovered data point.
 fig_2_xs_code = """
 const index = special_vars.index;
-const data = game_stats_figure_2_source.data;
+const data = stats_fig_2_source.data;
 
 data['highlight_alphas'] = new Array(data['highlight_alphas'].length).fill(0);
 data['highlight_alphas'][index] = 1;
-game_stats_figure_2_source.change.emit();
+stats_fig_2_source.change.emit();
 
 return(data['xs'][index].toString());
 """
@@ -18,7 +18,7 @@ return(data['xs'][index].toString());
 #<editor-fold Custom JSHover fig_2_ys Code String:
 #Returns the y value of the hovered data point.
 fig_2_ys_code = """
-return(game_stats_figure_2_source.data['ys'][special_vars.index].toString());
+return(stats_fig_2_source.data['ys'][special_vars.index].toString());
 """
 #</editor-fold>
 #<editor-fold Custom HoverTool Tooltip Code String:
@@ -105,14 +105,14 @@ def stats_figure_2_setup(fig_configs, game_parts):
 
     Returns:
 
-    game_stats_figure_2 - The Game stats Bokeh figure displaying the data.
+    stats_fig_2 - The Game stats Bokeh figure displaying the data.
 
-    game_stats_figure_2_source - The ColumnDataSource used by
-    game_stats_figure_2.
+    stats_fig_2_source - The ColumnDataSource used by
+    stats_fig_2.
     """
     #<editor-fold Figure Creation:
     #Create and configure the main aspects of the figure:
-    game_stats_figure_2 = figure(tools = fig_configs.figure_base_tools,
+    stats_fig_2 = figure(tools = fig_configs.figure_base_tools,
                                  toolbar_location = fig_configs.figure_toolbar_location,
                                  toolbar_sticky = fig_configs.figure_toolbar_sticky,
                                  title = fig_configs.figure_title,
@@ -121,16 +121,16 @@ def stats_figure_2_setup(fig_configs, game_parts):
                                  x_range = fig_configs.figure_x_range,
                                  y_range = fig_configs.figure_y_range,
                                  visible = fig_configs.figure_initial_visibility)
-    game_stats_figure_2.title.text_font_size = fig_configs.figure_title_font_size
-    game_stats_figure_2.xaxis.visible = fig_configs.figure_x_axis_visibility
-    game_stats_figure_2.yaxis.visible = fig_configs.figure_y_axis_visibility
-    game_stats_figure_2.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
-    game_stats_figure_2.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
-    game_stats_figure_2.outline_line_color = fig_configs.figure_outline_line_color
-    game_stats_figure_2.background_fill_color = fig_configs.figure_background_color
+    stats_fig_2.title.text_font_size = fig_configs.figure_title_font_size
+    stats_fig_2.xaxis.visible = fig_configs.figure_x_axis_visibility
+    stats_fig_2.yaxis.visible = fig_configs.figure_y_axis_visibility
+    stats_fig_2.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
+    stats_fig_2.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
+    stats_fig_2.outline_line_color = fig_configs.figure_outline_line_color
+    stats_fig_2.background_fill_color = fig_configs.figure_background_color
     #</editor-fold>
     #<editor-fold ColumnDataSource Creation:
-    #Create initial values for game_stats_figure_2_source
+    #Create initial values for stats_fig_2_source
     source_xs = []
     source_ys = []
     source_chance_ys = []
@@ -144,31 +144,31 @@ def stats_figure_2_setup(fig_configs, game_parts):
         source_heights.append(100)
         source_highlight_alphas.append(0)
 
-    #Create game_stats_figure_2_source with the values that were created.
+    #Create stats_fig_2_source with the values that were created.
     source_data = dict(xs = source_xs,
                        ys = source_ys,
                        chance_ys = source_chance_ys,
                        heights = source_heights,
                        highlight_alphas = source_highlight_alphas)
-    game_stats_figure_2_source = ColumnDataSource(data = source_data)
+    stats_fig_2_source = ColumnDataSource(data = source_data)
     #</editor-fold>
     #<editor-fold Plot Figure Points:
     #Create the data points for the figure.
-    game_stats_figure_2.circle_dot('xs', 'ys',
-                                   source = game_stats_figure_2_source,
+    stats_fig_2.circle_dot('xs', 'ys',
+                                   source = stats_fig_2_source,
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_dot_outline_color,
                                    fill_color = fig_configs.plot_dot_color)
-    game_stats_figure_2.circle_dot('xs', 'chance_ys',
-                                   source = game_stats_figure_2_source,
+    stats_fig_2.circle_dot('xs', 'chance_ys',
+                                   source = stats_fig_2_source,
                                    size = 1,
                                    line_color = "black",
                                    fill_color = "black")
     #</editor-fold>
     #<editor-fold Plot Figure Highlight Points:
     #Plot Highlight Points For Figure:
-    game_stats_figure_2.circle_dot('xs', 'ys',
-                                   source = game_stats_figure_2_source,
+    stats_fig_2.circle_dot('xs', 'ys',
+                                   source = stats_fig_2_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
@@ -176,8 +176,8 @@ def stats_figure_2_setup(fig_configs, game_parts):
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
     #Create the invisible hitboxes for the figure:
-    hbs = game_stats_figure_2.rect(x = 'xs', y = 0,
-                                   source = game_stats_figure_2_source,
+    hbs = stats_fig_2.rect(x = 'xs', y = 0,
+                                   source = stats_fig_2_source,
                                    width = 1, height = 'heights',
                                    fill_color = fig_configs.plot_dot_color,
                                    alpha = 0)
@@ -185,7 +185,7 @@ def stats_figure_2_setup(fig_configs, game_parts):
     #<editor-fold CustomJSHover Creation:
     #Create the CustomJSHovers used to format the data for the figure's
     #custom HoverTool:
-    hover_args = dict(game_stats_figure_2_source = game_stats_figure_2_source)
+    hover_args = dict(stats_fig_2_source = stats_fig_2_source)
     fig_2_xs_custom = CustomJSHover(code = fig_2_xs_code, args = hover_args)
     fig_2_ys_custom = CustomJSHover(code = fig_2_ys_code, args = hover_args)
     #</editor-fold>
@@ -193,12 +193,12 @@ def stats_figure_2_setup(fig_configs, game_parts):
     #Create the Custom HoverTool and add it to the figure:
     hover_formatter = { '@xs' : fig_2_xs_custom,
                         '@ys' : fig_2_ys_custom}
-    game_stats_figure_2.add_tools(HoverTool(tooltips = fig_2_custom_tooltip,
+    stats_fig_2.add_tools(HoverTool(tooltips = fig_2_custom_tooltip,
                                             formatters = hover_formatter,
                                             mode = "mouse",
                                             point_policy = "follow_mouse",
                                             renderers = [hbs]))
     #</editor-fold>
-    game_parts.figures['stats_2'] = game_stats_figure_2
-    game_parts.sources['stats_fig_2'] = game_stats_figure_2_source
+    game_parts.figures['stats_2'] = stats_fig_2
+    game_parts.sources['stats_fig_2'] = stats_fig_2_source
 #</editor-fold>

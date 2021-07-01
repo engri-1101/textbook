@@ -164,7 +164,7 @@ class Stats_fig_1_configs():
 #<editor-fold stats_figure_1_setup:
 def stats_figure_1_setup(fig_configs, game_parts):
     #<editor-fold Create Figure:
-    game_stats_figure_1 = figure(tools = fig_configs.figure_base_tools,
+    stats_fig_1 = figure(tools = fig_configs.figure_base_tools,
                                  toolbar_location = fig_configs.figure_toolbar_location,
                                  title = fig_configs.figure_title,
                                  plot_width = fig_configs.figure_width,
@@ -173,25 +173,25 @@ def stats_figure_1_setup(fig_configs, game_parts):
                                  y_range = fig_configs.figure_y_range,
                                  visible = fig_configs.figure_initial_visibility)
 
-    game_stats_figure_1.title.text_font_size = fig_configs.figure_title_font_size
+    stats_fig_1.title.text_font_size = fig_configs.figure_title_font_size
     #Configure Gridlines And Axes
-    game_stats_figure_1.xaxis.visible = fig_configs.figure_x_axis_visibility
-    game_stats_figure_1.yaxis.visible = fig_configs.figure_y_axis_visibility
-    game_stats_figure_1.xgrid.grid_line_color = fig_configs.figure_x_axis_line_color
-    game_stats_figure_1.ygrid.grid_line_color = fig_configs.figure_y_axis_line_color
-    game_stats_figure_1.outline_line_color = fig_configs.figure_outline_line_color
+    stats_fig_1.xaxis.visible = fig_configs.figure_x_axis_visibility
+    stats_fig_1.yaxis.visible = fig_configs.figure_y_axis_visibility
+    stats_fig_1.xgrid.grid_line_color = fig_configs.figure_x_axis_line_color
+    stats_fig_1.ygrid.grid_line_color = fig_configs.figure_y_axis_line_color
+    stats_fig_1.outline_line_color = fig_configs.figure_outline_line_color
         #Set Figure Background Color
-    game_stats_figure_1.background_fill_color = fig_configs.figure_background_color
+    stats_fig_1.background_fill_color = fig_configs.figure_background_color
     #</editor-fold>
     #<editor-fold Create Legend:
     #Add shapes to represent colors (Cannot be seen as radius=0):
-    l1scored = game_stats_figure_1.circle(x = 0, y = 0, radius = 0,
+    l1scored = stats_fig_1.circle(x = 0, y = 0, radius = 0,
                                           color = fig_configs.scored_bar_color)
-    l1blockedl = game_stats_figure_1.circle(x = 0, y = 0, radius = 0,
+    l1blockedl = stats_fig_1.circle(x = 0, y = 0, radius = 0,
                                             color = fig_configs.blocked_left_bar_color)
-    l2blockedm = game_stats_figure_1.circle(x = 0, y = 0, radius = 0,
+    l2blockedm = stats_fig_1.circle(x = 0, y = 0, radius = 0,
                                             color = fig_configs.blocked_middle_bar_color)
-    l2blockedr = game_stats_figure_1.circle(x = 0, y = 0, radius = 0,
+    l2blockedr = stats_fig_1.circle(x = 0, y = 0, radius = 0,
                                             color = fig_configs.blocked_right_bar_color)
     #Create Legends, Configure Placement And Names:
     legend1 = Legend(items = [("Scored", [l1scored]),
@@ -216,8 +216,8 @@ def stats_figure_1_setup(fig_configs, game_parts):
                      padding = fig_configs.legend_padding,
                      border_line_alpha = fig_configs.legend_border_line_alpha,
                      background_fill_alpha = fig_configs.legend_background_fill_alpha)
-    game_stats_figure_1.add_layout(legend1, "below")
-    game_stats_figure_1.add_layout(legend2, "below")
+    stats_fig_1.add_layout(legend1, "below")
+    stats_fig_1.add_layout(legend2, "below")
     #</editor-fold>
     #<editor-fold ColumnDataSource Creation:
     figure_1_source_xs =             [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]
@@ -227,13 +227,13 @@ def stats_figure_1_setup(fig_configs, game_parts):
     figure_1_source_blockedr_ys =    [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     figure_1_source_hovered_widths = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-    game_stats_figure_1_data = dict(x = figure_1_source_xs,
+    stats_fig_1_data = dict(x = figure_1_source_xs,
                                     scored_y = figure_1_source_scored_ys,
                                     blockedl_y = figure_1_source_blockedl_ys,
                                     blockedm_y = figure_1_source_blockedm_ys,
                                     blockedr_y = figure_1_source_blockedr_ys,
                                     hovered_widths = figure_1_source_hovered_widths)
-    game_stats_figure_1_source = ColumnDataSource(game_stats_figure_1_data)
+    stats_fig_1_source = ColumnDataSource(stats_fig_1_data)
     #</editor-fold>
     #<editor-fold Create CustomJSTransforms:
     scored_get_width = CustomJSTransform(v_func = bar_width_code('scored'))
@@ -241,7 +241,7 @@ def stats_figure_1_setup(fig_configs, game_parts):
     blockedm_get_width = CustomJSTransform(v_func = bar_width_code('blockedm'))
     blockedr_get_width = CustomJSTransform(v_func = bar_width_code('blockedr'))
 
-    args_dict = dict(source = game_stats_figure_1_source)
+    args_dict = dict(source = stats_fig_1_source)
     scored_get_centers = CustomJSTransform(v_func = bar_centers_code('scored'),
                                            args = args_dict)
     blockedl_get_centers = CustomJSTransform(v_func = bar_centers_code('blockedl'),
@@ -252,75 +252,75 @@ def stats_figure_1_setup(fig_configs, game_parts):
                                              args = args_dict)
     #</editor-fold>
     #<editor-fold Create Hitbox Bars:
-    score_hbs = game_stats_figure_1.rect(x = 'x',
+    score_hbs = stats_fig_1.rect(x = 'x',
                                          y = transform('scored_y',
                                                        scored_get_centers),
-                                         source = game_stats_figure_1_source,
+                                         source = stats_fig_1_source,
                                          width = 1, height = 'scored_y',
                                          alpha = fig_configs.hitbox_alpha,
                                          fill_alpha = 0, name = "Scored",
                                          color = fig_configs.scored_bar_color)
-    blockedl_hbs = game_stats_figure_1.rect(x = 'x',
+    blockedl_hbs = stats_fig_1.rect(x = 'x',
                                             y = transform('blockedl_y',
                                                           blockedl_get_centers),
-                                            source = game_stats_figure_1_source,
+                                            source = stats_fig_1_source,
                                             width = 1, height = 'blockedl_y',
                                             alpha = fig_configs.hitbox_alpha,
                                             fill_alpha = 0, name = "Blocked Left",
                                             color = fig_configs.blocked_left_bar_color)
-    blockedm_hbs = game_stats_figure_1.rect(x = 'x',
+    blockedm_hbs = stats_fig_1.rect(x = 'x',
                                             y = transform('blockedm_y',
                                                           blockedm_get_centers),
-                                            source = game_stats_figure_1_source,
+                                            source = stats_fig_1_source,
                                             width = 1, height = 'blockedm_y',
                                             alpha = fig_configs.hitbox_alpha,
                                             fill_alpha = 0, name = "Blocked Middle",
                                             color = fig_configs.blocked_middle_bar_color)
-    blockedr_hbs = game_stats_figure_1.rect(x = 'x',
+    blockedr_hbs = stats_fig_1.rect(x = 'x',
                                             y = transform('blockedr_y',
                                                           blockedr_get_centers),
-                                            source = game_stats_figure_1_source,
+                                            source = stats_fig_1_source,
                                             width = 1, height = 'blockedr_y',
                                             alpha = fig_configs.hitbox_alpha,
                                             fill_alpha = 0, name = "Blocked Right",
                                             color = fig_configs.blocked_right_bar_color)
     #</editor-fold>
     #<editor-fold Create Bars:
-    score_bars = game_stats_figure_1.rect(x = 'x',
+    score_bars = stats_fig_1.rect(x = 'x',
                                           y = transform('scored_y',
                                                         scored_get_centers),
-                                          source = game_stats_figure_1_source,
+                                          source = stats_fig_1_source,
                                           width = transform('hovered_widths',
                                                             scored_get_width),
                                           height = 'scored_y',
                                           color = fig_configs.scored_bar_color)
-    blockedl_bars = game_stats_figure_1.rect(x = 'x',
+    blockedl_bars = stats_fig_1.rect(x = 'x',
                                              y = transform('blockedl_y',
                                                            blockedl_get_centers),
-                                             source = game_stats_figure_1_source,
+                                             source = stats_fig_1_source,
                                              width = transform('hovered_widths',
                                                                blockedl_get_width),
                                              height = 'blockedl_y',
                                              color = fig_configs.blocked_left_bar_color)
-    blockedm_bars = game_stats_figure_1.rect(x = 'x',
+    blockedm_bars = stats_fig_1.rect(x = 'x',
                                              y = transform('blockedm_y',
                                                            blockedm_get_centers),
-                                             source = game_stats_figure_1_source,
+                                             source = stats_fig_1_source,
                                              width = transform('hovered_widths',
                                                                blockedm_get_width),
                                              height = 'blockedm_y',
                                              color = fig_configs.blocked_middle_bar_color)
-    blockedr_bars = game_stats_figure_1.rect(x = 'x',
+    blockedr_bars = stats_fig_1.rect(x = 'x',
                                              y = transform('blockedr_y',
                                                            blockedr_get_centers),
-                                             source = game_stats_figure_1_source,
+                                             source = stats_fig_1_source,
                                              width = transform('hovered_widths',
                                                                blockedr_get_width),
                                              height = 'blockedr_y',
                                              color = fig_configs.blocked_right_bar_color)
     #</editor-fold>
     #<editor-fold Create CustomJSHovers:
-    height_args_dict = dict(source = game_stats_figure_1_source)
+    height_args_dict = dict(source = stats_fig_1_source)
 
     fig_1_xs_custom = CustomJSHover(code = fig1_xs_code)
     fig_1_hovered_custom = CustomJSHover(code = hovered_bar_code)
@@ -331,7 +331,7 @@ def stats_figure_1_setup(fig_configs, game_parts):
     hovertool_formatters = { '@x' : fig_1_xs_custom,
                              '@scored_y' : fig_1_hovered_custom,
                              '@blockedl_y' : fig_1_height_custom}
-    game_stats_figure_1.add_tools(HoverTool(tooltips = fig_1_custom_tooltip,
+    stats_fig_1.add_tools(HoverTool(tooltips = fig_1_custom_tooltip,
                                             formatters = hovertool_formatters,
                                             mode = "mouse",
                                             point_policy = "follow_mouse",
@@ -339,7 +339,7 @@ def stats_figure_1_setup(fig_configs, game_parts):
                                                          blockedl_hbs,
                                                          blockedm_hbs,
                                                          blockedr_hbs]))
-    game_parts.figures['stats_1'] = game_stats_figure_1
-    game_parts.sources['stats_fig_1'] = game_stats_figure_1_source
+    game_parts.figures['stats_1'] = stats_fig_1
+    game_parts.sources['stats_fig_1'] = stats_fig_1_source
     #</editor-fold>
  #</editor-fold>

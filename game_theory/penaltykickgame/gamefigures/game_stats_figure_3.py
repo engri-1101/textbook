@@ -59,7 +59,7 @@ def hb_gc_code(hbno):
 def sfga_get_alpha_code(sfga):
     """sfga_get_alpha_code is a function used to obtain the correct v_func code
     string for the CustomJSTransform being used to process the
-    'highlight_alphas' column of game_stats_figure_3_source.data for use in
+    'highlight_alphas' column of stats_fig_3_source.data for use in
     highlighting the correct dots on the plot according to the user's mouse
     position. When given the correct args and used in a v_func, the code string
     returned by this function will return a modified version of the
@@ -284,14 +284,14 @@ def stats_figure_3_setup(fig_configs, game_parts):
 
     Returns:
 
-    game_stats_figure_3 - The Game stats Bokeh figure displaying the data.
+    stats_fig_3 - The Game stats Bokeh figure displaying the data.
 
-    game_stats_figure_3_source - The ColumnDataSource used by
-    game_stats_figure_3.
+    stats_fig_3_source - The ColumnDataSource used by
+    stats_fig_3.
     """
     #<editor-fold Figure Creation:
     #Create and configure the main aspects of the figure:
-    game_stats_figure_3 = figure(tools = fig_configs.figure_base_tools,
+    stats_fig_3 = figure(tools = fig_configs.figure_base_tools,
                                  toolbar_location = fig_configs.figure_toolbar_location,
                                  title = fig_configs.figure_title,
                                  plot_width = fig_configs.figure_width,
@@ -300,17 +300,17 @@ def stats_figure_3_setup(fig_configs, game_parts):
                                  y_range = fig_configs.figure_y_range,
                                  visible = fig_configs.figure_initial_visibility,
                                  sizing_mode = fig_configs.figure_sizing_mode)
-    game_stats_figure_3.title.text_font_size = fig_configs.figure_title_font_size
-    game_stats_figure_3.xaxis.visible = fig_configs.figure_x_axis_visibility
-    game_stats_figure_3.yaxis.visible = fig_configs.figure_y_axis_visibility
-    game_stats_figure_3.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
-    game_stats_figure_3.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
-    game_stats_figure_3.outline_line_color = fig_configs.figure_outline_line_color
-    game_stats_figure_3.background_fill_color = fig_configs.figure_background_color
+    stats_fig_3.title.text_font_size = fig_configs.figure_title_font_size
+    stats_fig_3.xaxis.visible = fig_configs.figure_x_axis_visibility
+    stats_fig_3.yaxis.visible = fig_configs.figure_y_axis_visibility
+    stats_fig_3.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
+    stats_fig_3.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
+    stats_fig_3.outline_line_color = fig_configs.figure_outline_line_color
+    stats_fig_3.background_fill_color = fig_configs.figure_background_color
     #</editor-fold>
     #<editor-fold ColumnDataSource Creation:
         #<editor-fold Create Base Values:
-        #Create initial values for game_stats_figure_3_source
+        #Create initial values for stats_fig_3_source
     source_xs = []
 
     source_ll_ys = []
@@ -359,7 +359,7 @@ def stats_figure_3_setup(fig_configs, game_parts):
     source_rr_ys[0] = ((1/3 * 0.93) + (1/3 * 0.72) + (1/3 * 0.70))
         #</editor-fold>
         #<editor-fold Make Data Source Using Base Values:
-        #Create game_stats_figure_3_source with the values that were created.
+        #Create stats_fig_3_source with the values that were created.
     source_data = dict(xs = source_xs,
 
                        ll_ys = source_ll_ys, lm_ys = source_lm_ys,
@@ -373,15 +373,15 @@ def stats_figure_3_setup(fig_configs, game_parts):
                        highlight_alphas = highlight_alphas,
                        alphas_zeroes = alphas_zeroes)
 
-    game_stats_figure_3_source = ColumnDataSource(data = source_data)
+    stats_fig_3_source = ColumnDataSource(data = source_data)
         #</editor-fold>
     #</editor-fold>
     #<editor-fold Get Alpha Transforms:
     #Create the CustomJSTransforms that are used by the figure to update the
     #highlight dots according to the values contained within the
-    #game_stats_figure_3_source column 'highlight_alphas'
+    #stats_fig_3_source column 'highlight_alphas'
     alpha_tform_args_dict = dict(highlight_index = highlight_index,
-                                 alphas_zeroes = game_stats_figure_3_source.data['alphas_zeroes'])
+                                 alphas_zeroes = stats_fig_3_source.data['alphas_zeroes'])
     ll_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('ll'),
                                                args = alpha_tform_args_dict)
     lm_highlight_get_alpha = CustomJSTransform(v_func = sfga_get_alpha_code('lm'),
@@ -397,75 +397,75 @@ def stats_figure_3_setup(fig_configs, game_parts):
     #</editor-fold>
     #<editor-fold Plot Figure Data Points:
     #Create the Data Points for the figure:
-    game_stats_figure_3.circle_dot('xs', 'll_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'll_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_ll_dot_outline_color,
                                    fill_color = fig_configs.plot_ll_dot_color)
-    game_stats_figure_3.circle_dot('xs', 'lm_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'lm_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_lm_dot_outline_color,
                                    fill_color = fig_configs.plot_lm_dot_color)
-    game_stats_figure_3.circle_dot('xs', 'lr_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'lr_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_lr_dot_outline_color,
                                    fill_color = fig_configs.plot_lr_dot_color)
-    game_stats_figure_3.circle_dot('xs', 'rl_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'rl_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_rl_dot_outline_color,
                                    fill_color = fig_configs.plot_rl_dot_color)
-    game_stats_figure_3.circle_dot('xs', 'rm_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'rm_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_rm_dot_outline_color,
                                    fill_color = fig_configs.plot_rm_dot_color)
-    game_stats_figure_3.circle_dot('xs', 'rr_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'rr_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_dot_size,
                                    line_color = fig_configs.plot_rr_dot_outline_color,
                                    fill_color = fig_configs.plot_rr_dot_color)
 
     #Plot Highlight Points For Figure:
-    game_stats_figure_3.circle_dot('xs', 'll_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'll_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = transform('highlight_alphas',
                                                      ll_highlight_get_alpha))
-    game_stats_figure_3.circle_dot('xs', 'lm_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'lm_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = transform('highlight_alphas',
                                                      lm_highlight_get_alpha))
-    game_stats_figure_3.circle_dot('xs', 'lr_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'lr_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = transform('highlight_alphas',
                                                      lr_highlight_get_alpha))
-    game_stats_figure_3.circle_dot('xs', 'rl_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'rl_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = transform('highlight_alphas',
                                                      rl_highlight_get_alpha))
-    game_stats_figure_3.circle_dot('xs', 'rm_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'rm_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
                                    alpha = transform('highlight_alphas',
                                                      rm_highlight_get_alpha))
-    game_stats_figure_3.circle_dot('xs', 'rr_ys',
-                                   source = game_stats_figure_3_source,
+    stats_fig_3.circle_dot('xs', 'rr_ys',
+                                   source = stats_fig_3_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color,
@@ -476,7 +476,7 @@ def stats_figure_3_setup(fig_configs, game_parts):
     #Create the CustomJSTransforms that are used to update the y coordinates of
     #the centers of the invisible hitboxes used to determine the user's
     #highlighted data points.
-    hb_gc_args_dict = dict(source = game_stats_figure_3_source)
+    hb_gc_args_dict = dict(source = stats_fig_3_source)
     hb1_get_center = CustomJSTransform(v_func = hb_gc_code(1))
     hb2_get_center = CustomJSTransform(args = hb_gc_args_dict,
                                        v_func = hb_gc_code(2))
@@ -491,39 +491,39 @@ def stats_figure_3_setup(fig_configs, game_parts):
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
     #Create the invisible hitboxes for the figure:
-    hb1s = game_stats_figure_3.rect(x = 'xs',
+    hb1s = stats_fig_3.rect(x = 'xs',
                                     y = transform('hb1', hb1_get_center),
-                                    source = game_stats_figure_3_source,
+                                    source = stats_fig_3_source,
                                     width = 1, height = 'hb1',
                                     alpha = fig_configs.hitbox_alpha,
                                     fill_alpha = 0, name = '5')
-    hb2s = game_stats_figure_3.rect(x = 'xs',
+    hb2s = stats_fig_3.rect(x = 'xs',
                                     y = transform('hb2', hb2_get_center),
-                                    source = game_stats_figure_3_source,
+                                    source = stats_fig_3_source,
                                     width = 1, height = 'hb2',
                                     alpha = fig_configs.hitbox_alpha,
                                     fill_alpha = 0, name = '4')
-    hb3s = game_stats_figure_3.rect(x = 'xs',
+    hb3s = stats_fig_3.rect(x = 'xs',
                                     y = transform('hb3', hb3_get_center),
-                                    source = game_stats_figure_3_source,
+                                    source = stats_fig_3_source,
                                     width = 1, height = 'hb3',
                                     alpha = fig_configs.hitbox_alpha,
                                     fill_alpha = 0, name = '3')
-    hb4s = game_stats_figure_3.rect(x = 'xs',
+    hb4s = stats_fig_3.rect(x = 'xs',
                                     y = transform('hb4', hb4_get_center),
-                                    source = game_stats_figure_3_source,
+                                    source = stats_fig_3_source,
                                     width = 1, height = 'hb4',
                                     alpha = fig_configs.hitbox_alpha,
                                     fill_alpha = 0, name = '2')
-    hb5s = game_stats_figure_3.rect(x = 'xs',
+    hb5s = stats_fig_3.rect(x = 'xs',
                                     y = transform('hb5', hb5_get_center),
-                                    source = game_stats_figure_3_source,
+                                    source = stats_fig_3_source,
                                     width = 1, height = 'hb5',
                                     alpha = fig_configs.hitbox_alpha,
                                     fill_alpha = 0, name = '1')
-    hb6s = game_stats_figure_3.rect(x = 'xs',
+    hb6s = stats_fig_3.rect(x = 'xs',
                                     y = transform('hb6', hb6_get_center),
-                                    source = game_stats_figure_3_source,
+                                    source = stats_fig_3_source,
                                     width = 1, height = 'hb6',
                                     alpha = fig_configs.hitbox_alpha,
                                     fill_alpha = 0, name = '0')
@@ -531,7 +531,7 @@ def stats_figure_3_setup(fig_configs, game_parts):
     #<editor-fold CustomJSHover Creation:
     #Create the CustomJSHovers used to format the data for the figure's
     #custom HoverTool:
-    hover_main_args_dict = dict(source = game_stats_figure_3_source)
+    hover_main_args_dict = dict(source = stats_fig_3_source)
     hover_xs_args_dict = hover_main_args_dict.copy()
     hover_xs_args_dict['highlight_index'] = highlight_index
 
@@ -547,13 +547,13 @@ def stats_figure_3_setup(fig_configs, game_parts):
     hovertool_formatters = { '@xs' : fig_3_xs_custom,
                              '@ll_ys' : fig_3_ys_custom,
                              '@lm_ys' : fig_3_selected_custom}
-    game_stats_figure_3.add_tools(HoverTool(tooltips = fig_3_custom_tooltip,
+    stats_fig_3.add_tools(HoverTool(tooltips = fig_3_custom_tooltip,
                                             formatters = hovertool_formatters,
                                             mode = "mouse",
                                             point_policy = "follow_mouse",
                                             renderers = [hb1s, hb2s, hb3s,
                                                          hb4s, hb5s, hb6s]))
     #</editor-fold>
-    game_parts.figures['stats_3'] = game_stats_figure_3
-    game_parts.sources['stats_fig_3'] = game_stats_figure_3_source
+    game_parts.figures['stats_3'] = stats_fig_3
+    game_parts.sources['stats_fig_3'] = stats_fig_3_source
 #</editor-fold>

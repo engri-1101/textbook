@@ -329,9 +329,9 @@ class Layout_configs:
 #<editor-fold make_game():
 #Needs:
 #    from main_game_figure import game_figure_setup, Game_fig_configs
-#    from game_stats_figure_1 import stats_figure_1_setup, Stats_fig_1_configs
-#    from game_stats_figure_2 import stats_figure_2_setup, Stats_fig_2_configs
-#    from game_stats_figure_3 import stats_figure_3_setup, Stats_fig_3_configs
+#    from stats_fig_1 import stats_figure_1_setup, Stats_fig_1_configs
+#    from stats_fig_2 import stats_figure_2_setup, Stats_fig_2_configs
+#    from stats_fig_3 import stats_figure_3_setup, Stats_fig_3_configs
 #<editor-fold Define defaults:
 default_game_fig_configs = figs.game_fig.Game_fig_configs()
 default_fig_1_configs = figs.stats_fig_1.Stats_fig_1_configs()

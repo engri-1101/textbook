@@ -14,7 +14,7 @@ rr_aim_text_input.visible = false;
 iterations_slider.visible = false;
 strategy_dropdown.visible = false;
 automation_table.visible = false;
-automation_distribution_table.visible = true;
+distribution_table.visible = true;
 """
 #</editor-fold>
 #<editor-fold automate_loop Code Strings:
@@ -38,8 +38,8 @@ const score_probabilities = {'Right' : {'LeftLeft' : 0.55,
                                         'RightLeft' : 0.87,
                                         'RightMiddle' : 0.65,
                                         'RightRight' : 0.61}};
-const chances = ChancesColumnDataSource.data['chances'];
-const dist_data = DistributionColumnDataSource.data;
+const chances = chances_source.data['chances'];
+const dist_data = distribution_source.data;
 const freq = dist_data['freq'];
 const iters_to_run = parseInt(iterations_to_run.text);
 """
@@ -286,8 +286,8 @@ goalie_action = runRandom();
         #<editor-fold run_goalie_cheats
 run_goalie_cheats = """
 function runGoalieCheats(){
-    const counter_chances_l = goalie_counter_source.data['chances_l'];
-    const counter_chances_r = goalie_counter_source.data['chances_r'];
+    const counter_chances_l = counter_source.data['chances_l'];
+    const counter_chances_r = counter_source.data['chances_r'];
     let action;
     if(kicker_foot == 'Left'){
         if(counter_chances_l[0] == 1){
@@ -339,16 +339,17 @@ function scoring(){
     const scoring_roll = dist_data['striker_score_roll'];
 
     let score_roll = Math.random();
-    let score_chance = score_probabilities[kicker_foot][kicker_kick+goalie_action];
+    let score_chance = score_probabilities[kicker_foot][kicker_kick
+                                                        + goalie_action];
     let index_to_update = 0;
     let rounds_played = (parseInt(nround.text) + 1);
     let round_score;
 
-    game_stats_figure_4_source.data['ys'][rounds_played] = score_chance;
-    game_stats_figure_4_source.data['feet'][rounds_played] = kicker_foot;
-    game_stats_figure_4_source.data['directions'][rounds_played] = kicker_kick;
-    game_stats_figure_4_source.data['actions'][rounds_played] = goalie_action;
-    game_stats_figure_4_source.change.emit()
+    stats_fig_4_source.data['ys'][rounds_played] = score_chance;
+    stats_fig_4_source.data['feet'][rounds_played] = kicker_foot;
+    stats_fig_4_source.data['directions'][rounds_played] = kicker_kick;
+    stats_fig_4_source.data['actions'][rounds_played] = goalie_action;
+    stats_fig_4_source.change.emit()
 
     if(score_roll <= score_chance){
         round_score = 1;
@@ -381,32 +382,32 @@ function scoring(){
     if(rounds_played >= iters_to_run){
         b_auto_next.visible = false;
         game_figure.visible = false;
-        automation_distribution_table.visible = false;
-        game_stats_figure_4_source.data['xs'].shift();
-        game_stats_figure_4_source.data['ys'].shift();
-        game_stats_figure_4_source.data['feet'].shift();
-        game_stats_figure_4_source.data['directions'].shift();
-        game_stats_figure_4_source.data['actions'].shift();
-        game_stats_figure_4_source.data['highlight_alphas'].shift();
-        game_stats_figure_4_source.data['avgs_placeholder'].shift();
-        game_stats_figure_4_source.change.emit();
-        game_stats_figure_4.x_range.start -= 0.5;
-        game_stats_figure_4.x_range.end += 0.5;
+        distribution_table.visible = false;
+        stats_fig_4_source.data['xs'].shift();
+        stats_fig_4_source.data['ys'].shift();
+        stats_fig_4_source.data['feet'].shift();
+        stats_fig_4_source.data['directions'].shift();
+        stats_fig_4_source.data['actions'].shift();
+        stats_fig_4_source.data['highlight_alphas'].shift();
+        stats_fig_4_source.data['avgs_placeholder'].shift();
+        stats_fig_4_source.change.emit();
+        stats_fig_4.x_range.start -= 0.5;
+        stats_fig_4.x_range.end += 0.5;
         if(strategy_to_use.text == "Fictitious_Play"){
-            game_stats_figure_1.visible = true;
-            game_stats_figure_2.visible = false;
-            game_stats_figure_3.visible = false;
-            game_stats_figure_4.visible = false;
+            stats_fig_1.visible = true;
+            stats_fig_2.visible = false;
+            stats_fig_3.visible = false;
+            stats_fig_4.visible = false;
             b_fig_1.visible = true;
             b_fig_2.visible = true;
             b_fig_3.visible = true;
             b_fig_4.visible = true;
         }
         else{
-            game_stats_figure_1.visible = true;
-            game_stats_figure_2.visible = false;
-            game_stats_figure_3.visible = false;
-            game_stats_figure_4.visible = false;
+            stats_fig_1.visible = true;
+            stats_fig_2.visible = false;
+            stats_fig_3.visible = false;
+            stats_fig_4.visible = false;
             b_fig_1.visible = true;
             b_fig_2.visible = true;
             b_fig_3.visible = false;
@@ -523,7 +524,7 @@ function goalieFictitiousDecisionTracking(){
         perceived_risks[selected_pr_index + 1] = danger_goalie_middle.toString().substring(0, 8);
         perceived_risks[selected_pr_index + 2] = danger_goalie_right.toString().substring(0, 8);
     }
-    DistributionColumnDataSource.change.emit();
+    distribution_source.change.emit();
 }
 
 goalieFictitiousDecisionTracking();
@@ -533,7 +534,7 @@ goalieFictitiousDecisionTracking();
 update_game_stats_figure_1 = """
 
 function updateFig1(){
-    const fig_1_data = game_stats_figure_1_source.data;
+    const fig_1_data = stats_fig_1_source.data;
     let selected_bar = 0;
 
     if (kicker_foot == 'Right'){
@@ -561,7 +562,7 @@ function updateFig1(){
             fig_1_data['blockedr_y'][selected_bar] += 1;
         }
     }
-    game_stats_figure_1_source.change.emit();
+    stats_fig_1_source.change.emit();
 
     if(parseInt(nround.text) >= iters_to_run){
         let grid_max = 0;
@@ -575,7 +576,7 @@ function updateFig1(){
                 grid_max = possible_max;
             }
         }
-        game_stats_figure_1.y_range.end = grid_max;
+        stats_fig_1.y_range.end = grid_max;
     }
 }
 updateFig1();
@@ -584,13 +585,15 @@ updateFig1();
     #<editor-fold update_game_stats_figure_2
 update_game_stats_figure_2 = """
 function updateFig2(){
-    const fig_2_data = game_stats_figure_2_source.data;
+    const fig_2_data = stats_fig_2_source.data;
 
     let nround_val = parseInt(nround.text);
 
     fig_2_data['ys'][nround_val] = parseInt(score.text);
-    fig_2_data['chance_ys'][nround_val] = fig_2_data['chance_ys'][nround_val - 1] + (2 * scored_chance - 1);
-    game_stats_figure_2_source.change.emit();
+    fig_2_data['chance_ys'][nround_val] = (fig_2_data['chance_ys'][nround_val
+                                                                   - 1]
+                                           + (2 * scored_chance - 1));
+    stats_fig_2_source.change.emit();
 
     if(nround_val >= iters_to_run){
         //Resize Graph and Hitboxes:
@@ -623,12 +626,12 @@ function updateFig2(){
         fig_2_data['heights'] = heights;
 
         //Resize Graph:
-        game_stats_figure_2.y_range.end = fig_2_max_val + buffer;
-        game_stats_figure_2.y_range.start = fig_2_min_val - buffer;
-        game_stats_figure_2.x_range.start -= 0.5;
-        game_stats_figure_2.x_range.end += 0.5;
+        stats_fig_2.y_range.end = fig_2_max_val + buffer;
+        stats_fig_2.y_range.start = fig_2_min_val - buffer;
+        stats_fig_2.x_range.start -= 0.5;
+        stats_fig_2.x_range.end += 0.5;
 
-        game_stats_figure_2_source.change.emit();
+        stats_fig_2_source.change.emit();
     }
 }
 updateFig2();
@@ -638,7 +641,7 @@ updateFig2();
 update_game_stats_figure_3 = """
 function updateFig3(){
 
-    let fig_3_data = game_stats_figure_3_source.data;
+    let fig_3_data = stats_fig_3_source.data;
     let index = parseInt(nround.text);
 
     let freq_ll = freq[0];
@@ -790,14 +793,14 @@ function updateFig3(){
         fig_3_max_val = Math.round(fig_3_max_val * 10) / 10;
         fig_3_min_val = Math.round(fig_3_min_val * 10) / 10;
         const fig_3_buffer = 0.1;
-        game_stats_figure_3.y_range.end = Math.min(fig_3_max_val + fig_3_buffer,
+        stats_fig_3.y_range.end = Math.min(fig_3_max_val + fig_3_buffer,
                                                    1);
-        game_stats_figure_3.y_range.start = fig_3_min_val - fig_3_buffer;
-        game_stats_figure_3.x_range.start -= 0.5;
-        game_stats_figure_3.x_range.end += 0.5;
+        stats_fig_3.y_range.start = fig_3_min_val - fig_3_buffer;
+        stats_fig_3.x_range.start -= 0.5;
+        stats_fig_3.x_range.end += 0.5;
     }
 
-    game_stats_figure_3_source.change.emit();
+    stats_fig_3_source.change.emit();
 }
 
 if(strategy_to_use.text == "Fictitious_Play"){
@@ -837,32 +840,32 @@ def create(game_parts, label = "Start", button_type = "success",
 #Needs:
 #   from bokeh.models import CustomJS
 def setup(game_parts):
-    args_dict =  dict(ChancesColumnDataSource = game_parts.sources['automation_table'],
-                      DistributionColumnDataSource = game_parts.sources['distribution_table'],
+    args_dict =  dict(chances_source = game_parts.sources['automation_table'],
+                      distribution_source = game_parts.sources['distribution_table'],
                       strategy_to_use = game_parts.divs['strategy_to_use'],
                       nround = game_parts.divs['nround'],
                       iterations_to_run = game_parts.divs['iterations_to_run'],
                       txt = game_parts.texts['scr_text'],
                       b_auto_next = game_parts.buttons['next'],
                       game_figure = game_parts.figures['game_figure'],
-                      automation_distribution_table = game_parts.tables['distribution'],
+                      distribution_table = game_parts.tables['distribution'],
                       goalie_head = game_parts.glyphs['goalie_head'],
                       goalie_body = game_parts.glyphs['goalie_body'],
-                      goalie_counter_source = game_parts.sources['goalie_counter'],
+                      counter_source = game_parts.sources['goalie_counter'],
                       ball = game_parts.glyphs['ball'],
                       score = game_parts.divs['score'],
                       b_fig_1 = game_parts.buttons['fig_1'],
                       b_fig_2 = game_parts.buttons['fig_2'],
                       b_fig_3 = game_parts.buttons['fig_3'],
                       b_fig_4 = game_parts.buttons['fig_4'],
-                      game_stats_figure_1 = game_parts.figures['stats_1'],
-                      game_stats_figure_2 = game_parts.figures['stats_2'],
-                      game_stats_figure_3 = game_parts.figures['stats_3'],
-                      game_stats_figure_4 = game_parts.figures['stats_4'],
-                      game_stats_figure_1_source = game_parts.sources['stats_fig_1'],
-                      game_stats_figure_2_source = game_parts.sources['stats_fig_2'],
-                      game_stats_figure_3_source = game_parts.sources['stats_fig_3'],
-                      game_stats_figure_4_source = game_parts.sources['stats_fig_4'],
+                      stats_fig_1 = game_parts.figures['stats_1'],
+                      stats_fig_2 = game_parts.figures['stats_2'],
+                      stats_fig_3 = game_parts.figures['stats_3'],
+                      stats_fig_4 = game_parts.figures['stats_4'],
+                      stats_fig_1_source = game_parts.sources['stats_fig_1'],
+                      stats_fig_2_source = game_parts.sources['stats_fig_2'],
+                      stats_fig_3_source = game_parts.sources['stats_fig_3'],
+                      stats_fig_4_source = game_parts.sources['stats_fig_4'],
                       b_start_automate = game_parts.buttons['start'],
                       iterations_slider = game_parts.sliders['iterations'],
                       strategy_dropdown = game_parts.dropdowns['cpu_strategy'],

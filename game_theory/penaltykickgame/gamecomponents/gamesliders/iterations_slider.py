@@ -7,21 +7,21 @@ iterations_slider_code = """
 const iterations = cb_obj.value;
 iterations_to_run.text = iterations.toString();
 
-//Set the max of the y axis for game_stats_figure_1 to be the
+//Set the max of the y axis for stats_fig_1 to be the
 //amount of iterations (It is impossible to have bars higher than that value):
-game_stats_figure_1.y_range.end = iterations;
+stats_fig_1.y_range.end = iterations;
 
-//Set the max and min of the y axis for game_stats_figure_2 to be
+//Set the max and min of the y axis for stats_fig_2 to be
 //+/- the amount of iterations as it is impossible to have a score higher or
 //lower than that:
-game_stats_figure_2.y_range.start = -iterations;
-game_stats_figure_2.y_range.end = iterations;
+stats_fig_2.y_range.start = -iterations;
+stats_fig_2.y_range.end = iterations;
 
-//Sets the max of the x axis for game_stats_figure_2 and game_stats_figure_3 to
+//Sets the max of the x axis for stats_fig_2 and stats_fig_3 to
 //be the amount of iterations.
-game_stats_figure_2.x_range.end = iterations;
-game_stats_figure_3.x_range.end = iterations;
-game_stats_figure_4.x_range.end = iterations;
+stats_fig_2.x_range.end = iterations;
+stats_fig_3.x_range.end = iterations;
+stats_fig_4.x_range.end = iterations;
 //Initiate arrays to update lengths and values of data in sources:
 const array_length = iterations + 1;
 let xs_2 = [];
@@ -68,17 +68,17 @@ rl_ys[0] = 1/3 * (0.55 + 0.74 + 0.95);
 rm_ys[0] = 1/3 * (0.65 + 0.60 + 0.73);
 rr_ys[0] = 1/3 * (0.93 + 0.72 + 0.70);
 
-//Update game_stats_figure_2_source.data with its new arrays:
-const fig_2_data = game_stats_figure_2_source.data;
+//Update stats_fig_2_source.data with its new arrays:
+const fig_2_data = stats_fig_2_source.data;
 fig_2_data['xs'] = xs_2;
 fig_2_data['ys'] = ys;
 fig_2_data['chance_ys'] = chance_ys;
 fig_2_data['heights'] = heights;
 fig_2_data['highlight_alphas'] = fig2_highlight_alphas;
-game_stats_figure_2_source.change.emit();
+stats_fig_2_source.change.emit();
 
-//Update game_stats_figure_3_source.data with its new arrays:
-const fig_3_data = game_stats_figure_3_source.data;
+//Update stats_fig_3_source.data with its new arrays:
+const fig_3_data = stats_fig_3_source.data;
 fig_3_data['xs'] = xs_3;
 fig_3_data['ll_ys'] = ll_ys;
 fig_3_data['lm_ys'] = lm_ys;
@@ -94,16 +94,16 @@ fig_3_data['hb3'] = hb3_ys;
 fig_3_data['hb4'] = hb4_ys;
 fig_3_data['hb5'] = hb5_ys;
 fig_3_data['hb6'] = hb6_ys;
-game_stats_figure_3_source.change.emit();
+stats_fig_3_source.change.emit();
 
-game_stats_figure_4_source.data['xs'] = xs_4;
-game_stats_figure_4_source.data['ys'] = ys_4;
-game_stats_figure_4_source.data['feet'] = feet_4;
-game_stats_figure_4_source.data['directions'] = directions_4;
-game_stats_figure_4_source.data['actions'] = actions_4;
-game_stats_figure_4_source.data['highlight_alphas'] = highlight_alphas_4;
-game_stats_figure_4_source.data['avgs_placeholder'] = avgs_placeholder;
-game_stats_figure_4_source.change.emit();
+stats_fig_4_source.data['xs'] = xs_4;
+stats_fig_4_source.data['ys'] = ys_4;
+stats_fig_4_source.data['feet'] = feet_4;
+stats_fig_4_source.data['directions'] = directions_4;
+stats_fig_4_source.data['actions'] = actions_4;
+stats_fig_4_source.data['highlight_alphas'] = highlight_alphas_4;
+stats_fig_4_source.data['avgs_placeholder'] = avgs_placeholder;
+stats_fig_4_source.change.emit();
 """
 #</editor-fold>
 
@@ -124,13 +124,13 @@ def create(game_parts, start = 10, end = 500, value = 50, step = 10,
 #    from bokeh.models import CustomJS
 def setup(game_parts):
     args_dict = dict(iterations_to_run = game_parts.divs['iterations_to_run'],
-                     game_stats_figure_1 = game_parts.figures['stats_1'],
-                     game_stats_figure_2 = game_parts.figures['stats_2'],
-                     game_stats_figure_3 = game_parts.figures['stats_3'],
-                     game_stats_figure_4 = game_parts.figures['stats_4'],
-                     game_stats_figure_2_source = game_parts.sources['stats_fig_2'],
-                     game_stats_figure_3_source = game_parts.sources['stats_fig_3'],
-                     game_stats_figure_4_source = game_parts.sources['stats_fig_4'])
+                     stats_fig_1 = game_parts.figures['stats_1'],
+                     stats_fig_2 = game_parts.figures['stats_2'],
+                     stats_fig_3 = game_parts.figures['stats_3'],
+                     stats_fig_4 = game_parts.figures['stats_4'],
+                     stats_fig_2_source = game_parts.sources['stats_fig_2'],
+                     stats_fig_3_source = game_parts.sources['stats_fig_3'],
+                     stats_fig_4_source = game_parts.sources['stats_fig_4'])
     iterations_slider_callback = CustomJS(args = args_dict,
                                           code = iterations_slider_code)
 

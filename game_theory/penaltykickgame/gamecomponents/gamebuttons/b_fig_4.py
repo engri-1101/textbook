@@ -6,10 +6,10 @@ b_fig_1.disabled = false;
 b_fig_2.disabled = false;
 b_fig_3.disabled = false;
 b_fig_4.disabled = true;
-game_stats_figure_1.visible = false;
-game_stats_figure_2.visible = false;
-game_stats_figure_3.visible = false;
-game_stats_figure_4.visible = true;
+stats_fig_1.visible = false;
+stats_fig_2.visible = false;
+stats_fig_3.visible = false;
+stats_fig_4.visible = true;
 """
 #</editor-fold>
 
@@ -29,10 +29,10 @@ def setup(game_parts):
                      b_fig_2 = game_parts.buttons['fig_2'],
                      b_fig_3 = game_parts.buttons['fig_3'],
                      b_fig_4 = game_parts.buttons['fig_4'],
-                     game_stats_figure_1 = game_parts.figures['stats_1'],
-                     game_stats_figure_2 = game_parts.figures['stats_2'],
-                     game_stats_figure_3 = game_parts.figures['stats_3'],
-                     game_stats_figure_4 = game_parts.figures['stats_4'])
+                     stats_fig_1 = game_parts.figures['stats_1'],
+                     stats_fig_2 = game_parts.figures['stats_2'],
+                     stats_fig_3 = game_parts.figures['stats_3'],
+                     stats_fig_4 = game_parts.figures['stats_4'])
     b_fig_4_click = CustomJS(args = args_dict,
                              code = b_fig_4_click_code)
     game_parts.buttons['fig_4'].js_on_click(b_fig_4_click)

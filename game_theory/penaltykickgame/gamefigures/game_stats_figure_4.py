@@ -163,7 +163,7 @@ class Stats_fig_4_configs:
         self.plot_avgs_line_color = plot_avgs_line_color
         #</editor-fold>
 def stats_figure_4_setup(fig_configs, game_parts):
-    game_stats_figure_4 = figure(tools = fig_configs.figure_base_tools,
+    stats_fig_4 = figure(tools = fig_configs.figure_base_tools,
                                  toolbar_location = fig_configs.figure_toolbar_location,
                                  toolbar_sticky = fig_configs.figure_toolbar_sticky,
                                  title = fig_configs.figure_title,
@@ -172,15 +172,15 @@ def stats_figure_4_setup(fig_configs, game_parts):
                                  x_range = fig_configs.figure_x_range,
                                  y_range = fig_configs.figure_y_range,
                                  visible = fig_configs.figure_initial_visibility)
-    game_stats_figure_4.title.text_font_size = fig_configs.figure_title_font_size
-    game_stats_figure_4.xaxis.visible = fig_configs.figure_x_axis_visibility
-    game_stats_figure_4.yaxis.visible = fig_configs.figure_y_axis_visibility
-    game_stats_figure_4.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
-    game_stats_figure_4.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
-    game_stats_figure_4.outline_line_color = fig_configs.figure_outline_line_color
-    game_stats_figure_4.background_fill_color = fig_configs.figure_background_color
+    stats_fig_4.title.text_font_size = fig_configs.figure_title_font_size
+    stats_fig_4.xaxis.visible = fig_configs.figure_x_axis_visibility
+    stats_fig_4.yaxis.visible = fig_configs.figure_y_axis_visibility
+    stats_fig_4.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
+    stats_fig_4.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
+    stats_fig_4.outline_line_color = fig_configs.figure_outline_line_color
+    stats_fig_4.background_fill_color = fig_configs.figure_background_color
 
-    #Create initial values for game_stats_figure_4_source
+    #Create initial values for stats_fig_4_source
     source_xs = []
     source_ys = []
     source_feet = []
@@ -197,7 +197,7 @@ def stats_figure_4_setup(fig_configs, game_parts):
         source_actions.append(None)
         source_highlights.append(0)
         source_avgs_placeholder.append(0)
-    #Create game_stats_figure_4_source with the values that were created.
+    #Create stats_fig_4_source with the values that were created.
     source_data = dict(xs = source_xs,
                        ys = source_ys,
                        feet = source_feet,
@@ -205,25 +205,25 @@ def stats_figure_4_setup(fig_configs, game_parts):
                        actions = source_actions,
                        highlight_alphas = source_highlights,
                        avgs_placeholder = source_avgs_placeholder)
-    game_stats_figure_4_source = ColumnDataSource(data = source_data)
+    stats_fig_4_source = ColumnDataSource(data = source_data)
 
     #Plot data points:
-    game_stats_figure_4.circle_dot('xs', 'ys',
-                                   source = game_stats_figure_4_source,
+    stats_fig_4.circle_dot('xs', 'ys',
+                                   source = stats_fig_4_source,
                                    size = fig_configs.plot_dot_size,
                                    alpha = fig_configs.plot_dot_alpha,
                                    line_color = fig_configs.plot_dot_line_color,
                                    fill_color = fig_configs.plot_dot_fill_color)
-    game_stats_figure_4.circle_dot('xs', 'ys',
-                                   source = game_stats_figure_4_source,
+    stats_fig_4.circle_dot('xs', 'ys',
+                                   source = stats_fig_4_source,
                                    size = fig_configs.plot_highlight_dot_size,
                                    alpha = 'highlight_alphas',
                                    line_color = fig_configs.plot_highlight_dot_outline_color,
                                    fill_color = fig_configs.plot_highlight_dot_color)
     #Plot averages line:
     get_avgs = CustomJSTransform(v_func = get_averages)
-    avgs_line = game_stats_figure_4.line('xs', transform('ys', get_avgs),
-                                         source = game_stats_figure_4_source,
+    avgs_line = stats_fig_4.line('xs', transform('ys', get_avgs),
+                                         source = stats_fig_4_source,
                                          line_color = fig_configs.plot_avgs_line_color)
 
     #Plot guiding lines:
@@ -231,19 +231,19 @@ def stats_figure_4_setup(fig_configs, game_parts):
         for direction in aim_directions:
             for action in goalie_actions:
                 y_val = score_probabilities[foot][direction + action]
-                game_stats_figure_4.line('xs', y_val,
+                stats_fig_4.line('xs', y_val,
                                          line_color = fig_configs.guiding_line_color,
-                                         source = game_stats_figure_4_source,
+                                         source = stats_fig_4_source,
                                          line_alpha = fig_configs.guiding_line_alpha)
 
     #Hitboxes:
-    hbs = game_stats_figure_4.rect('xs', 0.5, source = game_stats_figure_4_source,
+    hbs = stats_fig_4.rect('xs', 0.5, source = stats_fig_4_source,
                                    width = 1, height = 1, fill_alpha = 0,
                                    line_alpha = fig_configs.hitbox_alpha,
                                    line_color = "black")
 
     #Custom HoverTool:
-    hover_main_args_dict = dict(source = game_stats_figure_4_source)
+    hover_main_args_dict = dict(source = stats_fig_4_source)
     fig_4_ys_custom = CustomJSHover(code = fig_4_ys_code,
                                     args = hover_main_args_dict)
     fig_4_avgs_custom = CustomJSHover(code = avgs_custom_code,
@@ -251,10 +251,10 @@ def stats_figure_4_setup(fig_configs, game_parts):
     hovertool_formatters = {'@ys' : fig_4_ys_custom,
                             '@avgs_placeholder' : fig_4_avgs_custom}
 
-    game_stats_figure_4.add_tools(HoverTool(tooltips = fig_4_custom_tooltip,
+    stats_fig_4.add_tools(HoverTool(tooltips = fig_4_custom_tooltip,
                                             formatters = hovertool_formatters,
                                             mode = "mouse",
                                             point_policy = "follow_mouse",
                                             renderers = [hbs]))
-    game_parts.figures['stats_4'] = game_stats_figure_4
-    game_parts.sources['stats_fig_4'] = game_stats_figure_4_source
+    game_parts.figures['stats_4'] = stats_fig_4
+    game_parts.sources['stats_fig_4'] = stats_fig_4_source

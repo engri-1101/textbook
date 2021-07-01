@@ -110,29 +110,29 @@ def create(game_parts, label = "Make Counter", button_type = "success",
     b_make_counter = Button(label = label, button_type = button_type,
                         sizing_mode = sizing_mode, width_policy = width_policy,
                         disabled = disabled, visible = visible)
-    game_parts.buttons['b_make_counter'] = b_make_counter
+    game_parts.buttons['make_counter'] = b_make_counter
 #</editor-fold>
 
 #<editor-fold setup():
 def setup(game_parts):
     goalie_counter_source = ColumnDataSource(data = dict(chances_l = [1, 0, 0],
                                                          chances_r = [1, 0, 0]))
-    game_parts.sources['goalie_counter_source'] = goalie_counter_source
+    game_parts.sources['goalie_counter'] = goalie_counter_source
 
-    args_dict = dict(b_start_automate = game_parts.buttons['b_start_automate'],
-                     b_make_counter = game_parts.buttons['b_make_counter'],
-                     automation_table = game_parts.tables['automation_table'],
-                     automation_table_source = game_parts.sources['automation_table_source'],
+    args_dict = dict(b_start_automate = game_parts.buttons['start'],
+                     b_make_counter = game_parts.buttons['make_counter'],
+                     automation_table = game_parts.tables['automation'],
+                     automation_table_source = game_parts.sources['automation_table'],
                      counter_made = game_parts.divs['counter_made'],
-                     goalie_counter_source = game_parts.sources['goalie_counter_source'],
-                     ll_aim_text_input = game_parts.textinputs['ll_aim_text_input'],
-                     lm_aim_text_input = game_parts.textinputs['lm_aim_text_input'],
-                     lr_aim_text_input = game_parts.textinputs['lr_aim_text_input'],
-                     rl_aim_text_input = game_parts.textinputs['rl_aim_text_input'],
-                     rm_aim_text_input = game_parts.textinputs['rm_aim_text_input'],
-                     rr_aim_text_input = game_parts.textinputs['rr_aim_text_input'])
+                     goalie_counter_source = game_parts.sources['goalie_counter'],
+                     ll_aim_text_input = game_parts.textinputs['ll_aim'],
+                     lm_aim_text_input = game_parts.textinputs['lm_aim'],
+                     lr_aim_text_input = game_parts.textinputs['lr_aim'],
+                     rl_aim_text_input = game_parts.textinputs['rl_aim'],
+                     rm_aim_text_input = game_parts.textinputs['rm_aim'],
+                     rr_aim_text_input = game_parts.textinputs['rr_aim'])
 
     b_make_counter_click = CustomJS(args = args_dict,
                                     code = b_make_counter_click_code)
-    game_parts.buttons['b_make_counter'].js_on_click(b_make_counter_click)
+    game_parts.buttons['make_counter'].js_on_click(b_make_counter_click)
 #</editor-fold>

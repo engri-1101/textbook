@@ -50,29 +50,29 @@ def create(game_parts, fictitious_play_text = "Fictitious_Play",
                                  button_type = dropdown_button_type,
                                  disabled = dropdown_disabled,
                                  visible = dropdown_visibility)
-    game_parts.dropdowns['strategy_dropdown'] = strategy_dropdown
+    game_parts.dropdowns['cpu_strategy'] = strategy_dropdown
 #</editor-fold>
 
 #<editor-fold setup():
 #Needs:
 #    from bokeh.models import CustomJS
 def setup(game_parts):
-    args_dict = dict(strategy_dropdown = game_parts.dropdowns['strategy_dropdown'],
+    args_dict = dict(strategy_dropdown = game_parts.dropdowns['cpu_strategy'],
                      strategy_to_use = game_parts.divs['strategy_to_use'],
-                     b_start_automate = game_parts.buttons['b_start_automate'],
-                     b_make_counter = game_parts.buttons['b_make_counter'],
-                     automation_table = game_parts.tables['automation_table'],
+                     b_start_automate = game_parts.buttons['start'],
+                     b_make_counter = game_parts.buttons['make_counter'],
+                     automation_table = game_parts.tables['automation'],
                      cpu_selected = game_parts.divs['cpu_selected'],
                      counter_made = game_parts.divs['counter_made'],
-                     ll_aim_text_input = game_parts.textinputs['ll_aim_text_input'],
-                     lm_aim_text_input = game_parts.textinputs['lm_aim_text_input'],
-                     lr_aim_text_input = game_parts.textinputs['lr_aim_text_input'],
-                     rl_aim_text_input = game_parts.textinputs['rl_aim_text_input'],
-                     rm_aim_text_input = game_parts.textinputs['rm_aim_text_input'],
-                     rr_aim_text_input = game_parts.textinputs['rr_aim_text_input'])
+                     ll_aim_text_input = game_parts.textinputs['ll_aim'],
+                     lm_aim_text_input = game_parts.textinputs['lm_aim'],
+                     lr_aim_text_input = game_parts.textinputs['lr_aim'],
+                     rl_aim_text_input = game_parts.textinputs['rl_aim'],
+                     rm_aim_text_input = game_parts.textinputs['rm_aim'],
+                     rr_aim_text_input = game_parts.textinputs['rr_aim'])
 
     strategy_dropdown_callback = CustomJS(args = args_dict,
                                           code = strategy_dropdown_code)
-    game_parts.dropdowns['strategy_dropdown'].js_on_event("menu_item_click",
+    game_parts.dropdowns['cpu_strategy'].js_on_event("menu_item_click",
                                                           strategy_dropdown_callback)
 #</editor-fold>

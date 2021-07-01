@@ -71,26 +71,26 @@ def create(game_parts, name, value = "0", title_addition = "_aim_chance",
            visible = False):
     aim_text_input = TextInput(value = value, title = name + title_addition,
                                visible = visible)
-    game_parts.textinputs[name + "_aim_text_input"] = aim_text_input
+    game_parts.textinputs[name + '_aim'] = aim_text_input
 #</editor-fold>
 
 #<editor-fold aim_textInputs_setup():
 #Needs:
 #    from bokeh.models import CustomJS
 def setup(name, game_parts):
-    args_dict = dict(table_source = game_parts.sources['automation_table_source'],
-                     ll_aim_text_input = game_parts.textinputs['ll_aim_text_input'],
-                     lm_aim_text_input = game_parts.textinputs['lm_aim_text_input'],
-                     lr_aim_text_input = game_parts.textinputs['lr_aim_text_input'],
-                     rl_aim_text_input = game_parts.textinputs['rl_aim_text_input'],
-                     rm_aim_text_input = game_parts.textinputs['rm_aim_text_input'],
-                     rr_aim_text_input = game_parts.textinputs['rr_aim_text_input'],
+    args_dict = dict(table_source = game_parts.sources['automation_table'],
+                     ll_aim_text_input = game_parts.textinputs['ll_aim'],
+                     lm_aim_text_input = game_parts.textinputs['lm_aim'],
+                     lr_aim_text_input = game_parts.textinputs['lr_aim'],
+                     rl_aim_text_input = game_parts.textinputs['rl_aim'],
+                     rm_aim_text_input = game_parts.textinputs['rm_aim'],
+                     rr_aim_text_input = game_parts.textinputs['rr_aim'],
                      chances_valid = game_parts.divs['chances_valid'],
-                     b_start_automate = game_parts.buttons['b_start_automate']
+                     b_start_automate = game_parts.buttons['start']
     )
     aim_textInputs_customjs = CustomJS(args = args_dict,
                                        code = aim_inputs_callback_code)
 
-    game_parts.textinputs[name + '_aim_text_input'].js_on_change('value',
-                                                                 aim_textInputs_customjs)
+    game_parts.textinputs[name + '_aim'].js_on_change('value',
+                                                      aim_textInputs_customjs)
 #</editor-fold>

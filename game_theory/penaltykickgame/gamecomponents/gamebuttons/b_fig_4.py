@@ -20,20 +20,20 @@ def create(game_parts, label = "Figure 4", button_type = "success",
     b_fig_4 = Button(label = label, button_type = button_type,
                         sizing_mode = sizing_mode, width_policy = width_policy,
                         disabled = disabled, visible = visible)
-    game_parts.buttons['b_fig_4'] = b_fig_4
+    game_parts.buttons['fig_4'] = b_fig_4
 #</editor-fold>
 
 #<editor-fold setup():
 def setup(game_parts):
-    args_dict = dict(b_fig_1 = game_parts.buttons['b_fig_1'],
-                     b_fig_2 = game_parts.buttons['b_fig_2'],
-                     b_fig_3 = game_parts.buttons['b_fig_3'],
-                     b_fig_4 = game_parts.buttons['b_fig_4'],
-                     game_stats_figure_1 = game_parts.figures['game_stats_figure_1'],
-                     game_stats_figure_2 = game_parts.figures['game_stats_figure_2'],
-                     game_stats_figure_3 = game_parts.figures['game_stats_figure_3'],
-                     game_stats_figure_4 = game_parts.figures['game_stats_figure_4'])
+    args_dict = dict(b_fig_1 = game_parts.buttons['fig_1'],
+                     b_fig_2 = game_parts.buttons['fig_2'],
+                     b_fig_3 = game_parts.buttons['fig_3'],
+                     b_fig_4 = game_parts.buttons['fig_4'],
+                     game_stats_figure_1 = game_parts.figures['stats_1'],
+                     game_stats_figure_2 = game_parts.figures['stats_2'],
+                     game_stats_figure_3 = game_parts.figures['stats_3'],
+                     game_stats_figure_4 = game_parts.figures['stats_4'])
     b_fig_4_click = CustomJS(args = args_dict,
                              code = b_fig_4_click_code)
-    game_parts.buttons['b_fig_4'].js_on_click(b_fig_4_click)
+    game_parts.buttons['fig_4'].js_on_click(b_fig_4_click)
 #</editor-fold>

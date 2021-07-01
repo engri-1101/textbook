@@ -33,12 +33,12 @@ def create(game_parts, footedness_title = "Striker Footedness",
     distributions = [footedness, aim_direction, freq, decisions,
                      perceived_risks, score_chance, score_roll]
 
-    automation_distribution_table = DataTable(source = game_parts.sources['automation_distribution_table_source'],
+    automation_distribution_table = DataTable(source = game_parts.sources['distribution_table'],
                                               columns = distributions,
                                               width = width, height = height,
                                               autosize_mode = autosize_mode,
                                               sizing_mode = sizing_mode,
                                               visible = visibility,
                                               fit_columns = fit_columns)
-    game_parts.tables['automation_distribution_table'] = automation_distribution_table
+    game_parts.tables['distribution'] = automation_distribution_table
 #</editor-fold>

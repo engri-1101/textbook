@@ -116,7 +116,7 @@ def create(game_parts, start = 10, end = 500, value = 50, step = 10,
     iterations_slider = Slider(start = start, end = end, value = value,
                                step = step, title = title, disabled = disabled,
                                visible = visible)
-    game_parts.sliders['iterations_slider'] = iterations_slider
+    game_parts.sliders['iterations'] = iterations_slider
 #</editor-fold>
 
 #<editor-fold setup():
@@ -124,16 +124,16 @@ def create(game_parts, start = 10, end = 500, value = 50, step = 10,
 #    from bokeh.models import CustomJS
 def setup(game_parts):
     args_dict = dict(iterations_to_run = game_parts.divs['iterations_to_run'],
-                     game_stats_figure_1 = game_parts.figures['game_stats_figure_1'],
-                     game_stats_figure_2 = game_parts.figures['game_stats_figure_2'],
-                     game_stats_figure_3 = game_parts.figures['game_stats_figure_3'],
-                     game_stats_figure_4 = game_parts.figures['game_stats_figure_4'],
-                     game_stats_figure_2_source = game_parts.sources['game_stats_figure_2_source'],
-                     game_stats_figure_3_source = game_parts.sources['game_stats_figure_3_source'],
-                     game_stats_figure_4_source = game_parts.sources['game_stats_figure_4_source'])
+                     game_stats_figure_1 = game_parts.figures['stats_1'],
+                     game_stats_figure_2 = game_parts.figures['stats_2'],
+                     game_stats_figure_3 = game_parts.figures['stats_3'],
+                     game_stats_figure_4 = game_parts.figures['stats_4'],
+                     game_stats_figure_2_source = game_parts.sources['stats_fig_2'],
+                     game_stats_figure_3_source = game_parts.sources['stats_fig_3'],
+                     game_stats_figure_4_source = game_parts.sources['stats_fig_4'])
     iterations_slider_callback = CustomJS(args = args_dict,
                                           code = iterations_slider_code)
 
-    game_parts.sliders['iterations_slider'].js_on_change('value',
+    game_parts.sliders['iterations'].js_on_change('value',
                                                          iterations_slider_callback)
 #</editor-fold>

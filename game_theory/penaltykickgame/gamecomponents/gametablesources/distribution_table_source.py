@@ -25,5 +25,5 @@ def create(game_parts, footedness_left_text = "Left",
 
     distribution_table_source = ColumnDataSource(distribution_data)
 
-    game_parts.sources['automation_distribution_table_source'] = distribution_table_source
+    game_parts.sources['distribution_table'] = distribution_table_source
 #</editor-fold>

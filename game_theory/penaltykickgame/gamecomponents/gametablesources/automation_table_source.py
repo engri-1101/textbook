@@ -20,5 +20,5 @@ def create(game_parts, footedness_left_text = "Left",
                            rl_base_chance, rm_base_chance, rr_base_chance])
 
     automation_table_source = ColumnDataSource(data)
-    game_parts.sources['automation_table_source'] = automation_table_source
+    game_parts.sources['automation_table'] = automation_table_source
 #</editor-fold>

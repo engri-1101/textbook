@@ -554,6 +554,6 @@ def stats_figure_3_setup(fig_configs, game_parts):
                                             renderers = [hb1s, hb2s, hb3s,
                                                          hb4s, hb5s, hb6s]))
     #</editor-fold>
-    game_parts.figures['game_stats_figure_3'] = game_stats_figure_3
-    game_parts.sources['game_stats_figure_3_source'] = game_stats_figure_3_source
+    game_parts.figures['stats_3'] = game_stats_figure_3
+    game_parts.sources['stats_fig_3'] = game_stats_figure_3_source
 #</editor-fold>

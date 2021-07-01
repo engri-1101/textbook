@@ -199,6 +199,6 @@ def stats_figure_2_setup(fig_configs, game_parts):
                                             point_policy = "follow_mouse",
                                             renderers = [hbs]))
     #</editor-fold>
-    game_parts.figures['game_stats_figure_2'] = game_stats_figure_2
-    game_parts.sources['game_stats_figure_2_source'] = game_stats_figure_2_source
+    game_parts.figures['stats_2'] = game_stats_figure_2
+    game_parts.sources['stats_fig_2'] = game_stats_figure_2_source
 #</editor-fold>

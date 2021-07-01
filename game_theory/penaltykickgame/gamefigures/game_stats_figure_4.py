@@ -256,5 +256,5 @@ def stats_figure_4_setup(fig_configs, game_parts):
                                             mode = "mouse",
                                             point_policy = "follow_mouse",
                                             renderers = [hbs]))
-    game_parts.figures['game_stats_figure_4'] = game_stats_figure_4
-    game_parts.sources['game_stats_figure_4_source'] = game_stats_figure_4_source
+    game_parts.figures['stats_4'] = game_stats_figure_4
+    game_parts.sources['stats_fig_4'] = game_stats_figure_4_source

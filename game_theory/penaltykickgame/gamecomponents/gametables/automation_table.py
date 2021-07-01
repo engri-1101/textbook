@@ -15,9 +15,9 @@ def create(game_parts, footedness_title = "Striker Footedness",
 
     columns = [footedness_column, aim_direction_column, chances_column]
 
-    automation_table = DataTable(source = game_parts.sources['automation_table_source'],
+    automation_table = DataTable(source = game_parts.sources['automation_table'],
                                  columns = columns, width = width,
                                  height = height, autosize_mode = autosize_mode,
                                  visible = visible)
-    game_parts.tables['automation_table'] = automation_table
+    game_parts.tables['automation'] = automation_table
 #</editor-fold>

@@ -810,40 +810,40 @@ def create(game_parts, label = "Next", button_type = "success",
     b_auto_next = Button(label = label, button_type = button_type,
                         sizing_mode = sizing_mode, width_policy = width_policy,
                         disabled = disabled, visible = visible)
-    game_parts.buttons['b_auto_next'] = b_auto_next
+    game_parts.buttons['next'] = b_auto_next
 #</editor-fold>
 
 #<editor-fold setup():
 #Needs:
 #   from bokeh.models import CustomJS
 def setup(game_parts):
-    args_dict =  dict(ChancesColumnDataSource = game_parts.sources['automation_table_source'],
-                      DistributionColumnDataSource = game_parts.sources['automation_distribution_table_source'],
+    args_dict =  dict(ChancesColumnDataSource = game_parts.sources['automation_table'],
+                      DistributionColumnDataSource = game_parts.sources['distribution_table'],
                       strategy_to_use = game_parts.divs['strategy_to_use'],
                       nround = game_parts.divs['nround'],
                       iterations_to_run = game_parts.divs['iterations_to_run'],
                       txt = game_parts.texts['scr_text'],
-                      b_auto_next = game_parts.buttons['b_auto_next'],
+                      b_auto_next = game_parts.buttons['next'],
                       game_figure = game_parts.figures['game_figure'],
-                      automation_distribution_table = game_parts.tables['automation_distribution_table'],
+                      automation_distribution_table = game_parts.tables['distribution'],
                       goalie_head = game_parts.glyphs['goalie_head'],
                       goalie_body = game_parts.glyphs['goalie_body'],
-                      goalie_counter_source = game_parts.sources['goalie_counter_source'],
+                      goalie_counter_source = game_parts.sources['goalie_counter'],
                       ball = game_parts.glyphs['ball'],
                       score = game_parts.divs['score'],
-                      b_fig_1 = game_parts.buttons['b_fig_1'],
-                      b_fig_2 = game_parts.buttons['b_fig_2'],
-                      b_fig_3 = game_parts.buttons['b_fig_3'],
-                      b_fig_4 = game_parts.buttons['b_fig_4'],
-                      game_stats_figure_1 = game_parts.figures['game_stats_figure_1'],
-                      game_stats_figure_2 = game_parts.figures['game_stats_figure_2'],
-                      game_stats_figure_3 = game_parts.figures['game_stats_figure_3'],
-                      game_stats_figure_4 = game_parts.figures['game_stats_figure_4'],
-                      game_stats_figure_1_source = game_parts.sources['game_stats_figure_1_source'],
-                      game_stats_figure_2_source = game_parts.sources['game_stats_figure_2_source'],
-                      game_stats_figure_3_source = game_parts.sources['game_stats_figure_3_source'],
-                      game_stats_figure_4_source = game_parts.sources['game_stats_figure_4_source'])
+                      b_fig_1 = game_parts.buttons['fig_1'],
+                      b_fig_2 = game_parts.buttons['fig_2'],
+                      b_fig_3 = game_parts.buttons['fig_3'],
+                      b_fig_4 = game_parts.buttons['fig_4'],
+                      game_stats_figure_1 = game_parts.figures['stats_1'],
+                      game_stats_figure_2 = game_parts.figures['stats_2'],
+                      game_stats_figure_3 = game_parts.figures['stats_3'],
+                      game_stats_figure_4 = game_parts.figures['stats_4'],
+                      game_stats_figure_1_source = game_parts.sources['stats_fig_1'],
+                      game_stats_figure_2_source = game_parts.sources['stats_fig_2'],
+                      game_stats_figure_3_source = game_parts.sources['stats_fig_3'],
+                      game_stats_figure_4_source = game_parts.sources['stats_fig_4'])
     b_auto_next_click = CustomJS(args = args_dict,
                                  code = automate_loop_iteration)
-    game_parts.buttons['b_auto_next'].js_on_click(b_auto_next_click)
+    game_parts.buttons['next'].js_on_click(b_auto_next_click)
 #</editor-fold>

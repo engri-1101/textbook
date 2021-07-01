@@ -41,8 +41,8 @@ def create(game_parts):
 
 #<editor-fold setup():
 def setup(game_parts):
-    args_dict = dict(b_start_automate = game_parts.buttons['b_start_automate'],
-                     b_make_counter = game_parts.buttons['b_make_counter'],
+    args_dict = dict(b_start_automate = game_parts.buttons['start'],
+                     b_make_counter = game_parts.buttons['make_counter'],
                      cpu_selected = game_parts.divs['cpu_selected'],
                      counter_made = game_parts.divs['counter_made'],
                      chances_valid = game_parts.divs['chances_valid'])

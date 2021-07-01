@@ -11,5 +11,5 @@ def create(game_parts, text_color = "whitesmoke", text_font_size = "15pt",
                   y_offset = text_y_offset,
                   text_baseline = text_baseline,
                   text_align = text_align)
-    game_parts.labels['labels'] = scr_labels
+    game_parts.labels['scr_text'] = scr_labels
 #</editor-fold>

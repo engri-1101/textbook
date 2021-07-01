@@ -387,7 +387,7 @@ def make_game(game_figure_configs = default_game_fig_configs,
     components.labels.scr_labels.create(game_parts)
 
     game_parts.figures['game_figure'].add_glyph(game_parts.texts['scr_text'],
-                                                game_parts.labels['labels'])
+                                                game_parts.labels['scr_text'])
 
     components.divs.iterations_to_run.create(game_parts)
     components.divs.strategy_to_use.create(game_parts)

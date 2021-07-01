@@ -339,7 +339,7 @@ def stats_figure_1_setup(fig_configs, game_parts):
                                                          blockedl_hbs,
                                                          blockedm_hbs,
                                                          blockedr_hbs]))
-    game_parts.figures['game_stats_figure_1'] = game_stats_figure_1
-    game_parts.sources['game_stats_figure_1_source'] = game_stats_figure_1_source
+    game_parts.figures['stats_1'] = game_stats_figure_1
+    game_parts.sources['stats_fig_1'] = game_stats_figure_1_source
     #</editor-fold>
  #</editor-fold>

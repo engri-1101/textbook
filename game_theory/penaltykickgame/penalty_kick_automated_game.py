@@ -98,6 +98,43 @@ class _AutoTableConfig:
         self.height = height
         self.autosize_mode = autosize_mode
         self.visible = visible
+class _LayoutConfig:
+    def __init__(self, automate_button_row_max_width,
+                 automate_button_row_sizing_mode,
+                 strategy_dropdown_row_max_width,
+                 strategy_dropdown_row_sizing_mode,
+                 start_automate_row_max_width, start_automate_row_sizing_mode,
+                 automate_aim_rows_max_width, automate_aim_rows_sizing_mode,
+                 game_stats_row_1_max_width, game_stats_row_1_sizing_mode,
+                 game_stats_row_2_max_width, game_stats_row_2_sizing_mode,
+                 gui_column1_max_width, gui_column1_sizing_mode,
+                 gui_column2_min_width, gui_column2_max_width,
+                 gui_column2_sizing_mode, gui_row_max_width,
+                 gui_row_sizing_mode, plot_width, plot_height,
+                 b_fig_rows_max_width, b_fig_rows_sizing_mode):
+        self.automate_button_row_max_width = start_automate_row_max_width
+        self.automate_button_row_sizing_mode = start_automate_row_sizing_mode
+        self.strategy_dropdown_row_max_width = strategy_dropdown_row_max_width
+        self.strategy_dropdown_row_sizing_mode = strategy_dropdown_row_sizing_mode
+        self.start_automate_row_max_width = start_automate_row_max_width
+        self.start_automate_row_sizing_mode = start_automate_row_sizing_mode
+        self.automate_aim_rows_max_width = automate_aim_rows_max_width
+        self.automate_aim_rows_sizing_mode = automate_aim_rows_sizing_mode
+        self.game_stats_row_1_max_width = game_stats_row_1_max_width
+        self.game_stats_row_1_sizing_mode = game_stats_row_1_sizing_mode
+        self.game_stats_row_2_max_width = game_stats_row_2_max_width
+        self.game_stats_row_2_sizing_mode = game_stats_row_2_sizing_mode
+        self.gui_column1_max_width = gui_column1_max_width
+        self.gui_column1_sizing_mode = gui_column1_sizing_mode
+        self.gui_column2_min_width = gui_column2_min_width
+        self.gui_column2_max_width = gui_column2_max_width
+        self.gui_column2_sizing_mode = gui_column2_sizing_mode
+        self.gui_row_max_width = gui_row_max_width
+        self.gui_row_sizing_mode = gui_row_sizing_mode
+        self.plot_width = plot_width
+        self.plot_height = plot_height
+        self.b_fig_rows_max_width = b_fig_rows_max_width
+        self.b_fig_rows_sizing_mode = b_fig_rows_sizing_mode
 #</editor-fold>
 
 #<editor-fold MainGame:
@@ -190,7 +227,14 @@ class MainGame:
                                                   "Chance"], 600, 280,
                                                  "force_fit", False)
         #</editor-fold>
-        return
+        #<editor-fold Layout Configs:
+        self.layout = _LayoutConfig(400, 'stretch_width', 400, 'stretch_width',
+                                    400, 'stretch_width', 400, 'stretch_width',
+                                    600, 'stretch_width', 600, 'stretch_width',
+                                    600, 'stretch_width', 761, 761,
+                                    'stretch_width', 1400, 'stretch_width',
+                                    1200, 480, 400, 'stretch_width')
+        #</editor-fold>
 
     def __make_game_components(self):
         figs.game_fig.game_figure_setup(self.game_parts)
@@ -306,7 +350,7 @@ class MainGame:
         components.dropdowns.cpu_strategy_dropdown.setup(self.game_parts)
 
     def __format_game_layout(self):
-        grid1 = game_layout.format(self.game_parts)
+        grid1 = game_layout.format(self.game_parts, self.layout)
         return grid1
 
     def make_game(self):

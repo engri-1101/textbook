@@ -2,12 +2,11 @@ from bokeh.models import Button, CustomJS
 from . import gameloop_codestrings
 
 #<editor-fold create():
-def create(game_parts, label = "Next", button_type = "success",
-           sizing_mode = "scale_width", width_policy = "fit",
-           disabled = False, visible = False):
-    b_auto_next = Button(label = label, button_type = button_type,
-                        sizing_mode = sizing_mode, width_policy = width_policy,
-                        disabled = disabled, visible = visible)
+def create(game_parts, config):
+    b_auto_next = Button(label = config.label, button_type = config.button_type,
+                         sizing_mode = config.sizing_mode,
+                         width_policy = config.width_policy,
+                         disabled = config.disabled, visible = config.visible)
     game_parts.buttons['next'] = b_auto_next
 #</editor-fold>
 

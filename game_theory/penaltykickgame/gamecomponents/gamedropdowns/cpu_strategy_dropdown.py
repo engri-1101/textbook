@@ -35,21 +35,11 @@ cpu_selected.text = "1";
 #<editor-fold create():
 #Needs:
 #    from bokeh.models import DropDown
-def create(game_parts, fictitious_play_text = "Fictitious_Play",
-           mixed_strategy_text = "Mixed_Strategy", true_random_text = "Random",
-           goalie_cheats_text = "Goalie_Cheats",
-           dropdown_label = "CPU strategy to Use",
-           dropdown_button_type = "warning", dropdown_disabled = False,
-           dropdown_visibility = False):
-    #CPU Strategy to Use Dropdown:
-    menu = [(fictitious_play_text, fictitious_play_text),
-            (mixed_strategy_text, mixed_strategy_text),
-            (true_random_text, true_random_text),
-            (goalie_cheats_text, goalie_cheats_text)]
-    strategy_dropdown = Dropdown(label = dropdown_label, menu = menu,
-                                 button_type = dropdown_button_type,
-                                 disabled = dropdown_disabled,
-                                 visible = dropdown_visibility)
+def create(game_parts, config):
+    strategy_dropdown = Dropdown(label = config.label, menu = config.items,
+                                 button_type = config.button_type,
+                                 disabled = config.disabled,
+                                 visible = config.visible)
     game_parts.dropdowns['cpu_strategy'] = strategy_dropdown
 #</editor-fold>
 

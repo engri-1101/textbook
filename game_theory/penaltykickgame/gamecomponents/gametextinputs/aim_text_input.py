@@ -67,10 +67,10 @@ return;
 #</editor-fold>
 
 #<editor-fold create():
-def create(game_parts, name, value = "0", title_addition = "_aim_chance",
-           visible = False):
-    aim_text_input = TextInput(value = value, title = name + title_addition,
-                               visible = visible)
+def create(game_parts, name, config):
+    aim_text_input = TextInput(value = config.value,
+                               title = name + config.title_addition,
+                               visible = config.visible)
     game_parts.textinputs[name + '_aim'] = aim_text_input
 #</editor-fold>
 

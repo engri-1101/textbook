@@ -162,7 +162,7 @@ class Stats_fig_4_configs:
         self.plot_highlight_dot_outline_color = plot_highlight_dot_outline_color
         self.plot_avgs_line_color = plot_avgs_line_color
         #</editor-fold>
-def stats_figure_4_setup(fig_configs, game_parts):
+def stats_figure_4_setup(game_parts, fig_configs = Stats_fig_4_configs()):
     stats_fig_4 = figure(tools = fig_configs.figure_base_tools,
                                  toolbar_location = fig_configs.figure_toolbar_location,
                                  toolbar_sticky = fig_configs.figure_toolbar_sticky,

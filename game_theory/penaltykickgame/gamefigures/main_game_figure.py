@@ -119,7 +119,7 @@ class Game_fig_configs():
 #</editor-fold>
 
 #<editor-fold game_figure_setup:
-def game_figure_setup(fig_configs, game_parts):
+def game_figure_setup(game_parts, fig_configs = Game_fig_configs()):
 
     game_figure = figure(tools = fig_configs.tools,
                          toolbar_location = fig_configs.toolbar_location,

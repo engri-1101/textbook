@@ -92,7 +92,7 @@ class Stats_fig_2_configs:
 #</editor-fold>
 
 #<editor-fold stats_figure_2_setup:
-def stats_figure_2_setup(fig_configs, game_parts):
+def stats_figure_2_setup(game_parts, fig_configs = Stats_fig_2_configs()):
     """Fully creates and sets up Stats Figure 2 for use in the main game. Stats
     Figure 2 displays the player's score over the iterations played.
 

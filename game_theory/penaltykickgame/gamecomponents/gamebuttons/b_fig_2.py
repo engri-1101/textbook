@@ -14,12 +14,11 @@ stats_fig_4.visible = false;
 #</editor-fold>
 
 #<editor-fold create():
-def create(game_parts, label = "Figure 2", button_type = "success",
-           sizing_mode = "scale_width", width_policy = "fit",
-           disabled = False, visible = False):
-    b_fig_2 = Button(label = label, button_type = button_type,
-                        sizing_mode = sizing_mode, width_policy = width_policy,
-                        disabled = disabled, visible = visible)
+def create(game_parts, config):
+    b_fig_2 = Button(label = config.label, button_type = config.button_type,
+                     sizing_mode = config.sizing_mode,
+                     width_policy = config.width_policy,
+                     disabled = config.disabled, visible = config.visible)
     game_parts.buttons['fig_2'] = b_fig_2
 #</editor-fold>
 

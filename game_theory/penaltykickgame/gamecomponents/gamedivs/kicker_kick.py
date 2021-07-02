@@ -1,7 +1,7 @@
 from bokeh.models.widgets import Div
 
 #<editor-fold create():
-def create(game_parts, text = "", visible = False):
-    kicker_kick = Div(text = text, visible = visible)
+def create(game_parts, config):
+    kicker_kick = Div(text = config.text, visible = config.visible)
     game_parts.divs['kicker_kick'] = kicker_kick
 #</editor-fold>

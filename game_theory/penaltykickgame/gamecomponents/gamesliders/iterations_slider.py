@@ -110,12 +110,12 @@ stats_fig_4_source.change.emit();
 #<editor-fold create():
 #Needs:
 #   from bokeh.models import Slider
-def create(game_parts, start = 10, end = 500, value = 50, step = 10,
-           title = "Iterations To Run", disabled = False,
-           visible = False,):
-    iterations_slider = Slider(start = start, end = end, value = value,
-                               step = step, title = title, disabled = disabled,
-                               visible = visible)
+def create(game_parts, config):
+    iterations_slider = Slider(start = config.start, end = config.end,
+                               value = config.value,
+                               step = config.step, title = config.title,
+                               disabled = config.disabled,
+                               visible = config.visible)
     game_parts.sliders['iterations'] = iterations_slider
 #</editor-fold>
 

@@ -1,23 +1,21 @@
 from bokeh.models import TableColumn, DataTable
 
 #<editor-fold create():
-def create(game_parts, footedness_title = "Striker Footedness",
-           aim_direction_title = "Striker Aim Direction",
-           chances_title = "Chance", width = 600, height = 280,
-           autosize_mode = "force_fit", visible = False):
+def create(game_parts, config):
 
     footedness_column = TableColumn(field = "footedness",
-                                    title = footedness_title)
+                                    title = config.titles[0])
     aim_direction_column = TableColumn(field = "aim_direction",
-                                       title = aim_direction_title)
+                                       title = config.titles[1])
     chances_column = TableColumn(field = "chances",
-                                 title = chances_title)
+                                 title = config.titles[2])
 
     columns = [footedness_column, aim_direction_column, chances_column]
 
     automation_table = DataTable(source = game_parts.sources['automation_table'],
-                                 columns = columns, width = width,
-                                 height = height, autosize_mode = autosize_mode,
-                                 visible = visible)
+                                 columns = columns, width = config.width,
+                                 height = config.height,
+                                 autosize_mode = config.autosize_mode,
+                                 visible = config.visible)
     game_parts.tables['automation'] = automation_table
 #</editor-fold>

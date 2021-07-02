@@ -16,7 +16,9 @@ b_start_automate.visible = false;
 chances_valid.text = "0";
 
 //Check if inputs are valid:
-let is_valid;
+let is_valid1 = true;
+let is_valid2 = true;
+let is_valid3 = true;
 
 let ll_val = parseFloat(ll_aim_text_input.value);
 let lm_val = parseFloat(lm_aim_text_input.value);
@@ -25,27 +27,37 @@ let rl_val = parseFloat(rl_aim_text_input.value);
 let rm_val = parseFloat(rm_aim_text_input.value);
 let rr_val = parseFloat(rr_aim_text_input.value);
 
-if(ll_val > 1){ is_valid = false; }
-if(lm_val > 1){ is_valid = false; }
-if(lr_val > 1){ is_valid = false; }
-if(rl_val > 1){ is_valid = false; }
-if(rm_val > 1){ is_valid = false; }
-if(rr_val > 1){ is_valid = false; }
+if(ll_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
+if(lm_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
+if(lr_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
+if(rl_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
+if(rm_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
+if(rr_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
+if(is_valid1 == true){
+    chances_gt_1_tip.visible = false;
+}
 
-if(ll_val < 0){ is_valid = false; }
-if(lm_val < 0){ is_valid = false; }
-if(lr_val < 0){ is_valid = false; }
-if(rl_val < 0){ is_valid = false; }
-if(rm_val < 0){ is_valid = false; }
-if(rr_val < 0){ is_valid = false; }
+if(ll_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
+if(lm_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
+if(lr_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
+if(rl_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
+if(rm_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
+if(rr_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
+if(is_valid2 == true){
+    chances_lt_0_tip.visible = false;
+}
+
+
 
 const total = (ll_val + lm_val + lr_val + rl_val + rm_val + rr_val)
 if(total >= 1 - """ + JS_FLOAT_BUFFER + """
     && total <= 1 + """ + JS_FLOAT_BUFFER + """){
-    is_valid = true;
+    is_valid3 = true;
+    chances_ne_1_tip.visible = false;
 }
 else{
-    is_valid = false;
+    is_valid3 = false;
+    chances_ne_1_tip.visible = true;
 }
 
 chances[0] = ll_val;
@@ -56,7 +68,7 @@ chances[4] = rm_val;
 chances[5] = rr_val;
 table_source.change.emit();
 
-if(is_valid){
+if(is_valid1 && is_valid2 && is_valid3){
     chances_valid.text = "1";
 }
 else{
@@ -86,7 +98,10 @@ def setup(name, game_parts):
                      rm_aim_text_input = game_parts.textinputs['rm_aim'],
                      rr_aim_text_input = game_parts.textinputs['rr_aim'],
                      chances_valid = game_parts.divs['chances_valid'],
-                     b_start_automate = game_parts.buttons['start']
+                     b_start_automate = game_parts.buttons['start'],
+                     chances_gt_1_tip = game_parts.divs['chances_gt_1_tip'],
+                     chances_lt_0_tip = game_parts.divs['chances_lt_0_tip'],
+                     chances_ne_1_tip = game_parts.divs['chances_ne_1_tip']
     )
     aim_textInputs_customjs = CustomJS(args = args_dict,
                                        code = aim_inputs_callback_code)

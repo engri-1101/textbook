@@ -29,6 +29,8 @@ else{
 counter_made.text = "0";
 cpu_selected.text = "1";
 }
+
+select_cpu_tip.visible = false;
 """
 #</editor-fold>
 
@@ -59,7 +61,8 @@ def setup(game_parts):
                      lr_aim_text_input = game_parts.textinputs['lr_aim'],
                      rl_aim_text_input = game_parts.textinputs['rl_aim'],
                      rm_aim_text_input = game_parts.textinputs['rm_aim'],
-                     rr_aim_text_input = game_parts.textinputs['rr_aim'])
+                     rr_aim_text_input = game_parts.textinputs['rr_aim'],
+                     select_cpu_tip = game_parts.divs['select_cpu_tip'])
 
     strategy_dropdown_callback = CustomJS(args = args_dict,
                                           code = strategy_dropdown_code)

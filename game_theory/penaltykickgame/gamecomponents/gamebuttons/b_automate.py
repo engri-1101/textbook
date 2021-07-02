@@ -13,6 +13,8 @@ rr_aim_text_input.visible = true;
 iterations_slider.visible = true;
 strategy_dropdown.visible = true;
 automation_table.visible = true;
+chances_ne_1_tip.visible = true;
+select_cpu_tip.visible = true;
 """
 #</editor-fold>
 
@@ -38,7 +40,9 @@ def setup(game_parts):
                      lr_aim_text_input = game_parts.textinputs['lr_aim'],
                      rl_aim_text_input = game_parts.textinputs['rl_aim'],
                      rm_aim_text_input = game_parts.textinputs['rm_aim'],
-                     rr_aim_text_input = game_parts.textinputs['rr_aim'])
+                     rr_aim_text_input = game_parts.textinputs['rr_aim'],
+                     chances_ne_1_tip = game_parts.divs['chances_ne_1_tip'],
+                     select_cpu_tip = game_parts.divs['select_cpu_tip'])
     b_automate_click = CustomJS(args = args_dict,
                                 code = b_automate_code)
     game_parts.buttons['automate'].js_on_click(b_automate_click)

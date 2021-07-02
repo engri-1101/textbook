@@ -14,6 +14,10 @@ def format(game_parts, config):
                                 sizing_mode = config.strategy_dropdown_row_sizing_mode)
 
     start_automate_row = row(game_parts.buttons['start'],
+                             game_parts.divs['select_cpu_tip'],
+                             game_parts.divs['chances_lt_0_tip'],
+                             game_parts.divs['chances_gt_1_tip'],
+                             game_parts.divs['chances_ne_1_tip'],
                              game_parts.buttons['make_counter'],
                              max_width = config.start_automate_row_max_width,
                              sizing_mode = config.start_automate_row_sizing_mode)
@@ -82,3 +86,4 @@ def format(game_parts, config):
     grid1 = gridplot([[gui_row]], plot_width = config.plot_width,
                      plot_height = config.plot_height)
     return grid1
+#</editor-fold>

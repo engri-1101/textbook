@@ -72,6 +72,7 @@ def format(game_parts, config):
     gui_column2 = column(column(b_fig_rows),
                          automate_button_row, strategy_dropdown_row,
                          start_automate_row, column(input_rows),
+                         # game_parts.tables['distribution'],
                          min_width = config.gui_column2_min_width,
                          max_width = config.gui_column2_max_width,
                          sizing_mode = config.gui_column2_sizing_mode)

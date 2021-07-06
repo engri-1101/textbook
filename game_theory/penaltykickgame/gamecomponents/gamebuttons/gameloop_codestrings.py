@@ -5,10 +5,9 @@
 #'_' character is a helper function.
 
 
-#TODO: Recode current functions for efficiency, readability and formatting.
-#No long functions or repetitive code. Following that, Reorganize code strings
-#so that all functions are defined first, and the game is run from a single,
-#short string that makes the function calls.
+#TODO: continue improving code, reorganize code strings so that all functions
+#are defined first, and the game is run from a single, short string that makes
+#the function calls.
 #<editor-fold automate_start_code Initial Gui Display Code String:
 #This code string changes the visibility values of various game gui elements
 #in order to change the user view from that used in the earlier menu like
@@ -29,7 +28,6 @@ distribution_table.visible = true;
 """
 #</editor-fold>
 
-#HAS BEEN RECODED
 #<editor-fold create_automate_loop_constants:
 #This code string initializes the values for constants that are used accross
 #multiple sections of the main game loop.
@@ -49,7 +47,6 @@ const iters_to_run = parseInt(iterations_to_run.text);
 """
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold create_automate_loop_state_lets:
 #This code string initializes the lets used accross the main game loop for
 #tracking purposes.
@@ -76,7 +73,6 @@ let scored_chance = 0;
 automate_loop_setup = (create_automate_loop_constants
                        + create_automate_loop_state_lets)
 
-#HAS BEEN RECODED!
 #<editor-fold automate_loop_iteration_display
   #<editor-fold iterationText:
 iterationText = """
@@ -101,7 +97,6 @@ automate_loop_iteration_display = ((iterationText) # Functions
                                    + run_iteration_text) #actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold automate_loop_roll_kicker_action
 #This code string uses the user's inputs to roll a random number to choose which
 #strategy the kicker will use for the iteration.
@@ -140,7 +135,6 @@ automate_loop_roll_kicker_action = ((rollKickerAction) #Functions
                                     + run_rollKickerAction) #Actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold fictitious play:
 fictitiousPlay = """
 //Handle Goalie Decision
@@ -178,7 +172,6 @@ do_fictitious_play = ((fictitiousPlay) # function
                       + run_fictitious_play) # actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold run_optimal_mixed_strategy
 #Runs the optimal mixed strategy found in the lab.
 optimalMixedStrategy = """
@@ -198,7 +191,6 @@ do_optimal_mixed_strategy = ((optimalMixedStrategy) #Function
                              + run_optimal_mixed_strategy) # actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold run_random_choices
 #Runs random choices, a strategy for the goalie where they pick their actions
 #at random.
@@ -215,7 +207,6 @@ do_random_choices = ((randomChoice) #Function
                      + run_random_choice) # actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold run_goalie_cheats
 #This codestring runs the goalie cheats strategy, a strategy where the goalie
 #Uses the optimal pure strategy to counter the player's mixed strategy.
@@ -252,7 +243,6 @@ if(strategy_to_use.text == 'Fictitious_Play'){
 }
 """
 
-#HAS BEEN RECODED!
 #<editor-fold automate_loop_handle_scoring
 #This code string handles the scoring of the game, and updates a couple things
 #accordingly.
@@ -357,7 +347,6 @@ automate_loop_handle_scoring = ((_handleFigureVisibility + _fig4Adjust
                                 + run_iteration_scoring) #actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold automate_loop_animation
 _moveGoalie = """
 function _moveGoalie(x_loc){
@@ -395,7 +384,6 @@ automate_loop_animation = ((_moveGoalie + animateIteration) #Functions
                            + run_animate_iteration) #actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold automate_loop_update_fictitious_decision_tracking
   #<editor-fold select from KFGA helper function:
 _selectFromKFGA = """
@@ -458,7 +446,6 @@ automate_loop_update_decision_tracking = ((_selectFromKFGA
                                           + run_goalie_decision_tracking)# actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold update_game_stats_figure_1
 #This code string updates game stats figure 1
   #<editor-fold select from KFKK helper function:
@@ -544,7 +531,6 @@ update_game_stats_figure_1 = ((_selectFromKFKK + _fig1Iteration + _fig1Adjust
                               + run_update_fig_1) # actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold update_game_stats_figure_2
 #This code string updates game stats figure 2
   #<editor-fold update fig 2 iteration:
@@ -623,7 +609,6 @@ update_game_stats_figure_2 = ((_fig2Iteration + _fig2Adjust + updateFig2) # Func
                               + run_update_fig_2) # actual function call
 #</editor-fold>
 
-#HAS BEEN RECODED!
 #<editor-fold update_game_stats_figure_3
 #This codestring updates game stats figure 3
   #<editor-fold update fig 3 point helper function:

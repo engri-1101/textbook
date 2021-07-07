@@ -5,76 +5,10 @@
 #'_' character is a helper function.
 
 
-#TODO: continue improving code, reorganize code strings so that all functions
-#are defined first, and the game is run from a single, short string that makes
-#the function calls.
-#<editor-fold automate_start_code Initial Gui Display Code String:
-#This code string changes the visibility values of various game gui elements
-#in order to change the user view from that used in the earlier menu like
-#screens to one used for the game screens.
-automate_start_code_initial_gui_display = """
-b_start_automate.visible = false;
-b_auto_next.visible = true;
-ll_aim_text_input.visible = false;
-lm_aim_text_input.visible = false;
-lr_aim_text_input.visible = false;
-rl_aim_text_input.visible = false;
-rm_aim_text_input.visible = false;
-rr_aim_text_input.visible = false;
-iterations_slider.visible = false;
-strategy_dropdown.visible = false;
-automation_table.visible = false;
-distribution_table.visible = true;
-"""
-#</editor-fold>
+#TODO: continue improving code efficiency.
 
-#<editor-fold create_automate_loop_constants:
-#This code string initializes the values for constants that are used accross
-#multiple sections of the main game loop.
-create_automate_loop_constants = """
-const r_dict = {'LeftLeft'   : 0.55, 'LeftMiddle'   : 0.65, 'LeftRight'   : 0.93,
-                'MiddleLeft' : 0.74, 'MiddleMiddle' : 0.60, 'MiddleRight' : 0.72,
-                'RightLeft'  : 0.95, 'RightMiddle'  : 0.73, 'RightRight'  : 0.70}
-const l_dict = {'LeftLeft'   : 0.67, 'LeftMiddle'   : 0.70, 'LeftRight'   : 0.96,
-                'MiddleLeft' : 0.74, 'MiddleMiddle' : 0.60, 'MiddleRight' : 0.72,
-                'RightLeft'  : 0.87, 'RightMiddle'  : 0.65, 'RightRight'  : 0.61}
-const score_probs = {'Right' : r_dict, 'Left' :  l_dict};
-
-const chances = chances_source.data['chances'];
-const dist_data = distribution_source.data;
-const freq = dist_data['freq'];
-const iters_to_run = parseInt(iterations_to_run.text);
-"""
-#</editor-fold>
-
-#<editor-fold create_automate_loop_state_lets:
-#This code string initializes the lets used accross the main game loop for
-#tracking purposes.
-create_automate_loop_state_lets = """
-let danger_goalie_left = 0;
-let danger_goalie_middle = 0;
-let danger_goalie_right = 0;
-
-let goalie_action = '';
-
-let kicker_foot = '';
-let kicker_kick = '';
-
-let goal = 0;
-let game_score = 0;
-let rounds_played = 0;
-
-let scored_chance = 0;
-"""
-#</editor-fold>
-
-#Combine the two code strings that create values used accross the main game loop.
-#Both of these must be run for every iteration of the main game loop.
-automate_loop_setup = (create_automate_loop_constants
-                       + create_automate_loop_state_lets)
-
-#<editor-fold automate_loop_iteration_display
-  #<editor-fold iterationText:
+#<editor-fold Functions:
+  #<editor-fold iterationText():
 iterationText = """
 function iterationText(){
   //set lines of game text to reflect game state:
@@ -88,18 +22,7 @@ function iterationText(){
 }
 """
   #</editor-fold>
-  #<editor-fold run iterationText:
-run_iteration_text = """
-iterationText();
-"""
-  #</editor-fold>
-automate_loop_iteration_display = ((iterationText) # Functions
-                                   + run_iteration_text) #actual function call
-#</editor-fold>
-
-#<editor-fold automate_loop_roll_kicker_action
-#This code string uses the user's inputs to roll a random number to choose which
-#strategy the kicker will use for the iteration.
+  #<editor-fold rollKickerAction():
 rollKickerAction = """
 function rollKickerAction(){
   //Set constants for determining rolled action:
@@ -127,15 +50,8 @@ function rollKickerAction(){
   return [foot, kick];
 }
 """
-run_rollKickerAction = """
-[kicker_foot, kicker_kick] = rollKickerAction();
-"""
-
-automate_loop_roll_kicker_action = ((rollKickerAction) #Functions
-                                    + run_rollKickerAction) #Actual function call
-#</editor-fold>
-
-#<editor-fold fictitious play:
+  #</editor-fold>
+  #<editor-fold fictitiousPlay():
 fictitiousPlay = """
 //Handle Goalie Decision
 function fictitiousPlay(){
@@ -164,15 +80,8 @@ function fictitiousPlay(){
   return [action, ...risks];
 }
 """
-run_fictitious_play = """
-[goalie_action, danger_goalie_left,
- danger_goalie_middle, danger_goalie_right] = fictitiousPlay();
-"""
-do_fictitious_play = ((fictitiousPlay) # function
-                      + run_fictitious_play) # actual function call
-#</editor-fold>
-
-#<editor-fold run_optimal_mixed_strategy
+  #</editor-fold>
+  #<editor-fold optimalMixedStrategy():
 #Runs the optimal mixed strategy found in the lab.
 optimalMixedStrategy = """
 function optimalMixedStrategy(){
@@ -183,15 +92,8 @@ function optimalMixedStrategy(){
   return ((Math.random() >= roll_reqs) ? kicker_foot : 'Middle');
 }
 """
-run_optimal_mixed_strategy = """
-goalie_action = optimalMixedStrategy();
-"""
-
-do_optimal_mixed_strategy = ((optimalMixedStrategy) #Function
-                             + run_optimal_mixed_strategy) # actual function call
-#</editor-fold>
-
-#<editor-fold run_random_choices
+  #</editor-fold>
+  #<editor-fold randomChoice():
 #Runs random choices, a strategy for the goalie where they pick their actions
 #at random.
 randomChoice = """
@@ -200,22 +102,16 @@ function randomChoice(){
   return ['Left', 'Middle', 'Right'][Math.round(Math.random() * 3 - 0.5)];
 }
 """
-run_random_choice = """
-goalie_action = randomChoice();
-"""
-do_random_choices = ((randomChoice) #Function
-                     + run_random_choice) # actual function call
-#</editor-fold>
-
-#<editor-fold run_goalie_cheats
+  #</editor-fold>
+  #<editor-fold goalieCheats():
 #This codestring runs the goalie cheats strategy, a strategy where the goalie
 #Uses the optimal pure strategy to counter the player's mixed strategy.
 goalieCheats = """
 function goalieCheats(){
-  //store reference to data to check:
+  //Get reference to data to check:
   const data = counter_source.data;
 
-  //Store the pure strategy to use:
+  //Get the pure strategy to use:
   const counter = {'Left' : data['chances_l'],
                    'Right' : data['chances_r']}[kicker_foot];
 
@@ -223,30 +119,8 @@ function goalieCheats(){
   return ['Left', 'Middle', 'Right'][counter.indexOf(1)];
 }
 """
-run_goalie_cheats = """
-goalie_action = goalieCheats();
-"""
-do_goalie_cheats = ((goalieCheats) #Function
-                    + run_goalie_cheats) #Actual function call
-#</editor-fold>
-
-#runs the strategy designated
-automate_loop_handle_goalie_decision = """
-if(strategy_to_use.text == 'Fictitious_Play'){
-  """ + do_fictitious_play + """
-} else if(strategy_to_use.text == 'Mixed_Strategy'){
-  """ + do_optimal_mixed_strategy + """
-} else if(strategy_to_use.text == 'Random'){
-  """ + do_random_choices + """
-} else if(strategy_to_use.text == 'Goalie_Cheats'){
-  """ + do_goalie_cheats + """
-}
-"""
-
-#<editor-fold automate_loop_handle_scoring
-#This code string handles the scoring of the game, and updates a couple things
-#accordingly.
-  #<editor-fold handle figure visibility:
+  #</editor-fold>
+  #<editor-fold _handleFigureVisibility():
 _handleFigureVisibility = """
 function _handleFigureVisibility(){
   b_auto_next.visible = false;
@@ -265,7 +139,7 @@ function _handleFigureVisibility(){
 }
 """
   #</editor-fold>
-  #<editor-fold fig 4 adjustments helper:
+  #<editor-fold _fig4Adjust():
 _fig4Adjust = """
 function _fig4Adjust(fig_4_data){
 
@@ -282,7 +156,7 @@ function _fig4Adjust(fig_4_data){
 }
 """
   #</editor-fold>
-  #<editor-fold update fig 4:
+  #<editor-fold updateFig4():
 updateFig4 = """
 function updateFig4(rounds_played, score_chance){
   const fig_4_data = stats_fig_4_source.data;
@@ -298,7 +172,7 @@ function updateFig4(rounds_played, score_chance){
 }
 """
   #</editor-fold>
-  #<editor-fold iteration scoring:
+  #<editor-fold iterationScoring():
 iterationScoring = """
 function scoring(){
   //store column references:
@@ -337,17 +211,7 @@ function scoring(){
 }
 """
   #</editor-fold>
-  #<editor-fold run iteration scoring:
-run_iteration_scoring = """
-[goal, game_score, rounds_played, scored_chance] = scoring();
-"""
-  #</editor-fold>
-automate_loop_handle_scoring = ((_handleFigureVisibility + _fig4Adjust
-                                 + updateFig4 + iterationScoring) #Functions
-                                + run_iteration_scoring) #actual function call
-#</editor-fold>
-
-#<editor-fold automate_loop_animation
+  #<editor-fold _moveGoalie():
 _moveGoalie = """
 function _moveGoalie(x_loc){
   //Move both components of the goalie:
@@ -355,6 +219,8 @@ function _moveGoalie(x_loc){
   goalie_head.x = x_loc;
 }
 """
+  #</editor-fold>
+  #<editor-fold animateIteration():
 animateIteration = """
 function animateIteration(){
   //Set positions and store ball roll for handling cases:
@@ -377,15 +243,8 @@ function animateIteration(){
   }
 }
 """
-run_animate_iteration = """
-animateIteration();
-"""
-automate_loop_animation = ((_moveGoalie + animateIteration) #Functions
-                           + run_animate_iteration) #actual function call
-#</editor-fold>
-
-#<editor-fold automate_loop_update_fictitious_decision_tracking
-  #<editor-fold select from KFGA helper function:
+  #</editor-fold>
+  #<editor-fold _selectFromKFGA():
 _selectFromKFGA = """
 function _selectFromKFGA(){
   //Instantiate selected (the function's return value):
@@ -398,7 +257,7 @@ function _selectFromKFGA(){
 }
 """
   #</editor-fold>
-  #<editor-fold update risks helper function:
+  #<editor-fold _updateDecisionTableRisks():
 _updateDecisionTableRisks = """
 function _updateDecisionTableRisks(){
   //Store reference to column:
@@ -417,7 +276,7 @@ function _updateDecisionTableRisks(){
 }
 """
   #</editor-fold>
-  #<editor-fold goalie decision tracking function:
+  #<editor-fold goalieDecisionTracking():
 goalieDecisionTracking = """
 function goalieDecisionTracking(){
 
@@ -435,20 +294,7 @@ function goalieDecisionTracking(){
 }
 """
   #</editor-fold>
-  #<editor-fold run goalie decision tracking:
-run_goalie_decision_tracking = """
-goalieDecisionTracking();
-"""
-  #</editor-fold>
-automate_loop_update_decision_tracking = ((_selectFromKFGA
-                                           + _updateDecisionTableRisks
-                                           + goalieDecisionTracking) #Functions
-                                          + run_goalie_decision_tracking)# actual function call
-#</editor-fold>
-
-#<editor-fold update_game_stats_figure_1
-#This code string updates game stats figure 1
-  #<editor-fold select from KFKK helper function:
+  #<editor-fold _selectFromKFKK():
 _selectFromKFKK = """
 function _selectFromKFKK(){
   //Instantiate selected (the function's return value):
@@ -461,7 +307,7 @@ function _selectFromKFKK(){
 }
 """
   #</editor-fold>
-  #<editor-fold fig 1 iteration helper function:
+  #<editor-fold _fig1Iteration():
 _fig1Iteration = """
 function _fig1Iteration(fig_1_data){
   //Create a dict to use for selecting data columns according to iteration outcomes:
@@ -475,7 +321,7 @@ function _fig1Iteration(fig_1_data){
 }
 """
   #</editor-fold>
-  #<editor-fold fig 1 adjustments helper function:
+  #<editor-fold _fig1Adjust():
 _fig1Adjust = """
 function _fig1Adjust(fig_1_data){
   //Instantiate max_val with initial value:
@@ -491,7 +337,7 @@ function _fig1Adjust(fig_1_data){
 
     //calculate the total of the bar's sections:
     let possible_max = 0;
-    for(let section = 0; section < 4; section++){
+    for(let section = 0; section <= 3; section++){
       possible_max += data_bar_sections[section][i];
     }
 
@@ -504,7 +350,7 @@ function _fig1Adjust(fig_1_data){
 }
 """
   #</editor-fold>
-  #<editor-fold update fig 1 function:
+  #<editor-fold updateFig1():
 updateFig1 = """
 function updateFig1(){
   //store figure data for reference:
@@ -521,19 +367,7 @@ function updateFig1(){
 }
 """
   #</editor-fold>
-  #<editor-fold run update fig 1:
-run_update_fig_1 = """
-updateFig1();
-"""
-  #</editor-fold>
-update_game_stats_figure_1 = ((_selectFromKFKK + _fig1Iteration + _fig1Adjust
-                               + updateFig1) # Functions
-                              + run_update_fig_1) # actual function call
-#</editor-fold>
-
-#<editor-fold update_game_stats_figure_2
-#This code string updates game stats figure 2
-  #<editor-fold update fig 2 iteration:
+  #<editor-fold _fig2Iteration():
 _fig2Iteration = """
 function _fig2Iteration(index, fig_2_data){
   fig_2_data['ys'][index] = parseInt(score.text);
@@ -542,7 +376,7 @@ function _fig2Iteration(index, fig_2_data){
 }
 """
   #</editor-fold>
-  #<editor-fold fig 2 adjustments helper function:
+  #<editor-fold _fig2Adjust():
 _fig2Adjust = """
 function _fig2Adjust(fig_2_data){
   //Set initial max and min for resizing graph
@@ -580,7 +414,7 @@ function _fig2Adjust(fig_2_data){
 }
 """
   #</editor-fold>
-  #<editor-fold update fig 2 function:
+  #<editor-fold updateFig2():
 updateFig2 = """
 function updateFig2(){
   //Store reference to fig 2 data:
@@ -600,18 +434,7 @@ function updateFig2(){
 }
 """
   #</editor-fold>
-  #<editor-fold run update fig 2:
-run_update_fig_2 = """
-updateFig2();
-"""
-  #</editor-fold>
-update_game_stats_figure_2 = ((_fig2Iteration + _fig2Adjust + updateFig2) # Functions
-                              + run_update_fig_2) # actual function call
-#</editor-fold>
-
-#<editor-fold update_game_stats_figure_3
-#This codestring updates game stats figure 3
-  #<editor-fold update fig 3 point helper function:
+  #<editor-fold _fig3CalcPointVal():
 _fig3CalcPointVal = """
 function _fig3CalcPointVal(chances_list, scoreprobs_list, ga){
   const aim_directions = ['Left', 'Middle', 'Right'];
@@ -624,7 +447,7 @@ function _fig3CalcPointVal(chances_list, scoreprobs_list, ga){
 }
 """
   #</editor-fold>
-  #<editor-fold update fig 3 iteration helper function:
+  #<editor-fold _fig3Iteration():
 _fig3Iteration = """
 function _fig3Iteration(ys, index){
   //Store frequencies of striker choices:
@@ -667,7 +490,7 @@ function _fig3Iteration(ys, index){
 }
 """
   #</editor-fold>
-  #<editor-fold fig 3 Final adjustments helper function:
+  #<editor-fold _fig3Adjust():
 _fig3Adjust = """
 function _fig3Adjust(fig_3_data, ys){
   //store fig_3_data hb columns for iteration and reference:
@@ -738,7 +561,7 @@ function _fig3Adjust(fig_3_data, ys){
 }
 """
   #</editor-fold>
-  #<editor-fold update fig 3 function:
+  #<editor-fold updateFig3():
 updateFig3 = """
 function updateFig3(){
   //Store figure 3 data in order to reference it more easily:
@@ -762,31 +585,99 @@ function updateFig3(){
 }
 """
   #</editor-fold>
-  #<editor-fold run update fig 3:
-run_update_fig_3 = """
+
+function_definitions = (iterationText + rollKickerAction + fictitiousPlay
+                        + optimalMixedStrategy + randomChoice + goalieCheats
+                        + _handleFigureVisibility + _fig4Adjust + updateFig4
+                        + iterationScoring + _moveGoalie + animateIteration
+                        + _selectFromKFGA + _updateDecisionTableRisks
+                        + goalieDecisionTracking + _selectFromKFKK
+                        + _fig1Iteration + _fig1Adjust + updateFig1
+                        + _fig2Iteration + _fig2Adjust + updateFig2
+                        + _fig3CalcPointVal + _fig3Iteration + _fig3Adjust
+                        + updateFig3)
+#</editor-fold>
+
+#<editor-fold Game Iteration:
+game_iteration = """
+const r_dict = {'LeftLeft'   : 0.55, 'LeftMiddle'   : 0.65, 'LeftRight'   : 0.93,
+                'MiddleLeft' : 0.74, 'MiddleMiddle' : 0.60, 'MiddleRight' : 0.72,
+                'RightLeft'  : 0.95, 'RightMiddle'  : 0.73, 'RightRight'  : 0.70}
+const l_dict = {'LeftLeft'   : 0.67, 'LeftMiddle'   : 0.70, 'LeftRight'   : 0.96,
+                'MiddleLeft' : 0.74, 'MiddleMiddle' : 0.60, 'MiddleRight' : 0.72,
+                'RightLeft'  : 0.87, 'RightMiddle'  : 0.65, 'RightRight'  : 0.61}
+const score_probs = {'Right' : r_dict, 'Left' :  l_dict};
+
+const chances = chances_source.data['chances'];
+const dist_data = distribution_source.data;
+const freq = dist_data['freq'];
+const iters_to_run = parseInt(iterations_to_run.text);
+
+let danger_goalie_left = 0;
+let danger_goalie_middle = 0;
+let danger_goalie_right = 0;
+
+let goalie_action = '';
+
+let kicker_foot = '';
+let kicker_kick = '';
+
+let goal = 0;
+let game_score = 0;
+let rounds_played = 0;
+
+let scored_chance = 0;
+
+[kicker_foot, kicker_kick] = rollKickerAction();
+
+if(strategy_to_use.text == 'Fictitious_Play'){
+  [goalie_action, danger_goalie_left,
+   danger_goalie_middle, danger_goalie_right] = fictitiousPlay();
+} else if(strategy_to_use.text == 'Mixed_Strategy'){
+  goalie_action = optimalMixedStrategy();
+} else if(strategy_to_use.text == 'Random'){
+  goalie_action = randomChoice();
+} else if(strategy_to_use.text == 'Goalie_Cheats'){
+  goalie_action = goalieCheats();
+}
+
+[goal, game_score, rounds_played, scored_chance] = scoring();
+
+animateIteration();
+
+goalieDecisionTracking();
+
+updateFig1();
+updateFig2();
 if(strategy_to_use.text == 'Fictitious_Play'){
   updateFig3();
 }
-"""
-  #</editor-fold>
 
-update_game_stats_figure_3 = ((_fig3CalcPointVal + _fig3Iteration + _fig3Adjust
-                               + updateFig3) # functions
-                              + run_update_fig_3) # actual function call
+iterationText();
+"""
 #</editor-fold>
 
-automate_loop_iteration_main = (automate_loop_roll_kicker_action
-                                + automate_loop_handle_goalie_decision
-                                + automate_loop_handle_scoring
-                                + automate_loop_animation
-                                + automate_loop_update_decision_tracking
-                                + update_game_stats_figure_1
-                                + update_game_stats_figure_2
-                                + update_game_stats_figure_3)
+game_iteration += function_definitions
 
-automate_loop_iteration = (automate_loop_setup
-                           + automate_loop_iteration_main
-                           + automate_loop_iteration_display)
+#<editor-fold start button Initial Gui Display:
+#This code string changes the visibility values of various game gui elements
+#in order to change the user view from that used in the earlier menu like
+#screens to one used for the game screens.
+initial_gui_display = """
+b_start_automate.visible = false;
+b_auto_next.visible = true;
+ll_aim_text_input.visible = false;
+lm_aim_text_input.visible = false;
+lr_aim_text_input.visible = false;
+rl_aim_text_input.visible = false;
+rm_aim_text_input.visible = false;
+rr_aim_text_input.visible = false;
+iterations_slider.visible = false;
+strategy_dropdown.visible = false;
+automation_table.visible = false;
+distribution_table.visible = true;
+"""
+#</editor-fold>
 
-b_automate_start_code = (automate_start_code_initial_gui_display
-                         + automate_loop_iteration)
+b_automate_start_code = (initial_gui_display
+                         + game_iteration)

@@ -41,6 +41,6 @@ def setup(game_parts):
                       stats_fig_3_source = game_parts.sources['stats_fig_3'],
                       stats_fig_4_source = game_parts.sources['stats_fig_4'])
     b_auto_next_click = CustomJS(args = args_dict,
-                                 code = gameloop_codestrings.automate_loop_iteration)
+                                 code = gameloop_codestrings.game_iteration)
     game_parts.buttons['next'].js_on_click(b_auto_next_click)
 #</editor-fold>

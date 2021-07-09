@@ -115,7 +115,7 @@ class Stats_fig_4_configs:
                  figure_toolbar_sticky = False,
                  figure_title = 'Score Chance Over Iterations',
                  figure_width = 600, figure_height = 360,
-                 figure_x_range = (1, 50), figure_y_range = (0, 1),
+                 figure_x_range = (0.5, 50.5), figure_y_range = (0, 1),
                  figure_initial_visibility = False,
                  figure_title_font_size = '16pt',
                  figure_x_axis_visibility = True,
@@ -189,7 +189,7 @@ def stats_figure_4_setup(game_parts, fig_configs = Stats_fig_4_configs()):
     source_highlights = []
     source_avgs_placeholder = []
     #Fill the Lists
-    for i in range(51):
+    for i in range(1, 51):
         source_xs.append(i)
         source_ys.append(0)
         source_feet.append(None)

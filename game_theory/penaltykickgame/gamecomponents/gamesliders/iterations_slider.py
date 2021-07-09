@@ -21,7 +21,7 @@ stats_fig_2.y_range.end = iterations;
 //be the amount of iterations.
 stats_fig_2.x_range.end = iterations;
 stats_fig_3.x_range.end = iterations;
-stats_fig_4.x_range.end = iterations;
+stats_fig_4.x_range.end = iterations + 0.5;
 //Initiate arrays to update lengths and values of data in sources:
 const array_length = iterations + 1;
 let xs_2 = [];
@@ -46,18 +46,18 @@ let heights = new Array(array_length).fill(iterations * 2);
 let fig2_highlight_alphas = new Array(array_length).fill(0);
 let fig3_highlight_alphas = new Array(array_length).fill(0);
 let fig3_alphas_zeroes = new Array(array_length).fill(0);
-let ys_4 = new Array(array_length).fill(0);
-let feet_4 = new Array(array_length).fill(null);
-let directions_4 = new Array(array_length).fill(null);
-let actions_4 = new Array(array_length).fill(null);
-let highlight_alphas_4 = new Array(array_length).fill(0);
-let avgs_placeholder = new Array(array_length).fill(0);
+let ys_4 = new Array(iterations).fill(0);
+let feet_4 = new Array(iterations).fill(null);
+let directions_4 = new Array(iterations).fill(null);
+let actions_4 = new Array(iterations).fill(null);
+let highlight_alphas_4 = new Array(iterations).fill(0);
+let avgs_placeholder = new Array(iterations).fill(0);
 
 //Update previously created arrays with their correct values:
 for (let i = 0; i <= iterations; i++){
     xs_2.push(i);
     xs_3.push(i);
-    xs_4.push(i);
+    if( i > 0) {xs_4.push(i);}
 }
 
 //Write the correct initial values for the arrays that need it:

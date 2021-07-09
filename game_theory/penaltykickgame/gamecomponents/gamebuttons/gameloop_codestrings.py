@@ -10,12 +10,10 @@
   #<editor-fold iterationText():
 iterationText = """
 function iterationText(){
-  //set lines of game text to reflect game state:
-  const game_text = txt.data['text'];
-
-  game_text[0] = 'Rounds played: ' + rounds_played;
-  game_text[1] = 'Total score: ' + game_score;
-  game_text[3] = ((goal == 1) ? 'GOAL!' : 'Blocked');
+  //Set Game Text Lines:
+  txt.data['text'] = [ ('Rounds played: ' + rounds_played),
+                       ('Total score: ' + game_score), '',
+                       ((goal == 1) ? 'GOAL!' : 'Blocked') ];
 
   txt.change.emit();
 }
@@ -24,24 +22,15 @@ function iterationText(){
   #<editor-fold rollKickerAction():
 rollKickerAction = """
 function rollKickerAction(){
-  //Set constants for determining rolled action:
-  const feet =  ['Right', 'Right', 'Left', 'Left', 'Left'];
-  const kicks = ['Middle', 'Left', 'Right', 'Middle', 'Left'];
+  //Copy chances into array, then modify array to act as roll thresholds:
+  let a_vals = [0].concat(chances.slice());
+  a_vals.slice(1).forEach((v, i) => a_vals[i+1] += a_vals[i]);
 
-  //Set chance checking array:
-  const action_chances = new Array(5);
-  action_chances[4] = chances[0];
-  for (let i = 1; i < 5; i++){
-    action_chances[4 - i] = action_chances[5 - i] + chances[i];
-  }
-
-  //Select and return action:
-  let vals = ['Right', 'Right'];
-  const action_roll = Math.random();
-  for(let i = 0; i < 5; i++){
-    vals = ((action_roll <= action_chances[i]) ? [feet[i], kicks[i]] : vals);
-  }
-  return vals;
+  //Determine actions to take based off roll comparison to thresholds:
+  let index = 5;
+  const roll = Math.random();
+  a_vals.slice(0, 6).forEach((v) => {if(roll < v){index -= 1;}});
+  return [((index < 3) ? 'Left' : 'Right'), directions[(index % 3)]];
 }
 """
   #</editor-fold>
@@ -50,25 +39,18 @@ fictitiousPlay = """
 //Handle Goalie Decision
 function fictitiousPlay(){
   //Set decision making values to use according to kicker_foot:
-  const freqs = ((v_fl) ? freq.slice(0, 3) : freq.slice(3, 6)).map(x => x);
-  const sfprobsdict = ((v_fl) ? l_dict : r_dict); //grab correct probs dict
+  const freqs = ((v_fl) ? freq.slice(0, 3) : freq.slice(3, 6));
 
-  //Create array of empirical frequencies of striker choices:
-  const tsr = freqs.reduce(f_sum); //Set total sample rolls
-  const e_fs = ((tsr != 0) ? freqs.map(x => x / tsr) : [1/3, 1/3, 1/3]);
-
-  //Set goalie perceived risks:
+  //Calculate goalie perceived risks:
+  const tsr = freqs.reduce(f_sum);
+  const e_fs = ((tsr != 0) ? freqs.map(x => x / tsr) : new Array(3).fill(1/3));
   const risks = new Array(3).fill(0);
-  for (let i = 0; i < 3; i++){
-    for (let j = 0; j < 3; j++){
-      risks[i] += (e_fs[j] * sfprobsdict[directions[j] + directions[i]]);
-    }
-  }
+  directions.forEach((v1, i) => (
+    directions.forEach((v2, j) => risks[i] += e_fs[j] * side_dict[v2 + v1])
+  ));
 
-  //set action to direction with minimum risk:
-  const action = directions[risks.indexOf(Math.min(...risks))];
-
-  return [action, ...risks];
+  //return goalie action and perceived risks:
+  return [directions[risks.indexOf(Math.min(...risks))], ...risks];
 }
 """
   #</editor-fold>
@@ -113,10 +95,8 @@ function _handleFigureVisibility(){
   game_figure.visible = false;
   distribution_table.visible = false;
 
-  b_fig_1.visible = true;
-  b_fig_2.visible = true;
-  b_fig_3.visible = v_fict;
-  b_fig_4.visible = true;
+  //set button visibilities:
+  [true, true, v_fict, true].forEach((v, i) => b_figs[i].visible = v);
 
   stats_fig_1.visible = true;
   stats_fig_2.visible = false;
@@ -128,23 +108,19 @@ function _handleFigureVisibility(){
   #<editor-fold iterationScoring():
 iterationScoring = """
 function scoring(){
-  //store column references:
+  //Set function values:
+  const score_roll = Math.random();
+  const score_chance = side_dict[kicker_kick + goalie_action];
+  const rounds_played = (parseInt(nround.text) + 1);
+  const round_score = ((score_roll <= score_chance) ? +1 : -1);
+
+  //Update columns:
   const scoring_chance = dist_data['striker_score_chance'];
   const scoring_roll = dist_data['striker_score_roll'];
-
-  //set function values:
-  const score_roll = Math.random();
-  const score_chance = score_probs[kicker_foot][kicker_kick + goalie_action];
-  const rounds_played = (parseInt(nround.text) + 1);
-
-  //Calculate iteration score:
-  let round_score = ((score_roll <= score_chance) ? +1 : -1);
-
-  //Update round scoring stats:
   scoring_chance.fill(0);
   scoring_roll.fill(0);
   scoring_chance[a_i_kfkk] = score_chance;
-  scoring_roll[a_i_kfkk] = score_roll.toString().substring(0, 8);
+  scoring_roll[a_i_kfkk] = score_roll.toPrecision(6);
 
   //Update text:
   nround.text = rounds_played.toString();
@@ -168,24 +144,20 @@ function _moveGoalie(x_loc){
 animateIteration = """
 function animateIteration(){
   //Set positions and store ball roll for handling cases:
-  const positions = {'Left' : [37,43], 'Middle' : [47,53], 'Right' : [57,63]};
+  const v_ga_e_kk = (goalie_action == kicker_kick);
+  const v_miss = (goal == -1);
+  const g_pos = { 'Left' : [37, 43], 'Middle' : [47, 53], 'Right' : [57, 63] };
+  const b_pos = (
+    ((v_miss) && (!v_ga_e_kk)) ?
+    {'Left' : [30, 30], 'Middle' : [30, 70], 'Right' : [70, 70]} : g_pos
+  );
   const ball_roll = Math.round(Math.random());
 
-  //move to default positions:
-  ball.x = positions[kicker_kick][ball_roll];
+  ball.x = b_pos[kicker_kick][ball_roll];
   ball.y = 63;
-  _moveGoalie(positions[goalie_action][Math.round(Math.random())]);
-
-  if(goalie_action == kicker_kick){
-    //If blocked move goalie to ball, otherwise move to other position:
-    _moveGoalie(ball.x);
-    if(goal == 1){ _moveGoalie(positions[goalie_action][[1, 0][ball_roll]]); }
-  } else if(goal == -1){
-    //Move ball out of goal:
-    ball.x = (
-      {'Left' : 30, 'Middle' : [30,70][ball_roll], 'Right' : 70}[kicker_kick]
-    );
-  }
+  if(v_ga_e_kk){
+    _moveGoalie((v_miss) ? ball.x : g_pos[goalie_action][[1, 0][ball_roll]]);
+  }else { _moveGoalie(g_pos[goalie_action][Math.round(Math.random())]); }
 }
 """
   #</editor-fold>
@@ -200,15 +172,12 @@ function _selectFromKFGA(){
   #<editor-fold _updateDecisionTableRisks():
 _updateDecisionTableRisks = """
 function _updateDecisionTableRisks(){
-  //Function Values:
-  const perceived_risks = dist_data['goalie_perceived_risks'];
-  const index = adjust_kfr;
+  //Reset column then set perceived risk for rows corresponding to kicker foot:
+  const risks = dist_data['goalie_perceived_risks'];
 
-  //Update Table Column:
-  perceived_risks.fill(0);
-  perceived_risks[index] =     danger_goalie_left.toString().substring(0, 8);
-  perceived_risks[index + 1] = danger_goalie_middle.toString().substring(0, 8);
-  perceived_risks[index + 2] = danger_goalie_right.toString().substring(0, 8);
+  risks.fill(0);
+  [goalie_pr_L.toPrecision(6), goalie_pr_M.toPrecision(6),
+   goalie_pr_R.toPrecision(6)].forEach((v, i) => risks[adjust_kfr + i] = v);
 }
 """
   #</editor-fold>
@@ -231,7 +200,7 @@ function goalieDecisionTracking(){
   #<editor-fold _selectFromKFKK():
 _selectFromKFKK = """
 function _selectFromKFKK(){
-  //return calculated value (adjust for kicker foot and kicker kick indexes):
+  //return calculated index (adjust for kicker foot and kicker kick indexes):
   return adjust_kfr + directions.indexOf(kicker_kick);
 }
 """
@@ -247,14 +216,12 @@ function _fig1Iteration(fig_1_data, sections){
   #<editor-fold _fig1Adjust():
 _fig1Adjust = """
 function _fig1Adjust(fig_1_data, sections){
-  //iterate through the 6 bars to find the max value:
-  let max = 0;
-  for(let i = 0; i < 6; i++){
-    max = Math.max(sections.map(a => fig_1_data[a][i]).reduce(f_sum), max);
-  }
+  //Get total heights of kfkk bars:
+  const heights = new Array(6).fill(0);
+  sections.forEach((v1) => fig_1_data[v1].forEach((v2, i) => heights[i] += v2));
 
-  //Adjust the figure bounds according to max value:
-  stats_fig_1.y_range.end = Math.round(max * 1.1);
+  //Set y max to 1.1 * the height of the tallest kfkk bar (rounded):
+  stats_fig_1.y_range.end = Math.round(Math.max(...heights) * 1.1);
 }
 """
   #</editor-fold>
@@ -279,55 +246,37 @@ function updateFig1(){
   #<editor-fold _fig2Iteration():
 _fig2Iteration = """
 function _fig2Iteration(fig_2_data){
-  //plot score on graph:
+  //Plot Values:
   fig_2_data['ys'][rounds_played] = game_score;
-
-  //Store reference to column:
-  const chance_ys = fig_2_data['chance_ys'];
-
-  //Average expected score = round before + 2 times the score chance -1:
-  chance_ys[rounds_played] = (chance_ys[rounds_played - 1] + (
-    2 * scored_chance - 1
-  ));
+  fig_2_data['chance_ys'][rounds_played] = ((2 * scored_chance) - 1);
 }
 """
   #</editor-fold>
   #<editor-fold _fig2Adjust():
 _fig2Adjust = """
 function _fig2Adjust(fig_2_data){
-  //Set initial max and min for resizing graph
-  let min_val = 0;
-  let max_val = 0;
+  //Adjust chance_ys:
+  const chance_ys = fig_2_data['chance_ys'];
+  chance_ys.slice(1).forEach((v, i) => chance_ys[i+1] += chance_ys[i]);
 
-  //Iterate through data for game iterations:
+  //Get max and min of figure points:
   const ys = fig_2_data['ys'];
-  for(let i = 0; i <= iters_to_run; i++){
-    //store data point value:
-    const val = ys[i];
+  let min_val = Math.min(... ys);
+  let max_val = Math.max(... ys, ...chance_ys);
 
-    //Adjust min and max as needed:
-    min_val = Math.min(min_val, val);
-    max_val = Math.max(max_val, val);
-  }
-
-  //Calulate amount to add as a buffer to size of graph:
-  const buffer = Math.round((Math.abs(max_val) + Math.abs(min_val)) * 1/8) + 1;
-
-  //Adjust max and min by buffer:
+  //Adjust figure display:
+  const buffer = Math.round((Math.abs(max_val) + Math.abs(min_val)) * 0.1);
   max_val += buffer;
   min_val -= buffer;
-
-  //Resize Graph:
   stats_fig_2.y_range.end   = max_val;
   stats_fig_2.y_range.start = min_val;
-
   stats_fig_2.x_range.start -= 0.5;
   stats_fig_2.x_range.end   += 0.5;
 
   //Resize hit boxes:
-  fig_2_data['height'] = new Array(iters_to_run + 1).fill(Math.max(
-    Math.abs(max_val), Math.abs(min_val)
-  ) * 2);
+  fig_2_data['height'] = new Array(iters_to_run + 1).fill(
+    Math.max(Math.abs(max_val), Math.abs(min_val)) * 2
+  );
 }
 """
   #</editor-fold>
@@ -348,39 +297,26 @@ function updateFig2(){
 }
 """
   #</editor-fold>
-  #<editor-fold _fig3CalcPointVal():
-_fig3CalcPointVal = """
-function _fig3CalcPointVal(chances_list, selected_probs, ga){
-  //Risk value is sum of the chance of each striker action * the score chance
-  //if the goalie takes the position ga:
-  let value = 0;
-  for (let j = 0; j < 3; j++){
-    value += (chances_list[j] * selected_probs[directions[j] + ga]);
-  }
-  return value;
-}
-"""
-  #</editor-fold>
   #<editor-fold _fig3Iteration():
 _fig3Iteration = """
 function _fig3Iteration(ys){
-  //Calculate total sample rolls for each side:
-  const tsr_l = freq.slice(0, 3).reduce(f_sum);
-  const tsr_r = freq.slice(3, 6).reduce(f_sum);
-
-  //Calculate the predicted chances of the striker taking each position:
-  const p_chances = new Array(6);
-  for (let i = 0; i < 6; i++){
-    const tsr = ((i < 3) ? tsr_l : tsr_r);
-    p_chances[i] = ((tsr != 0 ? (freq[i] / tsr) : 1/3));
-  }
-
-  //Calculate and change predicted risk values:
-  for (let i = 0; i < 6; i++){
-    ys[i][rounds_played] = ((i < 3) ? _fig3CalcPointVal(
-      p_chances.slice(0, 3), l_dict, directions[i]
-    ) : _fig3CalcPointVal(p_chances.slice(3, 6), r_dict, directions[i - 3]));
-  }
+  //For each foot: get the striker action frequencies, then calculate
+  //empirical frequencies. Using empirical frequencies, calculate risks for each
+  //possible goalie action for that foot, then modify corresponding datapoint in
+  //graph source:
+  ['Left', 'Right'].forEach((f_v, f_i) => {
+    const foot_freq = freq.slice((3 * f_i), (3 * (f_i + 1)));
+    const foot_tsr = foot_freq.reduce(f_sum);
+    const foot_chances = new Array(3).fill(1/3);
+    foot_freq.forEach((v, i) => {
+      if(foot_tsr != 0) { foot_chances[i] = (v / foot_tsr); }
+    });
+    directions.forEach((v1, i1) => directions.forEach((v2, i2) => {
+      ys[(i1 + (3 * f_i))][rounds_played] += (
+        foot_chances[i2] * score_probs[f_v][v2 + v1]
+      );
+    }));
+  });
 }
 """
   #</editor-fold>
@@ -392,40 +328,38 @@ function _fig3Adjust(fig_3_data, ys){
                fig_3_data['hb4'], fig_3_data['hb5'], fig_3_data['hb6']];
 
   //Adjustment loop:
-  let fig_3_min_val = 1;
-  let fig_3_max_val = 0;
   let hbhs = new Array(6);
   let risks = new Array(6);
-
+  let vals = [];
   for(let i = 0; i <= iters_to_run; i++){
-    //update min and max, store iteration values:
-    for (let y_i = 0; y_i < 6; y_i++){
-      const val = ys[y_i][i];
-      fig_3_max_val = Math.max(fig_3_max_val, val);
-      fig_3_min_val = Math.min(fig_3_min_val, val);
-      risks[y_i] = val;
-    }
+    //For every iteration, for every risk value in the iteration, push it to the
+    //values list for calculating min and max vals, send to risks list to get
+    //iteration risks:
+    ys.forEach((v, y_i) => {
+      risks[y_i] = v[i];
+      vals.push(v[i]);
+    });
 
-    //Sort goalie perceived risk values in descending order:
-    risks.sort((a, b) => b - a);
+    risks.sort((a, b) => a - b); //Sort risks in ascending order to setup
 
-    //Resize hitboxes according to previously calculated values:
-    for (let hb_i = 0; hb_i < 6; hb_i++){
-      let val = ((hb_i == 5) ? 1 : ((risks[5 - hb_i] + risks[4 - hb_i]) / 2));
-      for (let prev_hb = 0; prev_hb < hb_i; prev_hb++){
-        val -= hbhs[prev_hb];
-      }
-      hbhs[hb_i] = val;
-      hbs[hb_i][i] = val;
-    }
+    //for each entry in risks, sets a hitbox height by defining its upper edge
+    //to be equal to the ((y value of the hitbox's correspoonding risk point +
+    //that of the one above it) divided by 2) then subtracting the heights of
+    //all lower hitboxes:
+    risks.forEach((v, r_i, a) => {
+      let val = ((r_i == 5) ? 1 : ((v + a[r_i + 1]) / 2));
+      hbhs.slice(0, r_i).forEach((v) => val -= v);
+      hbhs[r_i] = val;
+      hbs[r_i][i] = val;
+    });
   }
 
   //Adjust graph based off of stored values:
-  const buffer = Math.max(Math.round(fig_3_max_val - fig_3_min_val) / 10, 0.05);
-  fig_3_max_val = Math.round(fig_3_max_val * 10) / 10;
-  fig_3_min_val = Math.round(fig_3_min_val * 10) / 10;
-  stats_fig_3.y_range.end   = Math.min(fig_3_max_val + buffer, 1);
-  stats_fig_3.y_range.start = Math.max(fig_3_min_val - buffer, 0);
+  const min_val = Math.round(Math.min(...vals) * 100) / 100;
+  const max_val = Math.round(Math.max(...vals) * 100) / 100;
+  const buffer = Math.round((max_val - min_val) * 100) / 1000;
+  stats_fig_3.y_range.end   = Math.min(max_val + buffer, 1);
+  stats_fig_3.y_range.start = Math.max(min_val - buffer, 0);
   stats_fig_3.x_range.start -= 0.5;
   stats_fig_3.x_range.end   += 0.5;
 }
@@ -454,28 +388,11 @@ function updateFig3(){
 updateFig4 = """
 function updateFig4(){
   const fig_4_data = stats_fig_4_source.data;
-  const ys = fig_4_data['ys'];
-  const feet = fig_4_data['feet'];
-  const fig_directions = fig_4_data['directions'];
-  const actions = fig_4_data['actions'];
-
-  ys[rounds_played] = scored_chance;
-  feet[rounds_played] = kicker_foot;
-  fig_directions[rounds_played] = kicker_kick;
-  actions[rounds_played] = goalie_action;
-
-  if(v_last_round){
-    fig_4_data['xs'].shift();
-    fig_4_data['highlight_alphas'].shift();
-    fig_4_data['avgs_placeholder'].shift();
-    ys.shift();
-    feet.shift();
-    fig_directions.shift();
-    actions.shift();
-
-    stats_fig_4.x_range.start -= 0.5;
-    stats_fig_4.x_range.end += 0.5;
-  }
+  const index = rounds_played - 1;
+  fig_4_data['ys'][index] = scored_chance;
+  fig_4_data['feet'][index] = kicker_foot;
+  fig_4_data['directions'][index] = kicker_kick;
+  fig_4_data['actions'][index] = goalie_action;
 
   stats_fig_4_source.change.emit();
 }
@@ -489,8 +406,7 @@ function_definitions = (iterationText + rollKickerAction + fictitiousPlay
                         + _updateDecisionTableRisks + goalieDecisionTracking
                         + _selectFromKFKK + _fig1Iteration + _fig1Adjust
                         + updateFig1 + _fig2Iteration + _fig2Adjust + updateFig2
-                        + _fig3CalcPointVal + _fig3Iteration + _fig3Adjust
-                        + updateFig3 + updateFig4)
+                        + _fig3Iteration + _fig3Adjust + updateFig3 + updateFig4)
 #</editor-fold>
 
 #<editor-fold Game Iteration:
@@ -514,9 +430,9 @@ const v_fict = ((game_strat == 'Fictitious_Play'));
 const directions = ['Left', 'Middle', 'Right'];
 
 const f_sum = ((a, b) => a + b);
-let danger_goalie_left = 0;
-let danger_goalie_middle = 0;
-let danger_goalie_right = 0;
+let goalie_pr_L;
+let goalie_pr_M;
+let goalie_pr_R;
 
 let goalie_action = '';
 
@@ -532,11 +448,12 @@ let scored_chance = 0;
 [kicker_foot, kicker_kick] = rollKickerAction();
 
 const v_fl = (kicker_foot == 'Left');
+const side_dict = ((v_fl) ? l_dict : r_dict);
 let adjust_kfr = ((!v_fl) ? 3 : 0);
 
 if(v_fict){
-  [goalie_action, danger_goalie_left,
-   danger_goalie_middle, danger_goalie_right] = fictitiousPlay();
+  [goalie_action, goalie_pr_L,
+   goalie_pr_M, goalie_pr_R] = fictitiousPlay();
 } else{
   goalie_action = {'Mixed_Strategy' : optimalMixedStrategy,
                    'Random' : randomChoice,

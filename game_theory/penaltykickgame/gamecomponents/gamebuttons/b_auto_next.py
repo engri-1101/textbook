@@ -14,6 +14,8 @@ def create(game_parts, config):
 #Needs:
 #   from bokeh.models import CustomJS
 def setup(game_parts):
+    b_figs = [game_parts.buttons['fig_1'], game_parts.buttons['fig_2'],
+              game_parts.buttons['fig_3'], game_parts.buttons['fig_4']]
     args_dict =  dict(chances_source = game_parts.sources['automation_table'],
                       distribution_source = game_parts.sources['distribution_table'],
                       strategy_to_use = game_parts.divs['strategy_to_use'],
@@ -27,11 +29,7 @@ def setup(game_parts):
                       goalie_body = game_parts.glyphs['goalie_body'],
                       counter_source = game_parts.sources['goalie_counter'],
                       ball = game_parts.glyphs['ball'],
-                      score = game_parts.divs['score'],
-                      b_fig_1 = game_parts.buttons['fig_1'],
-                      b_fig_2 = game_parts.buttons['fig_2'],
-                      b_fig_3 = game_parts.buttons['fig_3'],
-                      b_fig_4 = game_parts.buttons['fig_4'],
+                      score = game_parts.divs['score'], b_figs = b_figs,
                       stats_fig_1 = game_parts.figures['stats_1'],
                       stats_fig_2 = game_parts.figures['stats_2'],
                       stats_fig_3 = game_parts.figures['stats_3'],

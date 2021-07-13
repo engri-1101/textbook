@@ -72,7 +72,7 @@ def mincostflow(dataset='f09_fws_ballots.csv',csize=16,minstudents=0,dcost=10000
     
     # define arc costs
     unit_costs = []
-    for i in range(0,5*m):
+    for i in range(0,m):
         for j in range(1,6):
             unit_costs.append(j) # assume a student arc corresponding to their kth preference has cost k (matching FWS lab)
     for i in range(0,n):
@@ -91,7 +91,7 @@ def mincostflow(dataset='f09_fws_ballots.csv',csize=16,minstudents=0,dcost=10000
     
     # add arcs, capacities, unit costs from parallel arrays
     for i in range(0, len(start_nodes)):
-        min_cost_flow.AddArcWithCapacityAndUnitCost(start_nodes[i],end_nodes[i],capacities[i],unit_costs[i])
+        min_cost_flow.AddArcWithCapacityAndUnitCost(start_nodes[i],end_nodes[i],capacities[i],unit_costs[i])  
     
     # add node supplies
     for i in range(0,len(supplies)):
@@ -130,7 +130,8 @@ def mincostflow(dataset='f09_fws_ballots.csv',csize=16,minstudents=0,dcost=10000
         print('Bad result')
     else:
         print('Other issue, see https://google.github.io/or-tools/cpp_graph/min__cost__flow_8h_source.html')
-        
+
+                
 # 'dataset' is the name of the datafile
 def inputData(dataset):
     data = pd.read_csv(dataset)
@@ -152,3 +153,44 @@ def inputData(dataset):
         edges.update({(s,fourth[s-1]):4})
         edges.update({(s,fifth[s-1]):5})
     return students, classes, edges
+
+
+# Takes a dictionary of edge costs and returns a new dictionary with updated edge costs for each preference type
+# 'oldedges' is the original dictionary of edge costs, 'newcosts' is a dictionary with new edge costs for each preference type
+def updated_edge_costs(oldedges,newcosts):    
+    if len(np.unique(list(newcosts.values()))) != len(newcosts):
+        print('WARNING: usage of non-unique edge costs for each preference type is not recommended '
+              + 'if you wish to print detailed results.')
+    
+    newedges = oldedges.copy() # creates new dictionary (so we don't overwrite the old one) 
+    
+    count = 1
+    restart = len(newcosts) # loop around if len(newcosts) < len(oldedges)
+    
+    for edge in newedges.keys():
+        newedges[edge] = newcosts[count] # update edge cost
+        if count == restart: 
+            count = 1
+        else:
+            count += 1
+    
+    return newedges # return new dictionary of edges : edge costs
+
+
+# show histogram of preferences
+# 'match' is a dictionary preference:count, 'margin' is to adjust position of label
+def Histo(match,margin):
+    matches = match.copy()
+    for i in range(1,6):
+        if i not in matches.keys():
+            matches[i] = 0
+    matches = dict(sorted(matches.items()))
+    keys = list(matches.keys())
+    values = list(matches.values())
+    plt.bar(matches.keys(), matches.values())
+    plt.xlabel('Preference')
+    plt.ylabel('Number of Students')
+    plt.title('Histogram of Received Preferences')
+    for i in matches.keys():
+        plt.annotate(str(values[i-1]), xy=(keys[i-1],values[i-1]+margin), ha='center')
+    plt.show()    

@@ -213,10 +213,10 @@ def create_max_density(G, edges, d):
     #add source to edge node edges and edge to vertex node edges
     for e in edges:
         if e[0] != e[1]:
-            edge_nodes.append(str(e))
-            source_edges.append(('s', str(e), 1))
-            etv_edges.append((str(e), e[0], math.inf))
-            etv_edges.append((str(e), e[1], math.inf))
+            edge_nodes.append(e)
+            source_edges.append(('s', e, 1))
+            etv_edges.append((e, e[0], math.inf))
+            etv_edges.append((e, e[1], math.inf))
             total_edges += 1
     dirG.add_weighted_edges_from(sink_edges, 'cap' )
     dirG.add_weighted_edges_from(source_edges, 'cap' )

@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import math, itertools
 import matplotlib.pyplot as plt
-import networkx as nx
 from ortools.linear_solver import pywraplp as OR
 from ortools.graph import pywrapgraph as ORMC
 
@@ -15,7 +14,7 @@ from ortools.graph import pywrapgraph as ORMC
 # 'csize' is the desired class size, filled with a combination of real and 'filler' students
 # 'minstudents' is the minimum number of (real) students that must be assigned to each section (between 0 and 16)
 # 'dcost' is the cost of not assigning a student to one of their top 5 preferences (i.e., cost of dummy edge)
-def mincostflow(dataset='f09_fws_ballots.csv', csize=16, minstudents=0, dcost=100000):
+def mincostflow(dataset='s21_fws_ballots.csv', csize=17, minstudents=0, dcost=100000):
 
     if minstudents > csize or minstudents < 0:
         raise ValueError('Error: minstudents must be in [0,class size].')
@@ -102,8 +101,50 @@ def mincostflow(dataset='f09_fws_ballots.csv', csize=16, minstudents=0, dcost=10
         print('Other issue, see https://google.github.io/or-tools/cpp_graph/min__cost__flow_8h_source.html')
 
 
-# 'dataset' is the name of the datafile
+# 'dataset' is the name of the datafile.
+# Note: if a student has k feasible preferences where k < 5, the datafile should have zeroes as entries
+#       for their last (5-k) preferences
 def inputData(dataset):
+    data = pd.read_csv(dataset)
+    # list of students
+    students = data['STUDENTS'].tolist()
+    # list of classes
+    classes = list(np.unique(data[['1','2','3','4','5']].values))
+
+    # check if preferences are full
+    fullPrefs = True
+    if 0 in classes:
+        fullPrefs = False
+        classes.remove(0)
+
+    # dictionary of edges
+    edges = {}
+    first = data['1']
+    second = data['2']
+    third = data['3']
+    fourth = data['4']
+    fifth = data['5']
+    for s in students:
+        edges.update({(s,first[s-1]):1})
+        edges.update({(s,second[s-1]):2})
+        edges.update({(s,third[s-1]):3})
+        edges.update({(s,fourth[s-1]):4})
+        edges.update({(s,fifth[s-1]):5})
+
+    if not fullPrefs:
+        edges_to_delete = []
+        for i,j in edges:
+            if j==0:
+                edges_to_delete.append((i,j))
+
+        for edge in edges_to_delete:
+            del edges[edge]
+
+    return students, classes, edges
+
+
+# 'dataset' is the name of the datafile
+def inputDataBackup(dataset):
     data = pd.read_csv(dataset)
     # list of students
     students = data['STUDENTS'].tolist()
@@ -137,12 +178,17 @@ def updated_edge_costs(oldedges,newcosts):
     count = 1
     restart = len(newcosts) # loop around if len(newcosts) < len(oldedges)
 
+    studentno = 0
     for edge in newedges.keys():
-        newedges[edge] = newcosts[count] # update edge cost
-        if count == restart:
+        cur_student = edge[0]
+        if cur_student != studentno: # new student
+            count = 1
+            studentno = cur_student
+        elif count == restart: # loop around
             count = 1
         else:
             count += 1
+        newedges[edge] = newcosts[count] # update edge cost
 
     return newedges # return new dictionary of edges : edge costs
 

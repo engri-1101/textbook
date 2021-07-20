@@ -3,92 +3,65 @@ import numpy as np
 import pandas as pd
 import math, itertools
 import matplotlib.pyplot as plt
+import networkx as nx
 from ortools.linear_solver import pywraplp as OR
 from ortools.graph import pywrapgraph as ORMC
 
+# Visualization for a small input graph to the assignment problem (code taken directly from FWS lab .py file)
+# 'students' and 'classes' are lists, 'edges' is a dictionary of edges : preference
+def small_ex(students,classes,edges):
+    EDGES = [*edges]
 
-# ORTools min-cost flow implementation
-# Based off of https://developers.google.com/optimization/flow/mincostflow
-#
-# 'dataset' is the name of the datafile
-# 'csize' is the desired class size, filled with a combination of real and 'filler' students
-# 'minstudents' is the minimum number of (real) students that must be assigned to each section (between 0 and 16)
-# 'dcost' is the cost of not assigning a student to one of their top 5 preferences (i.e., cost of dummy edge)
-def mincostflow(dataset='s21_fws_ballots.csv', csize=17, minstudents=0, dcost=100000):
+    # graph creation
+    B = nx.DiGraph()
+    B.add_nodes_from(students,bipartite=0)
+    B.add_nodes_from(classes,bipartite=1)
+    for edge in EDGES:
+        B.add_edges_from([edge], weight=edges[edge])
+    edge_weight=nx.get_edge_attributes(B,'weight')
 
-    if minstudents > csize or minstudents < 0:
-        raise ValueError('Error: minstudents must be in [0,class size].')
+    # node placement
+    pos = {}
+    pos.update((node,(1,-index)) for index,node in list(enumerate(students)))
+    pos.update((node,(2,-1.5*(index+0.5))) for index,node in list(enumerate(classes)))
 
-    students, classes, edges = inputData(dataset)
+    options = {
+    'node_color': 'lightblue',
+    'node_size': 500,
+    }
+    costs = []
+    for e in EDGES:
+        if not edge_weight[e] in costs:
+            costs.append(edge_weight[e])
+    edge_col = ['blue' if edge_weight[e]==costs[0] else 'orange' if edge_weight[e]==costs[1] else 'lightgrey' for e in EDGES]
 
-    m = len(students) # number of students
-    n = len(classes) # number of class sections
-    dcapacity = csize - minstudents # number of dummy students we can send to each class
+    nx.draw_networkx(B, pos=pos, arrows=True, **options)
+    nx.draw_networkx_edges(B, pos, edge_color= edge_col)
+    plt.axis('off')
+    plt.show()
 
-    # define supply b[i] at each node i
-    # ORTools spec says nodes must be nonnegative integers indexed starting at 0 (dummy supply node),
-    # so class numbers are indexed from (m + 1) to (m + n), where
-    # m is the number of students and n is the number of class sections
-    supplies = []
-    supplies.append(n*csize - m) # dummy supply node (see lab extension for formula explanation)
-    for s in students:
-        supplies.append(1) # each student node has supply 1
-    for c in classes:
-        supplies.append(-1*csize) # each class node has supply -csize (i.e., demand csize)
 
-    # define parallel arrays, one index per arc in the min-cost flow graph
-    start_nodes = []
-    end_nodes = []
-    capacities = []
-    unit_costs = []
-
-    # add student edges
-    for i,j in edges:
-        start_nodes.append(i) # start at student node
-        end_nodes.append(j+m) # end at class node
-        capacities.append(1)
-        unit_costs.append(edges[i,j])
-
-    # add dummy edges
-    for j in classes:
-        start_nodes.append(0)
-        end_nodes.append(j+m)
-        capacities.append(dcapacity)
-        unit_costs.append(dcost)
-
-    # create solver
-    min_cost_flow = ORMC.SimpleMinCostFlow()
-
-    # add arcs, capacities, unit costs to graph
-    for i in range(0, len(start_nodes)):
-        min_cost_flow.AddArcWithCapacityAndUnitCost(int(start_nodes[i]), int(end_nodes[i]), capacities[i], unit_costs[i])
-
-    # add node supplies to graph
-    for i in range(0,len(supplies)):
-        min_cost_flow.SetNodeSupply(i, supplies[i])
-
+# Helper function to print results of min-cost flow formulation
+# 'min_cost_flow' is the solver object returned by the function mincostflow
+def printmcf(min_cost_flow):
     # solve instance
     status = min_cost_flow.Solve()
 
     # print results
     if status == min_cost_flow.OPTIMAL:
         print('Success')
-        print('Minimum cost:', min_cost_flow.OptimalCost())
         print('')
 
         prefs = {}
-        for i in range(len(edges)):
-            flow = min_cost_flow.Flow(i)
-            if flow > 0:
-                cost = flow * min_cost_flow.UnitCost(i)
-                if not cost in prefs.keys():
-                    prefs[cost] = 1
-                else:
-                    prefs.update({cost : prefs[cost]+1})
-            # To see the detailed flow/capacity for arc i, use following methods:
-            # print([min_cost_flow.Tail(i), min_cost_flow.Head(i) - m, min_cost_flow.Flow(i), min_cost_flow.Capacity(i), cost])
-
-        print('Student cost:', sum(i*prefs[i] for i in prefs.keys()))
+        for i in range(min_cost_flow.NumArcs()):
+            if(min_cost_flow.Tail(i) != 0): # exclude dummy
+                flow = min_cost_flow.Flow(i)
+                if flow > 0:
+                    cost = flow * min_cost_flow.UnitCost(i)
+                    if not cost in prefs.keys():
+                        prefs[cost] = 1
+                    else:
+                        prefs.update({cost : prefs[cost]+1})
 
         print('Preferences received:')
         for i in sorted(prefs):
@@ -98,7 +71,7 @@ def mincostflow(dataset='s21_fws_ballots.csv', csize=17, minstudents=0, dcost=10
     elif status == min_cost_flow.UNBALANCED:
         print('Unbalanced input')
     else:
-        print('Other issue, see https://google.github.io/or-tools/cpp_graph/min__cost__flow_8h_source.html')
+        print('Error, see https://google.github.io/or-tools/cpp_graph/min__cost__flow_8h_source.html')
 
 
 # 'dataset' is the name of the datafile.
@@ -193,6 +166,138 @@ def updated_edge_costs(oldedges,newcosts):
     return newedges # return new dictionary of edges : edge costs
 
 
+# Same as modifiedAssign, but with objective function that seeks to minimize the number of classes run
+def minimizeNumClassesAssign(students, classes, edges, minstudents, csize, solver):
+    STUDENT = students              # create student list
+    CLASS = classes                 # create class list
+    EDGES = list(edges.keys())      # create edge list
+
+    c = edges.copy()                # define c[i,j]
+
+    # define model
+    m = OR.Solver('assignFWS', solver)
+
+    # decision variables
+    x = {}
+    for i,j in EDGES:
+        # define x(i,j) here
+        x[i,j] = m.IntVar(0, m.infinity(), ('(%d, %s)' % (i,j)))
+
+    y = {}
+    for j in CLASS:
+        # define y_j here
+        y[j] = m.BoolVar('y_%s' % j) # A BoolVar or Boolean variable is similar to an integer variable,
+                                     # except that it can only take on values in {0,1}, where 0 represents "false"
+                                     # and 1 represents "true." We could have also used an IntVar ranging from 0 to 1.
+
+    # define objective function here
+    m.Minimize(sum(y[j] for j in CLASS))
+
+    # add constraint to ensure each student is assigned exactly one class
+    for k in students:
+        m.Add(sum(x[i,j] for i,j in EDGES if i==k) == 1)
+
+    # add constraint to ensure each class that runs satisfies minimum and maximum class size
+    for k in classes:
+        m.Add(sum(x[i,j] for i,j in EDGES if j==k) <= csize*y[k])
+        m.Add(sum(x[i,j] for i,j in EDGES if j==k) >= minstudents*y[k])
+
+    # solve
+    status = m.Solve()
+
+    if status == OR.Solver.INFEASIBLE:
+        print('Infeasible')
+        return
+
+    unmatched = []
+    for k in STUDENT:
+        if (sum(x[i,j].solution_value() for i,j in EDGES if i==k) == 0):
+            unmatched.append(k)
+    if len(unmatched) != 0:
+        print("Unmatched students:",len(unmatched))
+    else:
+        print("All students matched.")
+
+    matched = {}
+    for i,j in EDGES:
+        if x[i,j].solution_value() == 1:
+            if c[i,j] in matched:
+                matched[c[i,j]] += 1
+            else:
+                matched.update({c[i,j] : 1})
+
+    return matched
+
+
+# Same as modifiedAssign, but with additional parameter 'numclasses' to specify how many class sections run
+def modifiedAssignWithNumClasses(students, classes, edges, minstudents, csize, numclasses, solver):
+    if numclasses < 0 or numclasses > len(classes):
+        raise ValueError('Error: numclasses must be in the range [0,len(classes)].')
+
+    STUDENT = students              # create student list
+    CLASS = classes                 # create class list
+    EDGES = list(edges.keys())      # create edge list
+
+    c = edges.copy()                # define c[i,j]
+
+    # define model
+    m = OR.Solver('assignFWS', solver)
+
+    # decision variables
+    x = {}
+    for i,j in EDGES:
+        # define x(i,j) here
+        x[i,j] = m.IntVar(0, m.infinity(), ('(%d, %s)' % (i,j)))
+
+    y = {}
+    for j in CLASS:
+        # define y_j here
+        y[j] = m.BoolVar('y_%s' % j) # A BoolVar or Boolean variable is similar to an integer variable,
+                                     # except that it can only take on values in {0,1}, where 0 represents "false"
+                                     # and 1 represents "true." We could have also used an IntVar ranging from 0 to 1.
+
+    # define objective function here
+    m.Minimize(sum(c[i,j]*x[i,j] for i,j in EDGES))
+
+    # add constraint to ensure each student is assigned exactly one class
+    for k in students:
+        m.Add(sum(x[i,j] for i,j in EDGES if i==k) == 1)
+
+    # add constraint to ensure each class that runs satisfies minimum and maximum class size
+    for k in classes:
+        m.Add(sum(x[i,j] for i,j in EDGES if j==k) <= csize*y[k])
+        m.Add(sum(x[i,j] for i,j in EDGES if j==k) >= minstudents*y[k])
+
+    # add constraint that exactly numclasses classes are open
+    m.Add(sum(y[j] for j in CLASS) == numclasses)
+
+    # solve
+    status = m.Solve()
+
+    if status == OR.Solver.INFEASIBLE:
+        print('Infeasible')
+        return
+
+    unmatched = []
+    for k in STUDENT:
+        if (sum(x[i,j].solution_value() for i,j in EDGES if i==k) == 0):
+            unmatched.append(k)
+    if len(unmatched) != 0:
+        print("Unmatched students:",len(unmatched))
+    else:
+        print("All students matched.")
+
+    matched = {}
+    for i,j in EDGES:
+        if x[i,j].solution_value() == 1:
+            if c[i,j] in matched:
+                matched[c[i,j]] += 1
+            else:
+                matched.update({c[i,j] : 1})
+
+    return matched
+
+
 # show histogram of preferences
 # 'match' is a dictionary preference:count, 'margin' is to adjust position of label
 def Histo(match,margin):
@@ -209,4 +314,4 @@ def Histo(match,margin):
     plt.title('Histogram of Received Preferences')
     for i in matches.keys():
         plt.annotate(str(values[i-1]), xy=(keys[i-1],values[i-1]+margin), ha='center')
-    plt.show()  
+    plt.show() 

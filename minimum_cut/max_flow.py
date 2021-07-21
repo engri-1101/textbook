@@ -198,7 +198,7 @@ def add_infinite_capacities(G):
     return G
 
 
-def create_max_density(G, edges, d):
+def create_max_density(G, edges, d, custom_pos = True):
     """Returns the graph of the min cut instance of the maximum density problem with the given graph [G], graph edges [edges] and given density [d]."""
     dirG = nx.DiGraph()
     sink_edges = []
@@ -221,15 +221,19 @@ def create_max_density(G, edges, d):
     dirG.add_weighted_edges_from(sink_edges, 'cap' )
     dirG.add_weighted_edges_from(source_edges, 'cap' )
     dirG.add_weighted_edges_from(etv_edges, 'cap' )
-    #assign positions to nodes
-    for i in G.nodes:
-        dirG.nodes[i]['pos'] = (40, 100-i*10)
-    count = 0
-    for i in edge_nodes:
-        dirG.nodes[i]['pos'] = (20, 100-count*10)
-        count +=1
-    dirG.nodes['t']['pos'] = (60, len(edge_nodes)*10)
-    dirG.nodes['s']['pos'] = (0, len(edge_nodes)*10)
+    if custom_pos:
+        #assign positions to nodes
+        for i in G.nodes:
+            dirG.nodes[i]['pos'] = (40, 100-i*10)
+        count = 0
+        for i in edge_nodes:
+            dirG.nodes[i]['pos'] = (20, 100-count*10)
+            count +=1
+        dirG.nodes['t']['pos'] = (60, len(edge_nodes)*10)
+        dirG.nodes['s']['pos'] = (0, len(edge_nodes)*10)
+    else:
+        for i in dirG.nodes:
+            dirG.nodes[i]['pos'] = (0,0)
 
     return dirG
 

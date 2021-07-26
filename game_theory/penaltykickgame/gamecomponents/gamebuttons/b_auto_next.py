@@ -16,29 +16,31 @@ def create(game_parts, config):
 def setup(game_parts):
     b_figs = [game_parts.buttons['fig_1'], game_parts.buttons['fig_2'],
               game_parts.buttons['fig_3'], game_parts.buttons['fig_4']]
-    args_dict =  dict(chances_source = game_parts.sources['automation_table'],
-                      distribution_source = game_parts.sources['distribution_table'],
-                      strategy_to_use = game_parts.divs['strategy_to_use'],
+              
+    args_dict =  dict(chancesSrc = game_parts.sources['automation_table'],
+                      distTableSrc = game_parts.sources['distribution_table'],
+                      stratToUseDiv = game_parts.divs['strategy_to_use'],
                       nround = game_parts.divs['nround'],
-                      iterations_to_run = game_parts.divs['iterations_to_run'],
+                      itersToRunDiv = game_parts.divs['iterations_to_run'],
                       txt = game_parts.texts['scr_text'],
-                      b_auto_next = game_parts.buttons['next'],
-                      game_figure = game_parts.figures['game_figure'],
-                      distribution_table = game_parts.tables['distribution'],
-                      goalie_head = game_parts.glyphs['goalie_head'],
-                      goalie_body = game_parts.glyphs['goalie_body'],
-                      counter_source = game_parts.sources['goalie_counter'],
+                      nextButton = game_parts.buttons['next'],
+                      gameFig = game_parts.figures['game_figure'],
+                      distTable = game_parts.tables['distribution'],
+                      goalieHead = game_parts.glyphs['goalie_head'],
+                      goalieBody = game_parts.glyphs['goalie_body'],
+                      counterSrc = game_parts.sources['goalie_counter'],
                       ball = game_parts.glyphs['ball'],
-                      score = game_parts.divs['score'], b_figs = b_figs,
-                      stats_fig_1 = game_parts.figures['stats_1'],
-                      stats_fig_2 = game_parts.figures['stats_2'],
-                      stats_fig_3 = game_parts.figures['stats_3'],
-                      stats_fig_4 = game_parts.figures['stats_4'],
-                      stats_fig_1_source = game_parts.sources['stats_fig_1'],
-                      stats_fig_2_source = game_parts.sources['stats_fig_2'],
-                      stats_fig_3_source = game_parts.sources['stats_fig_3'],
-                      stats_fig_4_source = game_parts.sources['stats_fig_4'])
+                      score = game_parts.divs['score'],
+                      figButtons = b_figs,
+                      statsFig1 = game_parts.figures['stats_1'],
+                      statsFig2 = game_parts.figures['stats_2'],
+                      statsFig3 = game_parts.figures['stats_3'],
+                      statsFig4 = game_parts.figures['stats_4'],
+                      statsFig1Src = game_parts.sources['stats_fig_1'],
+                      statsFig2Src = game_parts.sources['stats_fig_2'],
+                      statsFig3Src = game_parts.sources['stats_fig_3'],
+                      statsFig4Src = game_parts.sources['stats_fig_4'])
     b_auto_next_click = CustomJS(args = args_dict,
-                                 code = gameloop_codestrings.game_iteration)
+                                 code = gameloop_codestrings.game_iter)
     game_parts.buttons['next'].js_on_click(b_auto_next_click)
 #</editor-fold>

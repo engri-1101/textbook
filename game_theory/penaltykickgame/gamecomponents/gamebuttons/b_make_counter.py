@@ -88,12 +88,12 @@ else if(goalie_rl > goalie_rr){
 //else do nothing.
 
 //Set Goalie chances:
-goalie_counter_source.data['chances_l'][0] = goalie_ll_coeff;
-goalie_counter_source.data['chances_l'][1] = goalie_lm_coeff;
-goalie_counter_source.data['chances_l'][2] = goalie_lr_coeff;
-goalie_counter_source.data['chances_r'][0] = goalie_rl_coeff;
-goalie_counter_source.data['chances_r'][1] = goalie_rm_coeff;
-goalie_counter_source.data['chances_r'][2] = goalie_rr_coeff;
+goalie_counter_source.data['leftStrat'][0] = goalie_ll_coeff;
+goalie_counter_source.data['leftStrat'][1] = goalie_lm_coeff;
+goalie_counter_source.data['leftStrat'][2] = goalie_lr_coeff;
+goalie_counter_source.data['rightStrat'][0] = goalie_rl_coeff;
+goalie_counter_source.data['rightStrat'][1] = goalie_rm_coeff;
+goalie_counter_source.data['rightStrat'][2] = goalie_rr_coeff;
 
 goalie_counter_source.change.emit();
 
@@ -116,8 +116,8 @@ def create(game_parts, config):
 
 #<editor-fold setup():
 def setup(game_parts):
-    goalie_counter_source = ColumnDataSource(data = dict(chances_l = [1, 0, 0],
-                                                         chances_r = [1, 0, 0]))
+    goalie_counter_source = ColumnDataSource(data = dict(leftStrat = [1, 0, 0],
+                                                         rightStrat = [1, 0, 0]))
     game_parts.sources['goalie_counter'] = goalie_counter_source
 
     args_dict = dict(b_start_automate = game_parts.buttons['start'],

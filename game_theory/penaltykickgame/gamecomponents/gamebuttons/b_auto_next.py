@@ -16,7 +16,7 @@ def create(game_parts, config):
 def setup(game_parts):
     b_figs = [game_parts.buttons['fig_1'], game_parts.buttons['fig_2'],
               game_parts.buttons['fig_3'], game_parts.buttons['fig_4']]
-              
+
     args_dict =  dict(chancesSrc = game_parts.sources['automation_table'],
                       distTableSrc = game_parts.sources['distribution_table'],
                       stratToUseDiv = game_parts.divs['strategy_to_use'],
@@ -39,7 +39,9 @@ def setup(game_parts):
                       statsFig1Src = game_parts.sources['stats_fig_1'],
                       statsFig2Src = game_parts.sources['stats_fig_2'],
                       statsFig3Src = game_parts.sources['stats_fig_3'],
-                      statsFig4Src = game_parts.sources['stats_fig_4'])
+                      statsFig4Src = game_parts.sources['stats_fig_4'],
+                      autoAdvanceButton = game_parts.buttons['auto_advance'],
+                      inAnIter = game_parts.divs['in_an_iter'])
     b_auto_next_click = CustomJS(args = args_dict,
                                  code = gameloop_codestrings.game_iter)
     game_parts.buttons['next'].js_on_click(b_auto_next_click)

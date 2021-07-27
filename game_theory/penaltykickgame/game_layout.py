@@ -3,9 +3,10 @@ from bokeh.layouts import row, column, gridplot
 #<editor-fold format():
 def format(game_parts, config):
     #These 3 items are never shown at the same time.
-    automate_button_row = row(game_parts.buttons['automate'],
-                              game_parts.sliders['iterations'],
-                              game_parts.buttons['next'],
+    automate_button_row = row(column(game_parts.buttons['automate'],
+                                     game_parts.sliders['iterations'],
+                                     game_parts.buttons['next'],
+                                     game_parts.buttons['auto_advance']),
                               max_width = config.automate_button_row_max_width,
                               sizing_mode = config.automate_button_row_sizing_mode)
 

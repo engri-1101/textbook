@@ -4,6 +4,7 @@ from bokeh.models import Button, CustomJS
 b_automate_code = """
 //Change visibilities of game items:
 b_automate.visible = false;
+b_auto_advance.visible = true;
 ll_aim_text_input.visible = true;
 lm_aim_text_input.visible = true;
 lr_aim_text_input.visible = true;
@@ -31,6 +32,7 @@ def create(game_parts, config):
 #<editor-fold setup():
 def setup(game_parts):
     args_dict = dict(b_automate = game_parts.buttons['automate'],
+                     b_auto_advance = game_parts.buttons['auto_advance'],
                      iterations_slider = game_parts.sliders['iterations'],
                      strategy_dropdown = game_parts.dropdowns['cpu_strategy'],
                      automation_table = game_parts.tables['automation'],

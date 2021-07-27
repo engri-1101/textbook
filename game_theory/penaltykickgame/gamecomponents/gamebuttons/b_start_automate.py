@@ -51,7 +51,9 @@ def setup(game_parts):
                       lrAimTextInput = game_parts.textinputs['lr_aim'],
                       rlAimTextInput = game_parts.textinputs['rl_aim'],
                       rmAimTextInput = game_parts.textinputs['rm_aim'],
-                      rrAimTextInput = game_parts.textinputs['rr_aim'])
+                      rrAimTextInput = game_parts.textinputs['rr_aim'],
+                      autoAdvanceButton = game_parts.buttons['auto_advance'],
+                      inAnIter = game_parts.divs['in_an_iter'])
     b_start_automate_click = CustomJS(args = args_dict,
                                       code = gameloop_codestrings.b_automate_start_code)
     game_parts.buttons['start'].js_on_click(b_start_automate_click)

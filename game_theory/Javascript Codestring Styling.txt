@@ -1,44 +1,92 @@
 General Styling:
  - Line limit of 80 characters (as much as possible).
  - Use ';' To indicate the end of a line.
- - Bool definitions that contain conditions (E.g. var1 <= var2) shouuld be contained in parentheses.
+ - Bool definitions that contain conditions (E.g. var1 <= var2) should be
+contained in parentheses.
  - Strings should be defined with ' ' not the " ".
- - Equality/Inequality comparisons should be done with '==='/'!==' not '=='/'!='.
- - There should be spaces in between values and operators unless readability can be improved by removing the spaces to indicate order of operation (E.g. 3*k + 1 instead of 3 * k + 1).
+ - Equality/Inequality comparisons should be done with '===' or '!=='
+not '==' or '!='.
+ - There should be spaces in between values and operators unless readability
+can be improved by removing the spaces to indicate order of operation (E.g.
+3*k + 1 instead of 3 * k + 1).
+ - All indentations should be 2 spaces.
 
-Variables: 
+
+Variables:
  - Name variables using camelCase starting with a lower case letter.
- - Variables should primarily be declared as lets or consts (Use const when you do not need to be able to change the value).
+ - Variables should primarily be declared as lets or consts (Use const when
+you do not need to be able to change the value).
 
 
 Functions:
  - Name functions using camelCase starting with a lower case letter.
- - Function parameters should be contained within parentheses located immediately after the function name.
- - Function bodies should be contained within curly brackets. 
- - The opening curly bracket for the function body should be on the same line as the function name and parameters, with a space between the closing parenthesis for the parameters and itself.
- - The function body should begin after the line with its opening curly bracket.
- - The closing curly bracket for the function body should be given its own line.
- - Functions should primarily be defined in the following style:
+ - Function parameters should be contained within parentheses located
+immediately after the function name (No spaces).
+ - If the parameters are simple, and fit on a single line, they can be written
+on the same line as the function name and parenthesis.
+ - If the parameters are more complex, or they do not fit on a single line,
+then they should be written, indented, on the line immediately below the
+opening parenthesis. If this is the case, each parameter should be given its
+own line, allowing for more clarity and the ability to write explanatory
+comments on the parameters. The closing parenthesis should then be unindented
+on the line after the final parameter.
+ - Function bodies should be contained within curly brackets.
+ - The opening curly bracket for the function body should be on the same line
+as the closing parenthesis of the function parameters, with a space between
+the closing parenthesis and itself.
+ - The function body should begin after the line with its opening curly
+bracket.
+ - The closing curly bracket for the function body should be given its own
+line.
+ - Functions should primarily be defined in the following styles:
      function name(params) {
        body
      }
- - Add a '_' at the beginning of the name of a function to signify a helper function. E.g:
+     
+     function name(
+       param1,
+       param2, //Comment explaining param2
+       param3,
+       param4,
+       param5
+     ) {
+       body
+     }
+
+ - Add a '_' at the beginning of the name of a function to signify a helper
+function. E.g:
      function _helperFunctionName(params) {
        body
      }
 
 
 if, else if, and else Statements:
- - All 'if', 'else if' and 'else' statements should have curly brackets around their body no matter the situation.
- - All 'if', 'else if' and 'else' statements should have the opening parenthesis for their condition located immediately.
- - All 'if', and 'else if' statements should have a space between their condition's closing parenthesis and their body's opening curly bracket.
- - Any 'else if' or 'else' statement should be located on the same line as the closing curly bracket of the body of the previous 'if' or 'else if' statement they are associated with.
- - There should always be a single space between the any 'else if' or 'else' statement and the curly bracket before them.
- - If an 'if', 'else if', or 'else' statement is the last one in the series (does not have an 'else if' or 'else' statement built off of them), and fully fits on a single line, it can be written as a one-line statement.
- - All 'if', 'else if', or 'else' statements written in one line must have a space between the beginning and end of its body and the curly brackets enclosing it. They must still also use a ';' at the end of the body to signify a line end.
- - If an 'if', 'else if', or 'else' statement is not the last one in the series, or it does not fully fit on a single line, it should have its body located on the line after its opening curly bracket.
- - If an 'if', 'else if', or 'else' statement is not the last one in the series, or it does not fully fit on a single line, its body's closing curly bracket should be located on the line after the final line of its body.
- - if, else if, else statements should be written in one of the following styles:
+ - All 'if', 'else if' and 'else' statements should have curly brackets around
+their body no matter the situation.
+ - All 'if', 'else if' and 'else' statements should have the opening
+parenthesis for their condition located immediately.
+ - All 'if', and 'else if' statements should have a space between their
+condition's closing parenthesis and their body's opening curly bracket.
+ - Any 'else if' or 'else' statement should be located on the same line as the
+closing curly bracket of the body of the previous 'if' or 'else if' statement
+they are associated with.
+ - There should always be a single space between the any 'else if' or 'else'
+statement and the curly bracket before them.
+ - If an 'if', 'else if', or 'else' statement is the last one in the series
+(does not have an 'else if' or 'else' statement built off of them), and fully
+fits on a single line, it can be written as a one-line statement.
+ - All 'if', 'else if', or 'else' statements written in one line must have a
+space between the beginning and end of its body and the curly brackets
+enclosing it. They must still also use a ';' at the end of the body to signify
+a line end.
+ - If an 'if', 'else if', or 'else' statement is not the last one in the
+series, or it does not fully fit on a single line, it should have its body
+located on the line after its opening curly bracket.
+ - If an 'if', 'else if', or 'else' statement is not the last one in the
+series, or it does not fully fit on a single line, its body's closing curly
+bracket should be located on the line after the final line of its body.
+ - if, else if, else statements should be written in one of the 
+following styles:
      if(condition) {
        any type of body
      } else if(condition) {
@@ -55,14 +103,20 @@ if, else if, and else Statements:
 
 
 Arrays:
- - Any simple array should be defined in-line with all elements typed in (E.g. [0, 0, 0] or [0, 1, 0]).
- - Any more-complicated array should be defined with its opening bracket on the line of its creation.
- - Any more-complicated array should be defined with its body indented and starting on the line following its opening curly bracket.
- - Any more-complicated array should be defined with its closing bracked located on the line after its last element.
- - Unless the elements of a more-complicated array are related, and keeping multiple elements on a single line would improve readability, every element of the array should be given its own line.
- - If values are being unpacked in an array using the '...' statement, then the statement should be treated as a single element.
+ - Any simple array should be defined in-line with all elements typed in
+(E.g. [0, 0, 0] or [0, 1, 0]).
+ - Any more-complicated array should be defined with its opening bracket on
+the line of its creation.
+ - Any more-complicated array should be defined with its body indented and
+starting on the line following its opening curly bracket.
+ - Any more-complicated array should be defined with its closing bracket
+located on the line after its last element.
+ - Unless the elements of a more-complicated array are related, and keeping
+multiple elements on a single line would improve readability, every element
+of the array should be given its own line.
+ - If values are being unpacked in an array using the '...' statement, then
+the statement should be treated as a single element.
  - Any '...' statements within the array should be located at the end.
-
  - Array definitions should follow one of the following styles:
      let name = [
        element1,
@@ -83,19 +137,28 @@ Arrays:
        element1, element2, element3,
        element4, element5, element6
      ];
- - if an array is long, and has a predetermined length, it can be created using the array constructor IF it would improve readability. E.g:
+
+ - if an array is long, and has a predetermined length, it can be created
+using the array constructor IF it would improve readability. E.g:
      let longArrayOf0s = new Array(50).fill(0);
 
      let longEmptyArrayWithFixedLength = new Array(Length);
 
 
 Dictionaries:
- - All dictionaries should be defined with their opening curly bracket located on the line for their creation, with nothing following it.
- - The dictionary elements (key : value pairs) should be indented and defined starting on the line following the opening curly bracket.
- - The closing curly bracket should be unindented and located on the line following the last element.
- - Each element should be defined on its own line, unless it is related to another element, and keeping them on the same line would improve readability.
- - There should be a single space between the end of each key and its following ':'.
- - If the keys of elements have different length, and doing so would improve readability, spaces can be added between the shorter keys and their following ':' symbols to line them up. 
+ - All dictionaries should be defined with their opening curly bracket located
+on the line for their creation, with nothing following it.
+ - The dictionary elements (key : value pairs) should be indented and defined
+starting on the line following the opening curly bracket.
+ - The closing curly bracket should be unindented and located on the line
+following the last element.
+ - Each element should be defined on its own line, unless it is related to
+another element, and keeping them on the same line would improve readability.
+ - There should be a single space between the end of each key and its
+following ':'.
+ - If the keys of elements have different length, and doing so would improve
+readability, spaces can be added between the shorter keys and their following
+':' symbols to line them up. 
  - There should be a single space following each ':' and its associated value.
  - dictionary definitions should follow the style:
      let name = {
@@ -118,34 +181,53 @@ Dictionaries:
 
 
 Ternary Operators:
- - Ternary operators should only be used when setting the value of a variable, and it would have better readability than an if-else statement.
- - The condition of all ternary operators should be contained within parentheses.
- - The closing parentheses for a ternary operator and the '?' of the ternary operator should always have a single space between them.
- - The first possibility following the '?' should have a single space before it, and can be written on the same line (preferred).
- - The first possibility and the ':' following it should have a single space in between them.
- - The ':' should have a single space in between itself and the second possibility.
- - It is preferred that the second possibility is on the same line as the ':' and the first possibility.
+ - Ternary operators should only be used when setting the value of a variable,
+and it would have better readability than an if-else statement.
+ - The condition of all ternary operators should be contained
+within parentheses.
+ - The closing parentheses for a ternary operator and the '?' of the ternary
+operator should always have a single space between them.
+ - The first possibility following the '?' should have a single space before
+it, and can be written on the same line (preferred).
+ - The first possibility and the ':' following it should have a single space
+in between them.
+ - The ':' should have a single space in between itself and the second
+possibility.
+ - It is preferred that the second possibility is on the same line as the ':'
+and the first possibility.
  - Ternary operators should be written in the following style:
      let variable = (condition) ? value1 : value2;
 
 
 Template Literals:
- - Template Literals should be used instead of strings (if possible), when adding a variable to them.
+ - Template Literals should be used instead of strings (if possible), when
+adding a variable to them.
  - Template Literals should be written in the following style:
      let exampleString = 'My name is ${name}`;
 
 
 .forEach Loops:
  - .forEach Loops should be used instead of 'for' loops whenever possible.
- - All .forEach should have their parameters contained within their own set of parentheses.
- - There should be a single space between the parameters and the following '=>'.
+ - All .forEach should have their parameters contained within their own
+set of parentheses.
+ - There should be a single space between the parameters and the
+following '=>'.
  - There should always be a single space immediately after the '=>'.
- - If the function for the loop is a single statement, and it fits on one line, then it should not be contained in curly brackets. Otherwise, it should be contained within curly brackets.
- - If the function for the loop fits on one line (even if it is in curly brackets), then it should be written on that line with a space between the curly brackets, and the body.
- - If the function for the loop does not fit on a line, then the line should end with the opening curly bracket, and the body should start indented on the following line.
- - If the function for the loop does not fit on a line, the closing curly bracket should be on the first line after the body, on its own line.
- - The entire definition of the loop function (including parameters) should start on the line after the opening parenthesis for the '.forEach()' call.
- - The closing parenthesis for the .forEach call should be located on the line after the definition of the loop function.
+ - If the function for the loop is a single statement, and it fits on one
+line, then it should not be contained in curly brackets. Otherwise, it
+should be contained within curly brackets.
+ - If the function for the loop fits on one line (even if it is in curly
+brackets), then it should be written on that line with a space between the
+curly brackets, and the body.
+ - If the function for the loop does not fit on a line, then the line should
+end with the opening curly bracket, and the body should start indented on the
+following line.
+ - If the function for the loop does not fit on a line, the closing curly
+bracket should be on the first line after the body, on its own line.
+ - The entire definition of the loop function (including parameters) should
+start on the line after the opening parenthesis for the '.forEach()' call.
+ - The closing parenthesis for the .forEach call should be located on the line
+after the definition of the loop function.
  - .forEach loops should be written in one of the following styles:
 
      someRandomArray.forEach(

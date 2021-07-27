@@ -155,6 +155,8 @@ class MainGame:
                                      "fit", False, False)
         self.b_fig_4 = _ButtonConfig("Figure 4", "success", "scale_width",
                                      "fit", False, False)
+        self.b_auto_advance = _ButtonConfig("Fast Forward", "success",
+                                            "scale_width", "fit", False, False)
         #</editor-fold>
         #<editor-fold Gameview Configs:
         self.scr_text = _TextConfig([2, 70, 2, 14, 14], [86, 86, 5, 40, 32],
@@ -279,6 +281,7 @@ class MainGame:
         components.divs.cpu_selected.create(self.game_parts)
         components.divs.chances_valid.create(self.game_parts)
         components.divs.counter_made.create(self.game_parts)
+        components.divs.in_an_iter.create(self.game_parts)
         #</editor-fold>
 
         #<editor-fold Buttons
@@ -292,6 +295,8 @@ class MainGame:
         components.buttons.b_fig_2.create(self.game_parts, self.b_fig_2)
         components.buttons.b_fig_3.create(self.game_parts, self.b_fig_3)
         components.buttons.b_fig_4.create(self.game_parts, self.b_fig_4)
+        components.buttons.b_auto_advance.create(self.game_parts,
+                                                 self.b_auto_advance)
         #</editor-fold>
 
         components.sliders.iterations_slider.create(self.game_parts,
@@ -336,6 +341,8 @@ class MainGame:
         components.divs.cpu_selected.setup(self.game_parts)
         components.divs.chances_valid.setup(self.game_parts)
         components.divs.counter_made.setup(self.game_parts)
+
+        components.divs.in_an_iter.setup(self.game_parts)
 
         components.buttons.b_make_counter.setup(self.game_parts)
 

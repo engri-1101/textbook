@@ -9,7 +9,7 @@
 #<editor-fold Functions:
   #<editor-fold iterText():
 iterText = """
-function iterText() {
+function iterText(roundsPlayed, gameScore, goal) {
   //Set Game Text Lines:
   txt.data['text'] = [
     `Rounds played: ${roundsPlayed}`,
@@ -48,7 +48,7 @@ function rollKickerAction() {
   #<editor-fold fictitiousPlay():
 fictitiousPlay = """
 //Handle Goalie Decision
-function fictitiousPlay() {
+function fictitiousPlay(footIsLeft, footDict) {
   //Set decision making values to use according to kickerFoot:
   const freqs = (footIsLeft) ? freq.slice(0, 3) : freq.slice(3, 6);
 
@@ -74,7 +74,7 @@ function fictitiousPlay() {
   #<editor-fold optimalMixed():
 #Runs the optimal mixed strategy found in the lab.
 optimalMixed = """
-function optimalMixed() {
+function optimalMixed(kickerFoot) {
   //selects and returns an action based off of optimal mixed strategy chances:
   const thresholds = {
     'Left'  : 0.8,
@@ -100,7 +100,7 @@ function randomChoice() {
 #This codestring runs the goalie cheats strategy, a strategy where the goalie
 #Uses the optimal pure strategy to counter the player's mixed strategy.
 goalieCheats = """
-function goalieCheats() {
+function goalieCheats(kickerFoot) {
   //return the action of the pure strategy corresponding to the kicker foot:
   const strats = {
     'Left'  : 'leftStrat',
@@ -113,7 +113,7 @@ function goalieCheats() {
   #</editor-fold>
   #<editor-fold _handleFigVisibility():
 _handleFigVisibility = """
-function _handleFigVisibility() {
+function _handleFigVisibility(stratIsFictPlay) {
   nextButton.visible = false;
   gameFig.visible = false;
   distTable.visible = false;
@@ -132,7 +132,7 @@ function _handleFigVisibility() {
   #</editor-fold>
   #<editor-fold scoring():
 scoring = """
-function scoring() {
+function scoring(footDict, kickerKick, goalieAction, actionsIndexKFKK) {
   //Set function values:
   const scoreRoll = Math.random();
   const scoreChance = footDict[kickerKick + goalieAction];
@@ -167,7 +167,7 @@ function _moveGoalie(xLoc) {
   #</editor-fold>
   #<editor-fold animateIter():
 animateIter = """
-function animateIter() {
+function animateIter(goalieAction, kickerKick, goal) {
   //Set positions and store ball roll for handling cases:
   const goalieActionIsKickerKick = (goalieAction === kickerKick);
   const goalNotScored = (goal === -1);
@@ -200,7 +200,12 @@ function animateIter() {
   #</editor-fold>
   #<editor-fold _updateDecisionTableRisks():
 _updateDecisionTableRisks = """
-function _updateDecisionTableRisks() {
+function _updateDecisionTableRisks(
+  perceivedRiskL,
+  perceivedRiskM,
+  perceivedRiskR,
+  kfRAdjust
+) {
   //Reset column then set perceived risk for rows corresponding to kicker foot:
   const risks = distData['goalie_perceived_risks'];
 
@@ -218,7 +223,15 @@ function _updateDecisionTableRisks() {
   #</editor-fold>
   #<editor-fold goalieDecisionTracking():
 goalieDecisionTracking = """
-function goalieDecisionTracking() {
+function goalieDecisionTracking(
+  actionsIndexKFKK,
+  kfRAdjust,
+  directionsIndexGa,
+  stratIsFictPlay,
+  perceivedRiskL,
+  perceivedRiskM,
+  perceivedRiskR
+) {
 
   //Increase corresponding trackers to KFKK and KFGA:
   freq[actionsIndexKFKK] += 1;
@@ -226,7 +239,14 @@ function goalieDecisionTracking() {
   distData['decisions'][decisionsIndex] += 1;
 
   //Update table perceived risks if fictitious play:
-  if(stratIsFictPlay) { _updateDecisionTableRisks(); }
+  if(stratIsFictPlay) {
+    _updateDecisionTableRisks(
+      perceivedRiskL,
+      perceivedRiskM,
+      perceivedRiskR,
+      kfRAdjust
+    );
+  }
 
   //Update table by finalizing changes to source:
   distTableSrc.change.emit();
@@ -235,7 +255,13 @@ function goalieDecisionTracking() {
   #</editor-fold>
   #<editor-fold _fig1Iter():
 _fig1Iter = """
-function _fig1Iter(fig1Data, sections) {
+function _fig1Iter(
+  goal,
+  directionsIndexGa,
+  sections,
+  fig1Data,
+  actionsIndexKFKK
+) {
   //Increase section value of iteration result by 1:
   const sectionIndex = (goal === 1) ? 0 : directionsIndexGa + 1;
   const section = sections[sectionIndex];
@@ -245,7 +271,7 @@ function _fig1Iter(fig1Data, sections) {
   #</editor-fold>
   #<editor-fold _fig1Adjust():
 _fig1Adjust = """
-function _fig1Adjust(fig1Data, sections) {
+function _fig1Adjust(sections, fig1Data) {
   //Get total heights of kfkk bars:
   const heights = [0, 0, 0, 0, 0, 0]
   sections.forEach(
@@ -261,16 +287,21 @@ function _fig1Adjust(fig1Data, sections) {
   #</editor-fold>
   #<editor-fold updateFig1():
 updateFig1 = """
-function updateFig1() {
+function updateFig1(
+  goal,
+  directionsIndexGa,
+  actionsIndexKFKK,
+  roundIsLastIter
+) {
   //create constants for referencing:
   const fig1Data = statsFig1Src.data;
   const sections = ['scored_y', 'blockedl_y', 'blockedm_y', 'blockedr_y'];
 
   //Update the figure for the iteration:
-  _fig1Iter(fig1Data, sections);
+  _fig1Iter(goal, directionsIndexGa, sections, fig1Data, actionsIndexKFKK);
 
   //Make final adjustments if it is the final iteration:
-  if(roundIsLastIter) { _fig1Adjust(fig1Data, sections); }
+  if(roundIsLastIter) { _fig1Adjust(sections, fig1Data); }
 
   //Update the figure by finalizing the changes to the data source:
   statsFig1Src.change.emit();
@@ -279,7 +310,7 @@ function updateFig1() {
   #</editor-fold>
   #<editor-fold _fig2Iter():
 _fig2Iter = """
-function _fig2Iter(fig2Data) {
+function _fig2Iter(fig2Data, roundsPlayed, gameScore, roundScoreChance) {
   //Plot Values:
   fig2Data['ys'][roundsPlayed] = gameScore;
   fig2Data['chance_ys'][roundsPlayed] = 2*roundScoreChance - 1;
@@ -288,7 +319,7 @@ function _fig2Iter(fig2Data) {
   #</editor-fold>
   #<editor-fold _fig2Adjust():
 _fig2Adjust = """
-function _fig2Adjust(fig2Data) {
+function _fig2Adjust(fig2Data, itersToRun) {
   //Adjust chanceYs:
   const chanceYs = fig2Data['chance_ys'];
   chanceYs.slice(1).forEach(
@@ -317,15 +348,21 @@ function _fig2Adjust(fig2Data) {
   #</editor-fold>
   #<editor-fold updateFig2():
 updateFig2 = """
-function updateFig2() {
+function updateFig2(
+  roundsPlayed,
+  gameScore,
+  roundScoreChance,
+  roundIsLastIter,
+  itersToRun
+) {
   //Store reference to fig 2 data:
   const fig2Data = statsFig2Src.data;
 
   //Update the figure for the iteration:
-  _fig2Iter(fig2Data);
+  _fig2Iter(fig2Data, roundsPlayed, gameScore, roundScoreChance);
 
   //Adjust the figure as needed if it is the last iteration:
-  if(roundIsLastIter) { _fig2Adjust(fig2Data); }
+  if(roundIsLastIter) { _fig2Adjust(fig2Data, itersToRun); }
 
   //Update the source to finalize the changes to the figure:
   statsFig2Src.change.emit();
@@ -334,7 +371,7 @@ function updateFig2() {
   #</editor-fold>
   #<editor-fold _fig3Iter():
 _fig3Iter = """
-function _fig3Iter(ys) {
+function _fig3Iter(ys, roundsPlayed) {
   //For each foot:
   ['Left', 'Right'].forEach(
     (footVal, footIndex) => {
@@ -364,7 +401,7 @@ function _fig3Iter(ys) {
   #</editor-fold>
   #<editor-fold _fig3Adjust():
 _fig3Adjust = """
-function _fig3Adjust(fig3Data, ys) {
+function _fig3Adjust(fig3Data, itersToRun, ys) {
   //store fig3Data hb columns for iteration and reference:
   const hbs = [
     fig3Data['hb1'],
@@ -425,7 +462,7 @@ function _fig3Adjust(fig3Data, ys) {
   #</editor-fold>
   #<editor-fold updateFig3():
 updateFig3 = """
-function updateFig3() {
+function updateFig3(roundsPlayed, roundIsLastIter, itersToRun) {
   //Store values for reference:
   let fig3Data = statsFig3Src.data;
   const ys = [
@@ -434,10 +471,10 @@ function updateFig3() {
   ];
 
   //Update plot points:
-  _fig3Iter(ys);
+  _fig3Iter(ys, roundsPlayed);
 
   //Make final adjustments to graph on last iteration:
-  if(roundIsLastIter) { _fig3Adjust(fig3Data, ys); }
+  if(roundIsLastIter) { _fig3Adjust(fig3Data, itersToRun, ys); }
 
   //Finalize changes:
   statsFig3Src.change.emit();
@@ -446,7 +483,13 @@ function updateFig3() {
   #</editor-fold>
   #<editor-fold updateFig4():
 updateFig4 = """
-function updateFig4() {
+function updateFig4(
+  roundsPlayed, //Test comment
+  roundScoreChance,
+  kickerFoot,
+  kickerKick,
+  goalieAction
+) {
   const fig4Data = statsFig4Src.data;
   const index = roundsPlayed - 1;
   fig4Data['ys'][index] = roundScoreChance;
@@ -485,66 +528,176 @@ const scoreProbDicts = {
   'Left'  : lDict
 };
 
-const chances = chancesSrc.data['chances'];
-const distData = distTableSrc.data;
-const freq = distData['freq'];
-const itersToRun = parseInt(itersToRunDiv.text);
-
-const gameStrat = stratToUseDiv.text;
-
-const stratIsFictPlay = (gameStrat === 'Fictitious_Play');
 const directions = ['Left', 'Middle', 'Right'];
 
 const arrSumFunc = ((a, b) => a + b);
-let perceivedRiskL;
-let perceivedRiskM;
-let perceivedRiskR;
 
-let goalieAction = '';
+const chances = chancesSrc.data['chances'];
+const distData = distTableSrc.data;
+const freq = distData['freq'];
 
-let kickerFoot = '';
-let kickerKick = '';
+function gameIter(){
+  const itersToRun = parseInt(itersToRunDiv.text);
 
-let goal = 0;
-let gameScore = 0;
-let roundsPlayed = 0;
+  const gameStrat = stratToUseDiv.text;
 
-let roundScoreChance = 0;
+  const stratIsFictPlay = (gameStrat === 'Fictitious_Play');
 
-[kickerFoot, kickerKick] = rollKickerAction();
+  let perceivedRiskL;
+  let perceivedRiskM;
+  let perceivedRiskR;
 
-const footIsLeft = (kickerFoot === 'Left');
-const footDict = scoreProbDicts[kickerFoot];
-const kfRAdjust = (footIsLeft) ? 0 : 3;
+  let goalieAction = '';
 
-if(stratIsFictPlay) {
-  [goalieAction, perceivedRiskL, perceivedRiskM, perceivedRiskR] = fictitiousPlay();
-} else {
-  const goalieFunctions = {
-    'Mixed_Strategy' : optimalMixed,
-    'Random'         : randomChoice,
-    'Goalie_Cheats'  : goalieCheats
-  };
-  goalieAction = goalieFunctions[gameStrat]();
+  let kickerFoot = '';
+  let kickerKick = '';
+
+  let goal = 0;
+  let gameScore = 0;
+  let roundsPlayed = 0;
+
+  let roundScoreChance = 0;
+
+  [kickerFoot, kickerKick] = rollKickerAction();
+
+  const footIsLeft = (kickerFoot === 'Left');
+  const footDict = scoreProbDicts[kickerFoot];
+  const kfRAdjust = (footIsLeft) ? 0 : 3;
+
+  switch (gameStrat){
+    case 'Fictitious_Play':
+      [goalieAction, perceivedRiskL, perceivedRiskM, perceivedRiskR] = (
+        fictitiousPlay(footIsLeft, footDict)
+      );
+      break;
+    case 'Mixed_Strategy':
+      goalieAction = optimalMixed(kickerFoot);
+      break;
+    case 'Random':
+      goalieAction = randomChoice();
+      break;
+    case 'Goalie_Cheats':
+      goalieAction = goalieCheats(kickerFoot);
+      break;
+    default:
+      //TODO throw an error
+      break;
+  }
+
+  const directionsIndexGa = directions.indexOf(goalieAction); //DirectionsIndexGoalieAction
+  const actionsIndexKFKK = kfRAdjust + directions.indexOf(kickerKick); //Actions index KFKK
+
+  [goal, gameScore, roundsPlayed, roundScoreChance] = scoring(
+    footDict,
+    kickerKick,
+    goalieAction,
+    actionsIndexKFKK
+  );
+
+  const roundIsLastIter = (roundsPlayed >= itersToRun);
+
+  animateIter(goalieAction, kickerKick, goal);
+
+  goalieDecisionTracking(
+    actionsIndexKFKK,
+    kfRAdjust,
+    directionsIndexGa,
+    stratIsFictPlay,
+    perceivedRiskL,
+    perceivedRiskM,
+    perceivedRiskR
+  );
+
+  updateFig1(goal, directionsIndexGa, actionsIndexKFKK, roundIsLastIter);
+
+  updateFig2(
+    roundsPlayed,
+    gameScore,
+    roundScoreChance,
+    roundIsLastIter,
+    itersToRun
+  );
+
+  if(stratIsFictPlay) { updateFig3(roundsPlayed, roundIsLastIter, itersToRun); }
+
+  updateFig4(
+    roundsPlayed,
+    roundScoreChance,
+    kickerFoot,
+    kickerKick,
+    goalieAction
+  );
+
+  if(roundIsLastIter) { _handleFigVisibility(stratIsFictPlay); }
+
+  iterText(roundsPlayed, gameScore, goal);
 }
-const directionsIndexGa = directions.indexOf(goalieAction); //DirectionsIndexGoalieAction
-const actionsIndexKFKK = kfRAdjust + directions.indexOf(kickerKick); //Actions index KFKK
 
-[goal, gameScore, roundsPlayed, roundScoreChance] = scoring();
-const roundIsLastIter = (roundsPlayed >= itersToRun);
+async function gameLoop(){
+  //Take value for if another iteration is running:
+  let tempIterVal = inAnIter.text;
 
-animateIter();
+  //If there is not another iteration running:
+  if(tempIterVal === 'false'){
+    //Set the value of inAnIter to reflect that an iteration is now running:
+    inAnIter.text = 'true';
 
-goalieDecisionTracking();
+    //Run the game iteration:
+    gameIter();
 
-updateFig1();
-updateFig2();
-if(stratIsFictPlay) { updateFig3(); }
-updateFig4();
+    //Tell itself that it has finished running the iteration:
+    tempIterVal = 'false';
 
-if(roundIsLastIter) { _handleFigVisibility(); }
+    //True if not in the last iteration of the game:
+    const notLastRound = (
+      parseInt(nround.text) < parseInt(itersToRunDiv.text)
+    );
 
-iterText();
+    //True if the button is activated by the user:
+    const automatedAdvancementActivated = (autoAdvanceButton.active);
+
+    //True if both conditions are true:
+    const conditionsFulfilled = (
+      notLastRound && automatedAdvancementActivated
+    );
+
+    //If all recursion conditions are fulfilled:
+    if(conditionsFulfilled){
+
+      //Setup the promise that enforces waiting for the delay to finish:
+      const iterationDelay = (
+
+        //Creates the promise with parameter ms:
+        (ms) => new Promise(
+
+          //Waits for ms seconds before resolving:
+          (resolve) => setTimeout(
+            () => {resolve(); },
+            ms
+          )
+        )
+
+      );
+
+      //Await the delay, then recurse:
+      await iterationDelay(300).then(
+        () => {
+
+          //Designate that an iteration is no longer running:
+          inAnIter.text = 'false';
+
+          //Recurse:
+          gameLoop();
+        }
+      );
+    } else {
+      //Designate that an iteration is no longer running:
+      inAnIter.text = 'false';
+    }
+  }
+}
+
+gameLoop();
 """
 #</editor-fold>
 

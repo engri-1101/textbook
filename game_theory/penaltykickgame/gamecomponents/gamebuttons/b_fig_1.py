@@ -1,15 +1,15 @@
 from bokeh.models import Button, CustomJS
 
-#<editor-fold b_fig_1 callback Code String:
-b_fig_1_click_code = """
-b_fig_1.disabled = true;
-b_fig_2.disabled = false;
-b_fig_3.disabled = false;
-b_fig_4.disabled = false;
-stats_fig_1.visible = true;
-stats_fig_2.visible = false;
-stats_fig_3.visible = false;
-stats_fig_4.visible = false;
+#<editor-fold Callback Code String:
+fig1ButtonCode = """
+fig1Button.disabled = true;
+fig2Button.disabled = false;
+fig3Button.disabled = false;
+fig4Button.disabled = false;
+statsFig1.visible = true;
+statsFig2.visible = false;
+statsFig3.visible = false;
+statsFig4.visible = false;
 """
 #</editor-fold>
 
@@ -24,15 +24,14 @@ def create(game_parts, config):
 
 #<editor-fold setup():
 def setup(game_parts):
-    args_dict = dict(b_fig_1 = game_parts.buttons['fig_1'],
-                     b_fig_2 = game_parts.buttons['fig_2'],
-                     b_fig_3 = game_parts.buttons['fig_3'],
-                     b_fig_4 = game_parts.buttons['fig_4'],
-                     stats_fig_1 = game_parts.figures['stats_1'],
-                     stats_fig_2 = game_parts.figures['stats_2'],
-                     stats_fig_3 = game_parts.figures['stats_3'],
-                     stats_fig_4 = game_parts.figures['stats_4'])
-    b_fig_1_click = CustomJS(args = args_dict,
-                             code = b_fig_1_click_code)
+    args_dict = dict(fig1Button = game_parts.buttons['fig_1'],
+                     fig2Button = game_parts.buttons['fig_2'],
+                     fig3Button = game_parts.buttons['fig_3'],
+                     fig4Button = game_parts.buttons['fig_4'],
+                     statsFig1 = game_parts.figures['stats_1'],
+                     statsFig2 = game_parts.figures['stats_2'],
+                     statsFig3 = game_parts.figures['stats_3'],
+                     statsFig4 = game_parts.figures['stats_4'])
+    b_fig_1_click = CustomJS(args = args_dict, code = fig1ButtonCode)
     game_parts.buttons['fig_1'].js_on_click(b_fig_1_click)
 #</editor-fold>

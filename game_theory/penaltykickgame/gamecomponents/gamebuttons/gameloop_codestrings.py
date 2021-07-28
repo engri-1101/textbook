@@ -1,11 +1,5 @@
 #This file contains the JavaScript code strings that are used for the main game
 #loop.
-
-#Any JavaScript Function defined in the strings with a name starting with the
-#'_' character is a helper function.
-
-
-#TODO: continue improving code efficiency.
 #<editor-fold Functions:
   #<editor-fold iterText():
 iterText = """
@@ -102,23 +96,20 @@ function randomChoice() {
 goalieCheats = """
 function goalieCheats(kickerFoot) {
   //return the action of the pure strategy corresponding to the kicker foot:
-  const strats = {
-    'Left'  : 'leftStrat',
-    'Right' : 'rightStrat'
-  };
-  const actionIndex = counterSrc.data[strats[kickerFoot]].indexOf(1);
+
+  const actionIndex = counterSrc.data[kickerFoot].indexOf(1);
   return directions[actionIndex];
 }
 """
   #</editor-fold>
   #<editor-fold _handleFigVisibility():
-_handleFigVisibility = """
-function _handleFigVisibility(stratIsFictPlay) {
+handleFigVisibility = """
+function handleFigVisibility(stratIsFictPlay) {
   nextButton.visible = false;
   gameFig.visible = false;
   distTable.visible = false;
-  autoAdvanceButton.visible = false;
-  autoAdvanceSpeedSlider.visible = false;
+  autoAdvButton.visible = false;
+  advSpdSlider.visible = false;
 
   //set figure button visibilities:
   [true, true, stratIsFictPlay, true].forEach(
@@ -503,18 +494,33 @@ function updateFig4(
 }
 """
   #</editor-fold>
-
-func_defs = (iterText + rollKickerAction + fictitiousPlay + optimalMixed
-             + randomChoice + goalieCheats + _handleFigVisibility + scoring
-             + _moveGoalie + animateIter + _updateDecisionTableRisks
-             + goalieDecisionTracking + _fig1Iter + _fig1Adjust + updateFig1
-             + _fig2Iter + _fig2Adjust + updateFig2 + _fig3Iter + _fig3Adjust
-             + updateFig3 + updateFig4)
-
 #</editor-fold>
 
-#<editor-fold Game Iteration:
-game_iter = """
+goalieStrats = (fictitiousPlay + optimalMixed + randomChoice + goalieCheats)
+
+animation = (_moveGoalie + animateIter)
+
+decisionTracking = (goalieDecisionTracking + _updateDecisionTableRisks)
+
+fig1 = (_fig1Iter + _fig1Adjust + updateFig1)
+fig2 = (_fig2Iter + _fig2Adjust + updateFig2)
+fig3 = (_fig3Iter + _fig3Adjust + updateFig3)
+fig4 = updateFig4
+statFigs = (fig1 + fig2 + fig3 + fig4)
+
+funcDefs = (iterText
+            + rollKickerAction
+            + goalieStrats
+            + handleFigVisibility
+            + scoring
+            + animation
+            + decisionTracking
+            + statFigs) #Functions for updating figures
+
+#<editor-fold Running the game:
+
+  #<editor-fold GameConstants:
+gameConstants = """
 const rDict = {
   'LeftLeft'   : 0.55, 'LeftMiddle'   : 0.65, 'LeftRight'   : 0.93,
   'MiddleLeft' : 0.74, 'MiddleMiddle' : 0.60, 'MiddleRight' : 0.72,
@@ -537,7 +543,11 @@ const arrSumFunc = ((a, b) => a + b);
 const chances = chancesSrc.data['chances'];
 const distData = distTableSrc.data;
 const freq = distData['freq'];
+"""
+  #</editor-fold>
 
+  #<editor-fold gameIter:
+gameIter = """
 function gameIter(){
   const itersToRun = parseInt(itersToRunDiv.text);
 
@@ -566,7 +576,7 @@ function gameIter(){
   const footDict = scoreProbDicts[kickerFoot];
   const kfRAdjust = (footIsLeft) ? 0 : 3;
 
-  switch (gameStrat){
+  switch(gameStrat) {
     case 'Fictitious_Play':
       [goalieAction, perceivedRiskL, perceivedRiskM, perceivedRiskR] = (
         fictitiousPlay(footIsLeft, footDict)
@@ -630,10 +640,28 @@ function gameIter(){
     goalieAction
   );
 
-  if(roundIsLastIter) { _handleFigVisibility(stratIsFictPlay); }
+  if(roundIsLastIter) { handleFigVisibility(stratIsFictPlay); }
 
   iterText(roundsPlayed, gameScore, goal);
 }
+"""
+  #</editor-fold>
+
+  #<editor-fold gameRunner:
+gameRunner = """
+//Setup the promise that enforces waiting for the delay to finish:
+const iterationDelay = (
+  //Creates the promise with parameter ms:
+  (ms) => new Promise(
+    //Waits for ms seconds before resolving:
+    (resolve) => setTimeout(
+      () => {
+        resolve();
+      },
+      ms
+    )
+  )
+);
 
 async function gameLoop(){
   //Take value for if another iteration is running:
@@ -656,33 +684,15 @@ async function gameLoop(){
     );
 
     //True if the button is activated by the user:
-    const automatedAdvancementActivated = (autoAdvanceButton.active);
+    const autoAdvActive = (autoAdvButton.active);
 
     //True if both conditions are true:
-    const conditionsFulfilled = (
-      notLastRound && automatedAdvancementActivated
-    );
+    const conditionsFulfilled = (notLastRound && autoAdvActive);
 
     //If all recursion conditions are fulfilled:
     if(conditionsFulfilled){
-
-      //Setup the promise that enforces waiting for the delay to finish:
-      const iterationDelay = (
-
-        //Creates the promise with parameter ms:
-        (ms) => new Promise(
-
-          //Waits for ms seconds before resolving:
-          (resolve) => setTimeout(
-            () => {resolve(); },
-            ms
-          )
-        )
-
-      );
-
       //Await the delay, then recurse:
-      await iterationDelay(autoAdvanceSpeedSlider.value).then(
+      await iterationDelay(advSpdSlider.value).then(
         () => {
           //Designate that an iteration is no longer running:
           inAnIter.text = 'false';
@@ -700,15 +710,19 @@ async function gameLoop(){
 
 gameLoop();
 """
+  #</editor-fold>
+
 #</editor-fold>
 
-game_iter += func_defs
+gameCode = (gameConstants + gameIter + gameRunner) #Basic structure
+gameCode += funcDefs #Add the functions that the gameIter will use
+
 
 #<editor-fold start button Initial Gui Display:
 #This code string changes the visibility values of various game gui elements
 #in order to change the user view from that used in the earlier menu like
 #screens to one used for the game screens.
-initial_gui_display = """
+initialGuiDisplay = """
 startButton.visible = false;
 nextButton.visible = true;
 llAimTextInput.visible = false;
@@ -724,4 +738,4 @@ distTable.visible = true;
 """
 #</editor-fold>
 
-b_automate_start_code = initial_gui_display + game_iter
+automateStartCode = (initialGuiDisplay + gameCode)

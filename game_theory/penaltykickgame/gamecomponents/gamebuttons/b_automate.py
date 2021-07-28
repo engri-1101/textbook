@@ -1,22 +1,22 @@
 from bokeh.models import Button, CustomJS
 
 #<editor-fold Callback Code String:
-b_automate_code = """
+automateCode = """
 //Change visibilities of game items:
-b_automate.visible = false;
-b_auto_advance.visible = true;
-auto_advance_speed_slider.visible = true;
-ll_aim_text_input.visible = true;
-lm_aim_text_input.visible = true;
-lr_aim_text_input.visible = true;
-rl_aim_text_input.visible = true;
-rm_aim_text_input.visible = true;
-rr_aim_text_input.visible = true;
-iterations_slider.visible = true;
-strategy_dropdown.visible = true;
-automation_table.visible = true;
-chances_ne_1_tip.visible = true;
-select_cpu_tip.visible = true;
+automateButton.visible = false;
+autoAdvButton.visible = true;
+advSpdSlider.visible = true;
+llAimTextInput.visible = true;
+lmAimTextInput.visible = true;
+lrAimTextInput.visible = true;
+rlAimTextInput.visible = true;
+rmAimTextInput.visible = true;
+rrAimTextInput.visible = true;
+iterationsSlider.visible = true;
+strategyDropdown.visible = true;
+automationTable.visible = true;
+chancesNE1Tip.visible = true;
+selectCpuTip.visible = true;
 """
 #</editor-fold>
 
@@ -32,22 +32,21 @@ def create(game_parts, config):
 
 #<editor-fold setup():
 def setup(game_parts):
-    args_dict = dict(b_automate = game_parts.buttons['automate'],
-                     b_auto_advance = game_parts.buttons['auto_advance'],
-                     iterations_slider = game_parts.sliders['iterations'],
-                     strategy_dropdown = game_parts.dropdowns['cpu_strategy'],
-                     automation_table = game_parts.tables['automation'],
-                     txt = game_parts.texts['scr_text'],
-                     ll_aim_text_input = game_parts.textinputs['ll_aim'],
-                     lm_aim_text_input = game_parts.textinputs['lm_aim'],
-                     lr_aim_text_input = game_parts.textinputs['lr_aim'],
-                     rl_aim_text_input = game_parts.textinputs['rl_aim'],
-                     rm_aim_text_input = game_parts.textinputs['rm_aim'],
-                     rr_aim_text_input = game_parts.textinputs['rr_aim'],
-                     chances_ne_1_tip = game_parts.divs['chances_ne_1_tip'],
-                     select_cpu_tip = game_parts.divs['select_cpu_tip'],
-                     auto_advance_speed_slider = game_parts.sliders['auto_advance_speed'])
+    args_dict = dict(automateButton = game_parts.buttons['automate'],
+                     autoAdvButton = game_parts.buttons['auto_advance'],
+                     iterationsSlider = game_parts.sliders['iterations'],
+                     strategyDropdown = game_parts.dropdowns['cpu_strategy'],
+                     automationTable = game_parts.tables['automation'],
+                     llAimTextInput = game_parts.textinputs['ll_aim'],
+                     lmAimTextInput = game_parts.textinputs['lm_aim'],
+                     lrAimTextInput = game_parts.textinputs['lr_aim'],
+                     rlAimTextInput = game_parts.textinputs['rl_aim'],
+                     rmAimTextInput = game_parts.textinputs['rm_aim'],
+                     rrAimTextInput = game_parts.textinputs['rr_aim'],
+                     chancesNE1Tip = game_parts.divs['chances_ne_1_tip'],
+                     selectCpuTip = game_parts.divs['select_cpu_tip'],
+                     advSpdSlider = game_parts.sliders['auto_advance_speed'])
     b_automate_click = CustomJS(args = args_dict,
-                                code = b_automate_code)
+                                code = automateCode)
     game_parts.buttons['automate'].js_on_click(b_automate_click)
 #</editor-fold>

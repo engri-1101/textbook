@@ -10,6 +10,8 @@ not '==' or '!='.
 can be improved by removing the spaces to indicate order of operation (E.g.
 3*k + 1 instead of 3 * k + 1).
  - All indentations should be 2 spaces.
+ - Python variables for javaScript code strings should follow camelCase
+naming to signify that they store javaScript code.
 
 
 Variables:
@@ -42,7 +44,7 @@ line.
      function name(params) {
        body
      }
-     
+
      function name(
        param1,
        param2, //Comment explaining param2
@@ -85,7 +87,7 @@ located on the line after its opening curly bracket.
  - If an 'if', 'else if', or 'else' statement is not the last one in the
 series, or it does not fully fit on a single line, its body's closing curly
 bracket should be located on the line after the final line of its body.
- - if, else if, else statements should be written in one of the 
+ - if, else if, else statements should be written in one of the
 following styles:
      if(condition) {
        any type of body
@@ -158,7 +160,7 @@ another element, and keeping them on the same line would improve readability.
 following ':'.
  - If the keys of elements have different length, and doing so would improve
 readability, spaces can be added between the shorter keys and their following
-':' symbols to line them up. 
+':' symbols to line them up.
  - There should be a single space following each ':' and its associated value.
  - dictionary definitions should follow the style:
      let name = {
@@ -229,11 +231,10 @@ start on the line after the opening parenthesis for the '.forEach()' call.
  - The closing parenthesis for the .forEach call should be located on the line
 after the definition of the loop function.
  - .forEach loops should be written in one of the following styles:
-
      someRandomArray.forEach(
        (v) => someOtherArray.push(v * 2)
      );
-     
+
      someRandomArray.forEach(
        (v, i) => {
          if(condition) { someOtherArray.push(v * 2 + i); }
@@ -247,6 +248,67 @@ after the definition of the loop function.
      );
 
 
+Switch Statements:
+ - Switch statements can be used instead of if, else if, else chains if it
+improves readability.
+ - Switch statements should have their expression contained within
+parentheses, with the opening parenthesis located immediately,
+without a space.
+ - A single space should be located between the closing parenthesis and the
+opening curly bracket for the body.
+ - Each case statement within the body should be indented and given
+its own line.
+ - Each case statement should have its body indented and located
+immediately below it
+ - Switch statements should be written in the following style:
+     switch(expression) {
+       case val1:
+         body1
+         break;
+       case val2:
+         body2
+         break;
+       case val3:
+         body3
+         break;
+     }
+
+
+Promises:
+ - Create all promises through a const containing an arrow function.
+ - The entire arrow function should be contained within a pair of parenthesis.
+ - The definition of the arrow function should start indented and located on
+the line below the opening parenthesis.
+ - The body of the arrow function should simply be written as a call on the
+Promise constructor, with its function located indented and located on the
+line below the opening parenthesis for the parameters.
+ - The function for the Promise can be defined in an arrow function.
+ - Calls for the use of the promise should be done by passing any necessary
+parameters to the function contained in the initially defined const.
+ - Promises should be written in the following style:
+     const creationArrowFunction = (
+       (param) => new Promise(
+         promiseFunction
+       )
+     );
+ - Promises should be used in the following style:
+      creationArrowFunction(param)
+
+
+Await Promise.then:
+ - The promise for the await statement should be added in the style
+mentioned above.
+ - Following the .then, an opening parenthesis should be located
+immediately, with a function to execute indented and located
+immediately below it.
+ - The closing parenthesis should be unindented and located immediately
+below the function.
+ - The function can be defined in an arrow function.
+ - Await Promise.then should be used in the following style:
+     Await creationArrowFunction(param).then(
+       bodyFunction
+     );
+
 
 Abbreviations Used (kept in doc for variable naming consistency):
   source : src
@@ -256,3 +318,5 @@ Abbreviations Used (kept in doc for variable naming consistency):
   dictionary : dict
   strategy : strat
   iteration : iter
+  speed : spd
+  advance : adv

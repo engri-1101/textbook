@@ -52,10 +52,10 @@ def setup(game_parts):
                       rlAimTextInput = game_parts.textinputs['rl_aim'],
                       rmAimTextInput = game_parts.textinputs['rm_aim'],
                       rrAimTextInput = game_parts.textinputs['rr_aim'],
-                      autoAdvanceButton = game_parts.buttons['auto_advance'],
+                      autoAdvButton = game_parts.buttons['auto_advance'],
                       inAnIter = game_parts.divs['in_an_iter'],
-                      autoAdvanceSpeedSlider = game_parts.sliders['auto_advance_speed'])
+                      advSpdSlider = game_parts.sliders['auto_advance_speed'])
     b_start_automate_click = CustomJS(args = args_dict,
-                                      code = gameloop_codestrings.b_automate_start_code)
+                                      code = gameloop_codestrings.automateStartCode)
     game_parts.buttons['start'].js_on_click(b_start_automate_click)
 #</editor-fold>

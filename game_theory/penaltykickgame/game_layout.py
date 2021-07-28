@@ -6,7 +6,8 @@ def format(game_parts, config):
     automate_button_row = row(column(game_parts.buttons['automate'],
                                      game_parts.sliders['iterations'],
                                      game_parts.buttons['next'],
-                                     game_parts.buttons['auto_advance']),
+                                     game_parts.buttons['auto_advance'],
+                                     game_parts.sliders['auto_advance_speed']),
                               max_width = config.automate_button_row_max_width,
                               sizing_mode = config.automate_button_row_sizing_mode)
 

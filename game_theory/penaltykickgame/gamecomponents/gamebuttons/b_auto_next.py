@@ -41,7 +41,8 @@ def setup(game_parts):
                       statsFig3Src = game_parts.sources['stats_fig_3'],
                       statsFig4Src = game_parts.sources['stats_fig_4'],
                       autoAdvanceButton = game_parts.buttons['auto_advance'],
-                      inAnIter = game_parts.divs['in_an_iter'])
+                      inAnIter = game_parts.divs['in_an_iter'],
+                      autoAdvanceSpeedSlider = game_parts.sliders['auto_advance_speed'])
     b_auto_next_click = CustomJS(args = args_dict,
                                  code = gameloop_codestrings.game_iter)
     game_parts.buttons['next'].js_on_click(b_auto_next_click)

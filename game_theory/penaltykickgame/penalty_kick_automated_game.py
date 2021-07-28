@@ -182,6 +182,11 @@ class MainGame:
                                                title = "Iterations To Run",
                                                disabled = False,
                                                visible = False)
+        self.auto_advance_speed_slider = _SliderConfig(start = 50, end = 1000,
+                                                       value = 300, step = 10,
+                                                       title = "Auto Advance Delay (ms)",
+                                                       disabled = False,
+                                                       visible = False)
         #</editor-fold>
         #<editor-fold TextInput Configs:
         self.aim_text_inputs = _TextInputConfig(value = "0",
@@ -301,6 +306,8 @@ class MainGame:
 
         components.sliders.iterations_slider.create(self.game_parts,
                                                     self.iterations_slider)
+        components.sliders.auto_advance_speed_slider.create(self.game_parts,
+                                                            self.auto_advance_speed_slider)
 
         #<editor-fold TextInputs:
         components.textinputs.aim_text_input.create(self.game_parts,

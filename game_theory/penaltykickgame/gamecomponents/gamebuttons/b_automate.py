@@ -5,6 +5,7 @@ b_automate_code = """
 //Change visibilities of game items:
 b_automate.visible = false;
 b_auto_advance.visible = true;
+auto_advance_speed_slider.visible = true;
 ll_aim_text_input.visible = true;
 lm_aim_text_input.visible = true;
 lr_aim_text_input.visible = true;
@@ -44,7 +45,8 @@ def setup(game_parts):
                      rm_aim_text_input = game_parts.textinputs['rm_aim'],
                      rr_aim_text_input = game_parts.textinputs['rr_aim'],
                      chances_ne_1_tip = game_parts.divs['chances_ne_1_tip'],
-                     select_cpu_tip = game_parts.divs['select_cpu_tip'])
+                     select_cpu_tip = game_parts.divs['select_cpu_tip'],
+                     auto_advance_speed_slider = game_parts.sliders['auto_advance_speed'])
     b_automate_click = CustomJS(args = args_dict,
                                 code = b_automate_code)
     game_parts.buttons['automate'].js_on_click(b_automate_click)

@@ -117,8 +117,10 @@ function _handleFigVisibility(stratIsFictPlay) {
   nextButton.visible = false;
   gameFig.visible = false;
   distTable.visible = false;
+  autoAdvanceButton.visible = false;
+  autoAdvanceSpeedSlider.visible = false;
 
-  //set button visibilities:
+  //set figure button visibilities:
   [true, true, stratIsFictPlay, true].forEach(
     (v, i) => figButtons[i].visible = v
   );
@@ -680,9 +682,8 @@ async function gameLoop(){
       );
 
       //Await the delay, then recurse:
-      await iterationDelay(300).then(
+      await iterationDelay(autoAdvanceSpeedSlider.value).then(
         () => {
-
           //Designate that an iteration is no longer running:
           inAnIter.text = 'false';
 

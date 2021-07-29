@@ -116,29 +116,6 @@ def inputData(dataset):
     return students, classes, edges
 
 
-# 'dataset' is the name of the datafile
-def inputDataBackup(dataset):
-    data = pd.read_csv(dataset)
-    # list of students
-    students = data['STUDENTS'].tolist()
-    # list of classes
-    classes = list(np.unique(data[['1','2','3','4','5']].values))
-    # dictionary of edges
-    edges = {}
-    first = data['1']
-    second = data['2']
-    third = data['3']
-    fourth = data['4']
-    fifth = data['5']
-    for s in students:
-        edges.update({(s,first[s-1]):1})
-        edges.update({(s,second[s-1]):2})
-        edges.update({(s,third[s-1]):3})
-        edges.update({(s,fourth[s-1]):4})
-        edges.update({(s,fifth[s-1]):5})
-    return students, classes, edges
-
-
 # Takes a dictionary of edge costs and returns a new dictionary with updated edge costs for each preference type
 # 'oldedges' is the original dictionary of edge costs, 'newcosts' is a dictionary with new edge costs for each preference type
 def updated_edge_costs(oldedges,newcosts):
@@ -167,7 +144,7 @@ def updated_edge_costs(oldedges,newcosts):
 
 
 # Same as modifiedAssign, but with objective function that seeks to minimize the number of classes run
-def minimizeNumClassesAssign(students, classes, edges, minstudents, csize, solver):
+def minimizeNumClassesAssign(students, classes, edges, minstudents, csize):
     STUDENT = students              # create student list
     CLASS = classes                 # create class list
     EDGES = list(edges.keys())      # create edge list
@@ -175,7 +152,7 @@ def minimizeNumClassesAssign(students, classes, edges, minstudents, csize, solve
     c = edges.copy()                # define c[i,j]
 
     # define model
-    m = OR.Solver('assignFWS', solver)
+    m = OR.Solver('assignFWS', OR.Solver.CBC_MIXED_INTEGER_PROGRAMMING)
 
     # decision variables
     x = {}
@@ -230,7 +207,7 @@ def minimizeNumClassesAssign(students, classes, edges, minstudents, csize, solve
 
 
 # Same as modifiedAssign, but with additional parameter 'numclasses' to specify how many class sections run
-def modifiedAssignWithNumClasses(students, classes, edges, minstudents, csize, numclasses, solver):
+def modifiedAssignWithNumClasses(students, classes, edges, minstudents, csize, numclasses):
     if numclasses < 0 or numclasses > len(classes):
         raise ValueError('Error: numclasses must be in the range [0,len(classes)].')
 
@@ -241,7 +218,7 @@ def modifiedAssignWithNumClasses(students, classes, edges, minstudents, csize, n
     c = edges.copy()                # define c[i,j]
 
     # define model
-    m = OR.Solver('assignFWS', solver)
+    m = OR.Solver('assignFWS', OR.Solver.CBC_MIXED_INTEGER_PROGRAMMING)
 
     # decision variables
     x = {}

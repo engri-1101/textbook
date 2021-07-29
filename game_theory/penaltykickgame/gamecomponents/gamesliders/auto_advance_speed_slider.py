@@ -1,8 +1,6 @@
 from bokeh.models import Slider
 
 #<editor-fold create():
-#Needs:
-#   from bokeh.models import Slider
 def create(game_parts, config):
     auto_advance_speed_slider = Slider(start = config.start, end = config.end,
                                        value = config.value,

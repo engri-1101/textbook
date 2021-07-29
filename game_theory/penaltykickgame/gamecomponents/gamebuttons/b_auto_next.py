@@ -21,7 +21,7 @@ def setup(game_parts):
                       distTableSrc = game_parts.sources['distribution_table'],
                       stratToUseDiv = game_parts.divs['strategy_to_use'],
                       nround = game_parts.divs['nround'],
-                      itersToRunDiv = game_parts.divs['iterations_to_run'],
+                      iterSlider = game_parts.sliders['iterations'],
                       txt = game_parts.texts['scr_text'],
                       nextButton = game_parts.buttons['next'],
                       gameFig = game_parts.figures['game_figure'],

@@ -330,12 +330,10 @@ function _fig2Adjust(fig2Data, itersToRun) {
   minVal -= buffer;
   statsFig2.y_range.end   = maxVal;
   statsFig2.y_range.start = minVal;
-  statsFig2.x_range.start -= 0.5;
-  statsFig2.x_range.end   += 0.5;
 
   //Resize hit boxes:
   const hitboxHeight = 2 * Math.max(Math.abs(maxVal), Math.abs(minVal));
-  fig2Data['height'] = new Array(itersToRun + 1).fill(hitboxHeight);
+  fig2Data['heights'].fill(hitboxHeight);
 }
 """
   #</editor-fold>
@@ -448,8 +446,6 @@ function _fig3Adjust(fig3Data, itersToRun, ys) {
   const buffer = Math.round((maxVal - minVal) * 100) / 1000;
   statsFig3.y_range.end   = Math.min(maxVal + buffer, 1);
   statsFig3.y_range.start = Math.max(minVal - buffer, 0);
-  statsFig3.x_range.start -= 0.5;
-  statsFig3.x_range.end   += 0.5;
 }
 """
   #</editor-fold>
@@ -477,7 +473,7 @@ function updateFig3(roundsPlayed, roundIsLastIter, itersToRun) {
   #<editor-fold updateFig4():
 updateFig4 = """
 function updateFig4(
-  roundsPlayed, //Test comment
+  roundsPlayed,
   roundScoreChance,
   kickerFoot,
   kickerKick,
@@ -549,7 +545,7 @@ const freq = distData['freq'];
   #<editor-fold gameIter:
 gameIter = """
 function gameIter(){
-  const itersToRun = parseInt(itersToRunDiv.text);
+  const itersToRun = iterSlider.value;
 
   const gameStrat = stratToUseDiv.text;
 
@@ -679,9 +675,7 @@ async function gameLoop(){
     tempIterVal = 'false';
 
     //True if not in the last iteration of the game:
-    const notLastRound = (
-      parseInt(nround.text) < parseInt(itersToRunDiv.text)
-    );
+    const notLastRound = (parseInt(nround.text) < iterSlider.value);
 
     //True if the button is activated by the user:
     const autoAdvActive = (autoAdvButton.active);
@@ -736,6 +730,74 @@ stratDropdown.visible = false;
 automationTable.visible = false;
 distTable.visible = true;
 """
+
+initialIterationAdjustments = """
+function initialIterationAdjustments(){
+  //Set references:
+  const fig2Data = statsFig2Src.data;
+  const fig3Data = statsFig3Src.data;
+  const fig4Data = statsFig4Src.data;
+
+  //Get iteration value:
+  const iterations = iterSlider.value;
+
+  //Set figure x range limits:
+  statsFig2.x_range.end = iterations + 0.5;
+  statsFig3.x_range.end = iterations + 0.5;
+  statsFig4.x_range.end = iterations + 0.5;
+
+  //Get array length:
+  const arrLength = iterations + 1;
+
+  //Create x Value Arrays for Sources:
+  const fig2Xs = new Array(arrLength).fill(0);
+  fig2Xs.forEach(
+    (v, i) => fig2Xs[i] = i
+  );
+  const fig3Xs = fig2Xs.slice();
+  const fig4Xs = fig2Xs.slice(1);
+
+  //Set Fig2 Source Values:
+  fig2Data['xs'] = fig2Xs;
+  fig2Data['ys'] = [0].concat(new Array(iterations));
+  fig2Data['chance_ys'] = [0].concat(new Array(iterations));
+  fig2Data['highlight_alphas'] = new Array(arrLength).fill(0);
+  fig2Data['heights'] = new Array(arrLength);
+
+  //Set Fig3 Source Values:
+  fig3Data['xs'] = fig3Xs;
+    //First values are manually calculated constants:
+  fig3Data['ll_ys'] = [0.760000].concat(new Array(iterations).fill(0));
+  fig3Data['lm_ys'] = [0.650000].concat(new Array(iterations).fill(0));
+  fig3Data['lr_ys'] = [0.763333].concat(new Array(iterations).fill(0));
+  fig3Data['rl_ys'] = [0.746666].concat(new Array(iterations).fill(0));
+  fig3Data['rm_ys'] = [0.660000].concat(new Array(iterations).fill(0));
+  fig3Data['rr_ys'] = [0.783333].concat(new Array(iterations).fill(0));
+  fig3Data['hb1'] = new Array(arrLength);
+  fig3Data['hb2'] = new Array(arrLength);
+  fig3Data['hb3'] = new Array(arrLength);
+  fig3Data['hb4'] = new Array(arrLength);
+  fig3Data['hb5'] = new Array(arrLength);
+  fig3Data['hb6'] = new Array(arrLength);
+  fig3Data['highlight_alphas'] = new Array(arrLength).fill(0);
+  fig3Data['alphas_zeroes'] = new Array(arrLength).fill(0);
+
+  //Set Fig4 Source Values:
+  fig4Data['xs'] = fig4Xs;
+  fig4Data['ys'] = new Array(iterations);
+  fig4Data['feet'] = new Array(iterations);
+  fig4Data['directions'] = new Array(iterations);
+  fig4Data['actions'] = new Array(iterations);
+  fig4Data['highlight_alphas'] = new Array(iterations).fill(0);
+  fig4Data['avgs_placeholder'] = new Array(iterations).fill(0);
+
+  statsFig2Src.change.emit();
+  statsFig3Src.change.emit();
+  statsFig4Src.change.emit();
+}
+
+initialIterationAdjustments();
+"""
 #</editor-fold>
 
-automateStartCode = (initialGuiDisplay + gameCode)
+automateStartCode = (initialIterationAdjustments + initialGuiDisplay + gameCode)

@@ -23,9 +23,7 @@ cpuSelectedDiv.text = '1';
 const counterNeeded = (this.item === 'Goalie_Cheats');
 
 //update the tracking div for needing a goalie cheats counter:
-if(counterNeeded) {
-  counterMadeDiv.text = '0';
-} else { counterMadeDiv.text = '1'; }
+counterMadeDiv.text = ((counterNeeded) ? '0' : '1');
 
 //Hides the select a cpu strategy tip:
 selectCpuTip.visible = false;

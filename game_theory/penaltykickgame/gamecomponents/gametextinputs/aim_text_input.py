@@ -7,74 +7,30 @@ JS_FLOAT_BUFFER = "0.0000001" # THIS VARIABLE SHOULD BE TREATED AS A CONSTANT.
 # THAT THE VALUE IS WITHIN A RANGE OF THE EXPECTED OUTCOME.
 
 #<editor-fold aim_inputs_callback Code String:
-aim_inputs_callback_code = """
-//Get the chances array to modify:
-const chances = table_source.data['chances'];
-
+aimTextInputsOnChange = """
 //Hide start button:
-b_start_automate.visible = false;
-chances_valid.text = "0";
+startAutomateButton.visible = false;
 
-//Check if inputs are valid:
-let is_valid1 = true;
-let is_valid2 = true;
-let is_valid3 = true;
+const aimVals = aimTextInputs.map(
+  (v) => parseFloat(v.value)
+);
 
-let ll_val = parseFloat(ll_aim_text_input.value);
-let lm_val = parseFloat(lm_aim_text_input.value);
-let lr_val = parseFloat(lr_aim_text_input.value);
-let rl_val = parseFloat(rl_aim_text_input.value);
-let rm_val = parseFloat(rm_aim_text_input.value);
-let rr_val = parseFloat(rr_aim_text_input.value);
+//Handle Validity Checks 1 & 2:
+const isValid1 = (Math.max(...aimVals) <= 1);
+const isValid2 = (Math.min(...aimVals) >= 0);
 
-if(ll_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
-if(lm_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
-if(lr_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
-if(rl_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
-if(rm_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
-if(rr_val > 1){ is_valid1 = false; chances_gt_1_tip.visible = true;}
-if(is_valid1 == true){
-    chances_gt_1_tip.visible = false;
-}
+//Handle Validity check 3:
+const total = aimVals.reduce((a, b) => a + b);
+const isValid3 = (Math.abs(total - 1) <= """ + JS_FLOAT_BUFFER + """);
 
-if(ll_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
-if(lm_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
-if(lr_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
-if(rl_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
-if(rm_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
-if(rr_val < 0){ is_valid2 = false; chances_lt_0_tip.visible = true;}
-if(is_valid2 == true){
-    chances_lt_0_tip.visible = false;
-}
+chancesGT1Tip.visible = !isValid1;
+chancesLT0Tip.visible = !isValid2;
+chancesNE1Tip.visible = !isValid3;
 
+tableSrc.data['chances'] = aimVals.slice();
+tableSrc.change.emit();
 
-
-const total = (ll_val + lm_val + lr_val + rl_val + rm_val + rr_val)
-if(total >= 1 - """ + JS_FLOAT_BUFFER + """
-    && total <= 1 + """ + JS_FLOAT_BUFFER + """){
-    is_valid3 = true;
-    chances_ne_1_tip.visible = false;
-}
-else{
-    is_valid3 = false;
-    chances_ne_1_tip.visible = true;
-}
-
-chances[0] = ll_val;
-chances[1] = lm_val;
-chances[2] = lr_val;
-chances[3] = rl_val;
-chances[4] = rm_val;
-chances[5] = rr_val;
-table_source.change.emit();
-
-if(is_valid1 && is_valid2 && is_valid3){
-    chances_valid.text = "1";
-}
-else{
-    chances_valid.text = "0";
-}
-return;
+chancesValidDiv.text = ((isValid1 && isValid2 && isValid3) ? '1' : '0');
 """
 #</editor-fold>
 
@@ -90,22 +46,23 @@ def create(game_parts, name, config):
 #Needs:
 #    from bokeh.models import CustomJS
 def setup(name, game_parts):
-    args_dict = dict(table_source = game_parts.sources['automation_table'],
-                     ll_aim_text_input = game_parts.textinputs['ll_aim'],
-                     lm_aim_text_input = game_parts.textinputs['lm_aim'],
-                     lr_aim_text_input = game_parts.textinputs['lr_aim'],
-                     rl_aim_text_input = game_parts.textinputs['rl_aim'],
-                     rm_aim_text_input = game_parts.textinputs['rm_aim'],
-                     rr_aim_text_input = game_parts.textinputs['rr_aim'],
-                     chances_valid = game_parts.divs['chances_valid'],
-                     b_start_automate = game_parts.buttons['start'],
-                     chances_gt_1_tip = game_parts.divs['chances_gt_1_tip'],
-                     chances_lt_0_tip = game_parts.divs['chances_lt_0_tip'],
-                     chances_ne_1_tip = game_parts.divs['chances_ne_1_tip']
-    )
-    aim_textInputs_customjs = CustomJS(args = args_dict,
-                                       code = aim_inputs_callback_code)
+    aimTextInputs = [game_parts.textinputs['ll_aim'],
+                     game_parts.textinputs['lm_aim'],
+                     game_parts.textinputs['lr_aim'],
+                     game_parts.textinputs['rl_aim'],
+                     game_parts.textinputs['rm_aim'],
+                     game_parts.textinputs['rr_aim']]
 
-    game_parts.textinputs[name + '_aim'].js_on_change('value',
-                                                      aim_textInputs_customjs)
+    args_dict = dict(tableSrc = game_parts.sources['automation_table'],
+                     aimTextInputs = aimTextInputs,
+                     chancesValidDiv = game_parts.divs['chances_valid'],
+                     startAutomateButton = game_parts.buttons['start'],
+                     chancesGT1Tip = game_parts.divs['chances_gt_1_tip'],
+                     chancesLT0Tip = game_parts.divs['chances_lt_0_tip'],
+                     chancesNE1Tip = game_parts.divs['chances_ne_1_tip'])
+
+    aim_textInputs_change = CustomJS(args = args_dict,
+                                     code = aimTextInputsOnChange)
+    key = (name + '_aim')
+    game_parts.textinputs[key].js_on_change('value', aim_textInputs_change)
 #</editor-fold>

@@ -1,29 +1,30 @@
 from bokeh.plotting import figure
 from bokeh.models import (CustomJSHover, ColumnDataSource, HoverTool)
 
-#<editor-fold Custom JSHover fig_2_xs Code String:
+#<editor-fold Custom JSHover xs Code String:
 #Returns the iteration number and makes the necessary changes for highlighting
 #the hovered data point.
-fig_2_xs_code = """
+xsCode = """
 const index = special_vars.index;
-const data = stats_fig_2_source.data;
+const data = src.data;
 
-data['highlight_alphas'] = new Array(data['highlight_alphas'].length).fill(0);
+data['highlight_alphas'].fill(0);
 data['highlight_alphas'][index] = 1;
-stats_fig_2_source.change.emit();
+src.change.emit();
 
 return(data['xs'][index].toString());
 """
 #</editor-fold>
-#<editor-fold Custom JSHover fig_2_ys Code String:
+#<editor-fold Custom JSHover ys Code String:
 #Returns the y value of the hovered data point.
-fig_2_ys_code = """
-return(stats_fig_2_source.data['ys'][special_vars.index].toString());
+ysCode = """
+const val = src.data['ys'][special_vars.index];
+return val.toString();
 """
 #</editor-fold>
 #<editor-fold Custom HoverTool Tooltip Code String:
 #Code below is for how the custom HoverTool displays the information.
-fig_2_custom_tooltip = """
+custom_tooltip = """
 <div>
     <span style='font-size: 10px;'>Iteration:</span>
     <span style='font-size: 10px;'>@xs{custom}</span>
@@ -35,8 +36,8 @@ fig_2_custom_tooltip = """
 """
 #</editor-fold>
 
-#<editor-fold Stats_fig_2_configs:
-class Stats_fig_2_configs:
+#<editor-fold Stats fig 2 configs:
+class Configs:
     """Objects of this class are used to organize and pass parameters to
     Stats Figure 2. All arguments are mutable, and default values for them are
     the currently decided values being used to make the game. The main purpose
@@ -45,41 +46,36 @@ class Stats_fig_2_configs:
     directly to the default values of the arguments in this class after
     successful testing.
     """
-    def __init__(self, figure_base_tools = "box_zoom, wheel_zoom, pan",
-                 figure_toolbar_location = "below",
-                 figure_toolbar_sticky = False,
-                 figure_title = 'Score Over Iterations',
-                 figure_width = 600, figure_height = 360,
-                 figure_x_range = (0, 50), figure_y_range = (-50, 50),
-                 figure_initial_visibility = False,
-                 figure_title_font_size = '16pt',
-                 figure_x_axis_visibility = True,
-                 figure_y_axis_visibility = True,
-                 figure_xgrid_line_color = None,
-                 figure_ygrid_line_color = None,
-                 figure_outline_line_color = None,
-                 figure_background_color = "white",
+    def __init__(self, fig_base_tools = "box_zoom, wheel_zoom, pan",
+                 fig_toolbar_loc = "below", fig_toolbar_sticky = False,
+                 fig_title = 'Score Over Iterations',
+                 fig_width = 600, fig_height = 360,
+                 fig_x_range = (-0.5, 50.5), fig_y_range = (-50, 50),
+                 fig_initial_visibility = False, fig_title_font_size = '16pt',
+                 fig_x_axis_visibility = True, fig_y_axis_visibility = True,
+                 fig_xgrid_line_color = None, fig_ygrid_line_color = None,
+                 fig_outline_line_color = None, fig_background_color = "white",
                  plot_dot_size = 5, plot_dot_outline_color = "#B56464",
                  plot_dot_color = "#CE7D7D", plot_highlight_dot_size = 10,
                  plot_highlight_dot_outline_color = "#6464B5",
                  plot_highlight_dot_color = "#7D7DCE"):
         #<editor-fold figure:
-        self.figure_base_tools = figure_base_tools
-        self.figure_toolbar_location = figure_toolbar_location
-        self.figure_toolbar_sticky = figure_toolbar_sticky
-        self.figure_title = figure_title
-        self.figure_width = figure_width
-        self.figure_height = figure_height
-        self.figure_x_range = figure_x_range
-        self.figure_y_range = figure_y_range
-        self.figure_initial_visibility = figure_initial_visibility
-        self.figure_title_font_size = figure_title_font_size
-        self.figure_x_axis_visibility = figure_x_axis_visibility
-        self.figure_y_axis_visibility = figure_y_axis_visibility
-        self.figure_xgrid_line_color = figure_xgrid_line_color
-        self.figure_ygrid_line_color = figure_ygrid_line_color
-        self.figure_outline_line_color = figure_outline_line_color
-        self.figure_background_color = figure_background_color
+        self.fig_base_tools = fig_base_tools
+        self.fig_toolbar_loc = fig_toolbar_loc
+        self.fig_toolbar_sticky = fig_toolbar_sticky
+        self.fig_title = fig_title
+        self.fig_width = fig_width
+        self.fig_height = fig_height
+        self.fig_x_range = fig_x_range
+        self.fig_y_range = fig_y_range
+        self.fig_initial_visibility = fig_initial_visibility
+        self.fig_title_font_size = fig_title_font_size
+        self.fig_x_axis_visibility = fig_x_axis_visibility
+        self.fig_y_axis_visibility = fig_y_axis_visibility
+        self.fig_xgrid_line_color = fig_xgrid_line_color
+        self.fig_ygrid_line_color = fig_ygrid_line_color
+        self.fig_outline_line_color = fig_outline_line_color
+        self.fig_background_color = fig_background_color
         #</editor-fold>
         #<editor-fold plot:
         self.plot_dot_size = plot_dot_size
@@ -92,113 +88,92 @@ class Stats_fig_2_configs:
 #</editor-fold>
 
 #<editor-fold stats_figure_2_setup:
-def stats_figure_2_setup(game_parts, fig_configs = Stats_fig_2_configs()):
+def create(game_parts, configs = Configs()):
     """Fully creates and sets up Stats Figure 2 for use in the main game. Stats
     Figure 2 displays the player's score over the iterations played.
 
 
     Keyword Argument:
 
-    fig_configs - An oject of type Stats_fig_2_configs containing the user's
+    configs - An oject of type Configs containing the user's
     desired figure values within its attributes.
-
-
-    Returns:
-
-    stats_fig_2 - The Game stats Bokeh figure displaying the data.
-
-    stats_fig_2_source - The ColumnDataSource used by
-    stats_fig_2.
     """
     #<editor-fold Figure Creation:
     #Create and configure the main aspects of the figure:
-    stats_fig_2 = figure(tools = fig_configs.figure_base_tools,
-                                 toolbar_location = fig_configs.figure_toolbar_location,
-                                 toolbar_sticky = fig_configs.figure_toolbar_sticky,
-                                 title = fig_configs.figure_title,
-                                 plot_width = fig_configs.figure_width,
-                                 plot_height = fig_configs.figure_height,
-                                 x_range = fig_configs.figure_x_range,
-                                 y_range = fig_configs.figure_y_range,
-                                 visible = fig_configs.figure_initial_visibility)
-    stats_fig_2.title.text_font_size = fig_configs.figure_title_font_size
-    stats_fig_2.xaxis.visible = fig_configs.figure_x_axis_visibility
-    stats_fig_2.yaxis.visible = fig_configs.figure_y_axis_visibility
-    stats_fig_2.xgrid.grid_line_color = fig_configs.figure_xgrid_line_color
-    stats_fig_2.ygrid.grid_line_color = fig_configs.figure_ygrid_line_color
-    stats_fig_2.outline_line_color = fig_configs.figure_outline_line_color
-    stats_fig_2.background_fill_color = fig_configs.figure_background_color
+    fig = figure(tools = configs.fig_base_tools,
+                 toolbar_location = configs.fig_toolbar_loc,
+                 toolbar_sticky = configs.fig_toolbar_sticky,
+                 title = configs.fig_title,
+                 plot_width = configs.fig_width,
+                 plot_height = configs.fig_height,
+                 x_range = configs.fig_x_range, y_range = configs.fig_y_range,
+                 visible = configs.fig_initial_visibility)
+    fig.title.text_font_size = configs.fig_title_font_size
+    fig.xaxis.visible = configs.fig_x_axis_visibility
+    fig.yaxis.visible = configs.fig_y_axis_visibility
+    fig.xgrid.grid_line_color = configs.fig_xgrid_line_color
+    fig.ygrid.grid_line_color = configs.fig_ygrid_line_color
+    fig.outline_line_color = configs.fig_outline_line_color
+    fig.background_fill_color = configs.fig_background_color
     #</editor-fold>
     #<editor-fold ColumnDataSource Creation:
     #Create initial values for stats_fig_2_source
-    source_xs = []
-    source_ys = []
-    source_chance_ys = []
-    source_heights = []
-    source_highlight_alphas = []
+    src_xs = []
+    src_ys = []
+    src_chance_ys = []
+    src_heights = []
+    src_highlight_alphas = []
     #Fill the Lists
     for i in range(51):
-        source_xs.append(i)
-        source_ys.append(0)
-        source_chance_ys.append(0)
-        source_heights.append(100)
-        source_highlight_alphas.append(0)
+        src_xs.append(i)
+        src_ys.append(0)
+        src_chance_ys.append(0)
+        src_heights.append(100)
+        src_highlight_alphas.append(0)
 
     #Create stats_fig_2_source with the values that were created.
-    source_data = dict(xs = source_xs,
-                       ys = source_ys,
-                       chance_ys = source_chance_ys,
-                       heights = source_heights,
-                       highlight_alphas = source_highlight_alphas)
-    stats_fig_2_source = ColumnDataSource(data = source_data)
+    src_data = dict(xs = src_xs, ys = src_ys, chance_ys = src_chance_ys,
+                    heights = src_heights,
+                    highlight_alphas = src_highlight_alphas)
+    fig_src = ColumnDataSource(data = src_data)
     #</editor-fold>
     #<editor-fold Plot Figure Points:
     #Create the data points for the figure.
-    stats_fig_2.circle_dot('xs', 'ys',
-                                   source = stats_fig_2_source,
-                                   size = fig_configs.plot_dot_size,
-                                   line_color = fig_configs.plot_dot_outline_color,
-                                   fill_color = fig_configs.plot_dot_color)
-    stats_fig_2.circle_dot('xs', 'chance_ys',
-                                   source = stats_fig_2_source,
-                                   size = 1,
-                                   line_color = "black",
-                                   fill_color = "black")
+    fig.circle_dot(x = 'xs', y = 'ys', source = fig_src,
+                   size = configs.plot_dot_size,
+                   line_color = configs.plot_dot_outline_color,
+                   fill_color = configs.plot_dot_color)
+    fig.circle_dot(x = 'xs', y = 'chance_ys', source = fig_src, size = 1,
+                   line_color = "black", fill_color = "black")
     #</editor-fold>
     #<editor-fold Plot Figure Highlight Points:
     #Plot Highlight Points For Figure:
-    stats_fig_2.circle_dot('xs', 'ys',
-                                   source = stats_fig_2_source,
-                                   size = fig_configs.plot_highlight_dot_size,
-                                   line_color = fig_configs.plot_highlight_dot_outline_color,
-                                   fill_color = fig_configs.plot_highlight_dot_color,
-                                   alpha = 'highlight_alphas')
+    fig.circle_dot(x = 'xs', y = 'ys', source = fig_src,
+                   size = configs.plot_highlight_dot_size,
+                   line_color = configs.plot_highlight_dot_outline_color,
+                   fill_color = configs.plot_highlight_dot_color,
+                   alpha = 'highlight_alphas')
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
     #Create the invisible hitboxes for the figure:
-    hbs = stats_fig_2.rect(x = 'xs', y = 0,
-                                   source = stats_fig_2_source,
-                                   width = 1, height = 'heights',
-                                   fill_color = fig_configs.plot_dot_color,
-                                   alpha = 0)
+    hbs = fig.rect(x = 'xs', y = 0, source = fig_src,
+                   width = 1, height = 'heights', alpha = 0,
+                   fill_color = configs.plot_dot_color)
     #</editor-fold>
     #<editor-fold CustomJSHover Creation:
     #Create the CustomJSHovers used to format the data for the figure's
     #custom HoverTool:
-    hover_args = dict(stats_fig_2_source = stats_fig_2_source)
-    fig_2_xs_custom = CustomJSHover(code = fig_2_xs_code, args = hover_args)
-    fig_2_ys_custom = CustomJSHover(code = fig_2_ys_code, args = hover_args)
+    hover_args = dict(src = fig_src)
+    xs_custom = CustomJSHover(code = xsCode, args = hover_args)
+    ys_custom = CustomJSHover(code = ysCode, args = hover_args)
     #</editor-fold>
     #<editor-fold Create HoverTool:
     #Create the Custom HoverTool and add it to the figure:
-    hover_formatter = { '@xs' : fig_2_xs_custom,
-                        '@ys' : fig_2_ys_custom}
-    stats_fig_2.add_tools(HoverTool(tooltips = fig_2_custom_tooltip,
-                                            formatters = hover_formatter,
-                                            mode = "mouse",
-                                            point_policy = "follow_mouse",
-                                            renderers = [hbs]))
+    hover_formatter = {'@xs' : xs_custom, '@ys' : ys_custom}
+    fig.add_tools(HoverTool(tooltips = custom_tooltip,
+                            formatters = hover_formatter, renderers = [hbs],
+                            mode = "mouse", point_policy = "follow_mouse"))
     #</editor-fold>
-    game_parts.figures['stats_2'] = stats_fig_2
-    game_parts.sources['stats_fig_2'] = stats_fig_2_source
+    game_parts.figures['stats_2'] = fig
+    game_parts.sources['stats_fig_2'] = fig_src
 #</editor-fold>

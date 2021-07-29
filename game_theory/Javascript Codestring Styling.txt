@@ -320,3 +320,7 @@ Abbreviations Used (kept in doc for variable naming consistency):
   iteration : iter
   speed : spd
   advance : adv
+  legend : leg
+  location : loc
+  get center : gc
+  get width : gw

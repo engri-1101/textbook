@@ -169,7 +169,6 @@ class MainGame:
                                         text_align = 'left')
         #</editor-fold>
         #<editor-fold Div Configs:
-        self.iterations_to_run = _DivConfig("50", False)
         self.strategy_to_use = _DivConfig("Not Set", False)
         self.nround = _DivConfig("0", False)
         self.score = _DivConfig("0", False)
@@ -256,11 +255,11 @@ class MainGame:
         #</editor-fold>
 
     def __make_game_components(self):
-        figs.game_fig.game_figure_setup(self.game_parts)
-        figs.stats_fig_1.stats_figure_1_setup(self.game_parts)
-        figs.stats_fig_2.stats_figure_2_setup(self.game_parts)
-        figs.stats_fig_3.stats_figure_3_setup(self.game_parts)
-        figs.stats_fig_4.stats_figure_4_setup(self.game_parts)
+        figs.game_fig.create(self.game_parts)
+        figs.stats_fig_1.create(self.game_parts)
+        figs.stats_fig_2.create(self.game_parts)
+        figs.stats_fig_3.create(self.game_parts)
+        figs.stats_fig_4.create(self.game_parts)
 
         #<editor-fold Gameview Text:
         components.text.scr_text.create(self.game_parts, self.scr_text)
@@ -271,8 +270,6 @@ class MainGame:
         #</editor-fold>
 
         #<editor-fold Divs:
-        components.divs.iterations_to_run.create(self.game_parts,
-                                                 self.iterations_to_run)
         components.divs.strategy_to_use.create(self.game_parts,
                                                self.strategy_to_use)
         components.divs.nround.create(self.game_parts, self.nround)
@@ -361,8 +358,6 @@ class MainGame:
         components.buttons.b_start_automate.setup(self.game_parts)
 
         components.buttons.b_auto_next.setup(self.game_parts)
-
-        components.sliders.iterations_slider.setup(self.game_parts)
 
         components.textinputs.aim_text_input.setup(name = "ll",
                                                    game_parts = self.game_parts)

@@ -2,7 +2,6 @@ from bokeh.models import TableColumn, DataTable
 
 #<editor-fold create():
 def create(game_parts, config):
-
     footedness = TableColumn(field = "footedness", title = config.titles[0],
                              width = config.column_widths[0])
     aim_direction = TableColumn(field = "aim_direction",

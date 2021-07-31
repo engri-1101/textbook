@@ -473,10 +473,13 @@ class MainGame:
             print(INDENT + INDENT + "Automation table created")
             print(INDENT + "Game table creation completed")
         #</editor-fold>
-    def __setup_game_components(self, log_steps = False):
-        components.buttons.b_automate.setup(self.game_parts)
+    def __setup_game_components(self, log_steps = False, CPU_strategy = None):
+        components.buttons.b_automate.setup(self.game_parts, CPU_strategy) # Click callback depends on CPU strategy.
         if(log_steps):
             print(INDENT + "b_automate setup completed")
+            if(CPU_strategy != None):
+                print(INDENT + INDENT + "b_automate callback was adjust to"
+                      + " reflect the pre-designated CPU Strategy.")
         components.divs.cpu_selected.setup(self.game_parts)
         components.divs.chances_valid.setup(self.game_parts)
         components.divs.counter_made.setup(self.game_parts)
@@ -531,7 +534,7 @@ class MainGame:
         grid1 = game_layout.format(self.game_parts, self.layout, log_steps)
         return grid1
 
-    def make_game(self, log_steps = False):
+    def make_game(self, log_steps = False, CPU_strategy = None):
         if(log_steps):
             print("Starting game component creation:")
 
@@ -543,7 +546,7 @@ class MainGame:
             print("")
             print("Starting game component setup")
 
-        self.__setup_game_components(log_steps)
+        self.__setup_game_components(log_steps, CPU_strategy)
 
         if(log_steps):
             print("Game component setup completed")
@@ -556,5 +559,23 @@ class MainGame:
         if(log_steps):
             print("Game layout formatting completed")
 
+        if(CPU_strategy != None):
+            if(log_steps):
+                print("CPU strategy was pre-designated, making value adjustments:")
+            self.game_parts.divs['cpu_selected'].text = '1'
+            if(log_steps):
+                print(INDENT + "Changed cpu_selected div to 1.")
+            self.game_parts.divs['strategy_to_use'].text = CPU_strategy
+            if(log_steps):
+                print(INDENT + "Changed strategy_to_use div to " + CPU_strategy
+                      + ".")
+            if(CPU_strategy == 'Goalie_Cheats'):
+                self.game_parts.divs['counter_made'].text = '0'
+                if(log_steps):
+                    print(INDENT + "As CPU strategy is set to goalie cheats, "
+                          + "changed counter_made div to 0 to indicate a goalie"
+                          + " counter is needed.")
+            if(log_steps):
+                print("Finished adjustments.")
         return grid1
 #</editor-fold>

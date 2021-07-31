@@ -53,9 +53,59 @@ def generate_marvel(min_weight, show = True):
 
     return (marvel, edge_list)
 
+def generate_erdos(show = True):
+    """
+    Returns a tuple (erdos, edge_list) such that the first element is the graph of the network and the second element is a list of all the edges in the network.
+
+    If [show] is true, then it will also print the graph to the screen before returning.
+    """
+    file = open('data-lab/erdos2.txt', 'r')
+    # lines = file.readlines()
+    lines = file.read().splitlines()
+
+    edge_list = []
+    for i in range(6932, len(lines)):
+        line = lines[i].split(' ')
+        author = line[0]
+        for j in range(1, len(line)):
+            edge_list.append((author, line[j]))
+
+    erdos = nx.Graph()
+    erdos.add_edges_from(edge_list)
+    print(nx.info(erdos))
+
+    #display the social network
+    if show:
+        plt.figure(figsize=(15,10), tight_layout=True)
+        pos = nx.spring_layout(erdos)
+        nx.draw_networkx(erdos, pos, with_labels = False, node_size = 20)
+        plt.show()
+
+    return (erdos, edge_list)
+
+def erdos_dict():
+    """
+    Returns a dictionary mapping author ids to author names in the Erdos network.
+    """
+    file = open('data-lab/erdos2.txt', 'r')
+    # lines = file.readlines()
+    lines = file.read().splitlines()
+
+    #lines 3-6929 = authors
+    #lines 6932- = edges with start node as first number of each line
+    authors = {}
+    for i in range(3, 6930):
+        line = lines[i]
+        fst = line.index('"')
+        snd = line.index('"', fst+1)
+        authors[str(i-2)] = line[fst+1:snd].upper()
+        
+    return authors
+
+
 def solve_network(G, edge_list, density, display_color = True, display_community = False):
     """
-    Creates and solves the densest subgraph problem on the given graph G.
+    Creates and solves the densest subgraph problem on the given graph G. Returns the list of nodes in the community.
 
     [density] is the density of the subgraph we are looking for.
     If [display_color] is true, it will print the graph to the screen with all the selected vertices in red.
@@ -97,3 +147,5 @@ def solve_network(G, edge_list, density, display_color = True, display_community
         plt.figure(figsize=(15,10), tight_layout=True)
         nx.draw_networkx(com, with_labels = False, node_size = 40)
         plt.show()
+        
+    return vertex_nodes

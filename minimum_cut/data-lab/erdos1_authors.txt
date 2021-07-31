@@ -1,0 +1,1050 @@
+   1   7  16   ABBOTT, HARVEY LESLIE                   
+ 186 308 318 321 401 429 450
+   2   2  75   ACZEL, JANOS D.                         
+ 370 449
+   3   1   5   AGOH, TAKASHI                           
+ 167
+   4  11  29   AHARONI, RON                            
+ 180 212 215 257 265 283 285 292 312 421 470
+   5   5  20   AIGNER, MARTIN S.                       
+ 168 249 359 479 498
+   6   9  33   AJTAI, MIKLOS                           
+  10  21  80 258 283 378 409 440 462
+   7   0   2   ALAOGLU, LEONIDAS*                      
+
+   8  15  18   ALAVI, YOUSEF                           
+  31  41  69  78 165 271 282 284 297 305 337 411 454 470 495
+   9   3   7   ALLADI, KRISHNASWAMI                    
+ 163 213 482
+  10  51 228   ALON, NOGA M.                           
+   6  17  21  26  44  78  86 115 128 140 142 148 165 173 177 178 180 183 215 229 245 249 254
+   261 265 274 283 287 290 301 315 325 326 336 341 355 378 388 389 394 440 457 459 462 469
+   470 475 479 498 502 504
+  11   8  33   ANDERSON, JAMES MILNE                   
+  84 147 329 350 385 419 423 424
+  12   1   0   ANDRASFAI, BELA                         
+ 438
+  13   2   6   ANKENY, NESMITH CORNETT*                
+  76 379
+  14   0   0   ANNING, NORMAN H.*                      
+
+  15   5   9   ARKIN, JOSEPH*                          
+  16  58 213 353 449
+  16   3  15   ARNEY, DAVID CHRISTOPHER                
+  15  58 227
+  17   7  72   ARONOV, BORIS                           
+  10 158 249 250 341 353 409
+  18   3  28   ASH, J. MARSHALL                        
+ 229 385 392
+  19   0   7   ASHBACHER, CHARLES D.                   
+
+  20   3  60   AVIS, DAVID MICHAEL                     
+  80 107 341
+  21  26  58   BABAI, LASZLO                           
+   6  10  62  78 107 140 159 165 258 287 300 319 326 342 349 363 378 415 416 430 431 438 440
+   457 462 500
+  22   1  33   BABU, GUTTI JOGESH                      
+ 365
+  23   3   8   BAGEMIHL, FREDERICK                     
+ 155 352 413
+  24   7  14   BALOG, ANTAL                            
+ 105 355 363 389 399 462 468
+  25   1   0   BANKOFF, LEON*                          
+ 247
+  26   1  49   BARAK, AMNON B.                         
+  10
+  27   9  14   BATEMAN, PAUL TREVIER                   
+  76 109 209 355 362 414 449 487 494
+  28   8  21   BAUMGARTNER, JAMES EARL                 
+ 152 180 208 257 272 300 421 465
+  29   4  31   BEASLEY, LEROY B.                       
+  51 361 456 499
+  30   2   4   BECK, ISTVAN                            
+  32 134
+  31   5  12   BEHZAD, MEHDI                           
+   8  69 187 282 284
+  32   2   0   BEJLEGAARD, NIELS                       
+  30 134
+  33   0   3   BENKOSKI, STANLEY J.                    
+
+  34   6  20   BERGELSON, VITALY                       
+  38 106 210 274 290 389
+  35   3   9   BERGER, MARC ARON                       
+ 132 139 215
+  36   5   4   BERTRAM, EDWARD ARTHUR                  
+ 163 206 216 432 479
+  37   3  14   BIALOSTOCKI, ARIE                       
+ 274 401 408
+  38   6  38   BLASS, ANDREAS RAPHAEL                  
+  34 187 210 421 465 497
+  39   2   6   BLECKSMITH, RICHARD FRED                
+  52 414
+  40   1   9   BLEICHER, MICHAEL NATHANIEL             
+ 129
+  41   3  12   BOALS, ALFRED JOHN                      
+   8  69 337
+  42   6  24   BOAS, RALPH PHILIP, JR.*                
+  51  56 235 247 354 368
+  43   1  23   BOES, DUANE CHARLES                     
+  94
+  44  37  89   BOLLOBAS, BELA                          
+  10  67  78  82  97 128 165 176 187 199 201 211 229 231 254 261 265 287 290 307 308 312 326
+  344 382 384 398 401 403 430 440 449 462 470 498 502 504
+  45   2   3   BONAR, DANIEL DONALD                    
+  64 352
+  46  10  19   BONDY, JOHN ADRIAN                      
+  80 123 127 201 202 287 430 442 470 479
+  47   1   9   BONNET, ROBERT                          
+ 421
+  48   3  15   BOROSH, ITSHAK                          
+  77 139 211
+  49   2   4   BOSAK, JURAJ                            
+ 326 380
+  50   2   9   BOVEY, JOHN D.                          
+ 332 499
+  51   6  37   BRENNER, JOEL LEE*                      
+  29  42  55 304 456 499
+  52   6  14   BRILLHART, JOHN DAVID                   
+  39 317 320 336 414 494
+  53   3  21   BRINDZA, BELA                           
+ 179 389 471
+  54   5  17   BROWN, THOMAS CRAIG                     
+  78 141 165 201 378
+  55   6   1   BROWN, WILLIAM G.                       
+  51 187 318 430 438 478
+  56   2   1   BUCK, ROBERT CREIGHTON*                 
+  42 354
+  57   2   3   BUKOR, JOZEF                            
+ 396 472
+  58  19  11   BURR, STEFAN ANDRUS                     
+  15  16 115 128 140 164 165 171 177 187 227 281 287 326 378 384 403 438 440
+  59   0   0   BUSOLINI, DONALD TERENCE                
+
+  60   3  38   CACCETTA, LOUIS                         
+ 339 361 491
+  61   5  23   CALKIN, NEIL JAMES                      
+  62  63 167 307 474
+  62  14  80   CAMERON, PETER J.                       
+  21  61  97 107 113 136 140 326 336 342 374 431 485 504
+  63   6  15   CANFIELD, EARL RODNEY                   
+  61 307 355 374 377 504
+  64   2   9   CARROLL, FRANCIS WIILLIAM               
+  45 352
+  65   1   4   CATER, FRANK SYDNEY                     
+ 152
+  66   2   2   CATES, MARSHALL L.                      
+ 210 383
+  67   3  10   CATLIN, PAUL ALLEN*                     
+  44 211 344
+  68   1   4   CHALK, JOHN H. H.                       
+ 379
+  69  26  77   CHARTRAND, GARY THEODORE                
+   8  31  41  78 158 164 165 187 197 203 211 227 267 268 275 282 305 337 344 351 384 410 411
+   454 501 504
+  70   4  23   CHEN, CHUAN CHONG                       
+  80  97 214 231
+  71  13  42   CHEN, GUANTAO                           
+ 128 164 177 195 227 273 275 339 384 403 426 442 498
+  72   3   1   CHEN, HANG                              
+ 158 305 411
+  73   1  19   CHEN, ROBERT W.                         
+ 336
+  74   4  28   CHINN, PHYLLIS ZWEIG                    
+  78 165 187 197
+  75   3   0   CHOI, SHIU LUN GODFREY                  
+ 258 325 462
+  76   8  59   CHOWLA, SARVADAMAN D. S.*               
+  13  27  95 174 325 365 405 449
+  77   2  83   CHUI, CHARLES KAM-TAI                   
+  48 424
+  78  31  85   CHUNG, FAN RONG KING (GRAHAM)           
+   8  10  21  44  54  69  74 108 126 134 140 148 158 165 177 213 249 336 337 362 394 440
+   462 469 475 479 480 485 500 502 505
+  79   6  25   CHUNG, KAI-LAI                          
+ 131 147 220 235 354 433
+  80  19  39   CHVATAL, VACLAV (VASEK)                 
+   6  20  46  70  96 165 186 187 198 201 212 258 287 326 378 411 462 470 475
+  81   1   1   CLARK, BRENT N.                         
+  86
+  82   9  24   CLARK, LANE HENRY                       
+  44 123 305 308 318 452 459 479 504
+  83   0   2   CLARKSON, JAMES ANDREW*                 
+
+  84   4  28   CLUNIE, JAMES G.                        
+  11 118 262 385
+  85   1  32   COHEN, STEPHEN D.                       
+ 325
+  86  13 163   COLBOURN, CHARLES JOSEPH                
+  10  81  99 113 307 322 349 378 380 432 446 502 504
+  87   4  47   CONWAY, JOHN HORTON                     
+  89 175 176 336
+  88   1   4   COPELAND, ARTHUR HERBERT, SR.*          
+ 187
+  89   3   4   CROFT, HALLARD T.                       
+  87 175 176
+  90   4  24   CSAKI, ENDRE                            
+ 169 258 371 492
+  91   2  19   CSISZAR, IMRE                           
+ 258 287
+  92   3   3   CZIPSZER, JANOS                         
+ 143 180 370
+  93   1   7   DARLING, DONALD A.                      
+ 235
+  94   2  16   DARST, RICHARD BRIAN                    
+  43 354
+  95   6  17   DAVENPORT, HAROLD*                      
+  76 200 279 293 379 405
+  96   4  25   DAVIES, ROY O.                          
+  80 187 379 467
+  97   8  23   DAYKIN, DAVID E.                        
+  44  62  70 140 249 287 422 498
+  98   2  16   DE BRUIJN, NICOLAAS GOVERT              
+ 461 485
+  99   7  20   DE CAEN, DOMINIQUE*                     
+  86 136 148 159 361 459 504
+ 100   5  10   DE KONINCK, JEAN-MARIE                  
+ 150 224 240 289 468
+ 101   1   0   DEBOSE, YOLANDA                         
+ 211
+ 102   2  29   DEHEUVELS, PAUL                         
+ 169 371
+ 103   1   4   DELEGLISE, MARC                         
+ 331
+ 104   2  15   DENES, JOZSEF                           
+ 187 476
+ 105   8  33   DESHOUILLERS, JEAN-MARC                 
+  24 142 167 309 355 399 438 468
+ 106  11  11   DEUBER, WALTER A.*                      
+  34 165 173 210 261 274 310 383 391 430 438
+ 107   6  58   DEZA, MICHEL-MARIE                      
+  20  21  62 140 322 431
+ 108   3  77   DIACONIS, PERSI W.                      
+  78 165 229
+ 109   5  10   DIAMOND, HAROLD GEORGE                  
+  27 316 355 385 482
+ 110   2   4   DIRAC, GABRIEL ANDREW*                  
+ 410 470
+ 111   1  17   DIXMIER, JACQUES                        
+ 331
+ 112   0   3   DOWKER, YAEL NAIM                       
+
+ 113   4  15   DRAKE, DAVID ALLYN                      
+  62  86 148 272
+ 114   0   2   DUDLEY, UNDERWOOD                       
+
+ 115   8   5   DUKE, RICHARD ALTER                     
+  10  58 137 187 274 349 378 502
+ 116   4   9   DVORETZKY, ARYEH                        
+ 185 237 379 467
+ 117   2  17   ECKLUND, EARL F., JR.                   
+ 119 414
+ 118   3  11   EDREI, ALBERT*                          
+  84 147 458
+ 119   7  15   EGGLETON, ROGER BENJAMIN                
+ 117 139 176 214 270 414 434
+ 120   1  13   EL-ZAHAR, MOHAMED H.                    
+ 401
+ 121   4   6   ELEKES, GYORGY                          
+ 180 257 325 389
+ 122   2   6   ELLIOTT, PETER D. T. A.                 
+ 390 399
+ 123  16  31   ENTRINGER, ROGER CHARLES                
+  46  82 158 165 191 203 249 305 308 318 362 429 452 454 459 479
+ 124   0  25   ERNE, MARCEL                            
+
+ 125   0  10   EVANS, ANTHONY B.                       
+
+ 126   7  54   FABER, VANCE                            
+  78 127 160 232 245 272 429
+ 127   6  16   FAJTLOWICZ, SIEMION                     
+  46 126 212 369 442 481
+ 128  30  37   FAUDREE, RALPH JASPER, JR.              
+  10  44  58  71 148 158 164 177 178 187 227 228 261 275 290 307 339 341 346 369 384 388
+  403 410 426 430 438 440 442 479
+ 129   3   8   FEJES TOTH, LASZLO                      
+  40 295 401
+ 130   0   0   FELDHEIM, ERVIN*                        
+
+ 131   2   5   FELLER, WILLI K. (WILLIAM)*             
+  79 354
+ 132   4   3   FELZENBAUM, ALEXANDER GERSH             
+  35 139 215 249
+ 133   1   3   FEW, LEONARD                            
+ 379
+ 134  11  72   FISHBURN, PETER C.                      
+  30  32  78 140 148 165 336 440 469 475 502
+ 135   2   1   FODOR, GEZA*                            
+ 180 300
+ 136   6  13   FON-DER-FLAASS, DMITRI G.               
+  62  99 261 326 479 498
+ 137   4   0   FOWLER, JOEL CHRISTOPHER                
+ 115 349 438 500
+ 138   0   3   FOWLER, THOMAS GEORGE                   
+
+ 139  12  64   FRAENKEL, AVIEZRI SIEGMUND              
+  35  48 119 132 154 163 187 215 285 326 438 449
+ 140  22  44   FRANKL, PETER                           
+  10  21  58  62  78  97 107 134 148 165 249 281 287 336 341 378 389 394 431 438 459 500
+ 141   1   9   FREEDMAN, ALLEN R.                      
+  54
+ 142   6  28   FREIMAN, GREGORY A.                     
+  10 105 206 389 408 438
+ 143   6  17   FREUD, GEZA*                            
+  92 329 368 420 455 489
+ 144   2   0   FREUD, ROBERT                           
+ 199 342
+ 145   5  18   FRIED, ERVIN                            
+ 180 312 342 438 453
+ 146   0   0   FRIED, HANS*                            
+
+ 147   6  21   FUCHS, WOLFGANG HEINRICH JOHANNES*      
+  11  79 118 291 354 385
+ 148  36  57   FUREDI, ZOLTAN                          
+  10  78  99 113 128 134 140 164 165 173 177 180 215 216 249 257 258 261 272 283 285 287 336
+  341 372 378 383 385 388 389 416 430 438 475 479 498
+ 149   1   1   GAAL, STEVEN A. (GAL, ISTVAN SANDOR)    
+ 255
+ 150   5  11   GALAMBOS, JANOS                         
+ 100 222 240 370 463
+ 151   2   2   GALLAI, TIBOR* (GRUNWALD, TIBOR)        
+ 479 488
+ 152   9  23   GALVIN, FREDERICK WILLIAM               
+  28  65 180 257 272 292 312 364 421
+ 153   2  10   GERENCSER, LASZLO                       
+ 177 300
+ 154   2  33   GILLIS, JOSEPH E.*                      
+ 139 372
+ 155   2   5   GILLMAN, LEONARD                        
+  23 204
+ 156   7  21   GIMBEL, JOHN GORDON                     
+ 203 264 326 344 448 470 479
+ 157   1   2   GINZBURG, ABRAHAM                       
+ 511
+ 158  21  60   GODDARD, WAYNE DEAN                     
+  17  69  72  78 123 128 183 195 197 203 249 250 267 268 273 305 337 341 351 409 454
+ 159   7  29   GODSIL, CHRISTOPHER DAVID               
+  21  99 214 263 307 326 346
+ 160   3  46   GOLDBERG, MARK K.                       
+ 126 341 440
+ 161   0  12   GOLOMB, MICHAEL                         
+
+ 162   1  10   GOODMAN, ADOLPH W.                      
+ 356
+ 163   5  26   GORDON, BASIL                           
+   9  36 139 385 449
+ 164  18  39   GOULD, RONALD J.                        
+  58  69  71 128 148 173 177 227 261 267 268 275 282 290 378 384 403 498
+ 165  44 106   GRAHAM, RONALD LEWIS                    
+   8  10  21  44  54  58  69  74  78  80 106 108 123 134 140 148 187 201 212 213 249 281
+   287 290 317 326 336 337 378 383 389 394 429 430 438 440 449 462 466 480 485 500 502 505
+ 166   4   9   GRAHAM, SIDNEY WEST                     
+ 224 256 355 482
+ 167  11  54   GRANVILLE, ANDREW JAMES                 
+   3  61 105 209 294 322 355 414 417 441 487
+ 168   1   7   GRIESER, DANIEL                         
+   5
+ 169   3   2   GRILL, KARL                             
+  90 102 371
+ 170   1  16   GRUBER, PETER MANFRED                   
+ 184
+ 171   2  41   GRUNBAUM, BRANKO                        
+  58 247
+ 172   1   0   GRUNWALD, GEZA*                         
+ 476
+ 173  10   6   GUNDERSON, DAVID SHANE                  
+  10 106 148 164 210 261 310 315 378 401
+ 174   2  18   GUPTA, HANSRAJ*                         
+  76 244
+ 175   3   6   GUY, MICHAEL J. T.                      
+  87  89 176
+ 176  13  31   GUY, RICHARD KENNETH                    
+  44  87  89 119 175 185 187 270 312 318 401 402 414
+ 177  29  29   GYARFAS, ANDRAS                         
+  10  58  71  78 128 148 153 164 227 228 249 254 258 264 275 290 326 339 363 378 384
+  388 400 403 462 475 479 498 508
+ 178  11  16   GYORI, ERVIN                            
+  10 128 261 275 290 312 341 383 403 430 479
+ 179   9  26   GYORY, KALMAN                           
+  53 246 287 345 399 405 425 445 471
+ 180  30  21   HAJNAL, ANDRAS                          
+   4  10  28  92 121 135 145 148 152 183 257 272 287 300 312 318 341 356 364 378 383
+   401 416 421 430 438 453 457 462 479
+ 181   2   4   HALASZ, GABOR                           
+ 316 476
+ 182   2  19   HALL, RICHARD ROXBY                     
+ 468 492
+ 183   7  15   HAMBURGER, PETER                        
+  10 158 180 249 261 351 496
+ 184   1   6   HAMMER, JOSEPH                          
+ 170
+ 185   7   8   HANANI, HAIM*                           
+ 116 176 327 401 408 438 500
+ 186   4  19   HANSON, DENIS                           
+   1  80 318 401
+ 187  44 271   HARARY, FRANK*                          
+  31  38  44  55  58  69  74  80  88  96 104 115 128 139 165 176 194 197 201 219 227 236
+  248 267 268 282 313 318 321 326 337 344 359 377 378 410 411 442 454 470 475 478 479 504
+ 188   2   3   HARCOS, GERGELY                         
+ 341 389
+ 189   1   2   HARDY, GEORGE EUGENE                    
+ 450
+ 190   2  15   HARE, WILLIAM RAY, JR.                  
+ 197 273
+ 191   1   0   HARNER, CHARLES C.                      
+ 123
+ 192   2  14   HARTMAN, STANISLAW*                     
+ 405 463
+ 193   0   4   HARTTER, ERICH                          
+
+ 194   1   1   HARZHEIM, EGBERT                        
+ 187
+ 195   7  24   HATTINGH, JOHANNES H.                   
+  71 158 197 203 273 384 454
+ 196   2   3   HECHLER, STEPHEN HERMAN                 
+ 236 242
+ 197  12  85   HEDETNIEMI, STEPHEN TRAVIS              
+  69  74 158 187 190 195 203 227 273 359 377 496
+ 198   2  14   HEDRLIN, ZDENEK                         
+  80 201
+ 199   5   3   HEGYVARI, NORBERT                       
+  44 144 231 367 399
+ 200   2   4   HEILBRONN, HANS ARNOLD*                 
+  95 404
+ 201  14  81   HELL, PAVOL                             
+  44  46  54  80 165 187 198 261 326 380 382 466 479 502
+ 202   3  18   HEMMINGER, ROBERT LOUIS                 
+  46 214 307
+ 203  11  57   HENNING, MICHAEL A.                     
+  69 123 156 158 195 197 268 273 337 454 479
+ 204   1  35   HENRIKSEN, MELVIN                       
+ 155
+ 205   1   6   HERZOG, FRITZ*                          
+ 352
+ 206   3  33   HERZOG, MARCEL                          
+  36 142 408
+ 207   3   6   HICKERSON, DEAN ROBERT                  
+ 333 341 444
+ 208   1   9   HIGGS, DENIS ARTHUR                     
+  28
+ 209   8   5   HILDEBRAND, ADOLF J.                    
+  27 167 294 336 360 362 372 468
+ 210   8  28   HINDMAN, NEIL                           
+  34  38  66 106 173 274 290 383
+ 211   6  22   HOBBS, ARTHUR M.                        
+  44  48  67  69 101 347
+ 212   5  94   HOFFMAN, ALAN JEROME                    
+   4  80 127 165 449
+ 213   5  32   HOGGATT, VERNER EMIL, JR.*              
+   9  15  78 165 449
+ 214   7  59   HOLTON, DEREK ALLAN                     
+  70 119 159 202 307 470 504
+ 215   9  19   HOLZMAN, RON                            
+   4  10  35 132 139 148 249 265 283
+ 216   8  38   HORAK, PETER                            
+  36 148 380 382 401 432 475 479
+ 217   2   7   HORVATH, MIKLOS                         
+ 233 259
+ 218   0   1   HOWORKA, EDWARD R.                      
+
+ 219   4  91   HSU, DERBIAU FRANK                      
+ 187 249 290 334
+ 220   1   0   HUNT, GILBERT AGNEW                     
+  79
+ 221   2  12   HWANG, JUN SHUNG*                       
+ 407 413
+ 222   2  20   INDLEKOFER, KARL-HEINZ                  
+ 150 240
+ 223   0   3   INGHAM, ALBERT EDWARD*                  
+
+ 224   5  19   IVIC, ALEKSANDAR                        
+ 100 166 355 365 468
+ 225   0   1   JABOTINSKY, ERI*                        
+
+ 226   1  12   JACKSON, STEPHEN CRAIG                  
+ 302
+ 227  20  47   JACOBSON, MICHAEL SCOTT                 
+  16  58  69  71 128 164 177 187 197 267 268 275 337 339 384 403 426 479 496 498
+ 228   4  27   JAGOTA, ARUN KUMAR                      
+ 128 177 290 403
+ 229   7  80   JANSON, SVANTE                          
+  10  18  44 108 290 440 504
+ 230   0   6   JARNIK, VOJTECH*                        
+
+ 231   3   7   JIN, GUO PING                           
+  44  70 199
+ 232   1   0   JONES, FRED B.                          
+ 126
+ 233   7  44   JOO, ISTVAN*                            
+ 217 234 253 259 407 455 459
+ 234   1   0   JOO, MIKLOS                             
+ 233
+ 235   7  39   KAC, MARK*                              
+  42  79  93 354 458 484 503
+ 236   3   9   KAINEN, PAUL C.                         
+ 187 196 411
+ 237   3  19   KAKUTANI, SHIZUO*                       
+ 116 340 467
+ 238   2  16   KAPLANSKY, IRVING*                      
+ 307 354
+ 239   0   9   KARAMATA, JOVAN*                        
+
+ 240   4  33   KATAI, IMRE                             
+ 100 150 222 450
+ 241   1   8   KELLY, PAUL JOSEPH*                     
+ 449
+ 242   3  29   KENNEDY, JOHN W.                        
+ 196 344 377
+ 243   1   2   KESTELMAN, HYMAN*                       
+ 379
+ 244   1   0   KHARE, SATGUR PRASAD                    
+ 174
+ 245  12  30   KIERSTEAD, HENRY A.                     
+  10 126 261 286 312 378 400 415 462 475 479 502
+ 246   4  14   KISS, PETER*                            
+ 179 355 399 405
+ 247   8  28   KLAMKIN, MURRAY SEYMOUR*                
+  25  42 171 308 329 384 450 485
+ 248   4  84   KLAWE, MARIA MARGARET                   
+ 187 249 283 319
+ 249  29 105   KLEITMAN, DANIEL J.                     
+   5  10  17  78  97 123 132 140 148 158 165 177 183 215 219 248 250 280 312 341
+   351 355 383 394 409 440 459 470 498
+ 250   5   7   KLUGERMAN, MICHAEL RICHARD              
+  17 158 249 341 409
+ 251   1   0   KNAPPENBERGER, JONATHAN CHARLES         
+ 329
+ 252   1   5   KO, CHAO (KE, ZHAO)                     
+ 364
+ 253   1   1   KOCZY, LASZLO A.                        
+ 233
+ 254  10  33   KOHAYAKAWA, YOSHIHARU                   
+  10  44 177 290 301 378 403 430 462 469
+ 255   2   8   KOKSMA, JURJEN FERDINAND*               
+ 149 293
+ 256   2   7   KOLESNIK, GRIGORI ABRAMOVICH            
+ 166 449
+ 257  12  14   KOMJATH, PETER                          
+   4  28 121 148 152 180 312 341 378 416 421 473
+ 258  17  34   KOMLOS, JANOS                           
+   6  21  75  80  90  91 148 177 336 341 371 378 399 400 430 440 462
+ 259   2  20   KOMORNIK, VILMOS                        
+ 217 233
+ 260   3  78   KOREN, ISRAEL                           
+ 319 427 507
+ 261  25  62   KOSTOCHKA, ALEXANDR V.                  
+  10  44 106 128 136 148 164 173 178 183 201 245 290 310 326 341 363 378 391
+  403 469 475 479 498 502
+ 262   3   1   KOVARI, TAMAS                           
+  84 438 476
+ 263   2  48   KRANTZ, STEVEN GEORGE                   
+ 159 346
+ 264   4  47   KRATSCH, DIETER                         
+ 156 177 275 479
+ 265   8  35   KRIVELEVICH, MICHAEL                    
+   4  10  44 215 440 457 469 504
+ 266   1  18   KROO, ANDRAS V.                         
+ 455
+ 267  10  10   KUBICKA, EWA MARIE                      
+  69 158 164 187 227 268 275 337 411 498
+ 268  10  16   KUBICKI, GRZEGORZ                       
+  69 158 164 187 203 227 267 275 337 498
+ 269   2  43   KUNEN, KENNETH                          
+ 302 387
+ 270   4   3   LACAMPAGNE, CAROLE B.                   
+ 119 176 355 414
+ 271   4  46   LAM, PETER CHE BOR                      
+   8 282 284 495
+ 272   6   5   LARSON, JEAN ANN                        
+  28 113 126 148 152 180
+ 273   7  72   LASKAR, RENU CHAKRAVARTI                
+  71 158 190 195 197 203 359
+ 274   9  17   LEFMANN, HANNO                          
+  10  34  37 106 115 210 290 349 378
+ 275  17  24   LEHEL, JENO                             
+  69  71 128 164 177 178 227 264 267 268 326 337 378 403 426 479 498
+ 276   0   9   LEHNER, JOSEPH                          
+
+ 277   1  13   LENGYEL, BELA A.*                       
+ 371
+ 278   5   6   LEV, VSEVOLOD F.                        
+ 290 367 389 397 399
+ 279   1   0   LEVEQUE, WILLIAM JUDSON                 
+  95
+ 280   1   3   LEWIN, MORDECHAI                        
+ 249
+ 281   3  30   LI, WEN-CH'ING WINNIE                   
+  58 140 165
+ 282  10  11   LICK, DON RAYMOND                       
+   8  31  69 164 187 271 284 410 454 495
+ 283  12  83   LINIAL, NATHAN                          
+   4   6  10 148 215 248 287 319 347 383 394 438
+ 284   7   9   LIU, JIUQIANG                           
+   8  31 271 282 305 411 495
+ 285   5  20   LOEBL, MARTIN                           
+   4 139 148 326 438
+ 286   1  23   LORENTZ, GEORGE GUNTHER*                
+ 245
+ 287  30  96   LOVASZ, LASZLO                          
+  10  21  44  46  58  80  91  97 140 148 165 179 180 283 326 341 363 394 399 416 429
+  430 438 440 449 457 469 475 490 502
+ 288   1  19   LOXTON, JOHN HAROLD                     
+ 487
+ 289   3  62   LUCA, FLORIAN                           
+ 100 355 425
+ 290  24  44   LUCZAK, TOMASZ                          
+  10  34  44 128 164 165 177 178 210 219 228 229 254 261 274 278 326 343 363 378 421
+  430 440 462
+ 291   1  11   MACINTYRE, ARCHIBALD JAMES*             
+ 147
+ 292   3  31   MAGIDOR, MENACHEM                       
+   4 152 421
+ 293   3  12   MAHLER, KURT*                           
+  95 255 461
+ 294   5   6   MAIER, HELMUT                           
+ 167 209 355 399 468
+ 295   4  26   MAKAI, ENDRE, JR.                       
+ 129 341 440 492
+ 296   1  19   MAKKAI, MICHAEL                         
+ 421
+ 297   4   3   MALDE, PARESH J.                        
+   8 411 454 470
+ 298   2   0   MALOUF, JANICE L.                       
+ 414 460
+ 299   0  33   MARCUS, SOLOMON                         
+
+ 300   7   8   MATE, ATTILA                            
+  21  28 135 153 180 364 473
+ 301   5  21   MAUDUIT, CHRISTIAN                      
+  10 254 355 378 399
+ 302   5  54   MAULDIN, RICHARD DANIEL                 
+ 226 269 358 447 480
+ 303   1   4   MAXSEIN, THOMAS*                        
+ 436
+ 304   1  19   MAYS, MICHAEL ELLSWORTH                 
+  51
+ 305   8   7   MCCANNA, JOSEPH E.                      
+   8  69  72  82 123 158 284 459
+ 306   4  85   MCELIECE, ROBERT JAMES                  
+ 336 372 386 466
+ 307  16  75   MCKAY, BRENDAN DARIEN                   
+  44  61  63  86 128 159 202 214 238 336 344 374 377 432 470 504
+ 308  13  13   MEIR, AMRAM                             
+   1  44  82 123 247 318 321 402 420 438 459 473 476
+ 309   1   1   MELFI, GIUSEPPE                         
+ 105
+ 310   3   0   MEYER, ANJA GABRIELE                    
+ 106 173 261
+ 311   0   1   MILLS, GEORGE HARLOW                    
+
+ 312  15  10   MILNER, ERIC CHARLES*                   
+   4  44 145 152 176 178 180 245 249 257 364 401 408 421 462
+ 313   1   6   MINC, HENRYK                            
+ 187
+ 314   1   5   MIRSKY, LEONID*                         
+ 364
+ 315   4  30   MOLLOY, MICHAEL SEAN O'BRIEN            
+  10 173 377 504
+ 316   7  23   MONTGOMERY, HUGH LOWELL                 
+ 109 181 332 336 405 482 487
+ 317   6  26   MONTGOMERY, PETER L.                    
+  52 165 383 440 449 494
+ 318  12  15   MOON, JOHN W.                           
+   1  55  82 123 176 180 186 187 308 321 361 459
+ 319   6  58   MORAN, SHLOMO                           
+  21 248 260 283 427 507
+ 320   2  14   MORTON, PATRICK                         
+  52 417
+ 321   4  15   MOSER, LEO*                             
+   1 187 308 318
+ 322   9  57   MULLIN, RONALD C.                       
+  86 107 167 374 380 431 438 446 500
+ 323   2  44   MURTY, MARUTI RAM PEDAPROLU             
+ 324 425
+ 324   2  15   MURTY, VIJAYA KUMAR                     
+ 323 425
+ 325   9   9   NATHANSON, MELVYN BERNARD               
+  10  75  76  85 121 389 399 468 469
+ 326  29  73   NESETRIL, JAROSLAV                      
+  10  21  44  49  58  62  80 136 139 156 159 165 177 187 201 261 275 285 287 290 349
+  378 382 391 403 421 479 483 504
+ 327   1   6   NETANYAHU, ELISHA*                      
+ 185
+ 328   1   9   NEVEU, JACQUES                          
+ 370
+ 329  10  38   NEWMAN, DONALD J.                       
+  11 143 247 251 346 368 373 385 419 424
+ 330   0  23   NEY, PETER E.                           
+
+ 331   8  21   NICOLAS, JEAN-LOUIS                     
+ 103 111 355 389 399 405 456 468
+ 332   2  12   NIVEN, IVAN MORTON*                     
+  50 316
+ 333   2   1   NORTON, DONALD ALAN                     
+ 207 444
+ 334   1  49   O'NEIL, PATRICK EUGENE                  
+ 219
+ 335   0   0   OBLATH, RICHARD*                        
+
+ 336  21 112   ODLYZKO, ANDREW MICHAEL                 
+  10  52  62  73  78  87 134 140 148 165 209 258 306 307 316 360 372 374 399 461 504
+ 337  15  38   OELLERMANN, ORTRUD R.                   
+   8  41  69  78 158 165 187 203 227 267 268 275 351 411 454
+ 338   0   2   OFFORD, ALBERT CYRIL*                   
+
+ 339  10  11   ORDMAN, EDWARD THORNE                   
+  60  71 128 177 227 361 384 403 479 508
+ 340   2   3   OXTOBY, JOHN C.*                        
+ 237 480
+ 341  32  68   PACH, JANOS                             
+  10  17  20 128 140 148 158 160 178 180 188 207 249 250 257 258 261 287 295 353 363
+  378 379 389 401 409 430 440 457 462 479 483
+ 342   8  27   PALFY, PETER PAL                        
+  21  62 144 145 363 416 456 457
+ 343   2   7   PALKA, ZBIGNIEW J.                      
+ 290 440
+ 344   9  14   PALMER, EDGAR MILAN                     
+  44  67  69 156 187 242 307 377 411
+ 345   1   3   PAPP, ZOLTAN Z.                         
+ 179
+ 346   5  18   PARSONS, TORRENCE DOUGLAS*              
+ 128 159 263 329 403
+ 347   2  29   PAYAN, CHARLES                          
+ 211 283
+ 348   1   1   PENNEY, DAVID EMROY, II                 
+ 355
+ 349  10  29   PHELPS, KEVIN THOMAS                    
+  21  86 115 137 274 326 378 380 446 502
+ 350   3  27   PINKUS, ALLAN M.                        
+  11 424 473
+ 351   6   6   PIPPERT, RAYMOND ELMER                  
+  69 158 183 249 337 496
+ 352   5  21   PIRANIAN, GEORGE                        
+  23  45  64 205 423
+ 353   6  35   POLLACK, RICHARD M.                     
+  15  17 341 418 440 479
+ 354   9   9   POLLARD, HARRY STRANGE*                 
+  42  56  79  94 131 147 235 238 424
+ 355  29  53   POMERANCE, CARL BERNARD                 
+  10  24  27  63 105 109 166 167 224 246 249 270 289 294 301 331 348 385 394 399 406
+  414 417 441 445 449 468 487 494
+ 356   2   0   POSA, LAJOS                             
+ 162 180
+ 357   0   8   PRACHAR, KARL*                          
+
+ 358   2  56   PREISS, DAVID                           
+ 302 378
+ 359   6   7   PRINS, GEERT CALEB ERNST*               
+   5 187 197 273 407 478
+ 360   3   0   PUDAITE, PAUL                           
+ 209 336 372
+ 361   6  21   PULLMAN, NORMAN JAY*                    
+  29  60  99 318 339 504
+ 362   7  10   PURDY, GEORGE BARRY                     
+  27  78 123 209 429 449 494
+ 363  12  16   PYBER, LASZLO                           
+  21  24 177 261 287 290 341 342 378 416 462 479
+ 364   6   9   RADO, RICHARD*                          
+ 152 180 252 300 312 314
+ 365   6  10   RAMACHANDRA, KANAKANAHALLI              
+  22  76 224 425 450 471
+ 366   3  16   RAO, SIDDANI BHASKARA                   
+ 430 431 438
+ 367   4   8   RAUZY, GERARD                           
+ 199 278 397 399
+ 368   4   5   REDDY, A. R.                            
+  42 143 329 424
+ 369   4  13   REID, TALMAGE JAMES                     
+ 127 128 403 442
+ 370  12  25   RENYI, ALFRED A.*                       
+   2  92 150 328 371 438 453 461 463 476 481 492
+ 371   6  27   REVESZ, PAL                             
+  90 102 169 258 277 370
+ 372   7  17   REZNICK, BRUCE ARIE                     
+ 148 154 209 306 336 360 498
+ 373   1  11   RICHARDS, JONATHAN IAN*                 
+ 329
+ 374   9  34   RICHMOND, LAWRENCE BRUCE                
+  62  63 307 322 336 377 450 461 504
+ 375   0   0   RIEGER, GEORG JOHANN                    
+
+ 376   1   5   RIESEL, HANS                            
+ 487
+ 377  10  30   ROBINSON, ROBERT WILLIAM                
+  63 187 197 242 307 315 344 374 411 504
+ 378  42  69   RODL, VOJTECH                           
+   6  10  21  54  58  80  86 115 140 148 164 165 173 177 180 187 245 254 257 258 261
+   274 275 290 301 326 341 349 358 363 401 403 416 430 440 462 469 474 475 479 500 502
+ 379   9  26   ROGERS, CLAUDE AMBROSE*                 
+  13  68  95  96 116 133 243 341 467
+ 380   8  58   ROSA, ALEXANDER                         
+  49  86 201 216 322 349 432 446
+ 381   0   6   ROSENBLOOM, PAUL CHARLES*               
+
+ 382   4  16   ROSENFELD, MOSHE^1                      
+  44 201 216 326
+ 383  15  25   ROTHSCHILD, BRUCE LEE                   
+  66 106 148 165 178 180 210 249 283 317 431 438 440 449 485
+ 384  14  34   ROUSSEAU, CECIL CLYDE                   
+  44  58  69  71 128 164 177 195 227 247 339 403 410 479
+ 385  12  71   RUBEL, LEE ALBERT*                      
+  11  18  84 109 147 148 163 329 355 405 423 449
+ 386   2   9   RUBIN, ARTHUR L.                        
+ 306 466
+ 387   2  21   RUDIN, MARY ELLEN ESTILL                
+ 269 421
+ 388   7  10   RUSZINKO, MIKLOS                        
+  10 128 148 177 400 459 462
+ 389  22  34   RUZSA, IMRE Z.                          
+  10  24  34  53 121 140 142 148 165 188 278 325 331 341 399 405 449 462 466 468 471 479
+ 390   1   5   RYAVEC, CHARLES ALBERT                  
+ 122
+ 391   4  23   SACHS, HORST                            
+ 106 261 326 501
+ 392   4  13   SAFFARI, BAHMAN                         
+  18 419 435 487
+ 393   0   5   SAIAS, ERIC                             
+
+ 394  13 108   SAKS, MICHAEL EZRA                      
+  10  78 140 165 249 283 287 355 438 457 459 470 475
+ 395   0 113   SALAMON, PETER                          
+
+ 396   5  56   SALAT, TIBOR                            
+  57 405 467 471 472
+ 397   3   0   SANDOR, CSABA                           
+ 278 367 399
+ 398   1   2   SARKAR, AMITES                          
+  44
+ 399  24  22   SARKOZY, ANDRAS                         
+  24 105 122 179 199 246 258 278 287 294 301 325 331 336 355
+  367 389 397 400 430 438 445 456 462
+ 400   7   1   SARKOZY, GABOR N.                       
+ 177 245 258 388 399 415 462
+ 401  18  31   SAUER, NORBERT W.                       
+   1  37  44 120 129 173 176 180 185 186 216 312 341 378 402 408 432 440
+ 402   4   7   SCHAER, JONATHAN                        
+ 176 308 401 440
+ 403  25  31   SCHELP, RICHARD H.                      
+  44  58  71 128 164 177 178 227 228 254 261 275 326 339 346
+  369 378 384 410 426 430 438 442 479 498
+ 404   1   8   SCHERK, PETER*                          
+ 200
+ 405  13  59   SCHINZEL, ANDRZEJ                       
+  76  95 179 192 246 316 331 385 389 396 425 461 471
+ 406   1   8   SCHMUTZ, ERIC J.                        
+ 355
+ 407   5  12   SCHNITZER, FRANZ JOSEF                  
+ 221 233 359 413 423
+ 408   6  18   SCHONHEIM, JOHANAN                      
+  37 142 185 206 312 401
+ 409   6  42   SCHULMAN, LEONARD J. Y.                 
+   6  17 158 249 250 341
+ 410   7   8   SCHUSTER, SEYMOUR                       
+  69 110 128 187 282 384 403
+ 411  15  28   SCHWENK, ALLEN JOHN                     
+   8  69  72  80 187 236 267 284 297 337 344 377 454 470 501
+ 412   0   3   SEGAL, SANFORD LEONARD                  
+
+ 413   3  11   SEIDEL, WLADIMIR P.*                    
+  23 221 407
+ 414  13  21   SELFRIDGE, JOHN L.                      
+  27  39  52 117 119 167 176 270 298 355 449 460 494
+ 415   4  12   SELKOW, STANLEY M.                      
+  21 245 400 462
+ 416  10  38   SERESS, AKOS                            
+  21 148 180 257 287 342 363 378 459 498
+ 417   4  72   SHALLIT, JEFFREY OUTLAW                 
+ 167 320 355 457
+ 418   1  12   SHAPIRO, HAROLD NATHANIEL               
+ 353
+ 419   4  44   SHAPIRO, HAROLD SEYMOUR                 
+  11 329 392 423
+ 420   6  51   SHARMA, AMBIKESHWAR*                    
+ 143 308 449 455 486 489
+ 421  15 180   SHELAH, SAHARON                         
+   4  28  38  47 152 180 257 290 292 296 312 326 387 437 440
+ 422   1   1   SHENG, TSENG KUO                        
+  97
+ 423   5  39   SHIELDS, ALLEN LOWELL*                  
+  11 352 385 407 419
+ 424   6  39   SHISHA, OVED*                           
+  11  77 329 350 354 368
+ 425   8  18   SHOREY, TARLOK N.                       
+ 179 289 323 324 365 405 445 471
+ 426   5  11   SHREVE, WARREN EUGENE                   
+  71 128 227 275 403
+ 427   3  25   SILBERMAN, GABRIEL M.                   
+ 260 319 507
+ 428   1  12   SILVERMAN, RUTH                         
+ 443
+ 429   7  17   SIMMONS, GUSTAVUS J.                    
+   1 123 126 165 287 362 449
+ 430  22  24   SIMONOVITS, MIKLOS                      
+  21  44  46  55 106 128 148 165 178 180 254 258 287 290 341 366 378 399 403 438 440 462
+ 431   7  27   SINGHI, NAVIN MADHAVPRASAD              
+  21  62 107 140 322 366 383
+ 432   7  51   SIRAN, JOZEF                            
+  36  86 216 307 380 401 479
+ 433   1   5   SIRAO, TUNEKITI                         
+  79
+ 434   1   0   SKILTON, DONALD K.                      
+ 119
+ 435   1   6   SMITH, BRENT PENDLETON                  
+ 392
+ 436   1   2   SMITH, PAUL R.                          
+ 303
+ 437   1   2   SOIFER, ALEXANDER                       
+ 421
+ 438  37  14   SOS, VERA TURAN                         
+  12  21  55  58 105 106 128 137 139 140 142 145 148 165 180 185 262 283 285 287 308 322
+  366 370 383 394 399 403 430 446 449 461 462 476 490 500 509
+ 439   0  11   SPECKER, ERNST P.                       
+
+ 440  35  57   SPENCER, JOEL H.                        
+   6  10  21  44  58  78 128 134 160 165 229 249 258 265 287 290 295 317 341 343 353 378
+   383 401 402 421 430 449 462 469 475 490 498 502 504
+ 441   2   0   SPIRO-SILVERMAN, CLAUDIA A.             
+ 167 355
+ 442   7   9   STATON, WILLIAM A., III                 
+  46  71 127 128 187 369 403
+ 443   1   2   STEIN, ALAN H.                          
+ 428
+ 444   2   8   STEIN, SHERMAN K.                       
+ 207 333
+ 445   5   9   STEWART, CAMERON L.                     
+ 179 355 399 425 471
+ 446   5  81   STINSON, DOUGLAS ROBERT                 
+  86 322 349 380 438
+ 447   2  11   STONE, ARTHUR HAROLD*                   
+ 302 478
+ 448   1  14   STRAIGHT, H. JOSEPH                     
+ 156
+ 449  26  44   STRAUS, ERNST GABOR*                    
+   2  15  27  44  76 139 163 165 212 213 241 256 287 317 355 362 383 385 389 414 420
+   429 438 440 450 461
+ 450   7  31   SUBBARAO, MATUKUMALLI VENKATA*          
+   1 189 240 247 365 374 449
+ 451   1  13   SUEN, W.-C. STEPHEN                     
+ 502
+ 452   3   3   SUN, HUI CHENG                          
+  82 123 459
+ 453   5   3   SURANYI, JANOS                          
+ 145 180 370 456 476
+ 454  11  25   SWART, HENDRIKA CORNELIA SCOTT (HENDA)  
+   8  69 123 158 187 195 203 282 297 337 411
+ 455   6  21   SZABADOS, JOZSEF                        
+ 143 233 266 420 486 489
+ 456   8   1   SZALAY, MIHALY                          
+  29  51 331 342 399 453 476 499
+ 457   9  47   SZEGEDY, MARIO                          
+  10  21 180 265 287 341 342 394 417
+ 458   3  18   SZEGO, GABOR*                           
+ 118 235 476
+ 459  16  37   SZEKELY, LASZLO A.                      
+  10  82  99 123 140 233 249 305 308 318 388 394 416 452 479 504
+ 460   3   0   SZEKERES, ESTHER KLEIN*                 
+ 298 414 461
+ 461  11  21   SZEKERES, GEORGE*                       
+  98 293 336 370 374 405 438 449 460 476 504
+ 462  29  51   SZEMEREDI, ENDRE                        
+   6  10  21  24  44  75  78  80 165 177 180 245 254 258 290 312 341 363 378 388
+   389 399 400 415 430 438 440 475 479
+ 463   6   7   SZUSZ, PETER                            
+ 150 192 370 476 492 493
+ 464   0  26   TARSKI, ALFRED*                         
+
+ 465   2   9   TAYLOR, ALAN DANA                       
+  28  38
+ 466   5  21   TAYLOR, HERBERT                         
+ 165 201 306 386 389
+ 467   6  22   TAYLOR, SAMUEL JAMES                    
+  96 116 237 379 396 472
+ 468  11  26   TENENBAUM, GERALD                       
+  24 100 105 182 209 224 294 325 331 355 389
+ 469  11  31   TETALI, PRASAD VSRV                     
+  10  78 134 254 261 265 287 325 378 440 502
+ 470  15  42   THOMASSEN, CARSTEN                      
+   4   8  10  44  46  80 110 156 187 214 249 297 307 394 411
+ 471   8  33   TIJDEMAN, ROBERT                        
+  53 179 365 389 396 405 425 445
+ 472   3   9   TOTH, JANOS T.                          
+  57 396 467
+ 473   5  31   TOTIK, VILMOS                           
+ 257 300 308 350 492
+ 474   3  52   TOVEY, CRAIG AARON                      
+  61 378 498
+ 475  18  44   TROTTER, WILLIAM THOMAS, JR.            
+  10  78  80 134 148 177 187 216 245 261 287 378 394 440 462 479 498 502
+ 476  12  10   TURAN, PAL*                             
+ 104 172 181 262 308 370 438 453 456 458 461 463
+ 477   0   1   TURK, JOHANNES WILHELMUS MARIA          
+
+ 478   4  11   TUTTE, WILLIAM THOMAS*                  
+  55 187 359 447
+ 479  39 114   TUZA, ZSOLT                             
+   5  10  36  46  78  82 123 128 136 148 151 156 177 178 180 187 201 203 216 227
+245 261 264 275 326 339 341 353 363 378 384 389 403 432 459 462 475 483 498
+ 480   5  23   ULAM, STANISLAW MARCIN*                 
+  78 165 302 340 505
+ 481   2  26   URBANIK, KAZIMIERZ*                     
+ 127 370
+ 482   4  23   VAALER, JEFFREY DAVID                   
+   9 109 166 316
+ 483   3  25   VALTR, PAVEL                            
+ 326 341 479
+ 484   2   2   VAN KAMPEN, EGBERTUS RUDOLF*            
+ 235 503
+ 485   7  55   VAN LINT, JACOBUS HENDRICUS*            
+  62  78  98 165 247 383 500
+ 486   3  19   VARMA, ARUN KUMAR*                      
+ 420 455 489
+ 487   7  10   VAUGHAN, ROBERT CHARLES                 
+  27 167 288 316 355 376 392
+ 488   1   4   VAZSONYI, ANDREW* (WEISZFELD, ENDRE)    
+ 151
+ 489   4  23   VERTESI, PETER O. H.                    
+ 143 420 455 486
+ 490   3   5   VESZTERGOMBI, KATALIN L.                
+ 287 438 440
+ 491   1  23   VIJAYAN, KAIPILLIL                      
+  60
+ 492   6  17   VINCZE, ISTVAN*                         
+  90 182 295 370 463 473
+ 493   1   7   VOLKMANN, BODO                          
+ 463
+ 494   6  18   WAGSTAFF, SAMUEL STANDFIELD, JR.        
+  27  52 317 355 362 414
+ 495   5  53   WANG, JIAN FANG                         
+   8 271 282 284 498
+ 496   4  12   WEAKLEY, WILLIAM DOUGLAS                
+ 183 197 227 351
+ 497   1  10   WEISS, GARY LYNN                        
+  38
+ 498  24 100   WEST, DOUGLAS BRENT                     
+   5  10  44  71  97 136 148 164 177 227 249 261 267 268 275 372 403 416 440 474
+475 479 495 507
+ 499   4   3   WILLIAMSON, ALAN GLYNNE                 
+  29  50  51 456
+ 500  10  20   WILSON, RICHARD MICHAEL                 
+  21  78 137 140 165 185 322 378 438 485
+ 501   3  25   WILSON, ROBIN JAMES                     
+  69 391 411
+ 502  17  64   WINKLER, PETER MANN                     
+  10  44  78  86 115 134 165 201 245 261 287 349 378 440 451 469 475
+ 503   2  13   WINTNER, AUREL FRIEDRICH*               
+ 235 484
+ 504  22  68   WORMALD, NICHOLAS CHARLES               
+  10  44  62  63  69  82  86  99 187 214 229 265 307 315 326 336 361 374 377 440 459 461
+ 505   3  27   YAO, FOONG FRANCES                      
+  78 165 480
+ 506   0   5   ZAKS, ABRAHAM                           
+
+ 507   4  47   ZAKS, SHMUEL                            
+ 260 319 427 498
+ 508   2  14   ZALCSTEIN, YECHEZKEL                    
+ 177 339
+ 509   1   9   ZAREMBA, STANISLAW KRYSTYN              
+ 438
+ 510   0   5   ZHANG, ZHEN XIANG                       
+
+ 511   1   9   ZIV, ABRAHAM                            
+ 157

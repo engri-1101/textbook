@@ -1,7 +1,9 @@
 from bokeh.layouts import row, column, gridplot
 
+INDENT = "    "
+
 #<editor-fold format():
-def format(game_parts, config):
+def format(game_parts, config, log_steps = False):
     #These 3 items are never shown at the same time.
     automate_button_row = row(column(game_parts.buttons['automate'],
                                      game_parts.sliders['iterations'],
@@ -11,12 +13,18 @@ def format(game_parts, config):
                               max_width = config.automate_button_row_max_width,
                               sizing_mode = config.automate_button_row_sizing_mode)
 
+    if(log_steps):
+        print(INDENT + "Automate button row creation completed")
+
     #This row is exclusively for the strategy dropdown, and it will be hidden the
     #moment it is no longer needed. When hidden, the row should not take up any
     #space.
     strategy_dropdown_row = row(game_parts.dropdowns['cpu_strategy'],
                                 max_width = config.strategy_dropdown_row_max_width,
                                 sizing_mode = config.strategy_dropdown_row_sizing_mode)
+
+    if(log_steps):
+        print(INDENT + "Strategy dropdown row creation completed")
 
     #This row is a little more complicated. Its formatted as a row that contains
     #a single column so that it contains all of its elements in a vertical order
@@ -29,6 +37,9 @@ def format(game_parts, config):
                                     game_parts.buttons['make_counter']),
                              max_width = config.start_automate_row_max_width,
                              sizing_mode = config.start_automate_row_sizing_mode)
+
+    if(log_steps):
+        print(INDENT + "Start automate row creation completed")
 
     #This section of code is to make the rows for the aim text input boxes for
     #use in a later column.
@@ -43,6 +54,9 @@ def format(game_parts, config):
         input_rows.append(row(i, max_width = config.automate_aim_rows_max_width,
                               sizing_mode = config.automate_aim_rows_sizing_mode))
 
+    if(log_steps):
+        print(INDENT + "Aim text inputs row creation completed")
+
     #This row is a little bit special in which at most one of its figures is
     #visible at a time. This means that even though the row contains four
     #figures, the figures are displayed in full size.
@@ -52,6 +66,9 @@ def format(game_parts, config):
                          game_parts.figures['stats_4'],
                          max_width = config.game_stats_row_max_width,
                          sizing_mode = config.game_stats_row_sizing_mode)
+
+    if(log_steps):
+        print(INDENT + "Game stat figures row creation completed")
 
     #This section of code is to make the rows for the stat fig buttons for use
     #in a later column.
@@ -64,11 +81,17 @@ def format(game_parts, config):
         b_fig_rows.append(row(i, max_width = config.b_fig_rows_max_width,
                               sizing_mode = config.b_fig_rows_sizing_mode))
 
+    if(log_steps):
+        print(INDENT + "Game stat figure view selection buttons"
+              + " row creation completed")
+
     #This column is for containing figures (the game figure and the stat figures).
     gui_column1 = column(game_parts.figures['game_figure'], game_stats_row,
                          max_width = config.gui_column1_max_width,
                          sizing_mode = config.gui_column1_sizing_mode)
 
+    if(log_steps):
+        print(INDENT + "Main game figure gui column creation completed")
     #This column is for containing most of the buttons, sliders, and other user
     #interactive components.
     gui_column2 = column(column(b_fig_rows),
@@ -79,13 +102,23 @@ def format(game_parts, config):
                          max_width = config.gui_column2_max_width,
                          sizing_mode = config.gui_column2_sizing_mode)
 
+    if(log_steps):
+        print(INDENT + "Interactable components gui column creation completed")
+
     #This row contains the two previous columns.
     gui_row = row(gui_column1, gui_column2,
                   max_width = config.gui_row_max_width,
                   sizing_mode = config.gui_row_sizing_mode)
 
+    if(log_steps):
+        print(INDENT + "Combined columns into a single GUI row")
+
     #This plots the complete figure.
     grid1 = gridplot([[gui_row]], plot_width = config.plot_width,
                      plot_height = config.plot_height)
+
+    if(log_steps):
+        print(INDENT + "Game gridplot created")
+
     return grid1
 #</editor-fold>

@@ -3,6 +3,8 @@ from collections import namedtuple
 from . import game_layout
 from . import gamefigures as figs
 
+INDENT = "    "
+
 #<editor-fold _GameParts:
 class _GameParts:
     def __init__(self):
@@ -254,133 +256,305 @@ class MainGame:
                                     b_fig_rows_sizing_mode ='stretch_width')
         #</editor-fold>
 
-    def __make_game_components(self):
+    def __make_game_components(self, log_steps = False):
+        #<editor-fold Game Figs:
+        if(log_steps):
+            print(INDENT + "Creating game figs:")
         figs.game_fig.create(self.game_parts)
+        if(log_steps):
+            print(INDENT + INDENT + "Main game fig created")
         figs.stats_fig_1.create(self.game_parts)
+        if(log_steps):
+            print(INDENT + INDENT + "game stats fig 1 created")
         figs.stats_fig_2.create(self.game_parts)
+        if(log_steps):
+            print(INDENT + INDENT + "Main game fig 2 created")
         figs.stats_fig_3.create(self.game_parts)
+        if(log_steps):
+            print(INDENT + INDENT + "Main game fig 3 created")
         figs.stats_fig_4.create(self.game_parts)
-
+        if(log_steps):
+            print(INDENT + INDENT + "Main game fig 4 created")
+            print(INDENT + "Game fig creation completed")
+        #</editor-fold>
         #<editor-fold Gameview Text:
+        if(log_steps):
+            print("")
+            print(INDENT + "Creating game fig screen text:")
         components.text.scr_text.create(self.game_parts, self.scr_text)
+        if(log_steps):
+            print(INDENT + INDENT + "scr_text created")
         components.labels.scr_labels.create(self.game_parts, self.scr_labels)
-
+        if(log_steps):
+            print(INDENT + INDENT + "scr_labels created")
         self.game_parts.figures['game_figure'].add_glyph(self.game_parts.texts['scr_text'],
                                                          self.game_parts.labels['scr_text'])
+        if(log_steps):
+            print(INDENT + INDENT + "Added scr_text and scr_labels to main game fig")
+            print(INDENT + "Game fig screen text creation completed")
         #</editor-fold>
 
         #<editor-fold Divs:
+        if(log_steps):
+            print("")
+            print(INDENT + "Creating game divs:")
         components.divs.strategy_to_use.create(self.game_parts,
                                                self.strategy_to_use)
+        if(log_steps):
+            print(INDENT + INDENT + "CPU strategy_to_use div created")
+
         components.divs.nround.create(self.game_parts, self.nround)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Game iteration tracking div 'nround' created")
+
         components.divs.score.create(self.game_parts, self.score)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Game score tracking div created")
+
         components.divs.kicker_foot.create(self.game_parts, self.kicker_foot)
         components.divs.kicker_kick.create(self.game_parts, self.kicker_kick)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Selected striker action tracking divs created")
+
         components.divs.select_cpu_tip.create(self.game_parts)
         components.divs.chances_lt_0_tip.create(self.game_parts)
         components.divs.chances_gt_1_tip.create(self.game_parts)
         components.divs.chances_ne_1_tip.create(self.game_parts)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Game input tip divs created")
+
+
         components.divs.cpu_selected.create(self.game_parts)
+
+        if(log_steps):
+            print(INDENT + INDENT + "CPU selection status tracking div created")
+
         components.divs.chances_valid.create(self.game_parts)
+
+        if(log_steps):
+            print(INDENT + INDENT + "User strategy validity tracking div created")
+
         components.divs.counter_made.create(self.game_parts)
+
+        if(log_steps):
+            print(INDENT + INDENT
+                  + "Goalie cheats counter creation status tracking div created")
+
         components.divs.in_an_iter.create(self.game_parts)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Game iteration running status tracking div created")
+            print(INDENT + "Game div creation completed")
         #</editor-fold>
 
-        #<editor-fold Buttons
+        #<editor-fold Buttons:
+        if(log_steps):
+            print("")
+            print(INDENT + "Creating buttons:")
+
         components.buttons.b_automate.create(self.game_parts, self.b_automate)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Game automate track selection button created")
         components.buttons.b_start_automate.create(self.game_parts,
                                                    self.b_start_automate)
+        if(log_steps):
+            print(INDENT + INDENT + "Game automate track start button created")
+
         components.buttons.b_auto_next.create(self.game_parts, self.b_auto_next)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Game automate track next button created")
+
         components.buttons.b_make_counter.create(self.game_parts,
                                                  self.b_make_counter)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Goalie make counter button created")
+
         components.buttons.b_fig_1.create(self.game_parts, self.b_fig_1)
         components.buttons.b_fig_2.create(self.game_parts, self.b_fig_2)
         components.buttons.b_fig_3.create(self.game_parts, self.b_fig_3)
         components.buttons.b_fig_4.create(self.game_parts, self.b_fig_4)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Game stat figure view selection buttons created")
+
         components.buttons.b_auto_advance.create(self.game_parts,
                                                  self.b_auto_advance)
+
+        if(log_steps):
+            print(INDENT + INDENT
+                  + "Game automation track auto advance iterations"
+                  + " toggle button created")
+            print(INDENT + "Button creation completed")
         #</editor-fold>
+
+        #<editor-fold Sliders:
+        if(log_steps):
+            print("")
+            print(INDENT + "Creating sliders:")
 
         components.sliders.iterations_slider.create(self.game_parts,
                                                     self.iterations_slider)
+        if(log_steps):
+            print(INDENT + INDENT + "Game iteration length selection slider created")
+
         components.sliders.auto_advance_speed_slider.create(self.game_parts,
                                                             self.auto_advance_speed_slider)
+        if(log_steps):
+            print(INDENT + INDENT + "Game automation track auto advance iteration"
+                  + " speed selection slider created")
+            print(INDENT + "Slider creation completed")
+        #</editor-fold>
 
         #<editor-fold TextInputs:
-        components.textinputs.aim_text_input.create(self.game_parts,
-                                                    "ll", self.aim_text_inputs)
-        components.textinputs.aim_text_input.create(self.game_parts,
-                                                    "lm",self. aim_text_inputs)
-        components.textinputs.aim_text_input.create(self.game_parts,
-                                                    "lr", self.aim_text_inputs)
-        components.textinputs.aim_text_input.create(self.game_parts,
-                                                    "rl", self.aim_text_inputs)
-        components.textinputs.aim_text_input.create(self.game_parts,
-                                                    "rm", self.aim_text_inputs)
-        components.textinputs.aim_text_input.create(self.game_parts,
-                                                    "rr", self.aim_text_inputs)
+        if(log_steps):
+            print("")
+            print(INDENT + "Creating text inputs:")
+
+        names = ["ll", "lm", "lr", "rl", "rm", "rr"]
+
+        for name in names:
+            components.textinputs.aim_text_input.create(self.game_parts, name,
+                                                        self.aim_text_inputs)
+
+            if(log_steps):
+                print(INDENT + INDENT + name + "_aim_text_input created")
+
+        if(log_steps):
+            print(INDENT + "Text input creation completed")
+
         #</editor-fold>
+
+        if(log_steps):
+            print("")
+            print(INDENT + "Creating dropdowns:")
 
         components.dropdowns.cpu_strategy_dropdown.create(self.game_parts,
                                                           self.cpu_strategy_dropdown)
 
+        if(log_steps):
+            print(INDENT + INDENT + "CPU strategy to use dropdown created")
+            print(INDENT + "Dropdown creation completed")
+
         #<editor-fold Stat Tables:
+        if(log_steps):
+            print("")
+            print(INDENT + "Creating game tables:")
+
         components.tablesources.distribution_table_source.create(self.game_parts,
                                                                  self.footedness_config,
                                                                  self.initial_stats)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Distribution table source created")
+
         components.tables.distribution_table.create(self.game_parts,
                                                     self.distribution_table)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Distribution table created")
 
         components.tablesources.automation_table_source.create(self.game_parts,
                                                                self.footedness_config,
                                                                self.base_chances)
+        if(log_steps):
+            print(INDENT + INDENT + "Automation table source created")
+
         components.tables.automation_table.create(self.game_parts,
                                                   self.automation_table)
+
+        if(log_steps):
+            print(INDENT + INDENT + "Automation table created")
+            print(INDENT + "Game table creation completed")
         #</editor-fold>
-
-    def __setup_game_components(self):
-
+    def __setup_game_components(self, log_steps = False):
         components.buttons.b_automate.setup(self.game_parts)
-
+        if(log_steps):
+            print(INDENT + "b_automate setup completed")
         components.divs.cpu_selected.setup(self.game_parts)
         components.divs.chances_valid.setup(self.game_parts)
         components.divs.counter_made.setup(self.game_parts)
+        if(log_steps):
+            print(INDENT + "Start button prerequisite Div setups completed")
 
         components.divs.in_an_iter.setup(self.game_parts)
 
+        if(log_steps):
+            print(INDENT
+                  + "Iteration running status tracking div setup completed")
+
         components.buttons.b_make_counter.setup(self.game_parts)
+
+        if(log_steps):
+            print(INDENT + "Make counter button setup completed")
 
         components.buttons.b_fig_1.setup(self.game_parts)
         components.buttons.b_fig_2.setup(self.game_parts)
         components.buttons.b_fig_3.setup(self.game_parts)
         components.buttons.b_fig_4.setup(self.game_parts)
 
+        if(log_steps):
+            print(INDENT
+                  + "Game stat figure view selection button setups completed")
+
         components.buttons.b_start_automate.setup(self.game_parts)
+
+        if(log_steps):
+            print(INDENT
+                  + "Start automate track selection button setup completed")
 
         components.buttons.b_auto_next.setup(self.game_parts)
 
-        components.textinputs.aim_text_input.setup(name = "ll",
-                                                   game_parts = self.game_parts)
-        components.textinputs.aim_text_input.setup(name = "lm",
-                                                   game_parts = self.game_parts)
-        components.textinputs.aim_text_input.setup(name = "lr",
-                                                   game_parts = self.game_parts)
-        components.textinputs.aim_text_input.setup(name = "rl",
-                                                   game_parts = self.game_parts)
-        components.textinputs.aim_text_input.setup(name = "rm",
-                                                   game_parts = self.game_parts)
-        components.textinputs.aim_text_input.setup(name = "rr",
-                                                   game_parts = self.game_parts)
+        if(log_steps):
+            print(INDENT + "Automate track next button setup completed")
+
+        names = ["ll", "lm", "lr", "rl", "rm", "rr"]
+        for name in names:
+            components.textinputs.aim_text_input.setup(name = name,
+                                                       game_parts = self.game_parts)
+
+        if(log_steps):
+            print(INDENT + "Aim text input setups completed")
 
         components.dropdowns.cpu_strategy_dropdown.setup(self.game_parts)
 
-    def __format_game_layout(self):
-        grid1 = game_layout.format(self.game_parts, self.layout)
+        if(log_steps):
+            print(INDENT + "CPU strategy selection dropdown setup completed")
+
+    def __format_game_layout(self, log_steps):
+        grid1 = game_layout.format(self.game_parts, self.layout, log_steps)
         return grid1
 
-    def make_game(self):
-        self.__make_game_components()
-        self.__setup_game_components()
-        grid1 = self.__format_game_layout()
+    def make_game(self, log_steps = False):
+        if(log_steps):
+            print("Starting game component creation:")
+
+        self.__make_game_components(log_steps)
+
+        if(log_steps):
+            print("Game component creation completed")
+            print("")
+            print("")
+            print("Starting game component setup")
+
+        self.__setup_game_components(log_steps)
+
+        if(log_steps):
+            print("Game component setup completed")
+            print("")
+            print("")
+            print("Starting game layout formatting")
+
+        grid1 = self.__format_game_layout(log_steps)
+
+        if(log_steps):
+            print("Game layout formatting completed")
+
         return grid1
 #</editor-fold>

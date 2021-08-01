@@ -474,9 +474,11 @@ class MainGame:
             print(INDENT + "Game table creation completed")
         #</editor-fold>
     def __setup_game_components(self, log_steps = False, CPU_strategy = None,
-                                allow_fast_forward = True):
+                                allow_fast_forward = True,
+                                force_fast_forward = False):
         components.buttons.b_automate.setup(self.game_parts, CPU_strategy,
-                                            allow_fast_forward) # Click callback depends on CPU strategy, allow_fast_forward.
+                                            allow_fast_forward,
+                                            force_fast_forward) # Click callback depends on CPU strategy, allow_fast_forward, force_fast_forward.
         if(log_steps):
             print(INDENT + "b_automate setup completed")
             if(CPU_strategy != None):
@@ -485,6 +487,9 @@ class MainGame:
             if(allow_fast_forward == False):
                 print(INDENT + INDENT + "b_automate callback was adjusted to"
                       + " reflect that auto advancing should be disabled.")
+            elif(force_fast_forward == True):
+                print(INDENT + INDENT + "b_automate callback was adjusted to"
+                      + " reflect that auto advancing should be forced.")
         components.divs.cpu_selected.setup(self.game_parts)
         components.divs.chances_valid.setup(self.game_parts)
         components.divs.counter_made.setup(self.game_parts)
@@ -540,7 +545,8 @@ class MainGame:
         return grid1
 
     def make_game(self, log_steps = False, CPU_strategy = None,
-                  allow_fast_forward = True):
+                  allow_fast_forward = True,
+                  force_fast_forward = False):
         if(log_steps):
             print("Starting game component creation:")
 
@@ -553,7 +559,8 @@ class MainGame:
             print("Starting game component setup")
 
         self.__setup_game_components(log_steps, CPU_strategy,
-                                     allow_fast_forward)
+                                     allow_fast_forward,
+                                     force_fast_forward)
 
         if(log_steps):
             print("Game component setup completed")

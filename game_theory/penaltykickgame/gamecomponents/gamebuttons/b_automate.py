@@ -1,7 +1,7 @@
 from bokeh.models import Button, CustomJS
 
 #<editor-fold Callback Code String:
-def createAutomateCode(CPU_strategy, allow_fast_forward):
+def createAutomateCode(CPU_strategy, allow_fast_forward, force_fast_forward):
     code = """
 //Change visibilities of game items:
 automateButton.visible = false;
@@ -21,10 +21,18 @@ strategyDropdown.visible = true;
 selectCpuTip.visible = true;
         """
     if(allow_fast_forward == True):
-        code += """
-    autoAdvButton.visible = true;
-    advSpdSlider.visible = true;
-        """
+        if(force_fast_forward == False):
+            code += """
+autoAdvButton.visible = true;
+advSpdSlider.visible = true;
+            """
+        else:
+            code += """
+autoAdvButton.active = true;
+autoAdvButton.visible = false;
+advSpdSlider.visible = true;
+            """
+
     return code
 #</editor-fold>
 
@@ -39,7 +47,7 @@ def create(game_parts, config):
 #</editor-fold>
 
 #<editor-fold setup():
-def setup(game_parts, CPU_strategy, allow_fast_forward):
+def setup(game_parts, CPU_strategy, allow_fast_forward, force_fast_forward):
     args_dict = dict(automateButton = game_parts.buttons['automate'],
                      autoAdvButton = game_parts.buttons['auto_advance'],
                      iterationsSlider = game_parts.sliders['iterations'],
@@ -54,7 +62,8 @@ def setup(game_parts, CPU_strategy, allow_fast_forward):
                      chancesNE1Tip = game_parts.divs['chances_ne_1_tip'],
                      selectCpuTip = game_parts.divs['select_cpu_tip'],
                      advSpdSlider = game_parts.sliders['auto_advance_speed'])
-    automateCode = createAutomateCode(CPU_strategy, allow_fast_forward)
+    automateCode = createAutomateCode(CPU_strategy, allow_fast_forward,
+                                      force_fast_forward)
     b_automate_click = CustomJS(args = args_dict,
                                 code = automateCode)
     game_parts.buttons['automate'].js_on_click(b_automate_click)

@@ -2,7 +2,7 @@ from bokeh.models import Button, CustomJS
 
 #<editor-fold Callback Code String:
 def createAutomateCode(CPU_strategy, allow_fast_forward, force_fast_forward,
-                       force_fast_forward_spd):
+                       force_fast_forward_spd, iterations_to_run):
     code = """
 //Change visibilities of game items:
 automateButton.visible = false;
@@ -12,7 +12,6 @@ lrAimTextInput.visible = true;
 rlAimTextInput.visible = true;
 rmAimTextInput.visible = true;
 rrAimTextInput.visible = true;
-iterationsSlider.visible = true;
 automationTable.visible = true;
 chancesNE1Tip.visible = true;
     """
@@ -40,6 +39,15 @@ advSpdSlider.visible = false;
             code += """
 advSpdSlider.visible =  true;
             """
+    if(iterations_to_run != None):
+        code += """
+iterationsSlider.value = """ + str(iterations_to_run) + """;
+iterationsSlider.visible = false;
+        """
+    else:
+        code += """
+iterationsSlider.visible = true;
+        """
     return code
 #</editor-fold>
 
@@ -55,7 +63,7 @@ def create(game_parts, config):
 
 #<editor-fold setup():
 def setup(game_parts, CPU_strategy, allow_fast_forward, force_fast_forward,
-          force_fast_forward_spd):
+          force_fast_forward_spd, iterations_to_run):
     args_dict = dict(automateButton = game_parts.buttons['automate'],
                      autoAdvButton = game_parts.buttons['auto_advance'],
                      iterationsSlider = game_parts.sliders['iterations'],
@@ -72,7 +80,8 @@ def setup(game_parts, CPU_strategy, allow_fast_forward, force_fast_forward,
                      advSpdSlider = game_parts.sliders['auto_advance_speed'])
     automateCode = createAutomateCode(CPU_strategy, allow_fast_forward,
                                       force_fast_forward,
-                                      force_fast_forward_spd)
+                                      force_fast_forward_spd,
+                                      iterations_to_run)
     b_automate_click = CustomJS(args = args_dict,
                                 code = automateCode)
     game_parts.buttons['automate'].js_on_click(b_automate_click)

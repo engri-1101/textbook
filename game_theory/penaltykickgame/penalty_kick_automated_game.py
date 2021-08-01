@@ -476,11 +476,14 @@ class MainGame:
     def __setup_game_components(self, log_steps = False, CPU_strategy = None,
                                 allow_fast_forward = True,
                                 force_fast_forward = False,
-                                force_fast_forward_spd = None):
+                                force_fast_forward_spd = None,
+                                iterations_to_run = None):
+
         components.buttons.b_automate.setup(self.game_parts, CPU_strategy,
                                             allow_fast_forward,
                                             force_fast_forward,
-                                            force_fast_forward_spd) # Click callback depends on CPU strategy, allow_fast_forward, force_fast_forward, force_fast_forward_spd.
+                                            force_fast_forward_spd,
+                                            iterations_to_run) # Click callback depends on CPU strategy, allow_fast_forward, force_fast_forward, force_fast_forward_spd, iterations_to_run.
         if(log_steps):
             print(INDENT + "b_automate setup completed")
             if(CPU_strategy != None):
@@ -498,9 +501,15 @@ class MainGame:
                           + " to reflect that the auto advancing speed should"
                           + " be forcibly set to " + str(force_fast_forward_spd)
                           + ".")
+            if(iterations_to_run != None):
+                print(INDENT + INDENT + "b_automate callback was adjusted to"
+                      + " reflect that the game should be forcibly set to "
+                      + str(iterations_to_run) + " iterations.")
+
         components.divs.cpu_selected.setup(self.game_parts)
         components.divs.chances_valid.setup(self.game_parts)
         components.divs.counter_made.setup(self.game_parts)
+
         if(log_steps):
             print(INDENT + "Start button prerequisite Div setups completed")
 
@@ -555,7 +564,8 @@ class MainGame:
     def make_game(self, log_steps = False, CPU_strategy = None,
                   allow_fast_forward = True,
                   force_fast_forward = False,
-                  force_fast_forward_spd = None):
+                  force_fast_forward_spd = None,
+                  iterations_to_run = None):
         if(log_steps):
             print("Starting game component creation:")
 
@@ -570,7 +580,8 @@ class MainGame:
         self.__setup_game_components(log_steps, CPU_strategy,
                                      allow_fast_forward,
                                      force_fast_forward,
-                                     force_fast_forward_spd)
+                                     force_fast_forward_spd,
+                                     iterations_to_run)
 
         if(log_steps):
             print("Game component setup completed")

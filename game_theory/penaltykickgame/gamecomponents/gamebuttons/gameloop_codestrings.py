@@ -1,6 +1,6 @@
 #This file contains the JavaScript code strings that are used for the main game
 #loop.
-#<editor-fold Functions:
+#<editor-fold Function Codestrings:
   #<editor-fold iterText():
 iterText = """
 function iterText(roundsPlayed, gameScore, goal) {
@@ -102,26 +102,43 @@ function goalieCheats(kickerFoot) {
 }
 """
   #</editor-fold>
-  #<editor-fold _handleFigVisibility():
-handleFigVisibility = """
+  #<editor-fold make_handleFigVisibility():
+def make_handleFigVisibility(stats_fig_1_enabled, stats_fig_2_enabled,
+                             stats_fig_3_enabled, stats_fig_4_enabled):
+    handleFigVisibility = """
 function handleFigVisibility(stratIsFictPlay) {
   nextButton.visible = false;
-  gameFig.visible = false;
   distTable.visible = false;
   autoAdvButton.visible = false;
   advSpdSlider.visible = false;
-
-  //set figure button visibilities:
-  [true, true, stratIsFictPlay, true].forEach(
-    (v, i) => figButtons[i].visible = v
-  );
-
-  statsFig1.visible = true;
+  gameFigButton.visible = true;
+    """
+    if(stats_fig_1_enabled):
+        handleFigVisibility += """
+  statsFig1Button.visible = true;
+  statsFig1.visible = false;
+        """
+    if(stats_fig_2_enabled):
+        handleFigVisibility += """
+  statsFig2Button.visible = true;
   statsFig2.visible = false;
+        """
+    if(stats_fig_3_enabled):
+        handleFigVisibility += """
+  statsFig3Button.visible = stratIsFictPlay;
   statsFig3.visible = false;
+        """
+    if(stats_fig_4_enabled):
+        handleFigVisibility += """
+  statsFig4Button.visible = true;
   statsFig4.visible = false;
+        """
+
+    handleFigVisibility += """
 }
-"""
+    """
+    return handleFigVisibility
+
   #</editor-fold>
   #<editor-fold scoring():
 scoring = """
@@ -492,28 +509,9 @@ function updateFig4(
   #</editor-fold>
 #</editor-fold>
 
-goalieStrats = (fictitiousPlay + optimalMixed + randomChoice + goalieCheats)
+#Functions for updating figures
 
-animation = (_moveGoalie + animateIter)
-
-decisionTracking = (goalieDecisionTracking + _updateDecisionTableRisks)
-
-fig1 = (_fig1Iter + _fig1Adjust + updateFig1)
-fig2 = (_fig2Iter + _fig2Adjust + updateFig2)
-fig3 = (_fig3Iter + _fig3Adjust + updateFig3)
-fig4 = updateFig4
-statFigs = (fig1 + fig2 + fig3 + fig4)
-
-funcDefs = (iterText
-            + rollKickerAction
-            + goalieStrats
-            + handleFigVisibility
-            + scoring
-            + animation
-            + decisionTracking
-            + statFigs) #Functions for updating figures
-
-#<editor-fold Running the game:
+#<editor-fold Running the game Codestrings:
 
   #<editor-fold GameConstants:
 gameConstants = """
@@ -542,8 +540,10 @@ const freq = distData['freq'];
 """
   #</editor-fold>
 
-  #<editor-fold gameIter:
-gameIter = """
+  #<editor-fold make_gameIter():
+def make_gameIter(stats_fig_1_enabled, stats_fig_2_enabled,
+                  stats_fig_3_enabled, stats_fig_4_enabled):
+    gameIter = """
 function gameIter(){
   const itersToRun = iterSlider.value;
 
@@ -615,9 +615,15 @@ function gameIter(){
     perceivedRiskM,
     perceivedRiskR
   );
+    """
 
+    if(stats_fig_1_enabled):
+        gameIter += """
   updateFig1(goal, directionsIndexGa, actionsIndexKFKK, roundIsLastIter);
+        """
 
+    if(stats_fig_2_enabled):
+        gameIter += """
   updateFig2(
     roundsPlayed,
     gameScore,
@@ -625,9 +631,15 @@ function gameIter(){
     roundIsLastIter,
     itersToRun
   );
+        """
 
+    if(stats_fig_3_enabled):
+        gameIter += """
   if(stratIsFictPlay) { updateFig3(roundsPlayed, roundIsLastIter, itersToRun); }
+        """
 
+    if(stats_fig_4_enabled):
+        gameIter += """
   updateFig4(
     roundsPlayed,
     roundScoreChance,
@@ -635,12 +647,16 @@ function gameIter(){
     kickerKick,
     goalieAction
   );
+        """
 
+    gameIter += """
   if(roundIsLastIter) { handleFigVisibility(stratIsFictPlay); }
 
   iterText(roundsPlayed, gameScore, goal);
 }
-"""
+    """
+
+    return gameIter
   #</editor-fold>
 
   #<editor-fold gameRunner:
@@ -708,8 +724,8 @@ gameLoop();
 
 #</editor-fold>
 
-gameCode = (gameConstants + gameIter + gameRunner) #Basic structure
-gameCode += funcDefs #Add the functions that the gameIter will use
+# gameCode = (gameConstants + gameIter + gameRunner) #Basic structure
+# gameCode += funcDefs #Add the functions that the gameIter will use
 
 
 #<editor-fold start button Initial Gui Display:
@@ -800,4 +816,56 @@ initialIterationAdjustments();
 """
 #</editor-fold>
 
-automateStartCode = (initialIterationAdjustments + initialGuiDisplay + gameCode)
+def make_gameCode(stats_fig_1_enabled, stats_fig_2_enabled,
+                  stats_fig_3_enabled, stats_fig_4_enabled):
+
+    goalieStrats = (fictitiousPlay
+                    + optimalMixed
+                    + randomChoice
+                    + goalieCheats)
+
+    animation = (_moveGoalie + animateIter)
+
+    decisionTracking = (goalieDecisionTracking
+                        + _updateDecisionTableRisks)
+
+    fig1 = (_fig1Iter + _fig1Adjust + updateFig1)
+    fig2 = (_fig2Iter + _fig2Adjust + updateFig2)
+    fig3 = (_fig3Iter + _fig3Adjust + updateFig3)
+    fig4 = updateFig4
+    statFigs = (fig1 + fig2 + fig3 + fig4)
+
+    funcDefs = (iterText
+                + rollKickerAction
+                + goalieStrats
+                + make_handleFigVisibility(stats_fig_1_enabled,
+                                           stats_fig_2_enabled,
+                                           stats_fig_3_enabled,
+                                           stats_fig_4_enabled)
+                + scoring
+                + animation
+                + decisionTracking
+                + statFigs)
+
+    gameCode = (gameConstants
+                + make_gameIter(stats_fig_1_enabled,
+                                stats_fig_2_enabled,
+                                stats_fig_3_enabled,
+                                stats_fig_4_enabled)
+                + gameRunner)
+    gameCode += funcDefs
+
+    return gameCode
+
+def make_automateStartCode(stats_fig_1_enabled, stats_fig_2_enabled,
+                           stats_fig_3_enabled, stats_fig_4_enabled):
+    automateStartCode = (initialIterationAdjustments
+                         + initialGuiDisplay
+                         + make_gameCode(stats_fig_1_enabled,
+                                         stats_fig_2_enabled,
+                                         stats_fig_3_enabled,
+                                         stats_fig_4_enabled))
+
+    return automateStartCode
+
+# automateStartCode = (initialIterationAdjustments + initialGuiDisplay + gameCode)

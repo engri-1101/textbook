@@ -2,10 +2,12 @@ from bokeh.models import Button, CustomJS
 
 #<editor-fold Callback Code String:
 fig3ButtonCode = """
+gameFigButton.disabled = false;
 fig1Button.disabled = false;
 fig2Button.disabled = false;
 fig3Button.disabled = true;
 fig4Button.disabled = false;
+gameFig.visible = false;
 statsFig1.visible = false;
 statsFig2.visible = false;
 statsFig3.visible = true;
@@ -24,10 +26,12 @@ def create(game_parts, config):
 
 #<editor-fold setup():
 def setup(game_parts):
-    args_dict = dict(fig1Button = game_parts.buttons['fig_1'],
+    args_dict = dict(gameFigButton = game_parts.buttons['game_fig'],
+                     fig1Button = game_parts.buttons['fig_1'],
                      fig2Button = game_parts.buttons['fig_2'],
                      fig3Button = game_parts.buttons['fig_3'],
                      fig4Button = game_parts.buttons['fig_4'],
+                     gameFig = game_parts.figures['game_figure'],
                      statsFig1 = game_parts.figures['stats_1'],
                      statsFig2 = game_parts.figures['stats_2'],
                      statsFig3 = game_parts.figures['stats_3'],

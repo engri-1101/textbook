@@ -149,8 +149,10 @@ class MainGame:
                                          "fit", False, False)
         self.b_make_counter = _ButtonConfig("Make Counter", "success",
                                             "scale_width", "fit", False, False)
+        self.b_game_fig = _ButtonConfig("Game Figure", "success", "scale_width",
+                                        "fit", True, False)
         self.b_fig_1 = _ButtonConfig("Figure 1", "success", "scale_width",
-                                     "fit", True, False)
+                                     "fit", False, False)
         self.b_fig_2 = _ButtonConfig("Figure 2", "success", "scale_width",
                                      "fit", False, False)
         self.b_fig_3 = _ButtonConfig("Figure 3", "success", "scale_width",
@@ -255,7 +257,7 @@ class MainGame:
                                     b_fig_rows_max_width = 400,
                                     b_fig_rows_sizing_mode ='stretch_width')
         #</editor-fold>
-
+    #<editor-fold __make_game_components():
     def __make_game_components(self, log_steps = False):
         #<editor-fold Game Figs:
         if(log_steps):
@@ -265,18 +267,19 @@ class MainGame:
             print(INDENT + INDENT + "Main game fig created")
         figs.stats_fig_1.create(self.game_parts)
         if(log_steps):
-            print(INDENT + INDENT + "game stats fig 1 created")
+            print(INDENT + INDENT + "Game stats fig 1 created")
         figs.stats_fig_2.create(self.game_parts)
         if(log_steps):
-            print(INDENT + INDENT + "Main game fig 2 created")
+            print(INDENT + INDENT + "Game stats fig 2 created")
         figs.stats_fig_3.create(self.game_parts)
         if(log_steps):
-            print(INDENT + INDENT + "Main game fig 3 created")
+            print(INDENT + INDENT + "Game stats fig 3 created")
         figs.stats_fig_4.create(self.game_parts)
         if(log_steps):
-            print(INDENT + INDENT + "Main game fig 4 created")
+            print(INDENT + INDENT + "Game stats fig 4 created")
             print(INDENT + "Game fig creation completed")
         #</editor-fold>
+
         #<editor-fold Gameview Text:
         if(log_steps):
             print("")
@@ -376,13 +379,14 @@ class MainGame:
         if(log_steps):
             print(INDENT + INDENT + "Goalie make counter button created")
 
+        components.buttons.b_game_fig.create(self.game_parts, self.b_game_fig)
         components.buttons.b_fig_1.create(self.game_parts, self.b_fig_1)
         components.buttons.b_fig_2.create(self.game_parts, self.b_fig_2)
         components.buttons.b_fig_3.create(self.game_parts, self.b_fig_3)
         components.buttons.b_fig_4.create(self.game_parts, self.b_fig_4)
 
         if(log_steps):
-            print(INDENT + INDENT + "Game stat figure view selection buttons created")
+            print(INDENT + INDENT + "figure view selection buttons created")
 
         components.buttons.b_auto_advance.create(self.game_parts,
                                                  self.b_auto_advance)
@@ -431,6 +435,7 @@ class MainGame:
 
         #</editor-fold>
 
+        #<editor-fold Dropdowns:
         if(log_steps):
             print("")
             print(INDENT + "Creating dropdowns:")
@@ -441,6 +446,7 @@ class MainGame:
         if(log_steps):
             print(INDENT + INDENT + "CPU strategy to use dropdown created")
             print(INDENT + "Dropdown creation completed")
+        #</editor-fold>
 
         #<editor-fold Stat Tables:
         if(log_steps):
@@ -473,11 +479,18 @@ class MainGame:
             print(INDENT + INDENT + "Automation table created")
             print(INDENT + "Game table creation completed")
         #</editor-fold>
+    #</editor-fold>
+
+    #<editor-fold __setup_game_components():
     def __setup_game_components(self, log_steps = False, CPU_strategy = None,
                                 allow_fast_forward = True,
                                 force_fast_forward = False,
                                 force_fast_forward_spd = None,
-                                iterations_to_run = None):
+                                iterations_to_run = None,
+                                stats_fig_1_enabled = True,
+                                stats_fig_2_enabled = True,
+                                stats_fig_3_enabled = True,
+                                stats_fig_4_enabled = True):
 
         components.buttons.b_automate.setup(self.game_parts, CPU_strategy,
                                             allow_fast_forward,
@@ -524,6 +537,7 @@ class MainGame:
         if(log_steps):
             print(INDENT + "Make counter button setup completed")
 
+        components.buttons.b_game_fig.setup(self.game_parts)
         components.buttons.b_fig_1.setup(self.game_parts)
         components.buttons.b_fig_2.setup(self.game_parts)
         components.buttons.b_fig_3.setup(self.game_parts)
@@ -533,16 +547,48 @@ class MainGame:
             print(INDENT
                   + "Game stat figure view selection button setups completed")
 
-        components.buttons.b_start_automate.setup(self.game_parts)
+        components.buttons.b_start_automate.setup(self.game_parts,
+                                                  stats_fig_1_enabled,
+                                                  stats_fig_2_enabled,
+                                                  stats_fig_3_enabled,
+                                                  stats_fig_4_enabled)
 
         if(log_steps):
             print(INDENT
                   + "Start automate track selection button setup completed")
+            if(stats_fig_1_enabled == False):
+                print(INDENT + INDENT + "b_start_automate callback was adjusted"
+                      + " to reflect that stats fig 1 should be disabled.")
+            if(stats_fig_2_enabled == False):
+                print(INDENT + INDENT + "b_start_automate callback was adjusted"
+                      + " to reflect that stats fig 2 should be disabled.")
+            if(stats_fig_3_enabled == False):
+                print(INDENT + INDENT + "b_start_automate callback was adjusted"
+                      + " to reflect that stats fig 3 should be disabled.")
+            if(stats_fig_4_enabled == False):
+                print(INDENT + INDENT + "b_start_automate callback was adjusted"
+                      + " to reflect that stats fig 4 should be disabled.")
 
-        components.buttons.b_auto_next.setup(self.game_parts)
+        components.buttons.b_auto_next.setup(self.game_parts,
+                                             stats_fig_1_enabled,
+                                             stats_fig_2_enabled,
+                                             stats_fig_3_enabled,
+                                             stats_fig_4_enabled)
 
         if(log_steps):
             print(INDENT + "Automate track next button setup completed")
+            if(stats_fig_1_enabled == False):
+                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
+                      + " reflect that stats fig 1 should be disabled.")
+            if(stats_fig_2_enabled == False):
+                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
+                      + " reflect that stats fig 2 should be disabled.")
+            if(stats_fig_3_enabled == False):
+                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
+                      + " reflect that stats fig 3 should be disabled.")
+            if(stats_fig_4_enabled == False):
+                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
+                      + " reflect that stats fig 4 should be disabled.")
 
         names = ["ll", "lm", "lr", "rl", "rm", "rr"]
         for name in names:
@@ -556,16 +602,24 @@ class MainGame:
 
         if(log_steps):
             print(INDENT + "CPU strategy selection dropdown setup completed")
+    #</editor-fold>
 
+    #<editor-fold __format_game_layout():
     def __format_game_layout(self, log_steps):
         grid1 = game_layout.format(self.game_parts, self.layout, log_steps)
         return grid1
+    #</editor-fold>
 
+    #<editor-fold make_game():
     def make_game(self, log_steps = False, CPU_strategy = None,
                   allow_fast_forward = True,
                   force_fast_forward = False,
                   force_fast_forward_spd = None,
-                  iterations_to_run = None):
+                  iterations_to_run = None,
+                  stats_fig_1_enabled = True,
+                  stats_fig_2_enabled = True,
+                  stats_fig_3_enabled = True,
+                  stats_fig_4_enabled = True):
         if(log_steps):
             print("Starting game component creation:")
 
@@ -581,7 +635,11 @@ class MainGame:
                                      allow_fast_forward,
                                      force_fast_forward,
                                      force_fast_forward_spd,
-                                     iterations_to_run)
+                                     iterations_to_run,
+                                     stats_fig_1_enabled,
+                                     stats_fig_2_enabled,
+                                     stats_fig_3_enabled,
+                                     stats_fig_4_enabled)
 
         if(log_steps):
             print("Game component setup completed")
@@ -613,4 +671,5 @@ class MainGame:
             if(log_steps):
                 print("Finished adjustments.")
         return grid1
+    #</editor-fold>
 #</editor-fold>

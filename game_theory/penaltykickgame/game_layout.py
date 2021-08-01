@@ -72,7 +72,8 @@ def format(game_parts, config, log_steps = False):
 
     #This section of code is to make the rows for the stat fig buttons for use
     #in a later column.
-    b_figs = [game_parts.buttons['fig_1'],
+    b_figs = [game_parts.buttons['game_fig'],
+              game_parts.buttons['fig_1'],
               game_parts.buttons['fig_2'],
               game_parts.buttons['fig_3'],
               game_parts.buttons['fig_4']]

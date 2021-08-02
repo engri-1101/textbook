@@ -193,29 +193,28 @@ class Configs():
     directly to the default values of the arguments in this class after
     successful testing.
     """
-    def __init__(self, fig_base_tools = "box_zoom, wheel_zoom, pan",
-                 fig_toolbar_loc = "below",
-                 fig_title = "Goalie Perceived Risks Over Iterations",
-                 fig_width = 600, fig_height = 360,
-                 fig_x_range = (-0.5, 50.5), fig_y_range = (0, 1),
-                 fig_initial_visibility = False,
-                 fig_sizing_mode = "stretch_both", fig_title_font_size = '16pt',
-                 fig_x_axis_visibility = True, fig_y_axis_visibility = True,
-                 fig_xgrid_line_color = None, fig_ygrid_line_color = None,
-                 fig_outline_line_color = None, fig_background_color = "white",
-                 plot_dot_size = 5,
-                 plot_ll_dot_color = "#C8AFAF", plot_lm_dot_color = "#C8C8AF",
-                 plot_lr_dot_color = "#AFC8AF", plot_rl_dot_color = "#AFC8C8",
-                 plot_rm_dot_color = "#AFAFC8", plot_rr_dot_color = "#C8AFC8",
-                 plot_ll_dot_outline_color = "#AF9696",
-                 plot_lm_dot_outline_color = "#AFAF96",
-                 plot_lr_dot_outline_color = "#96AF96",
-                 plot_rl_dot_outline_color = "#96AFAF",
-                 plot_rm_dot_outline_color = "#9696AF",
-                 plot_rr_dot_outline_color = "#AF96AF",
-                 plot_highlight_dot_size = 10,
-                 plot_highlight_dot_outline_color = "#000000",
-                 plot_highlight_dot_color = "#000000", hitbox_alpha = 0):
+    def __init__(
+        self, fig_base_tools = "box_zoom, wheel_zoom, pan",
+        fig_toolbar_loc = "below",
+        fig_title = "Goalie Perceived Risks Over Iterations", fig_width = 600,
+        fig_height = 360, fig_x_range = (-0.5, 50.5), fig_y_range = (0, 1),
+        fig_initial_visibility = False, fig_sizing_mode = "stretch_both",
+        fig_title_font_size = '16pt', fig_x_axis_visibility = True,
+        fig_y_axis_visibility = True, fig_xgrid_line_color = None,
+        fig_ygrid_line_color = None, fig_outline_line_color = None,
+        fig_background_color = "white", plot_dot_size = 5,
+        plot_ll_dot_color = "#C8AFAF", plot_lm_dot_color = "#C8C8AF",
+        plot_lr_dot_color = "#AFC8AF", plot_rl_dot_color = "#AFC8C8",
+        plot_rm_dot_color = "#AFAFC8", plot_rr_dot_color = "#C8AFC8",
+        plot_ll_dot_outline_color = "#AF9696",
+        plot_lm_dot_outline_color = "#AFAF96",
+        plot_lr_dot_outline_color = "#96AF96",
+        plot_rl_dot_outline_color = "#96AFAF",
+        plot_rm_dot_outline_color = "#9696AF",
+        plot_rr_dot_outline_color = "#AF96AF", plot_highlight_dot_size = 10,
+        plot_highlight_dot_outline_color = "#000000",
+        plot_highlight_dot_color = "#000000", hitbox_alpha = 0
+    ):
         #<editor-fold figure:
         self.fig_base_tools = fig_base_tools
         self.fig_toolbar_loc = fig_toolbar_loc
@@ -269,14 +268,14 @@ def create(game_parts, configs = Configs()):
     """
     #<editor-fold Figure Creation:
     #Create and configure the main aspects of the figure:
-    fig = figure(tools = configs.fig_base_tools,
-                 toolbar_location = configs.fig_toolbar_loc,
-                 title = configs.fig_title,
-                 plot_width = configs.fig_width,
-                 plot_height = configs.fig_height,
-                 x_range = configs.fig_x_range, y_range = configs.fig_y_range,
-                 visible = configs.fig_initial_visibility,
-                 sizing_mode = configs.fig_sizing_mode)
+    fig = figure(
+        tools = configs.fig_base_tools,
+        toolbar_location = configs.fig_toolbar_loc, title = configs.fig_title,
+        plot_width = configs.fig_width, plot_height = configs.fig_height,
+        x_range = configs.fig_x_range, y_range = configs.fig_y_range,
+        visible = configs.fig_initial_visibility,
+        sizing_mode = configs.fig_sizing_mode
+    )
     fig.title.text_font_size = configs.fig_title_font_size
     fig.xaxis.visible = configs.fig_x_axis_visibility
     fig.yaxis.visible = configs.fig_y_axis_visibility
@@ -328,24 +327,32 @@ def create(game_parts, configs = Configs()):
         src_hb6_ys.append(0)
 
     #Update Initial Values (Based off of data from table in lab key):
-    src_ll_ys[0] = ((1/3 * 0.67) + (1/3 * 0.74) + (1/3 * 0.87))
-    src_lm_ys[0] = ((1/3 * 0.70) + (1/3 * 0.60) + (1/3 * 0.65))
-    src_lr_ys[0] = ((1/3 * 0.96) + (1/3 * 0.72) + (1/3 * 0.61))
-    src_rl_ys[0] = ((1/3 * 0.55) + (1/3 * 0.74) + (1/3 * 0.95))
-    src_rm_ys[0] = ((1/3 * 0.65) + (1/3 * 0.60) + (1/3 * 0.73))
-    src_rr_ys[0] = ((1/3 * 0.93) + (1/3 * 0.72) + (1/3 * 0.70))
+    src_ll_ys[0] = 0.760000
+    src_lm_ys[0] = 0.650000
+    src_lr_ys[0] = 0.763333
+    src_rl_ys[0] = 0.746666
+    src_rm_ys[0] = 0.660000
+    src_rr_ys[0] = 0.783333
         #</editor-fold>
         #<editor-fold Make Data Source Using Base Values:
         #Create fig_src with the values that were created.
-    src_data = dict(xs = src_xs,
-                    ll_ys = src_ll_ys, lm_ys = src_lm_ys, lr_ys = src_lr_ys,
-                    rl_ys = src_rl_ys, rm_ys = src_rm_ys, rr_ys = src_rr_ys,
-
-                    hb1 = src_hb1_ys, hb2 = src_hb2_ys, hb3 = src_hb3_ys,
-                    hb4 = src_hb4_ys, hb5 = src_hb5_ys, hb6 = src_hb6_ys,
-
-                    highlight_alphas = src_highlight_alphas,
-                    alphas_zeroes = src_alphas_zeroes)
+    src_data = dict(
+        xs = src_xs,
+        ll_ys = src_ll_ys,
+        lm_ys = src_lm_ys,
+        lr_ys = src_lr_ys,
+        rl_ys = src_rl_ys,
+        rm_ys = src_rm_ys,
+        rr_ys = src_rr_ys,
+        hb1 = src_hb1_ys,
+        hb2 = src_hb2_ys,
+        hb3 = src_hb3_ys,
+        hb4 = src_hb4_ys,
+        hb5 = src_hb5_ys,
+        hb6 = src_hb6_ys,
+        highlight_alphas = src_highlight_alphas,
+        alphas_zeroes = src_alphas_zeroes
+    )
 
     fig_src = ColumnDataSource(data = src_data)
         #</editor-fold>
@@ -354,79 +361,99 @@ def create(game_parts, configs = Configs()):
     #Create the CustomJSTransforms that are used by the figure to update the
     #highlight dots according to the values contained within the
     #fig_src column 'highlight_alphas'
-    args_dict = dict(highlightIndex = highlight_index,
-                     alphasZeroes = fig_src.data['alphas_zeroes'])
-    ll_highlight_ga = CustomJSTransform(v_func = highlight_ga_code('ll'),
-                                        args = args_dict)
-    lm_highlight_ga = CustomJSTransform(v_func = highlight_ga_code('lm'),
-                                        args = args_dict)
-    lr_highlight_ga = CustomJSTransform(v_func = highlight_ga_code('lr'),
-                                        args = args_dict)
-    rl_highlight_ga = CustomJSTransform(v_func = highlight_ga_code('rl'),
-                                        args = args_dict)
-    rm_highlight_ga = CustomJSTransform(v_func = highlight_ga_code('rm'),
-                                        args = args_dict)
-    rr_highlight_ga = CustomJSTransform(v_func = highlight_ga_code('rr'),
-                                        args = args_dict)
+    args_dict = dict(
+        highlightIndex = highlight_index,
+        alphasZeroes = fig_src.data['alphas_zeroes']
+    )
+    ll_highlight_ga = CustomJSTransform(
+        v_func = highlight_ga_code('ll'), args = args_dict
+    )
+    lm_highlight_ga = CustomJSTransform(
+        v_func = highlight_ga_code('lm'), args = args_dict
+    )
+    lr_highlight_ga = CustomJSTransform(
+        v_func = highlight_ga_code('lr'), args = args_dict
+    )
+    rl_highlight_ga = CustomJSTransform(
+        v_func = highlight_ga_code('rl'), args = args_dict
+    )
+    rm_highlight_ga = CustomJSTransform(
+        v_func = highlight_ga_code('rm'), args = args_dict
+    )
+    rr_highlight_ga = CustomJSTransform(
+        v_func = highlight_ga_code('rr'), args = args_dict
+    )
     #</editor-fold>
     #<editor-fold Plot Figure Data Points:
     #Create the Data Points for the figure:
-    fig.circle_dot('xs', 'll_ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   line_color = configs.plot_ll_dot_outline_color,
-                   fill_color = configs.plot_ll_dot_color)
-    fig.circle_dot('xs', 'lm_ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   line_color = configs.plot_lm_dot_outline_color,
-                   fill_color = configs.plot_lm_dot_color)
-    fig.circle_dot('xs', 'lr_ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   line_color = configs.plot_lr_dot_outline_color,
-                   fill_color = configs.plot_lr_dot_color)
-    fig.circle_dot('xs', 'rl_ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   line_color = configs.plot_rl_dot_outline_color,
-                   fill_color = configs.plot_rl_dot_color)
-    fig.circle_dot('xs', 'rm_ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   line_color = configs.plot_rm_dot_outline_color,
-                   fill_color = configs.plot_rm_dot_color)
-    fig.circle_dot('xs', 'rr_ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   line_color = configs.plot_rr_dot_outline_color,
-                   fill_color = configs.plot_rr_dot_color)
+    fig.circle_dot(
+        'xs', 'll_ys', source = fig_src, size = configs.plot_dot_size,
+        line_color = configs.plot_ll_dot_outline_color,
+        fill_color = configs.plot_ll_dot_color
+    )
+    fig.circle_dot(
+        'xs', 'lm_ys', source = fig_src, size = configs.plot_dot_size,
+        line_color = configs.plot_lm_dot_outline_color,
+        fill_color = configs.plot_lm_dot_color
+    )
+    fig.circle_dot(
+        'xs', 'lr_ys', source = fig_src, size = configs.plot_dot_size,
+        line_color = configs.plot_lr_dot_outline_color,
+        fill_color = configs.plot_lr_dot_color
+    )
+    fig.circle_dot(
+        'xs', 'rl_ys', source = fig_src, size = configs.plot_dot_size,
+        line_color = configs.plot_rl_dot_outline_color,
+        fill_color = configs.plot_rl_dot_color
+    )
+    fig.circle_dot(
+        'xs', 'rm_ys', source = fig_src, size = configs.plot_dot_size,
+        line_color = configs.plot_rm_dot_outline_color,
+        fill_color = configs.plot_rm_dot_color
+    )
+    fig.circle_dot(
+        'xs', 'rr_ys', source = fig_src, size = configs.plot_dot_size,
+        line_color = configs.plot_rr_dot_outline_color,
+        fill_color = configs.plot_rr_dot_color
+    )
 
     #Plot Highlight Points For Figure:
-    fig.circle_dot('xs', 'll_ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color,
-                   alpha = transform('highlight_alphas', ll_highlight_ga))
-    fig.circle_dot('xs', 'lm_ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color,
-                   alpha = transform('highlight_alphas', lm_highlight_ga))
-    fig.circle_dot('xs', 'lr_ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color,
-                   alpha = transform('highlight_alphas', lr_highlight_ga))
-    fig.circle_dot('xs', 'rl_ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color,
-                   alpha = transform('highlight_alphas', rl_highlight_ga))
-    fig.circle_dot('xs', 'rm_ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color,
-                   alpha = transform('highlight_alphas', rm_highlight_ga))
-    fig.circle_dot('xs', 'rr_ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color,
-                   alpha = transform('highlight_alphas', rr_highlight_ga))
+    fig.circle_dot(
+        'xs', 'll_ys', source = fig_src, size = configs.plot_highlight_dot_size,
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color,
+        alpha = transform('highlight_alphas', ll_highlight_ga)
+    )
+    fig.circle_dot(
+        'xs', 'lm_ys', source = fig_src, size = configs.plot_highlight_dot_size,
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color,
+        alpha = transform('highlight_alphas', lm_highlight_ga)
+    )
+    fig.circle_dot(
+        'xs', 'lr_ys', source = fig_src, size = configs.plot_highlight_dot_size,
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color,
+        alpha = transform('highlight_alphas', lr_highlight_ga)
+    )
+    fig.circle_dot(
+        'xs', 'rl_ys', source = fig_src, size = configs.plot_highlight_dot_size,
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color,
+        alpha = transform('highlight_alphas', rl_highlight_ga)
+    )
+    fig.circle_dot(
+        'xs', 'rm_ys', source = fig_src, size = configs.plot_highlight_dot_size,
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color,
+        alpha = transform('highlight_alphas', rm_highlight_ga)
+    )
+    fig.circle_dot(
+        'xs', 'rr_ys', source = fig_src, size = configs.plot_highlight_dot_size,
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color,
+        alpha = transform('highlight_alphas', rr_highlight_ga)
+    )
     #</editor-fold>
     #<editor-fold CustomJSTransform Definitions For Custom HoverTool:
     #Create the CustomJSTransforms that are used to update the y coordinates of
@@ -442,46 +469,58 @@ def create(game_parts, configs = Configs()):
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
     #Create the invisible hitboxes for the figure:
-    hb1s = fig.rect(x = 'xs', y = transform('hb1', hb1_gc), source = fig_src,
-                    width = 1, height = 'hb1', name = '5', fill_alpha = 0,
-                    alpha = configs.hitbox_alpha)
-    hb2s = fig.rect(x = 'xs', y = transform('hb2', hb2_gc), source = fig_src,
-                    width = 1, height = 'hb2', name = '4', fill_alpha = 0,
-                    alpha = configs.hitbox_alpha)
-    hb3s = fig.rect(x = 'xs', y = transform('hb3', hb3_gc), source = fig_src,
-                    width = 1, height = 'hb3', name = '3', fill_alpha = 0,
-                    alpha = configs.hitbox_alpha)
-    hb4s = fig.rect(x = 'xs', y = transform('hb4', hb4_gc), source = fig_src,
-                    width = 1, height = 'hb4', name = '2', fill_alpha = 0,
-                    alpha = configs.hitbox_alpha)
-    hb5s = fig.rect(x = 'xs', y = transform('hb5', hb5_gc), source = fig_src,
-                    width = 1, height = 'hb5', name = '1', fill_alpha = 0,
-                    alpha = configs.hitbox_alpha)
-    hb6s = fig.rect(x = 'xs', y = transform('hb6', hb6_gc), source = fig_src,
-                    width = 1, height = 'hb6', name = '0', fill_alpha = 0,
-                    alpha = configs.hitbox_alpha)
+    hb1s = fig.rect(
+        x = 'xs', y = transform('hb1', hb1_gc), source = fig_src, width = 1,
+        height = 'hb1', name = '5', fill_alpha = 0, alpha = configs.hitbox_alpha
+    )
+    hb2s = fig.rect(
+        x = 'xs', y = transform('hb2', hb2_gc), source = fig_src, width = 1,
+        height = 'hb2', name = '4', fill_alpha = 0, alpha = configs.hitbox_alpha
+    )
+    hb3s = fig.rect(
+        x = 'xs', y = transform('hb3', hb3_gc), source = fig_src, width = 1,
+        height = 'hb3', name = '3', fill_alpha = 0, alpha = configs.hitbox_alpha
+    )
+    hb4s = fig.rect(
+        x = 'xs', y = transform('hb4', hb4_gc), source = fig_src, width = 1,
+        height = 'hb4', name = '2', fill_alpha = 0, alpha = configs.hitbox_alpha
+    )
+    hb5s = fig.rect(
+        x = 'xs', y = transform('hb5', hb5_gc), source = fig_src, width = 1,
+        height = 'hb5', name = '1', fill_alpha = 0, alpha = configs.hitbox_alpha
+    )
+    hb6s = fig.rect(
+        x = 'xs', y = transform('hb6', hb6_gc), source = fig_src, width = 1,
+        height = 'hb6', name = '0', fill_alpha = 0, alpha = configs.hitbox_alpha
+    )
     #</editor-fold>
     #<editor-fold CustomJSHover Creation:
     #Create the CustomJSHovers used to format the data for the figure's
     #custom HoverTool:
-    hover_main_args_dict = dict(src = fig_src, selectedIndex = selected_index)
+    hover_main_args_dict = dict(
+        src = fig_src,
+        selectedIndex = selected_index
+    )
     hover_xs_args_dict = hover_main_args_dict.copy()
     hover_xs_args_dict['highlightIndex'] = highlight_index
 
     xs_custom = CustomJSHover(code = xsCode, args = hover_xs_args_dict)
     ys_custom = CustomJSHover(code = ysCode, args = hover_main_args_dict)
-    selected_custom = CustomJSHover(code = selectedCode,
-                                    args = hover_main_args_dict)
+    selected_custom = CustomJSHover(
+        code = selectedCode, args = hover_main_args_dict
+    )
     #</editor-fold>
     #<editor-fold Custom HoverTool Creation:
     #Create the Custom HoverTool and add it to the figure:
     hovertool_formatters = {'@xs' : xs_custom,
                             '@ll_ys' : ys_custom,
                             '@lm_ys' : selected_custom}
-    fig.add_tools(HoverTool(tooltips = custom_tooltip,
-                            formatters = hovertool_formatters,
-                            mode = "mouse", point_policy = "follow_mouse",
-                            renderers = [hb1s, hb2s, hb3s, hb4s, hb5s, hb6s]))
+    hover_tool = HoverTool(
+        tooltips = custom_tooltip, formatters = hovertool_formatters,
+        mode = "mouse", point_policy = "follow_mouse",
+        renderers = [hb1s, hb2s, hb3s, hb4s, hb5s, hb6s]
+    )
+    fig.add_tools(hover_tool)
     #</editor-fold>
     game_parts.figures['stats_3'] = fig
     game_parts.sources['stats_fig_3'] = fig_src

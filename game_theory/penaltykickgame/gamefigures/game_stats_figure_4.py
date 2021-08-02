@@ -43,7 +43,7 @@ return val.toString().substring(0,5);
 """
 #</editor-fold>
 #<editor-fold Custom Hover Tooltip:
-custom_tooltip="""
+custom_tooltip = """
 <div>
     <span style='font-size: 10px;'>Iteration:</span>
     <span style='font-size: 10px;'>@xs</span>
@@ -90,23 +90,22 @@ class Configs:
     directly to the default values of the arguments in this class after
     successful testing.
     """
-    def __init__(self, fig_base_tools = "", fig_toolbar_loc = "below",
-                 fig_toolbar_sticky = False,
-                 fig_title = 'Score Chance Over Iterations',
-                 fig_width = 600, fig_height = 360,
-                 fig_x_range = (0.5, 50.5), fig_y_range = (0, 1),
-                 fig_initial_visibility = False, fig_title_font_size = '16pt',
-                 fig_x_axis_visibility = True, fig_y_axis_visibility = True,
-                 fig_xgrid_line_color = None, fig_ygrid_line_color = None,
-                 fig_outline_line_color = None, fig_background_color = "white",
-                 plot_dot_line_color = "#D8CB2D",
-                 plot_dot_fill_color = "#ECDF41",
-                 plot_dot_size = 5, plot_dot_alpha = 1,
-                 guiding_line_color = "#000000", guiding_line_alpha = 0.1,
-                 hitbox_alpha = 0, plot_highlight_dot_size = 10,
-                 plot_highlight_dot_color = "#ECB841",
-                 plot_highlight_dot_outline_color = "#D8A42D",
-                 plot_avgs_line_color = "#000000"):
+    def __init__(
+        self, fig_base_tools = "", fig_toolbar_loc = "below",
+        fig_toolbar_sticky = False, fig_title = 'Score Chance Over Iterations',
+        fig_width = 600, fig_height = 360, fig_x_range = (0.5, 50.5),
+        fig_y_range = (0, 1), fig_initial_visibility = False,
+        fig_title_font_size = '16pt', fig_x_axis_visibility = True,
+        fig_y_axis_visibility = True,  fig_xgrid_line_color = None,
+        fig_ygrid_line_color = None, fig_outline_line_color = None,
+        fig_background_color = "white", plot_dot_line_color = "#D8CB2D",
+        plot_dot_fill_color = "#ECDF41", plot_dot_size = 5, plot_dot_alpha = 1,
+        guiding_line_color = "#000000", guiding_line_alpha = 0.1,
+        hitbox_alpha = 0, plot_highlight_dot_size = 10,
+        plot_highlight_dot_color = "#ECB841",
+        plot_highlight_dot_outline_color = "#D8A42D",
+        plot_avgs_line_color = "#000000"
+    ):
         #<editor-fold figure:
         self.fig_base_tools = fig_base_tools
         self.fig_toolbar_loc = fig_toolbar_loc
@@ -137,15 +136,14 @@ class Configs:
         self.plot_avgs_line_color = plot_avgs_line_color
         #</editor-fold>
 def create(game_parts, configs = Configs()):
-    fig = figure(tools = configs.fig_base_tools,
-                 toolbar_location = configs.fig_toolbar_loc,
-                 toolbar_sticky = configs.fig_toolbar_sticky,
-                 title = configs.fig_title,
-                 plot_width = configs.fig_width,
-                 plot_height = configs.fig_height,
-                 x_range = configs.fig_x_range,
-                 y_range = configs.fig_y_range,
-                 visible = configs.fig_initial_visibility)
+    fig = figure(
+        tools = configs.fig_base_tools,
+        toolbar_location = configs.fig_toolbar_loc,
+        toolbar_sticky = configs.fig_toolbar_sticky, title = configs.fig_title,
+        plot_width = configs.fig_width, plot_height = configs.fig_height,
+        x_range = configs.fig_x_range, y_range = configs.fig_y_range,
+        visible = configs.fig_initial_visibility
+     )
     fig.title.text_font_size = configs.fig_title_font_size
     fig.xaxis.visible = configs.fig_x_axis_visibility
     fig.yaxis.visible = configs.fig_y_axis_visibility
@@ -172,42 +170,53 @@ def create(game_parts, configs = Configs()):
         src_highlights.append(0)
         src_avgs_placeholder.append(0)
     #Create fig_src with the values that were created.
-    src_data = dict(xs = src_xs, ys = src_ys, feet = src_feet,
-                    directions = src_directions, actions = src_actions,
-                    highlight_alphas = src_highlights,
-                    avgs_placeholder = src_avgs_placeholder)
+    src_data = dict(
+        xs = src_xs,
+        ys = src_ys,
+        feet = src_feet,
+        directions = src_directions,
+        actions = src_actions,
+        highlight_alphas = src_highlights,
+        avgs_placeholder = src_avgs_placeholder
+    )
     fig_src = ColumnDataSource(data = src_data)
 
     #Plot data points:
-    fig.circle_dot(x = 'xs', y = 'ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   alpha = configs.plot_dot_alpha,
-                   line_color = configs.plot_dot_line_color,
-                   fill_color = configs.plot_dot_fill_color)
-    fig.circle_dot(x = 'xs', y = 'ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   alpha = 'highlight_alphas',
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color)
+    fig.circle_dot(
+        x = 'xs', y = 'ys', source = fig_src, size = configs.plot_dot_size,
+        alpha = configs.plot_dot_alpha,
+        line_color = configs.plot_dot_line_color,
+        fill_color = configs.plot_dot_fill_color
+    )
+    fig.circle_dot(
+        x = 'xs', y = 'ys', source = fig_src,
+        size = configs.plot_highlight_dot_size, alpha = 'highlight_alphas',
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color
+    )
     #Plot averages line:
     get_avgs = CustomJSTransform(v_func = getAvgs)
-    avgs_line = fig.line(x = 'xs', y = transform('ys', get_avgs),
-                         source = fig_src,
-                         line_color = configs.plot_avgs_line_color)
+    avgs_line = fig.line(
+        x = 'xs', y = transform('ys', get_avgs), source = fig_src,
+        line_color = configs.plot_avgs_line_color
+    )
 
     #Plot guiding lines:
     for foot in footedness_dicts:
         for direction in directions:
             for action in directions:
                 y_val = score_probs[foot][direction + action]
-                fig.line(x = 'xs', y = y_val, source = fig_src,
-                         line_color = configs.guiding_line_color,
-                         line_alpha = configs.guiding_line_alpha)
+                fig.line(
+                    x = 'xs', y = y_val, source = fig_src,
+                    line_color = configs.guiding_line_color,
+                    line_alpha = configs.guiding_line_alpha
+                )
 
     #Hitboxes:
-    hbs = fig.rect(x = 'xs', y = 0.5, source = fig_src, width = 1, height = 1,
-                   fill_alpha = 0, line_alpha = configs.hitbox_alpha,
-                   line_color = "black")
+    hbs = fig.rect(
+        x = 'xs', y = 0.5, source = fig_src, width = 1, height = 1,
+        fill_alpha = 0, line_alpha = configs.hitbox_alpha, line_color = "black"
+    )
 
     #Custom HoverTool:
     hover_main_args_dict = dict(src = fig_src)
@@ -215,10 +224,11 @@ def create(game_parts, configs = Configs()):
     avgs_custom = CustomJSHover(code = avgsCode, args = hover_main_args_dict)
     hovertool_formatters = {'@ys' : ys_custom,
                             '@avgs_placeholder' : avgs_custom}
-
-    fig.add_tools(HoverTool(tooltips = custom_tooltip,
-                            formatters = hovertool_formatters, mode = "mouse",
-                            point_policy = "follow_mouse", renderers = [hbs]))
+    hover_tool = HoverTool(
+        tooltips = custom_tooltip, formatters = hovertool_formatters,
+        mode = "mouse", point_policy = "follow_mouse", renderers = [hbs]
+    )
+    fig.add_tools(hover_tool)
 
     game_parts.figures['stats_4'] = fig
     game_parts.sources['stats_fig_4'] = fig_src

@@ -57,19 +57,19 @@ counterMadeDiv.text = '1';
 
 #<editor-fold create():
 def create(game_parts, config):
-    b_make_counter = Button(label = config.label,
-                            button_type = config.button_type,
-                            sizing_mode = config.sizing_mode,
-                            width_policy = config.width_policy,
-                            disabled = config.disabled,
-                            visible = config.visible)
+    b_make_counter = Button(
+        label = config.label, button_type = config.button_type,
+        sizing_mode = config.sizing_mode, width_policy = config.width_policy,
+        disabled = config.disabled, visible = config.visible
+    )
     game_parts.buttons['make_counter'] = b_make_counter
 #</editor-fold>
 
 #<editor-fold setup():
 def setup(game_parts):
-    goalie_counter_source = ColumnDataSource(data = dict(Left = [0, 0, 0],
-                                                         Right = [0, 0, 0]))
+    goalie_counter_source = ColumnDataSource(
+        data = dict(Left = [0, 0, 0], Right = [0, 0, 0])
+    )
     game_parts.sources['goalie_counter'] = goalie_counter_source
     aimTextInputs = [game_parts.textinputs['ll_aim'],
                      game_parts.textinputs['lm_aim'],
@@ -78,13 +78,15 @@ def setup(game_parts):
                      game_parts.textinputs['rm_aim'],
                      game_parts.textinputs['rr_aim']]
 
-    args_dict = dict(startAutomateButton = game_parts.buttons['start'],
-                     makeCounterButton = game_parts.buttons['make_counter'],
-                     automationTable = game_parts.tables['automation'],
-                     automationTableSrc = game_parts.sources['automation_table'],
-                     counterMadeDiv = game_parts.divs['counter_made'],
-                     goalieCounterSrc = game_parts.sources['goalie_counter'],
-                     aimTextInputs = aimTextInputs)
+    args_dict = dict(
+        startAutomateButton = game_parts.buttons['start'],
+        makeCounterButton = game_parts.buttons['make_counter'],
+        automationTable = game_parts.tables['automation'],
+        automationTableSrc = game_parts.sources['automation_table'],
+        counterMadeDiv = game_parts.divs['counter_made'],
+        goalieCounterSrc = game_parts.sources['goalie_counter'],
+        aimTextInputs = aimTextInputs
+    )
 
     b_make_counter_click = CustomJS(args = args_dict, code = makeCounterCode)
 

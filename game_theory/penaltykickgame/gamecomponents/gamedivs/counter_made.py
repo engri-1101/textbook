@@ -28,11 +28,13 @@ def create(game_parts):
 
 #<editor-fold setup():
 def setup(game_parts):
-    args_dict = dict(startAutomateButton = game_parts.buttons['start'],
-                     makeCounterButton = game_parts.buttons['make_counter'],
-                     cpuSelectedDiv = game_parts.divs['cpu_selected'],
-                     counterMadeDiv = game_parts.divs['counter_made'],
-                     chancesValidDiv = game_parts.divs['chances_valid'])
+    args_dict = dict(
+        startAutomateButton = game_parts.buttons['start'],
+        makeCounterButton = game_parts.buttons['make_counter'],
+        cpuSelectedDiv = game_parts.divs['cpu_selected'],
+        counterMadeDiv = game_parts.divs['counter_made'],
+        chancesValidDiv = game_parts.divs['chances_valid']
+    )
 
     counter_made_change = CustomJS(code = counterMadeOnChange, args = args_dict)
 

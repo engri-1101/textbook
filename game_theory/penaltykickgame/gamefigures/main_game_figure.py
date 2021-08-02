@@ -3,44 +3,40 @@ from bokeh.models import Circle, Rect
 
 #<editor-fold game_fig_configs:
 class Configs():
-    def __init__(self, tools = "", toolbar_location = None,
-                 title = 'FIFA 2020 Penalty Simulator',
-                 title_text_font_size = '15pt',
-                 plot_width = 600, plot_height = 400,
-                 x_range = (0, 100), y_range = (0, 90),
-                 xaxis_visible = False, yaxis_visible = False,
-                 xgrid_line_color = None, ygrid_line_color = None,
-                 outline_line_color = None, background_fill_color = 'green',
-                 mline_penaltybox_xs_1 = [24, 76, 78, 22, 24],
-                 mline_penaltybox_xs_2 = [3,  12, 88, 97, 3 ],
-                 mline_goal_xs = [34, 34, 66, 66],
-                 mline_penaltybox_ys_1 = [63, 63, 47, 47, 63],
-                 mline_penaltybox_ys_2 = [15, 63, 63, 15, 15],
-                 mline_goal_ys = [63, 82, 82, 63],
-                 mline_penaltybox_color_1 = "lightgreen",
-                 mline_penaltybox_color_2 = "lightgreen",
-                 mline_goal_color = "whitesmoke",
-                 mline_penaltybox_alpha_1 = 1, mline_penaltybox_alpha_2 = 1,
-                 mline_goal_alpha = 1, mline_line_width = 4,
-                 penaltyarc_quad_x1 = 33, penaltyarc_quad_y1 = 15,
-                 penaltyarc_quad_x2 = 67, penaltyarc_quad_y2 = 15,
-                 penaltyarc_quad_c1 = 50, penaltyarc_quad_c2 = 2,
-                 penaltyarc_quad_color = 'lightgreen',
-                 penaltyarc_quad_line_width = 4,
-                 goalie_head_x = 50, goalie_head_y = 69,
-                 goalie_head_color = "red", goalie_head_line_width = 2,
-                 goalie_head_size = 17, goalie_body_x = 50, goalie_body_y = 65,
-                 goalie_body_width = 3, goalie_body_height = 4,
-                 goalie_body_angle = 0, goalie_body_color = "red",
-                 goalie_body_line_width = 2, ball_x = 50, ball_y = 13,
-                 ball_fill_color = "whitesmoke", ball_line_width = 2,
-                 ball_size = 17, striker_head_x = 50, striker_head_y = 16,
-                 striker_head_color = "lightblue", striker_head_line_width = 2,
-                 striker_head_size = 21,
-                 striker_body_x = 50, striker_body_y = 11,
-                 striker_body_width = 4, striker_body_height = 6,
-                 striker_body_angle = 0, striker_body_color = 'lightblue',
-                 striker_body_line_width = 2):
+    def __init__(
+        self, tools = "", toolbar_location = None,
+        title = 'FIFA 2020 Penalty Simulator', title_text_font_size = '15pt',
+        plot_width = 600, plot_height = 400, x_range = (0, 100),
+        y_range = (0, 90), xaxis_visible = False, yaxis_visible = False,
+        xgrid_line_color = None, ygrid_line_color = None,
+        outline_line_color = None, background_fill_color = 'green',
+        mline_penaltybox_xs_1 = [24, 76, 78, 22, 24],
+        mline_penaltybox_xs_2 = [3,  12, 88, 97, 3 ],
+        mline_goal_xs = [34, 34, 66, 66],
+        mline_penaltybox_ys_1 = [63, 63, 47, 47, 63],
+        mline_penaltybox_ys_2 = [15, 63, 63, 15, 15],
+        mline_goal_ys = [63, 82, 82, 63],
+        mline_penaltybox_color_1 = "lightgreen",
+        mline_penaltybox_color_2 = "lightgreen",
+        mline_goal_color = "whitesmoke", mline_penaltybox_alpha_1 = 1,
+        mline_penaltybox_alpha_2 = 1, mline_goal_alpha = 1,
+        mline_line_width = 4, penaltyarc_quad_x1 = 33, penaltyarc_quad_y1 = 15,
+        penaltyarc_quad_x2 = 67, penaltyarc_quad_y2 = 15,
+        penaltyarc_quad_c1 = 50, penaltyarc_quad_c2 = 2,
+        penaltyarc_quad_color = 'lightgreen', penaltyarc_quad_line_width = 4,
+        goalie_head_x = 50, goalie_head_y = 69, goalie_head_color = "red",
+        goalie_head_line_width = 2, goalie_head_size = 17, goalie_body_x = 50,
+        goalie_body_y = 65, goalie_body_width = 3, goalie_body_height = 4,
+        goalie_body_angle = 0, goalie_body_color = "red",
+        goalie_body_line_width = 2, ball_x = 50, ball_y = 13,
+        ball_fill_color = "whitesmoke", ball_line_width = 2, ball_size = 17,
+        striker_head_x = 50, striker_head_y = 16,
+        striker_head_color = "lightblue", striker_head_line_width = 2,
+        striker_head_size = 21, striker_body_x = 50, striker_body_y = 11,
+        striker_body_width = 4, striker_body_height = 6,
+        striker_body_angle = 0, striker_body_color = 'lightblue',
+        striker_body_line_width = 2
+    ):
         #<editor-fold Main:
         self.tools = tools
         self.toolbar_location = toolbar_location
@@ -122,12 +118,12 @@ class Configs():
 #<editor-fold game_figure_setup:
 def create(game_parts, configs = Configs()):
 
-    fig = figure(tools = configs.tools,
-                 toolbar_location = configs.toolbar_location,
-                 title = configs.title,
-                 plot_width = configs.plot_width,
-                 plot_height = configs.plot_height,
-                 x_range = configs.x_range, y_range = configs.y_range)
+    fig = figure(
+        tools = configs.tools, toolbar_location = configs.toolbar_location,
+        title = configs.title, plot_width = configs.plot_width,
+        plot_height = configs.plot_height, x_range = configs.x_range,
+        y_range = configs.y_range
+    )
 
     fig.title.text_font_size = configs.title_text_font_size
     #Hide Axes and Gridlines
@@ -139,61 +135,70 @@ def create(game_parts, configs = Configs()):
     #Background Color
     fig.background_fill_color = configs.background_fill_color
     #Goal Posts and Lines
-    fig.multi_line(xs = [configs.mline_penaltybox_xs_1,
-                         configs.mline_penaltybox_xs_2,
-                         configs.mline_goal_xs],
-                   ys = [configs.mline_penaltybox_ys_1,
-                         configs.mline_penaltybox_ys_2,
-                         configs.mline_goal_ys],
-                   color = [configs.mline_penaltybox_color_1,
-                            configs.mline_penaltybox_color_2,
-                            configs.mline_goal_color],
-                   alpha = [configs.mline_penaltybox_alpha_1,
-                            configs.mline_penaltybox_alpha_2,
-                            configs.mline_goal_alpha],
-                   line_width = configs.mline_line_width)
+    xs = [configs.mline_penaltybox_xs_1, configs.mline_penaltybox_xs_2,
+          configs.mline_goal_xs]
+    ys = [configs.mline_penaltybox_ys_1, configs.mline_penaltybox_ys_2,
+          configs.mline_goal_ys]
+    color = [configs.mline_penaltybox_color_1, configs.mline_penaltybox_color_2,
+             configs.mline_goal_color]
+    alpha = [configs.mline_penaltybox_alpha_1, configs.mline_penaltybox_alpha_2,
+             configs.mline_goal_alpha]
+    fig.multi_line(
+        xs = xs, ys = ys, color = color, alpha = alpha,
+        line_width = configs.mline_line_width
+    )
 
     #Striker Box
-    fig.quadratic(x0 = configs.penaltyarc_quad_x1,
-                  y0 = configs.penaltyarc_quad_y1,
-                  x1 = configs.penaltyarc_quad_x2,
-                  y1 = configs.penaltyarc_quad_y2,
-                  cx = configs.penaltyarc_quad_c1,
-                  cy = configs.penaltyarc_quad_c2,
-                  color = configs.penaltyarc_quad_color,
-                  line_width = configs.penaltyarc_quad_line_width)
+    fig.quadratic(
+        x0 = configs.penaltyarc_quad_x1, y0 = configs.penaltyarc_quad_y1,
+        x1 = configs.penaltyarc_quad_x2, y1 = configs.penaltyarc_quad_y2,
+        cx = configs.penaltyarc_quad_c1, cy = configs.penaltyarc_quad_c2,
+        color = configs.penaltyarc_quad_color,
+        line_width = configs.penaltyarc_quad_line_width
+    )
     #Goalie Sprite
-    goalie_head = Circle(x = configs.goalie_head_x, y = configs.goalie_head_y,
-                         fill_color = configs.goalie_head_color,
-                         line_width = configs.goalie_head_line_width,
-                         size = configs.goalie_head_size)
-    goalie_body = Rect(x = configs.goalie_body_x, y = configs.goalie_body_y,
-                       width = configs.goalie_body_width,
-                       height = configs.goalie_body_height,
-                       angle = configs.goalie_body_angle,
-                       fill_color = configs.goalie_body_color,
-                       line_width = configs.goalie_body_line_width)
+    goalie_head = Circle(
+        x = configs.goalie_head_x, y = configs.goalie_head_y,
+        fill_color = configs.goalie_head_color,
+        line_width = configs.goalie_head_line_width,
+        size = configs.goalie_head_size
+    )
+    goalie_body = Rect(
+        x = configs.goalie_body_x, y = configs.goalie_body_y,
+        width = configs.goalie_body_width, height = configs.goalie_body_height,
+        angle = configs.goalie_body_angle,
+        fill_color = configs.goalie_body_color,
+        line_width = configs.goalie_body_line_width
+    )
     fig.add_glyph(goalie_head)
     fig.add_glyph(goalie_body)
 
     #Ball
-    ball = Circle(x = configs.ball_x, y = configs.ball_y,
-                  fill_color = configs.ball_fill_color,
-                  line_width = configs.ball_line_width,
-                  size = configs.ball_size)
+    ball = Circle(
+        x = configs.ball_x, y = configs.ball_y,
+        fill_color = configs.ball_fill_color,
+        line_width = configs.ball_line_width,
+        size = configs.ball_size
+    )
     fig.add_glyph(ball)
 
     #Striker Sprite
-    fig.add_glyph(Circle(x = configs.striker_head_x, y = configs.striker_head_y,
-                         fill_color = configs.striker_head_color,
-                         line_width = configs.striker_head_line_width,
-                         size = configs.striker_head_size)) # head
-    fig.add_glyph(Rect(x = configs.striker_body_x, y = configs.striker_body_y,
-                       width = configs.striker_body_width,
-                       height = configs.striker_body_height,
-                       angle = configs.striker_body_angle,
-                       fill_color = configs.striker_body_color,
-                       line_width =  configs.striker_body_line_width)) #body
+    striker_head = Circle(
+        x = configs.striker_head_x, y = configs.striker_head_y,
+        fill_color = configs.striker_head_color,
+        line_width = configs.striker_head_line_width,
+        size = configs.striker_head_size
+    )
+    striker_body = Rect(
+        x = configs.striker_body_x, y = configs.striker_body_y,
+        width = configs.striker_body_width,
+        height = configs.striker_body_height,
+        angle = configs.striker_body_angle,
+        fill_color = configs.striker_body_color,
+        line_width =  configs.striker_body_line_width
+    )
+    fig.add_glyph(striker_head) # head
+    fig.add_glyph(striker_body) # body
     game_parts.figures['game_figure'] = fig
     game_parts.glyphs['goalie_head'] = goalie_head
     game_parts.glyphs['goalie_body'] = goalie_body

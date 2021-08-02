@@ -46,19 +46,20 @@ class Configs:
     directly to the default values of the arguments in this class after
     successful testing.
     """
-    def __init__(self, fig_base_tools = "box_zoom, wheel_zoom, pan",
-                 fig_toolbar_loc = "below", fig_toolbar_sticky = False,
-                 fig_title = 'Score Over Iterations',
-                 fig_width = 600, fig_height = 360,
-                 fig_x_range = (-0.5, 50.5), fig_y_range = (-50, 50),
-                 fig_initial_visibility = False, fig_title_font_size = '16pt',
-                 fig_x_axis_visibility = True, fig_y_axis_visibility = True,
-                 fig_xgrid_line_color = None, fig_ygrid_line_color = None,
-                 fig_outline_line_color = None, fig_background_color = "white",
-                 plot_dot_size = 5, plot_dot_outline_color = "#B56464",
-                 plot_dot_color = "#CE7D7D", plot_highlight_dot_size = 10,
-                 plot_highlight_dot_outline_color = "#6464B5",
-                 plot_highlight_dot_color = "#7D7DCE"):
+    def __init__(
+        self, fig_base_tools = "box_zoom, wheel_zoom, pan",
+        fig_toolbar_loc = "below", fig_toolbar_sticky = False,
+        fig_title = 'Score Over Iterations', fig_width = 600, fig_height = 360,
+        fig_x_range = (-0.5, 50.5), fig_y_range = (-50, 50),
+        fig_initial_visibility = False, fig_title_font_size = '16pt',
+        fig_x_axis_visibility = True, fig_y_axis_visibility = True,
+        fig_xgrid_line_color = None, fig_ygrid_line_color = None,
+        fig_outline_line_color = None, fig_background_color = "white",
+        plot_dot_size = 5, plot_dot_outline_color = "#B56464",
+        plot_dot_color = "#CE7D7D", plot_highlight_dot_size = 10,
+        plot_highlight_dot_outline_color = "#6464B5",
+        plot_highlight_dot_color = "#7D7DCE"
+    ):
         #<editor-fold figure:
         self.fig_base_tools = fig_base_tools
         self.fig_toolbar_loc = fig_toolbar_loc
@@ -100,14 +101,14 @@ def create(game_parts, configs = Configs()):
     """
     #<editor-fold Figure Creation:
     #Create and configure the main aspects of the figure:
-    fig = figure(tools = configs.fig_base_tools,
-                 toolbar_location = configs.fig_toolbar_loc,
-                 toolbar_sticky = configs.fig_toolbar_sticky,
-                 title = configs.fig_title,
-                 plot_width = configs.fig_width,
-                 plot_height = configs.fig_height,
-                 x_range = configs.fig_x_range, y_range = configs.fig_y_range,
-                 visible = configs.fig_initial_visibility)
+    fig = figure(
+        tools = configs.fig_base_tools,
+        toolbar_location = configs.fig_toolbar_loc,
+        toolbar_sticky = configs.fig_toolbar_sticky, title = configs.fig_title,
+        plot_width = configs.fig_width, plot_height = configs.fig_height,
+        x_range = configs.fig_x_range, y_range = configs.fig_y_range,
+        visible = configs.fig_initial_visibility
+    )
     fig.title.text_font_size = configs.fig_title_font_size
     fig.xaxis.visible = configs.fig_x_axis_visibility
     fig.yaxis.visible = configs.fig_y_axis_visibility
@@ -132,33 +133,43 @@ def create(game_parts, configs = Configs()):
         src_highlight_alphas.append(0)
 
     #Create stats_fig_2_source with the values that were created.
-    src_data = dict(xs = src_xs, ys = src_ys, chance_ys = src_chance_ys,
-                    heights = src_heights,
-                    highlight_alphas = src_highlight_alphas)
+    src_data = dict(
+        xs = src_xs,
+        ys = src_ys,
+        chance_ys = src_chance_ys,
+        heights = src_heights,
+        highlight_alphas = src_highlight_alphas
+    )
     fig_src = ColumnDataSource(data = src_data)
     #</editor-fold>
     #<editor-fold Plot Figure Points:
     #Create the data points for the figure.
-    fig.circle_dot(x = 'xs', y = 'ys', source = fig_src,
-                   size = configs.plot_dot_size,
-                   line_color = configs.plot_dot_outline_color,
-                   fill_color = configs.plot_dot_color)
-    fig.circle_dot(x = 'xs', y = 'chance_ys', source = fig_src, size = 1,
-                   line_color = "black", fill_color = "black")
+    fig.circle_dot(
+        x = 'xs', y = 'ys', source = fig_src, size = configs.plot_dot_size,
+        line_color = configs.plot_dot_outline_color,
+        fill_color = configs.plot_dot_color
+    )
+    fig.circle_dot(
+        x = 'xs', y = 'chance_ys', source = fig_src, size = 1,
+        line_color = "black", fill_color = "black"
+    )
     #</editor-fold>
     #<editor-fold Plot Figure Highlight Points:
     #Plot Highlight Points For Figure:
-    fig.circle_dot(x = 'xs', y = 'ys', source = fig_src,
-                   size = configs.plot_highlight_dot_size,
-                   line_color = configs.plot_highlight_dot_outline_color,
-                   fill_color = configs.plot_highlight_dot_color,
-                   alpha = 'highlight_alphas')
+    fig.circle_dot(
+        x = 'xs', y = 'ys', source = fig_src,
+        size = configs.plot_highlight_dot_size,
+        line_color = configs.plot_highlight_dot_outline_color,
+        fill_color = configs.plot_highlight_dot_color,
+        alpha = 'highlight_alphas'
+    )
     #</editor-fold>
     #<editor-fold Plot Invisible Hitboxes:
     #Create the invisible hitboxes for the figure:
-    hbs = fig.rect(x = 'xs', y = 0, source = fig_src,
-                   width = 1, height = 'heights', alpha = 0,
-                   fill_color = configs.plot_dot_color)
+    hbs = fig.rect(
+        x = 'xs', y = 0, source = fig_src, width = 1, height = 'heights',
+        alpha = 0, fill_color = configs.plot_dot_color
+    )
     #</editor-fold>
     #<editor-fold CustomJSHover Creation:
     #Create the CustomJSHovers used to format the data for the figure's
@@ -170,9 +181,11 @@ def create(game_parts, configs = Configs()):
     #<editor-fold Create HoverTool:
     #Create the Custom HoverTool and add it to the figure:
     hover_formatter = {'@xs' : xs_custom, '@ys' : ys_custom}
-    fig.add_tools(HoverTool(tooltips = custom_tooltip,
-                            formatters = hover_formatter, renderers = [hbs],
-                            mode = "mouse", point_policy = "follow_mouse"))
+    hover_tool = HoverTool(
+        tooltips = custom_tooltip, formatters = hover_formatter,
+        renderers = [hbs], mode = "mouse", point_policy = "follow_mouse"
+    )
+    fig.add_tools(hover_tool)
     #</editor-fold>
     game_parts.figures['stats_2'] = fig
     game_parts.sources['stats_fig_2'] = fig_src

@@ -17,8 +17,10 @@ def create(game_parts):
 
 #<editor-fold setup():
 def setup(game_parts):
-    args_dict = dict(autoNextButton = game_parts.buttons['next'],
-                     startAutomateButton = game_parts.buttons['start'])
+    args_dict = dict(
+        autoNextButton = game_parts.buttons['next'],
+        startAutomateButton = game_parts.buttons['start']
+    )
     in_an_iter_change = CustomJS(args = args_dict, code = inAnIterOnChange)
     game_parts.divs['in_an_iter'].js_on_change('text', in_an_iter_change)
 #</editor-fold>

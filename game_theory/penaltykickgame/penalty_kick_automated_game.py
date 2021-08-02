@@ -561,14 +561,14 @@ class MainGame:
         force_fast_forward = False, force_fast_forward_spd = None,
         iterations_to_run = None, stats_fig_1_enabled = True,
         stats_fig_2_enabled = True, stats_fig_3_enabled = True,
-        stats_fig_4_enabled = True
+        stats_fig_4_enabled = True, show_dist_table = False,
     ):
 
     # Click callback depends on CPU_strategy, allow_fast_forward,
     # force_fast_forward, force_fast_forward_spd, iterations_to_run:
         components.buttons.b_automate.setup(
             self.game_parts, CPU_strategy, allow_fast_forward,
-            force_fast_forward, force_fast_forward_spd, iterations_to_run
+            force_fast_forward, force_fast_forward_spd, iterations_to_run,
         )
 
         if (log_steps):
@@ -595,8 +595,9 @@ class MainGame:
                           + " to reflect that the auto advancing speed should"
                           + " be forcibly set to " + str(force_fast_forward_spd)
                           + ".")
-        if (log_steps):
-            if (iterations_to_run != None):
+
+        if (iterations_to_run != None):
+            if (log_steps):
                 print(INDENT + INDENT + "b_automate callback was adjusted to"
                       + " reflect that the game should be forcibly set to "
                       + str(iterations_to_run) + " iterations.")
@@ -630,10 +631,10 @@ class MainGame:
                   + "Game stat figure view selection button setups completed")
 
         # Click callback depends on stats_fig_1_enabled, stats_fig_2_enabled,
-        # stats_fig_3_enabled, stats_fig_4_enabled:
+        # stats_fig_3_enabled, stats_fig_4_enabled, show_dist_table:
         components.buttons.b_start_automate.setup(
             self.game_parts, stats_fig_1_enabled, stats_fig_2_enabled,
-            stats_fig_3_enabled, stats_fig_4_enabled
+            stats_fig_3_enabled, stats_fig_4_enabled, show_dist_table,
         )
 
         if (log_steps):
@@ -659,6 +660,11 @@ class MainGame:
             if (stats_fig_4_enabled == False):
                 print(INDENT + INDENT + "b_start_automate callback was adjusted"
                       + " to reflect that stats fig 4 should be disabled.")
+
+        if (show_dist_table == True):
+            if (log_steps):
+                print(INDENT + INDENT + "b_automate callback was adjusted to"
+                      + " reflect that the distribution table should be shown.")
 
         # Click callback depends on stats_fig_1_enabled, stats_fig_2_enabled,
         # stats_fig_3_enabled, stats_fig_4_enabled:
@@ -717,7 +723,7 @@ class MainGame:
         force_fast_forward = False, force_fast_forward_spd = None,
         iterations_to_run = None, stats_fig_1_enabled = True,
         stats_fig_2_enabled = True, stats_fig_3_enabled = True,
-        stats_fig_4_enabled = True
+        stats_fig_4_enabled = True, show_dist_table = False,
     ):
         if (log_steps):
             print("Starting game component creation:")
@@ -739,7 +745,8 @@ class MainGame:
         self.__setup_game_components(
             log_steps, CPU_strategy, allow_fast_forward, force_fast_forward,
             force_fast_forward_spd, iterations_to_run, stats_fig_1_enabled,
-            stats_fig_2_enabled, stats_fig_3_enabled, stats_fig_4_enabled
+            stats_fig_2_enabled, stats_fig_3_enabled, stats_fig_4_enabled,
+            show_dist_table,
         )
 
         if (log_steps):

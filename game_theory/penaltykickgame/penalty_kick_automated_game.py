@@ -4,7 +4,7 @@ from . import game_layout
 from . import gamefigures as figs
 
 INDENT = "    "
-
+B_FIG_NAMES = ["game_fig", "fig_1", "fig_2", "fig_3", "fig_4"]
 #<editor-fold _GameParts:
 class _GameParts:
     def __init__(self):
@@ -140,154 +140,174 @@ class _LayoutConfig:
 #<editor-fold MainGame:
 class MainGame:
     def __init__(self):
+        self.stats_fig_1 = figs.stats_fig_1.Configs()
+        self.stats_fig_2 = figs.stats_fig_2.Configs()
+        self.stats_fig_3 = figs.stats_fig_3.Configs()
+        self.stats_fig_4 = figs.stats_fig_4.Configs()
+        self.game_fig = figs.game_fig.Configs()
         self.game_parts = _GameParts()
-
         #<editor-fold Button Configs:
         self.b_automate = _ButtonConfig(
-            "Automate", "success", "scale_width", "fit", False, True
+            label="Automate", button_type="success", sizing_mode="scale_width",
+            width_policy="fit", disabled=False, visible=True
         )
         self.b_start_automate = _ButtonConfig(
-            "Start", "success", "scale_width", "fit", False, False
+            label="Start", button_type="success",
+            sizing_mode="scale_width", width_policy="fit", disabled=False,
+            visible=False
         )
         self.b_auto_next = _ButtonConfig(
-            "Next", "success", "scale_width", "fit", False, False
+            label="Next", button_type="success",
+            sizing_mode="scale_width", width_policy="fit", disabled=False,
+            visible=False
         )
         self.b_make_counter = _ButtonConfig(
-            "Make Counter", "success", "scale_width", "fit", False, False
-        )
-        self.b_game_fig = _ButtonConfig(
-            "Game Figure", "success", "scale_width", "fit", True, False
-        )
-        self.b_fig_1 = _ButtonConfig(
-            "Figure 1", "success", "scale_width", "fit", False, False
-        )
-        self.b_fig_2 = _ButtonConfig(
-            "Figure 2", "success", "scale_width", "fit", False, False
-        )
-        self.b_fig_3 = _ButtonConfig(
-            "Figure 3", "success", "scale_width", "fit", False, False
-        )
-        self.b_fig_4 = _ButtonConfig(
-            "Figure 4", "success", "scale_width", "fit", False, False
+            label="Make Counter", button_type="success",
+            sizing_mode="scale_width", width_policy="fit", disabled=False,
+            visible=False
         )
         self.b_auto_advance = _ButtonConfig(
-            "Fast Forward", "success", "scale_width", "fit", False, False
+            label="Fast Forward", button_type="success",
+            sizing_mode="scale_width", width_policy="fit", disabled=False,
+            visible=False
         )
+
+        b_fig_labels = [
+            "Game Figure", "Figure 1", "Figure 2", "Figure 3", "Figure 4"
+        ]
+        b_fig_disableds = [True, False, False, False, False]
+        self.b_fig_configs = []
+        for i in range(len(B_FIG_NAMES)):
+            button_config = _ButtonConfig(
+                label=b_fig_labels[i], button_type="success",
+                sizing_mode="scale_width", width_policy="fit",
+                disabled=b_fig_disableds[i], visible=False
+            )
+            self.b_fig_configs.append(button_config)
         #</editor-fold>
 
         #<editor-fold Gameview Configs:
         self.scr_text = _TextConfig(
-            [2, 70, 2, 14, 14], [86, 86, 5, 40, 32],
-            ['Rounds played: 0', 'Total score: 0', '', '', '']
+            xs=[2, 70, 2, 14, 14], ys=[86, 86, 5, 40, 32],
+            text_lines=["Rounds played: 0", "Total score: 0", "", "", ""]
         )
         self.scr_labels = _LabelsConfig(
-            text_color = "whitesmoke", text_font_size = "15pt",
-            text_x_offset = 0, text_y_offset = +9,
-            text_baseline = "ideographic", text_align = 'left'
+            text_color="whitesmoke", text_font_size="15pt", text_x_offset=0,
+            text_y_offset=9, text_baseline="ideographic", text_align="left"
         )
         #</editor-fold>
 
         #<editor-fold Div Configs:
-        self.strategy_to_use = _DivConfig("Not Set", False)
-        self.nround = _DivConfig("0", False)
-        self.score = _DivConfig("0", False)
-        self.kicker_foot = _DivConfig("", False)
-        self.kicker_kick = _DivConfig("", False)
+        self.select_cpu_tip = _DivConfig(
+            text="Select A CPU Strategy From the Dropdown", visible=False
+        )
+        self.chances_gt_1_tip = _DivConfig(
+            text="Chances cannot be greater than 1", visible=False
+        )
+        self.chances_lt_0_tip = _DivConfig(
+            text="Chances cannot be less than 0", visible=False
+        )
+        self.chances_ne_1_tip = _DivConfig(
+            text="Chances must add up to 1", visible=False
+        )
         #</editor-fold>
 
         #<editor-fold Slider Configs:
         self.iterations_slider = _SliderConfig(
-            start = 10, end = 500, value = 50, step = 10,
-            title = "Iterations To Run", disabled = False, visible = False
+            start=10, end=500, value=50, step=10, title="Iterations To Run",
+            disabled=False, visible=False
         )
         self.auto_advance_speed_slider = _SliderConfig(
-            start = 50, end = 1000, value = 300, step = 10,
-            title = "Auto Advance Delay (ms)", disabled = False,
-            visible = False
+            start=50, end=1000, value=300, step=10,
+            title="Auto Advance Delay (ms)", disabled=False, visible=False
         )
         #</editor-fold>
 
         #<editor-fold TextInput Configs:
         self.aim_text_inputs = _TextInputConfig(
-            value = "0", title_addition = "_aim_chance", visible = False
+            value="0", title_addition="_aim_chance", visible=False
         )
         #</editor-fold>
 
         #<editor-fold Dropdown Configs:
+        dropdown_items = [
+            "Fictitious_Play", "Mixed_Strategy", "Random", "Goalie_Cheats"
+        ]
         self.cpu_strategy_dropdown = _DropdownConfig(
-            ["Fictitious_Play", "Mixed_Strategy", "Random", "Goalie_Cheats"],
-            label = "CPU strategy to Use", button_type = "warning",
-            disabled = False, visible = False
+            items=dropdown_items, label="CPU strategy to Use",
+            button_type="warning", disabled=False, visible=False
         )
         #</editor-fold>
 
         #<editor-fold Table Configs:
         self.footedness_config = _TableFootednessConfig(
-            footedness_left_text = "Left", footedness_right_text = "Right",
-            aim_direction_left_text = "Left",
-            aim_direction_middle_text = "Middle",
-            aim_direction_right_text = "Right"
+            footedness_left_text="Left", footedness_right_text="Right",
+            aim_direction_left_text="Left", aim_direction_middle_text="Middle",
+            aim_direction_right_text="Right"
         )
         self.base_chances = [0, 0, 0, 0, 0, 0]
         self.initial_stats = {
-            'freq' : [0, 0, 0, 0, 0, 0],
-            'decisions' : [0, 0, 0, 0, 0, 0],
-            'perceived_risks' : [0, 0, 0, 0, 0, 0],
-            'score_chance' : [0, 0, 0, 0, 0, 0],
-            'score_roll' : [0, 0, 0, 0, 0, 0],
+            "freq" : [0, 0, 0, 0, 0, 0],
+            "decisions" : [0, 0, 0, 0, 0, 0],
+            "perceived_risks" : [0, 0, 0, 0, 0, 0],
+            "score_chance" : [0, 0, 0, 0, 0, 0],
+            "score_roll" : [0, 0, 0, 0, 0, 0],
         }
+        dist_table_titles = [
+            "Footedness", "Aim Direction", "Frequency", "Decisions",
+            "Perceived Risks", "Score Chance", "Score Roll"
+        ]
+
         self.distribution_table = _DistTableConfig(
-            [
-                "Footedness", "Aim Direction", "Frequency", "Decisions",
-                "Perceived Risks", "Score Chance", "Score Roll"
-            ], 600, 280, "fit_columns", "stretch_width", False, False,
-            [77, 84, 69, 64, 97, 88, 74]
+            titles=dist_table_titles, width=600, height=280,
+            autosize_mode="fit_columns", sizing_mode="stretch_width",
+            visible=False, fit_columns=False,
+            column_widths=[77, 84, 69, 64, 97, 88, 74]
         )
 
         self.automation_table = _AutoTableConfig(
-            ["Striker Footedness", "Striker Aim Direction", "Chance"],
-            600, 280, "force_fit", False
+            titles=["Striker Footedness", "Striker Aim Direction", "Chance"],
+            width=600, height=280, autosize_mode="force_fit", visible=False
         )
         #</editor-fold>
 
         #<editor-fold Layout Configs:
         self.layout = _LayoutConfig(
-            figs_col_min_width = 600, figs_col_max_width = 600,
-            figs_col_sizing_mode = 'stretch_width',
-            interactables_col_min_width = 300,
-            interactables_col_max_width = 300,
-            interactables_col_sizing_mode = 'stretch_width',
-            plot_width = 900, plot_height = 480
+            figs_col_min_width=600, figs_col_max_width=600,
+            figs_col_sizing_mode="stretch_width",
+            interactables_col_min_width=300, interactables_col_max_width=300,
+            interactables_col_sizing_mode="stretch_width", plot_width=900,
+            plot_height=480
         )
         #</editor-fold>
 
     #<editor-fold __make_game_components():
-    def __make_game_components(self, log_steps = False):
+    def __make_game_components(self, log_steps=False):
         #<editor-fold Game Figs:
         if (log_steps):
             print(INDENT + "Creating game figs:")
 
-        figs.game_fig.create(self.game_parts)
+        figs.game_fig.create(self.game_parts, self.game_fig)
 
         if (log_steps):
             print(INDENT + INDENT + "Main game fig created")
 
-        figs.stats_fig_1.create(self.game_parts)
+        figs.stats_fig_1.create(self.game_parts, self.stats_fig_1)
 
         if (log_steps):
             print(INDENT + INDENT + "Game stats fig 1 created")
 
-        figs.stats_fig_2.create(self.game_parts)
+        figs.stats_fig_2.create(self.game_parts, self.stats_fig_2)
 
         if (log_steps):
             print(INDENT + INDENT + "Game stats fig 2 created")
 
-        figs.stats_fig_3.create(self.game_parts)
+        figs.stats_fig_3.create(self.game_parts, self.stats_fig_3)
 
         if (log_steps):
             print(INDENT + INDENT + "Game stats fig 3 created")
 
-        figs.stats_fig_4.create(self.game_parts)
+        figs.stats_fig_4.create(self.game_parts, self.stats_fig_4)
 
         if (log_steps):
             print(INDENT + INDENT + "Game stats fig 4 created")
@@ -312,9 +332,9 @@ class MainGame:
         if (log_steps):
             print(INDENT + INDENT + "scr_labels created")
 
-        self.game_parts.figures['game_figure'].add_glyph(
-            self.game_parts.texts['scr_text'],
-            self.game_parts.labels['scr_text']
+        self.game_parts.figures["game_figure"].add_glyph(
+            self.game_parts.texts["scr_text"],
+            self.game_parts.labels["scr_text"]
         )
 
         if (log_steps):
@@ -332,35 +352,23 @@ class MainGame:
         if (log_steps):
             print(INDENT + "Creating game divs:")
 
-        components.divs.strategy_to_use.create(
-            self.game_parts, self.strategy_to_use
+        components.divs.basic.create_game_vars(self.game_parts)
+
+        if(log_steps):
+            print(INDENT + "Basic game value tracking divs created")
+
+        components.divs.basic.create_configurable(
+            self.game_parts, self.select_cpu_tip, "select_cpu_tip"
         )
-
-        if (log_steps):
-            print(INDENT + INDENT + "CPU strategy_to_use div created")
-
-        components.divs.nround.create(self.game_parts, self.nround)
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Game iteration tracking div 'nround' created")
-
-        components.divs.score.create(self.game_parts, self.score)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Game score tracking div created")
-
-        components.divs.kicker_foot.create(self.game_parts, self.kicker_foot)
-        components.divs.kicker_kick.create(self.game_parts, self.kicker_kick)
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Selected striker action tracking divs created")
-
-        components.divs.select_cpu_tip.create(self.game_parts)
-        components.divs.chances_lt_0_tip.create(self.game_parts)
-        components.divs.chances_gt_1_tip.create(self.game_parts)
-        components.divs.chances_ne_1_tip.create(self.game_parts)
+        components.divs.basic.create_configurable(
+            self.game_parts, self.chances_lt_0_tip, "chances_lt_0_tip"
+        )
+        components.divs.basic.create_configurable(
+            self.game_parts, self.chances_gt_1_tip, "chances_gt_1_tip"
+        )
+        components.divs.basic.create_configurable(
+            self.game_parts, self.chances_ne_1_tip, "chances_ne_1_tip"
+        )
 
         if (log_steps):
             print(INDENT + INDENT + "Game input tip divs created")
@@ -426,11 +434,10 @@ class MainGame:
         if (log_steps):
             print(INDENT + INDENT + "Goalie make counter button created")
 
-        components.buttons.b_game_fig.create(self.game_parts, self.b_game_fig)
-        components.buttons.b_fig_1.create(self.game_parts, self.b_fig_1)
-        components.buttons.b_fig_2.create(self.game_parts, self.b_fig_2)
-        components.buttons.b_fig_3.create(self.game_parts, self.b_fig_3)
-        components.buttons.b_fig_4.create(self.game_parts, self.b_fig_4)
+        for i in range(len(B_FIG_NAMES)):
+            components.buttons.b_figs.create(
+                self.game_parts, self.b_fig_configs[i], B_FIG_NAMES[i]
+            )
 
         if (log_steps):
             print(INDENT + INDENT + "figure view selection buttons created")
@@ -455,16 +462,17 @@ class MainGame:
         if (log_steps):
             print(INDENT + "Creating sliders:")
 
-        components.sliders.iterations_slider.create(
-            self.game_parts, self.iterations_slider
+        components.sliders.basic.create(
+            self.game_parts, self.iterations_slider, "iterations"
         )
 
         if (log_steps):
             print(INDENT + INDENT
                   + "Game iteration length selection slider created")
 
-        components.sliders.auto_advance_speed_slider.create(
-            self.game_parts, self.auto_advance_speed_slider
+        components.sliders.basic.create(
+            self.game_parts, self.auto_advance_speed_slider,
+            "auto_advance_speed"
         )
 
         if (log_steps):
@@ -557,11 +565,11 @@ class MainGame:
 
     #<editor-fold __setup_game_components():
     def __setup_game_components(
-        self, log_steps = False, CPU_strategy = None, allow_fast_forward = True,
-        force_fast_forward = False, force_fast_forward_spd = None,
-        iterations_to_run = None, stats_fig_1_enabled = True,
-        stats_fig_2_enabled = True, stats_fig_3_enabled = True,
-        stats_fig_4_enabled = True, show_dist_table = False,
+        self, log_steps=False, CPU_strategy=None, allow_fast_forward=True,
+        force_fast_forward=False, force_fast_forward_spd=None,
+        iterations_to_run=None, stats_fig_1_enabled=True,
+        stats_fig_2_enabled=True, stats_fig_3_enabled = True,
+        stats_fig_4_enabled=True, show_dist_table=False,
     ):
 
     # Click callback depends on CPU_strategy, allow_fast_forward,
@@ -620,11 +628,8 @@ class MainGame:
         if (log_steps):
             print(INDENT + "Make counter button setup completed")
 
-        components.buttons.b_game_fig.setup(self.game_parts)
-        components.buttons.b_fig_1.setup(self.game_parts)
-        components.buttons.b_fig_2.setup(self.game_parts)
-        components.buttons.b_fig_3.setup(self.game_parts)
-        components.buttons.b_fig_4.setup(self.game_parts)
+        for i in range(len(B_FIG_NAMES)):
+            components.buttons.b_figs.setup(self.game_parts, B_FIG_NAMES[i])
 
         if (log_steps):
             print(INDENT
@@ -699,7 +704,7 @@ class MainGame:
         names = ["ll", "lm", "lr", "rl", "rm", "rr"]
         for name in names:
             components.textinputs.aim_text_input.setup(
-                name = name, game_parts = self.game_parts
+                name=name, game_parts=self.game_parts
             )
 
         if (log_steps):
@@ -719,11 +724,11 @@ class MainGame:
 
     #<editor-fold make_game():
     def make_game(
-        self, log_steps = False, CPU_strategy = None, allow_fast_forward = True,
-        force_fast_forward = False, force_fast_forward_spd = None,
-        iterations_to_run = None, stats_fig_1_enabled = True,
-        stats_fig_2_enabled = True, stats_fig_3_enabled = True,
-        stats_fig_4_enabled = True, show_dist_table = False,
+        self, log_steps=False, CPU_strategy=None, allow_fast_forward=True,
+        force_fast_forward=False, force_fast_forward_spd=None,
+        iterations_to_run=None, stats_fig_1_enabled=True,
+        stats_fig_2_enabled=True, stats_fig_3_enabled=True,
+        stats_fig_4_enabled=True, show_dist_table=False,
     ):
         if (log_steps):
             print("Starting game component creation:")
@@ -773,19 +778,19 @@ class MainGame:
                 print("CPU strategy was pre-designated,"
                       + " making value adjustments:")
 
-            self.game_parts.divs['cpu_selected'].text = '1'
+            self.game_parts.divs["cpu_selected"].text = "1"
 
             if (log_steps):
                 print(INDENT + "Changed cpu_selected div to 1.")
 
-            self.game_parts.divs['strategy_to_use'].text = CPU_strategy
+            self.game_parts.divs["strategy_to_use"].text = CPU_strategy
 
             if (log_steps):
                 print(INDENT + "Changed strategy_to_use div to " + CPU_strategy
                       + ".")
 
-            if (CPU_strategy == 'Goalie_Cheats'):
-                self.game_parts.divs['counter_made'].text = '0'
+            if (CPU_strategy == "Goalie_Cheats"):
+                self.game_parts.divs["counter_made"].text = "0"
 
                 if (log_steps):
                     print(INDENT + "As CPU strategy is set to goalie cheats, "

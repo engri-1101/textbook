@@ -34,39 +34,37 @@ selectCpuTip.visible = false;
 #Needs:
 #    from bokeh.models import DropDown
 def create(game_parts, config):
-    strategy_dropdown = Dropdown(
-        label = config.label, menu = config.items,
-        button_type = config.button_type, disabled = config.disabled,
-        visible = config.visible
+    dropdown = Dropdown(
+        label=config.label, menu=config.items, button_type=config.button_type,
+        disabled=config.disabled, visible=config.visible
     )
-    game_parts.dropdowns['cpu_strategy'] = strategy_dropdown
+    game_parts.dropdowns["cpu_strategy"] = dropdown
 #</editor-fold>
 
 #<editor-fold setup():
 #Needs:
 #    from bokeh.models import CustomJS
 def setup(game_parts):
-    aimTextInputs = [game_parts.textinputs['ll_aim'],
-                     game_parts.textinputs['lm_aim'],
-                     game_parts.textinputs['lr_aim'],
-                     game_parts.textinputs['rl_aim'],
-                     game_parts.textinputs['rm_aim'],
-                     game_parts.textinputs['rr_aim']]
+    text_inputs = game_parts.textinputs
+    divs = game_parts.divs
+    dropdowns = game_parts.dropdowns
+    aim_text_inputs = [
+        text_inputs["ll_aim"], text_inputs["lm_aim"], text_inputs["lr_aim"],
+        text_inputs["rl_aim"], text_inputs["rm_aim"], text_inputs["rr_aim"]
+    ]
     args_dict = dict(
-        stratDropdown = game_parts.dropdowns['cpu_strategy'],
-        stratToUseDiv = game_parts.divs['strategy_to_use'],
-        aimTextInputs = aimTextInputs,
-        automationTable = game_parts.tables['automation'],
-        cpuSelectedDiv = game_parts.divs['cpu_selected'],
-        makeCounterButton = game_parts.buttons['make_counter'],
-        counterMadeDiv = game_parts.divs['counter_made'],
-        selectCpuTip = game_parts.divs['select_cpu_tip']
+        stratDropdown = dropdowns["cpu_strategy"],
+        stratToUseDiv = divs["strategy_to_use"],
+        aimTextInputs = aim_text_inputs,
+        automationTable = game_parts.tables["automation"],
+        cpuSelectedDiv = divs["cpu_selected"],
+        makeCounterButton = game_parts.buttons["make_counter"],
+        counterMadeDiv = divs["counter_made"],
+        selectCpuTip = divs["select_cpu_tip"]
     )
 
-    stratDropdownChange = CustomJS(
-        args = args_dict, code = stratDropdownOnChange
-    )
-    game_parts.dropdowns['cpu_strategy'].js_on_event(
-        "menu_item_click", stratDropdownChange
+    strat_dropdown_change = CustomJS(args=args_dict, code=stratDropdownOnChange)
+    dropdowns["cpu_strategy"].js_on_event(
+        "menu_item_click", strat_dropdown_change
     )
 #</editor-fold>

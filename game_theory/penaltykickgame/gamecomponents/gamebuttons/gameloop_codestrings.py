@@ -114,31 +114,31 @@ function handleFigVisibility(stratIsFictPlay) {
   autoAdvButton.visible = false;
   advSpdSlider.visible = false;
   gameFigButton.visible = true;
-    """
+"""
     if (stats_fig_1_enabled):
         handleFigVisibility += """
   statsFig1Button.visible = true;
   statsFig1.visible = false;
-        """
+"""
     if (stats_fig_2_enabled):
         handleFigVisibility += """
   statsFig2Button.visible = true;
   statsFig2.visible = false;
-        """
+"""
     if (stats_fig_3_enabled):
         handleFigVisibility += """
   statsFig3Button.visible = stratIsFictPlay;
   statsFig3.visible = false;
-        """
+"""
     if (stats_fig_4_enabled):
         handleFigVisibility += """
   statsFig4Button.visible = true;
   statsFig4.visible = false;
-        """
+"""
 
     handleFigVisibility += """
 }
-    """
+"""
     return handleFigVisibility
 
   #</editor-fold>
@@ -619,12 +619,12 @@ function gameIter(){
     perceivedRiskM,
     perceivedRiskR
   );
-    """
+"""
 
     if (stats_fig_1_enabled):
         gameIter += """
   updateFig1(goal, directionsIndexGa, actionsIndexKFKK, roundIsLastIter);
-        """
+"""
 
     if (stats_fig_2_enabled):
         gameIter += """
@@ -635,12 +635,12 @@ function gameIter(){
     roundIsLastIter,
     itersToRun
   );
-        """
+"""
 
     if (stats_fig_3_enabled):
         gameIter += """
   if(stratIsFictPlay) { updateFig3(roundsPlayed, roundIsLastIter, itersToRun); }
-        """
+"""
 
     if (stats_fig_4_enabled):
         gameIter += """
@@ -651,14 +651,14 @@ function gameIter(){
     kickerKick,
     goalieAction
   );
-        """
+"""
 
     gameIter += """
   if(roundIsLastIter) { handleFigVisibility(stratIsFictPlay); }
 
   iterText(roundsPlayed, gameScore, goal);
 }
-    """
+"""
 
     return gameIter
   #</editor-fold>
@@ -736,21 +736,18 @@ def make_initialGuiDisplay(show_dist_table):
     initialGuiDisplay = """
 startButton.visible = false;
 nextButton.visible = true;
-llAimTextInput.visible = false;
-lmAimTextInput.visible = false;
-lrAimTextInput.visible = false;
-rlAimTextInput.visible = false;
-rmAimTextInput.visible = false;
-rrAimTextInput.visible = false;
+aimTextInputs.forEach(
+  (v) => v.visible = false
+)
 iterSlider.visible = false;
 stratDropdown.visible = false;
 automationTable.visible = false;
-    """
+"""
 
     if (show_dist_table):
         initialGuiDisplay += """
 distTable.visible = true;
-        """
+"""
 
     return initialGuiDisplay
 

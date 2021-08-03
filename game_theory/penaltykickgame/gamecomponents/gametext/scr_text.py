@@ -6,6 +6,6 @@ def create(game_parts, config):
         y = config.ys,
         text = config.text_lines
     )
-    scr_text = ColumnDataSource(data)
-    game_parts.texts['scr_text'] = scr_text
+    text = ColumnDataSource(data)
+    game_parts.texts["scr_text"] = text
 #</editor-fold>

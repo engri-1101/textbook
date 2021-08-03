@@ -22,21 +22,23 @@ makeCounterButton.visible = canAccessMakeCounter;
 
 #<editor-fold create():
 def create(game_parts):
-    counter_made = Div(text = "1", visible = False)
-    game_parts.divs['counter_made'] = counter_made
+    div = Div(text="1", visible=False)
+    game_parts.divs["counter_made"] = div
 #</editor-fold>
 
 #<editor-fold setup():
 def setup(game_parts):
+    divs = game_parts.divs
+    buttons = game_parts.buttons
     args_dict = dict(
-        startAutomateButton = game_parts.buttons['start'],
-        makeCounterButton = game_parts.buttons['make_counter'],
-        cpuSelectedDiv = game_parts.divs['cpu_selected'],
-        counterMadeDiv = game_parts.divs['counter_made'],
-        chancesValidDiv = game_parts.divs['chances_valid']
+        startAutomateButton = buttons["start"],
+        makeCounterButton = buttons["make_counter"],
+        cpuSelectedDiv = divs["cpu_selected"],
+        counterMadeDiv = divs["counter_made"],
+        chancesValidDiv = divs["chances_valid"]
     )
 
-    counter_made_change = CustomJS(code = counterMadeOnChange, args = args_dict)
+    counter_made_change = CustomJS(code=counterMadeOnChange, args=args_dict)
 
-    game_parts.divs['counter_made'].js_on_change('text', counter_made_change)
+    divs["counter_made"].js_on_change("text", counter_made_change)
 #</editor-fold>

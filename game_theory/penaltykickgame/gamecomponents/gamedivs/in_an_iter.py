@@ -1,7 +1,7 @@
 from bokeh.models.widgets import Div
 from bokeh.models import CustomJS
 
-#<editor-fold cpu_selected_change_code:
+#<editor-fold in_an_iter on change callback code string:
 inAnIterOnChange = """
 const val = (this.text !== 'false');
 autoNextButton.disabled = val;
@@ -18,10 +18,13 @@ def create(game_parts):
 #<editor-fold setup():
 def setup(game_parts):
     buttons = game_parts.buttons
-    args_dict = dict(
-        autoNextButton = buttons["next"],
-        startAutomateButton = buttons["start"]
-    )
+
+    args_dict = {
+        "autoNextButton" : buttons["next"],
+        "startAutomateButton" : buttons["start"]
+    }
+
     in_an_iter_change = CustomJS(args=args_dict, code=inAnIterOnChange)
+
     game_parts.divs["in_an_iter"].js_on_change("text", in_an_iter_change)
 #</editor-fold>

@@ -41,20 +41,24 @@ def create(game_parts, config, name):
 def setup(game_parts, name):
     buttons = game_parts.buttons
     figs = game_parts.figures
-    args_dict = dict(
-        gameFigButton = buttons["game_fig"],
-        fig1Button = buttons["fig_1"],
-        fig2Button = buttons["fig_2"],
-        fig3Button = buttons["fig_3"],
-        fig4Button = buttons["fig_4"],
-        gameFig = figs["game_figure"],
-        statsFig1 = figs["stats_1"],
-        statsFig2 = figs["stats_2"],
-        statsFig3 = figs["stats_3"],
-        statsFig4 = figs["stats_4"]
-    )
+
+    args_dict = {
+        "gameFigButton" : buttons["game_fig"],
+        "fig1Button" : buttons["fig_1"],
+        "fig2Button" : buttons["fig_2"],
+        "fig3Button" : buttons["fig_3"],
+        "fig4Button" : buttons["fig_4"],
+        "gameFig" : figs["game_figure"],
+        "statsFig1" : figs["stats_1"],
+        "statsFig2" : figs["stats_2"],
+        "statsFig3" : figs["stats_3"],
+        "statsFig4" : figs["stats_4"]
+    }
+
     index = ["game_fig", "fig_1", "fig_2", "fig_3", "fig_4"].index(name)
+
     code = __make_figButtonCode(index)
+
     b_fig_click = CustomJS(args=args_dict, code=code)
     buttons[name].js_on_click(b_fig_click)
 #</editor-fold>

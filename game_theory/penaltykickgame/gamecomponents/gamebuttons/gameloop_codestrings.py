@@ -511,10 +511,7 @@ function updateFig4(
   #</editor-fold>
 #</editor-fold>
 
-#Functions for updating figures
-
 #<editor-fold Running the game Codestrings:
-
   #<editor-fold GameConstants:
 gameConstants = """
 const rDict = {
@@ -725,10 +722,9 @@ async function gameLoop(){
 gameLoop();
 """
   #</editor-fold>
-
 #</editor-fold>
 
-#<editor-fold start button Initial Gui Display:
+#<editor-fold start button make_initialGuiDisplay():
 #This code string changes the visibility values of various game gui elements
 #in order to change the user view from that used in the earlier menu like
 #screens to one used for the game screens.
@@ -750,7 +746,9 @@ distTable.visible = true;
 """
 
     return initialGuiDisplay
+#</editor-fold>
 
+#<editor-fold initialIterationAdjustments:
 initialIterationAdjustments = """
 function initialIterationAdjustments(){
   //Set references:

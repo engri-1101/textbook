@@ -1,7 +1,7 @@
 from bokeh.models.widgets import Div
 from bokeh.models import CustomJS
 
-#<editor-fold cpu_selected_change_code:
+#<editor-fold cpu_selected on change callback code string:
 cpuSelectedOnChange = """
 const counterMadeText = counterMadeDiv.text;
 const chancesValidText = chancesValidDiv.text;
@@ -30,13 +30,13 @@ def create(game_parts):
 def setup(game_parts):
     divs = game_parts.divs
     buttons = game_parts.buttons
-    args_dict = dict(
-        startAutomateButton = buttons["start"],
-        makeCounterButton = buttons["make_counter"],
-        cpuSelectedDiv = divs["cpu_selected"],
-        counterMadeDiv = divs["counter_made"],
-        chancesValidDiv = divs["chances_valid"]
-    )
+    args_dict = {
+        "startAutomateButton" : buttons["start"],
+        "makeCounterButton" : buttons["make_counter"],
+        "cpuSelectedDiv" : divs["cpu_selected"],
+        "counterMadeDiv" : divs["counter_made"],
+        "chancesValidDiv" : divs["chances_valid"]
+    }
 
     cpu_selected_change = CustomJS(code=cpuSelectedOnChange, args=args_dict)
 

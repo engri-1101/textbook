@@ -1,15 +1,14 @@
 from . import figure_creation as fig_creation
-# from bokeh.plotting import figure
 from bokeh.models import (CustomJSHover, ColumnDataSource, CustomJSTransform,
                           HoverTool, Div)
 from bokeh.transform import transform
 
-#Create a div used by the figure to determine the highlighted index for
-#hovering.
+SFGAS = ["ll", "lm", "lr", "rl", "rm", "rr"]
+
 highlight_index = Div(text="0")
 selected_index = Div(text="-1")
-SFGAS = ["ll", "lm", "lr", "rl", "rm", "rr"]
-#<editor-fold Code String Function hb_gc_code:
+
+#<editor-fold hb_gc_code():
 def hb_gc_code(hbno):
     """hb_gc_code is a function used to obtain the correct v_func code string
     for the CustomJSTransform being used to get the center y coordinates of a
@@ -30,23 +29,18 @@ def hb_gc_code(hbno):
     CustomJSTransform being used to obtain the y coordinates of the centers of
     a set of hbs.
     """
-    #Create newXs, the line of code that changes between hb v_funcs:
-    newXs = """v/2"""
-
-    #Create srcDats to organize the possible additions to the newXs line:
     srcDats = [
         """ + data['hb1'][i]""", """ + data['hb2'][i]""",
         """ + data['hb3'][i]""", """ + data['hb4'][i]""",
         """ + data['hb5'][i]"""
     ]
-
-    #Make necessary changes to newXs:
     hbno -= 2
+
+    newXs = """v/2"""
     while(hbno >= 0):
         newXs += srcDats[hbno]
         hbno -= 1
 
-    #Create and return the full code string:
     codeString = """
 const newXs = [];
 const data = src.data;
@@ -58,7 +52,8 @@ return newXs;
 """
     return codeString
 #</editor-fold>
-#<editor-fold highlight_ga Code Strings:
+
+#<editor-fold highlight_ga_code():
 def highlight_ga_code(sfga):
     """highlight_ga_code is a function used to obtain the correct v_func code
     string for the CustomJSTransform being used to process the
@@ -89,10 +84,9 @@ def highlight_ga_code(sfga):
     string - A JavaScript code string that will work as the v_func for a bokeh
     CustomJSTransform being used to set the alphas of a set of highlight dots.
     """
-    #Get highlight value from sfga:
+
     highlightVal = str(SFGAS.index(sfga) + 1)
 
-    #Create and return code string:
     codeString = """
 const index = parseInt(highlightIndex.text);
 if(xs[index] === """ + highlightVal + """) {
@@ -103,10 +97,19 @@ if(xs[index] === """ + highlightVal + """) {
 """
     return codeString
 #</editor-fold>
-#<editor-fold Custom Hover Code Strings:
-    #<editor-fold Shared Code String Parts:
-#Selects the corresponding datapoint to the hovered hitbox.
-selectSortedValIndex = """
+
+customHoverCodeSetup = """
+const index = special_vars.index;
+const name = special_vars.name;
+const data = src.data;
+
+"""
+
+#<editor-fold xs Code String:
+#obtains the iteration number of the selected data point and makes changes
+#necessary for the other hover functions and the highlighting functionality
+#of the figure.
+xsCode = customHoverCodeSetup + """
 function selectSortedValIndex() {
   const values = [
     data['ll_ys'][index], data['lm_ys'][index], data['lr_ys'][index],
@@ -118,22 +121,11 @@ function selectSortedValIndex() {
 
   selectedIndex.text = values.indexOf(sortedValues[parseInt(name)]).toString();
 }
-"""
-#Setup code for the code string.
-customHoverCodeSetup = """
-const index = special_vars.index;
-const name = special_vars.name;
-const data = src.data;
 
-"""
-    #</editor-fold>
-    #<editor-fold xs Code String:
-    #obtains the iteration number of the selected data point and makes changes
-    #necessary for the other hover functions and the highlighting functionality
-    #of the figure.
-xsCode = customHoverCodeSetup + selectSortedValIndex + """
 const column = [1, 2, 3, 4, 5, 6];
+
 selectSortedValIndex();
+
 const selected = column[parseInt(selectedIndex.text)];
 
 data['highlight_alphas'][parseInt(highlightIndex.text)] = 0;
@@ -144,24 +136,26 @@ src.change.emit();
 
 return index.toString();
 """
-    #</editor-fold>
-    #<editor-fold ys Code String:
-    #Obtains the y value of the selected data point.
+#</editor-fold>
+
+#<editor-fold ys Code String:
+#Obtains the y value of the selected data point.
 ysCode = customHoverCodeSetup + """
 const column = ['ll', 'lm', 'lr', 'rl', 'rm', 'rr'];
 const selected = column[parseInt(selectedIndex.text)];
 
 return data[`${selected}_ys`][index].toString().substring(0, 5);
 """
-    #</editor-fold>
-    #<editor-fold selected Code String:
-    #Obtains the SF-GA associated with the selected data point
+#</editor-fold>
+
+#<editor-fold selected Code String:
+#Obtains the SF-GA associated with the selected data point
 selectedCode = customHoverCodeSetup + """
 const column = ['ll', 'lm', 'lr', 'rl', 'rm', 'rr'];
 return column[parseInt(selectedIndex.text)];
 """
-    #</editor-fold>
 #</editor-fold>
+
 #<editor-fold Custom Hover Tooltip Code String:
 #Code below is for how the custom HoverTool displays the information.
 #Note: some of the columns used by the hovertool don't need to actually be
@@ -183,7 +177,7 @@ custom_tooltip = """
 """
 #</editor-fold>
 
-#<editor-fold Fig configs():
+#<editor-fold Configs():
 class Configs():
     """Objects of this class are used to organize and pass parameters to
     Stats Figure 3. All arguments are mutable, and default values for them are
@@ -193,12 +187,15 @@ class Configs():
     directly to the default values of the arguments in this class after
     successful testing.
     """
+
     plot_dot_fill_colors_default = [
         "#C8AFAF", "#C8C8AF", "#AFC8AF", "#AFC8C8", "#AFAFC8", "#C8AFC8"
     ]
     plot_dot_outline_colors_default = [
         "#AF9696", "#AFAF96", "#96AF96", "#96AFAF", "#9696AF", "#AF96AF"
     ]
+
+    #<editor-fold __init__():
     def __init__(
         self, fig_base_tools="", fig_toolbar_loc="below",
         fig_toolbar_sticky=False,
@@ -236,6 +233,7 @@ class Configs():
             y_grid_line_color=fig_ygrid_line_color
         )
         #</editor-fold>
+
         #<editor-fold plot:
         self.plot_dot_size = plot_dot_size
         self.dot_fill_colors = plot_dot_fill_colors
@@ -244,10 +242,12 @@ class Configs():
         self.plot_highlight_dot_outline_color = plot_highlight_dot_outline_color
         self.plot_highlight_dot_color = plot_highlight_dot_color
         #</editor-fold>
+
         self.hitbox_alpha = hitbox_alpha
+    #</editor-fold>
 #</editor-fold>
 
-#<editor-fold stats_figure_3_setup:
+#<editor-fold create():
 def create(game_parts, configs=Configs()):
     """Fully creates and sets up stats figure 3 for use in the main game. Stats
     Figure 3 displays the goalie's perceived risks determined through
@@ -259,7 +259,6 @@ def create(game_parts, configs=Configs()):
     configs - An object of type Configs containing the user's
     desired figure values within its attributes.
     """
-
     fig = fig_creation.make_fig(configs.fig)
 
     #<editor-fold ColumnDataSource Creation:
@@ -267,37 +266,37 @@ def create(game_parts, configs=Configs()):
     for i in range(51):
         src_xs.append(i)
 
-    src_data = dict(
-        xs = src_xs,
-        ll_ys = [0.760000] + [0]*50,
-        lm_ys = [0.650000] + [0]*50,
-        lr_ys = [0.763333] + [0]*50,
-        rl_ys = [0.746666] + [0]*50,
-        rm_ys = [0.660000] + [0]*50,
-        rr_ys = [0.783333] + [0]*50,
-        hb1 = [0] * 51,
-        hb2 = [0] * 51,
-        hb3 = [0] * 51,
-        hb4 = [0] * 51,
-        hb5 = [0] * 51,
-        hb6 = [0] * 51,
-        highlight_alphas = [0] * 51,
-        alphas_zeroes = [0] * 51
-    )
+    src_data = {
+        "xs" : src_xs,
+        "ll_ys" : [0.760000] + [0]*50,
+        "lm_ys" : [0.650000] + [0]*50,
+        "lr_ys" : [0.763333] + [0]*50,
+        "rl_ys" : [0.746666] + [0]*50,
+        "rm_ys" : [0.660000] + [0]*50,
+        "rr_ys" : [0.783333] + [0]*50,
+        "hb1" : [0] * 51,
+        "hb2" : [0] * 51,
+        "hb3" : [0] * 51,
+        "hb4" : [0] * 51,
+        "hb5" : [0] * 51,
+        "hb6" : [0] * 51,
+        "highlight_alphas" : [0] * 51,
+        "alphas_zeroes" : [0] * 51
+    }
 
     fig_src = ColumnDataSource(data=src_data)
     #</editor-fold>
 
     #<editor-fold Create CustomJSTransforms:
     #Create the CustomJSTransforms that are used by the figure
+    ga_args_dict = {
+        "highlightIndex" : highlight_index,
+        "alphasZeroes" : fig_src.data["alphas_zeroes"]
+    }
+    gc_args_dict = {"src" : fig_src}
+
     highlight_gas = []
     gcs = []
-
-    ga_args_dict = dict(
-        highlightIndex = highlight_index,
-        alphasZeroes = fig_src.data["alphas_zeroes"]
-    )
-    gc_args_dict = dict(src=fig_src)
     for i in range(6):
         highlight_ga = CustomJSTransform(
             v_func=highlight_ga_code(SFGAS[i]), args=ga_args_dict
@@ -310,11 +309,11 @@ def create(game_parts, configs=Configs()):
 
     #<editor-fold Plot Figure Elements:
     #Create the Data Points and hitboxes for the figure:
-    hbs = []
-
     plot_ys = ["ll_ys", "lm_ys", "lr_ys", "rl_ys", "rm_ys", "rr_ys"]
     hb_ids = ["hb1", "hb2", "hb3", "hb4", "hb5", "hb6"]
     hb_names = ["5", "4", "3", "2", "1", "0"]
+
+    hbs = []
     for i in range(6):
         fig.circle_dot(
             x="xs", y=plot_ys[i], source=fig_src, size=configs.plot_dot_size,
@@ -326,7 +325,9 @@ def create(game_parts, configs=Configs()):
             height=hb_ids[i], name=hb_names[i], fill_alpha=0,
             alpha=configs.hitbox_alpha
         )
+
         hbs.append(hb)
+
     for i in range(6): #Has to be after initial dots due to display order.
         fig.circle_dot(
             x="xs", y=plot_ys[i], source=fig_src,
@@ -335,20 +336,20 @@ def create(game_parts, configs=Configs()):
             fill_color=configs.plot_highlight_dot_color,
             alpha=transform("highlight_alphas", highlight_gas[i])
         )
+
     #</editor-fold>
 
     #<editor-fold CustomJSHover Creation:
     #Create the CustomJSHovers used to format the data for the figure's
     #custom HoverTool:
-    hover_main_args_dict = dict(
-        src = fig_src,
-        selectedIndex = selected_index
-    )
+    hover_main_args_dict = {"src" : fig_src, "selectedIndex" : selected_index}
+
     hover_xs_args_dict = hover_main_args_dict.copy()
     hover_xs_args_dict["highlightIndex"] = highlight_index
 
     xs_custom = CustomJSHover(code=xsCode, args=hover_xs_args_dict)
     ys_custom = CustomJSHover(code=ysCode, args=hover_main_args_dict)
+
     selected_custom = CustomJSHover(
         code=selectedCode, args=hover_main_args_dict
     )

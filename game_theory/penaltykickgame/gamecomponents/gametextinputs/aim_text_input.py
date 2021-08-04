@@ -6,7 +6,7 @@ JS_FLOAT_BUFFER = "0.0000001" # THIS VARIABLE SHOULD BE TREATED AS A CONSTANT.
 # IN ORDER TO WORK AROUND THIS ISSUE, INSTEAD OF CHECKING FOR EQUALITY, CHECK
 # THAT THE VALUE IS WITHIN A RANGE OF THE EXPECTED OUTCOME.
 
-#<editor-fold aim_inputs_callback Code String:
+#<editor-fold aim_inputs on change callback Code String:
 aimTextInputsOnChange = """
 //Hide start button:
 startAutomateButton.visible = false;
@@ -43,9 +43,7 @@ def create(game_parts, name, config):
     game_parts.textinputs[name + "_aim"] = aim_text_input
 #</editor-fold>
 
-#<editor-fold aim_textInputs_setup():
-#Needs:
-#    from bokeh.models import CustomJS
+#<editor-fold setup():
 def setup(name, game_parts):
     text_inputs = game_parts.textinputs
     divs = game_parts.divs
@@ -54,15 +52,15 @@ def setup(name, game_parts):
         text_inputs["rl_aim"], text_inputs["rm_aim"], text_inputs["rr_aim"]
     ]
 
-    args_dict = dict(
-        tableSrc = game_parts.sources["automation_table"],
-        aimTextInputs = aim_text_inputs,
-        chancesValidDiv = divs["chances_valid"],
-        startAutomateButton = game_parts.buttons["start"],
-        chancesGT1Tip = divs["chances_gt_1_tip"],
-        chancesLT0Tip = divs["chances_lt_0_tip"],
-        chancesNE1Tip = divs["chances_ne_1_tip"]
-    )
+    args_dict = {
+        "tableSrc" : game_parts.sources["automation_table"],
+        "aimTextInputs" : aim_text_inputs,
+        "chancesValidDiv" : divs["chances_valid"],
+        "startAutomateButton" : game_parts.buttons["start"],
+        "chancesGT1Tip" : divs["chances_gt_1_tip"],
+        "chancesLT0Tip" : divs["chances_lt_0_tip"],
+        "chancesNE1Tip" : divs["chances_ne_1_tip"]
+    }
 
     aim_text_inputs_change = CustomJS(
         args=args_dict, code=aimTextInputsOnChange

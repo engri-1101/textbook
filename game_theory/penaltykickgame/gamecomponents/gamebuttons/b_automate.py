@@ -1,6 +1,6 @@
 from bokeh.models import Button, CustomJS
 
-#<editor-fold Callback Code String:
+#<editor-fold createAutomateCode():
 def createAutomateCode(
     CPU_strategy, allow_fast_forward, force_fast_forward,
     force_fast_forward_spd, iterations_to_run,
@@ -78,21 +78,24 @@ def setup(
         text_inputs["ll_aim"], text_inputs["lm_aim"], text_inputs["lr_aim"],
         text_inputs["rl_aim"], text_inputs["rm_aim"], text_inputs["rr_aim"]
     ]
-    args_dict = dict(
-        automateButton = b_automate,
-        autoAdvButton = buttons["auto_advance"],
-        iterationsSlider = sliders["iterations"],
-        strategyDropdown = game_parts.dropdowns["cpu_strategy"],
-        automationTable = game_parts.tables["automation"],
-        aimTextInputs = aim_text_inputs,
-        chancesNE1Tip = divs["chances_ne_1_tip"],
-        selectCpuTip = divs["select_cpu_tip"],
-        advSpdSlider = sliders["auto_advance_speed"]
-    )
+
+    args_dict = {
+        "automateButton" : b_automate,
+        "autoAdvButton" : buttons["auto_advance"],
+        "iterationsSlider" : sliders["iterations"],
+        "strategyDropdown" : game_parts.dropdowns["cpu_strategy"],
+        "automationTable" : game_parts.tables["automation"],
+        "aimTextInputs" : aim_text_inputs,
+        "chancesNE1Tip" : divs["chances_ne_1_tip"],
+        "selectCpuTip" : divs["select_cpu_tip"],
+        "advSpdSlider" : sliders["auto_advance_speed"]
+    }
+
     automateCode = createAutomateCode(
         CPU_strategy, allow_fast_forward, force_fast_forward,
         force_fast_forward_spd, iterations_to_run
     )
+
     b_automate_click = CustomJS(args=args_dict, code=automateCode)
     b_automate.js_on_click(b_automate_click)
 #</editor-fold>

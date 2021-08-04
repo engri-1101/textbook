@@ -1,7 +1,7 @@
-# from bokeh.plotting import figure
 from bokeh.models import (CustomJSHover, ColumnDataSource, HoverTool)
 from . import figure_creation as fig_creation
-#<editor-fold Custom JSHover xs Code String:
+
+#<editor-fold xs Code String:
 #Returns the iteration number and makes the necessary changes for highlighting
 #the hovered data point.
 xsCode = """
@@ -16,7 +16,7 @@ return(data['xs'][index].toString());
 """
 #</editor-fold>
 
-#<editor-fold Custom JSHover ys Code String:
+#<editor-fold ys Code String:
 #Returns the y value of the hovered data point.
 ysCode = """
 const val = src.data['ys'][special_vars.index];
@@ -38,7 +38,7 @@ custom_tooltip = """
 """
 #</editor-fold>
 
-#<editor-fold Stats fig 2 configs:
+#<editor-fold Configs:
 class Configs:
     """Objects of this class are used to organize and pass parameters to
     Stats Figure 2. All arguments are mutable, and default values for them are
@@ -48,6 +48,8 @@ class Configs:
     directly to the default values of the arguments in this class after
     successful testing.
     """
+
+    #<editor-fold __init__():
     def __init__(
         self, fig_base_tools="", fig_toolbar_loc="below",
         fig_toolbar_sticky=False, fig_title='Score Over Iterations',
@@ -92,9 +94,10 @@ class Configs:
         self.plot_highlight_dot_outline_color = plot_highlight_dot_outline_color
         self.plot_highlight_dot_color = plot_highlight_dot_color
         #</editor-fold>
+    #</editor-fold>
 #</editor-fold>
 
-#<editor-fold stats_figure_2_setup:
+#<editor-fold create():
 def create(game_parts, configs=Configs()):
     """Fully creates and sets up Stats Figure 2 for use in the main game. Stats
     Figure 2 displays the player's score over the iterations played.
@@ -105,7 +108,6 @@ def create(game_parts, configs=Configs()):
     configs - An oject of type Configs containing the user's
     desired figure values within its attributes.
     """
-
     fig = fig_creation.make_fig(configs.fig)
 
     #<editor-fold ColumnDataSource Creation:
@@ -114,18 +116,17 @@ def create(game_parts, configs=Configs()):
     for i in range(51):
         src_xs.append(i)
     #Create stats_fig_2_source with the values that were created.
-    src_data = dict(
-        xs = src_xs,
-        ys = [0] * 51,
-        chance_ys = [0] * 51,
-        heights = [100] * 51,
-        highlight_alphas = [0] * 51
-    )
-
+    src_data = {
+        "xs" : src_xs,
+        "ys" : [0] * 51,
+        "chance_ys" : [0] * 51,
+        "heights" : [100] * 51,
+        "highlight_alphas" : [0] * 51
+    }
     fig_src = ColumnDataSource(data=src_data)
     #</editor-fold>
 
-    #<editor-fold Plot Figure ElementsL
+    #<editor-fold Plot Figure Elements
     fig.circle_dot(
         x="xs", y="ys", source=fig_src, size=configs.plot_dot_size,
         line_color=configs.plot_dot_outline_color,
@@ -149,7 +150,7 @@ def create(game_parts, configs=Configs()):
     #<editor-fold CustomJSHover Creation:
     #Create the CustomJSHovers used to format the data for the figure's
     #custom HoverTool:
-    hover_args = dict(src = fig_src)
+    hover_args = {"src" : fig_src}
     xs_custom = CustomJSHover(code=xsCode, args=hover_args)
     ys_custom = CustomJSHover(code=ysCode, args=hover_args)
     #</editor-fold>

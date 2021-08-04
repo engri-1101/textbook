@@ -1,7 +1,7 @@
 from bokeh.models.widgets import Div
 from bokeh.models import CustomJS
 
-#<editor-fold chances_valid_change_code:
+#<editor-fold chances_valid on change callback code string:
 chancesValidOnChange = """
 const counterMadeText = counterMadeDiv.text;
 const chancesValidText = chancesValidDiv.text;
@@ -30,13 +30,13 @@ def create(game_parts):
 def setup(game_parts):
     buttons = game_parts.buttons
     divs = game_parts.divs
-    args_dict = dict(
-        startAutomateButton = buttons["start"],
-        makeCounterButton = buttons["make_counter"],
-        cpuSelectedDiv = divs["cpu_selected"],
-        counterMadeDiv = divs["counter_made"],
-        chancesValidDiv = divs["chances_valid"]
-    )
+    args_dict = {
+        "startAutomateButton" : buttons["start"],
+        "makeCounterButton" : buttons["make_counter"],
+        "cpuSelectedDiv" : divs["cpu_selected"],
+        "counterMadeDiv" : divs["counter_made"],
+        "chancesValidDiv" : divs["chances_valid"]
+    }
 
     chances_valid_change = CustomJS(code=chancesValidOnChange, args=args_dict)
 

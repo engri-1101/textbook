@@ -2,8 +2,10 @@ from . import gamecomponents as components
 from . import game_layout
 from . import gamefigures as figs
 import asyncio
+
 INDENT = "    "
 B_FIG_NAMES = ["game_fig", "fig_1", "fig_2", "fig_3", "fig_4"]
+
 #<editor-fold _GameParts:
 class _GameParts:
     def __init__(self):
@@ -138,27 +140,32 @@ class _LayoutConfig:
 
 #<editor-fold MainGame:
 class MainGame:
+
+    #SYNC FUNCTION:
+    #<editor-fold __init__():
     def __init__(self):
+        self.game_parts = _GameParts()
+
+        #<editor-fold Fig Configs:
         self.stats_fig_1 = figs.stats_fig_1.Configs()
         self.stats_fig_2 = figs.stats_fig_2.Configs()
         self.stats_fig_3 = figs.stats_fig_3.Configs()
         self.stats_fig_4 = figs.stats_fig_4.Configs()
         self.game_fig = figs.game_fig.Configs()
-        self.game_parts = _GameParts()
+        #</editor-fold>
+
         #<editor-fold Button Configs:
         self.b_automate = _ButtonConfig(
             label="Automate", button_type="success", sizing_mode="scale_width",
             width_policy="fit", disabled=False, visible=True
         )
         self.b_start_automate = _ButtonConfig(
-            label="Start", button_type="success",
-            sizing_mode="scale_width", width_policy="fit", disabled=False,
-            visible=False
+            label="Start", button_type="success", sizing_mode="scale_width",
+            width_policy="fit", disabled=False, visible=False
         )
         self.b_auto_next = _ButtonConfig(
-            label="Next", button_type="success",
-            sizing_mode="scale_width", width_policy="fit", disabled=False,
-            visible=False
+            label="Next", button_type="success", sizing_mode="scale_width",
+            width_policy="fit", disabled=False, visible=False
         )
         self.b_make_counter = _ButtonConfig(
             label="Make Counter", button_type="success",
@@ -279,10 +286,13 @@ class MainGame:
             plot_height=480
         )
         #</editor-fold>
+    #</editor-fold>
 
+    #ASYNC FUNCTIONS:
     #<editor-fold __make_game_components():
     async def __make_game_components(self, text_queue, log_steps=False):
         loop = asyncio.get_running_loop()
+
         #<editor-fold Game Figs:
         await text_queue.put(INDENT + "Creating game figs:")
         await loop.run_in_executor(
@@ -523,7 +533,7 @@ class MainGame:
         allow_fast_forward=True, force_fast_forward=False,
         force_fast_forward_spd=None, iterations_to_run=None,
         stats_fig_1_enabled=True, stats_fig_2_enabled=True,
-        stats_fig_3_enabled = True, stats_fig_4_enabled=True,
+        stats_fig_3_enabled=True, stats_fig_4_enabled=True,
         show_dist_table=False
     ):
         loop = asyncio.get_running_loop()
@@ -682,8 +692,8 @@ class MainGame:
         return grid1
     #</editor-fold>
 
-    #<editor-fold make_game():
-    async def log_step(self, text_queue, log_steps, CPU_strategy):
+    #<editor-fold __log_step():
+    async def __log_step(self, text_queue, log_steps, CPU_strategy):
         keep_running = log_steps
         while keep_running:
             val = await text_queue.get()
@@ -695,7 +705,9 @@ class MainGame:
                  and val == "Game layout formatting completed"):
                 keep_running = False
                 print("Done.")
+    #</editor-fold>
 
+    #<editor-fold make_game():
     async def make_game(
         self, log_steps=False, CPU_strategy=None, allow_fast_forward=True,
         force_fast_forward=False, force_fast_forward_spd=None,
@@ -706,7 +718,7 @@ class MainGame:
         text_queue = asyncio.Queue()
 
         log_steps_task = asyncio.create_task(
-            self.log_step(text_queue, log_steps, CPU_strategy)
+            self.__log_step(text_queue, log_steps, CPU_strategy)
         )
 
         await text_queue.put("Starting game component creation:")

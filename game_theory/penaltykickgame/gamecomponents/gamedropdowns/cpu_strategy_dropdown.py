@@ -1,6 +1,6 @@
 from bokeh.models import Dropdown, CustomJS
 
-#<editor-fold strategy_dropdown_callback Code String:
+#<editor-fold strategy_dropdown on change callback Code String:
 stratDropdownOnChange= """
 //Set the label of the dropdown (the text displayed) to the selected item:
 stratDropdown.label = this.item;
@@ -31,8 +31,6 @@ selectCpuTip.visible = false;
 #</editor-fold>
 
 #<editor-fold create():
-#Needs:
-#    from bokeh.models import DropDown
 def create(game_parts, config):
     dropdown = Dropdown(
         label=config.label, menu=config.items, button_type=config.button_type,
@@ -42,8 +40,6 @@ def create(game_parts, config):
 #</editor-fold>
 
 #<editor-fold setup():
-#Needs:
-#    from bokeh.models import CustomJS
 def setup(game_parts):
     text_inputs = game_parts.textinputs
     divs = game_parts.divs
@@ -52,16 +48,17 @@ def setup(game_parts):
         text_inputs["ll_aim"], text_inputs["lm_aim"], text_inputs["lr_aim"],
         text_inputs["rl_aim"], text_inputs["rm_aim"], text_inputs["rr_aim"]
     ]
-    args_dict = dict(
-        stratDropdown = dropdowns["cpu_strategy"],
-        stratToUseDiv = divs["strategy_to_use"],
-        aimTextInputs = aim_text_inputs,
-        automationTable = game_parts.tables["automation"],
-        cpuSelectedDiv = divs["cpu_selected"],
-        makeCounterButton = game_parts.buttons["make_counter"],
-        counterMadeDiv = divs["counter_made"],
-        selectCpuTip = divs["select_cpu_tip"]
-    )
+
+    args_dict = {
+        "stratDropdown" : dropdowns["cpu_strategy"],
+        "stratToUseDiv" : divs["strategy_to_use"],
+        "aimTextInputs" : aim_text_inputs,
+        "automationTable" : game_parts.tables["automation"],
+        "cpuSelectedDiv" : divs["cpu_selected"],
+        "makeCounterButton" : game_parts.buttons["make_counter"],
+        "counterMadeDiv" : divs["counter_made"],
+        "selectCpuTip" : divs["select_cpu_tip"]
+    }
 
     strat_dropdown_change = CustomJS(args=args_dict, code=stratDropdownOnChange)
     dropdowns["cpu_strategy"].js_on_event(

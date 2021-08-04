@@ -1,8 +1,9 @@
 from bokeh.plotting import figure
 from bokeh.models import Circle, Rect
 
-#<editor-fold game_fig_configs:
+#<editor-fold Configs:
 class Configs():
+    #<editor-fold __init__():
     def __init__(
         self, tools="", toolbar_location=None,
         title="FIFA 2020 Penalty Simulator", title_text_font_size="15pt",
@@ -49,6 +50,7 @@ class Configs():
         self.outline_line_color = outline_line_color
         self.background_fill_color = background_fill_color
         #</editor-fold>
+
         #<editor-fold mline:
         self.mline_penaltybox_xs_1 = mline_penaltybox_xs_1
         self.mline_penaltybox_xs_2 = mline_penaltybox_xs_2
@@ -64,6 +66,7 @@ class Configs():
         self.mline_goal_alpha = mline_goal_alpha
         self.mline_line_width = mline_line_width
         #</editor-fold>
+
         #<editor-fold penaltyarc:
         self.penaltyarc_quad_x1 = penaltyarc_quad_x1
         self.penaltyarc_quad_y1 = penaltyarc_quad_y1
@@ -74,6 +77,7 @@ class Configs():
         self.penaltyarc_quad_color = penaltyarc_quad_color
         self.penaltyarc_quad_line_width = penaltyarc_quad_line_width
         #</editor-fold>
+
         #<editor-fold goalie:
         self.goalie_head_x = goalie_head_x
         self.goalie_head_y = goalie_head_y
@@ -88,6 +92,7 @@ class Configs():
         self.goalie_body_color = goalie_body_color
         self.goalie_body_line_width = goalie_body_line_width
         #</editor-fold>
+
         #<editor-fold ball:
         self.ball_x = ball_x
         self.ball_y = ball_y
@@ -95,6 +100,7 @@ class Configs():
         self.ball_line_width = ball_line_width
         self.ball_size = ball_size
         #</editor-fold>
+
         #<editor-fold striker:
         self.striker_head_x = striker_head_x
         self.striker_head_y = striker_head_y
@@ -109,28 +115,28 @@ class Configs():
         self.striker_body_color = striker_body_color
         self.striker_body_line_width = striker_body_line_width
         #</editor-fold>
+    #</editor-fold>
 #</editor-fold>
 
-#<editor-fold game_figure_setup:
+#<editor-fold create():
 def create(game_parts, configs=Configs()):
-
+    #<editor-fold Figure Creation:
     fig = figure(
         tools=configs.tools, toolbar_location=configs.toolbar_location,
         title=configs.title, plot_width=configs.plot_width,
         plot_height=configs.plot_height, x_range=configs.x_range,
         y_range=configs.y_range
     )
-
     fig.title.text_font_size = configs.title_text_font_size
-    #Hide Axes and Gridlines
     fig.xaxis.visible = configs.xaxis_visible
     fig.yaxis.visible = configs.yaxis_visible
     fig.xgrid.grid_line_color = configs.xgrid_line_color
     fig.ygrid.grid_line_color = configs.ygrid_line_color
     fig.outline_line_color = configs.outline_line_color
-    #Background Color
     fig.background_fill_color = configs.background_fill_color
-    #Goal Posts and Lines
+    #</editor-fold>
+
+    #<editor-fold Multi-lines:
     xs = [
         configs.mline_penaltybox_xs_1, configs.mline_penaltybox_xs_2,
         configs.mline_goal_xs
@@ -151,8 +157,9 @@ def create(game_parts, configs=Configs()):
         xs=xs, ys=ys, color=color, alpha=alpha,
         line_width=configs.mline_line_width
     )
+    #</editor-fold>
 
-    #Striker Box
+    #<editor-fold Quadratic:
     fig.quadratic(
         x0=configs.penaltyarc_quad_x1, y0=configs.penaltyarc_quad_y1,
         x1=configs.penaltyarc_quad_x2, y1=configs.penaltyarc_quad_y2,
@@ -160,7 +167,9 @@ def create(game_parts, configs=Configs()):
         color=configs.penaltyarc_quad_color,
         line_width=configs.penaltyarc_quad_line_width
     )
-    #Goalie Sprite
+    #</editor-fold>
+
+    #<editor-fold Goalie:
     goalie_head = Circle(
         x=configs.goalie_head_x, y=configs.goalie_head_y,
         fill_color=configs.goalie_head_color,
@@ -172,17 +181,16 @@ def create(game_parts, configs=Configs()):
         angle=configs.goalie_body_angle, fill_color=configs.goalie_body_color,
         line_width=configs.goalie_body_line_width
     )
-    fig.add_glyph(goalie_head)
-    fig.add_glyph(goalie_body)
+    #</editor-fold>
 
-    #Ball
+    #<editor-fold Ball:
     ball = Circle(
         x=configs.ball_x, y=configs.ball_y, fill_color=configs.ball_fill_color,
         line_width=configs.ball_line_width, size=configs.ball_size
     )
-    fig.add_glyph(ball)
+    #</editor-fold>
 
-    #Striker Sprite
+    #<editor-fold Striker:
     striker_head=Circle(
         x=configs.striker_head_x, y=configs.striker_head_y,
         fill_color=configs.striker_head_color,
@@ -195,8 +203,14 @@ def create(game_parts, configs=Configs()):
         angle=configs.striker_body_angle, fill_color=configs.striker_body_color,
         line_width=configs.striker_body_line_width
     )
-    fig.add_glyph(striker_head) # head
-    fig.add_glyph(striker_body) # body
+    #</editor-fold>
+
+    fig.add_glyph(goalie_head)
+    fig.add_glyph(goalie_body)
+    fig.add_glyph(ball)
+    fig.add_glyph(striker_head)
+    fig.add_glyph(striker_body)
+
     game_parts.figures["game_figure"] = fig
     game_parts.glyphs["goalie_head"] = goalie_head
     game_parts.glyphs["goalie_body"] = goalie_body

@@ -12,8 +12,6 @@ def create(game_parts, config):
 #</editor-fold>
 
 #<editor-fold setup():
-#Needs:
-#   from bokeh.models import CustomJS
 def setup(
     game_parts, stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
     stats_fig_4_enabled
@@ -26,42 +24,44 @@ def setup(
     sliders = game_parts.sliders
     b_next = buttons["next"]
 
-    args_dict =  dict(
-        chancesSrc = srcs["automation_table"],
-        distTableSrc = srcs["distribution_table"],
-        stratToUseDiv = divs["strategy_to_use"],
-        nround = divs["nround"],
-        iterSlider = sliders["iterations"],
-        txt = game_parts.texts["scr_text"],
-        nextButton = b_next,
-        gameFig = figs["game_figure"],
-        distTable = game_parts.tables["distribution"],
-        goalieHead = glyphs["goalie_head"],
-        goalieBody = glyphs["goalie_body"],
-        counterSrc = srcs["goalie_counter"],
-        ball = glyphs["ball"],
-        score = divs["score"],
-        statsFig1 = figs["stats_1"],
-        statsFig2 = figs["stats_2"],
-        statsFig3 = figs["stats_3"],
-        statsFig4 = figs["stats_4"],
-        statsFig1Src = srcs["stats_fig_1"],
-        statsFig2Src = srcs["stats_fig_2"],
-        statsFig3Src = srcs["stats_fig_3"],
-        statsFig4Src = srcs["stats_fig_4"],
-        autoAdvButton = buttons["auto_advance"],
-        inAnIter = divs["in_an_iter"],
-        advSpdSlider = sliders["auto_advance_speed"],
-        gameFigButton = buttons["game_fig"],
-        statsFig1Button = buttons["fig_1"],
-        statsFig2Button = buttons["fig_2"],
-        statsFig3Button = buttons["fig_3"],
-        statsFig4Button = buttons["fig_4"]
-    )
+    args_dict = {
+        "chancesSrc" : srcs["automation_table"],
+        "distTableSrc" : srcs["distribution_table"],
+        "stratToUseDiv" : divs["strategy_to_use"],
+        "nround" : divs["nround"],
+        "iterSlider" : sliders["iterations"],
+        "txt" : game_parts.texts["scr_text"],
+        "nextButton" : b_next,
+        "gameFig" : figs["game_figure"],
+        "distTable" : game_parts.tables["distribution"],
+        "goalieHead" : glyphs["goalie_head"],
+        "goalieBody" : glyphs["goalie_body"],
+        "counterSrc" : srcs["goalie_counter"],
+        "ball" : glyphs["ball"],
+        "score" : divs["score"],
+        "statsFig1" : figs["stats_1"],
+        "statsFig2" : figs["stats_2"],
+        "statsFig3" : figs["stats_3"],
+        "statsFig4" : figs["stats_4"],
+        "statsFig1Src" : srcs["stats_fig_1"],
+        "statsFig2Src" : srcs["stats_fig_2"],
+        "statsFig3Src" : srcs["stats_fig_3"],
+        "statsFig4Src" : srcs["stats_fig_4"],
+        "autoAdvButton" : buttons["auto_advance"],
+        "inAnIter" : divs["in_an_iter"],
+        "advSpdSlider" : sliders["auto_advance_speed"],
+        "gameFigButton" : buttons["game_fig"],
+        "statsFig1Butto" : buttons["fig_1"],
+        "statsFig2Butto" : buttons["fig_2"],
+        "statsFig3Butto" : buttons["fig_3"],
+        "statsFig4Butto" : buttons["fig_4"]
+    }
+
     gameCode = gameloop_codestrings.make_gameCode(
         stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
         stats_fig_4_enabled
     )
+
     b_auto_next_click = CustomJS(args=args_dict, code=gameCode)
     b_next.js_on_click(b_auto_next_click)
 #</editor-fold>

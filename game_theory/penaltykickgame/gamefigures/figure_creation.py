@@ -1,6 +1,8 @@
 from bokeh.plotting import figure
 
+#<editor-fold FigureConfigs:
 class FigureConfigs():
+    #<editor-fold __init__():
     def __init__(self,
         base_tools, toolbar_loc, toolbar_sticky, title, width, height,
         x_range, y_range, visibility, sizing_mode, outline_line_color,
@@ -29,7 +31,10 @@ class FigureConfigs():
         self.ygrid_line_color = y_grid_line_color
         self.outline_line_color = outline_line_color
         self.background_color = background_color
+    #</editor-fold>
+#</editor-fold>
 
+#<editor-fold make_fig():
 def make_fig(fig_configs):
     fig = figure(
         tools=fig_configs.base_tools, toolbar_location=fig_configs.toolbar_loc,
@@ -51,3 +56,4 @@ def make_fig(fig_configs):
     fig.ygrid.grid_line_color = fig_configs.ygrid_line_color
 
     return fig
+#</editor-fold>

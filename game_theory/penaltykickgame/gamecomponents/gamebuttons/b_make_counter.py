@@ -1,6 +1,6 @@
 from bokeh.models import Button, ColumnDataSource, CustomJS
 
-#<editor-fold Callback Code String:
+#<editor-fold make counter on click Callback Code String:
 makeCounterCode = """
 const chances = automationTableSrc.data['chances'];
 
@@ -75,22 +75,22 @@ def setup(game_parts):
         data = dict(Left = [0, 0, 0], Right = [0, 0, 0])
     )
     srcs["goalie_counter"] = goalie_counter_src
+
     aim_text_inputs = [
         text_inputs["ll_aim"], text_inputs["lm_aim"], text_inputs["lr_aim"],
         text_inputs["rl_aim"], text_inputs["rm_aim"], text_inputs["rr_aim"]
     ]
 
-    args_dict = dict(
-        startAutomateButton = buttons["start"],
-        makeCounterButton = b_make_counter,
-        automationTable = game_parts.tables["automation"],
-        automationTableSrc = srcs["automation_table"],
-        counterMadeDiv = game_parts.divs["counter_made"],
-        goalieCounterSrc = goalie_counter_src,
-        aimTextInputs = aim_text_inputs
-    )
+    args_dict = {
+        "startAutomateButton" : buttons["start"],
+        "makeCounterButton" : b_make_counter,
+        "automationTable" : game_parts.tables["automation"],
+        "automationTableSrc" : srcs["automation_table"],
+        "counterMadeDiv" : game_parts.divs["counter_made"],
+        "goalieCounterSrc" : goalie_counter_src,
+        "aimTextInputs" : aim_text_inputs
+    }
 
     b_make_counter_click = CustomJS(args=args_dict, code=makeCounterCode)
-
     b_make_counter.js_on_click(b_make_counter_click)
 #</editor-fold>

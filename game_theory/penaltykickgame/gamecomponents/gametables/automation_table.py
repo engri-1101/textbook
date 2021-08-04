@@ -2,9 +2,9 @@ from bokeh.models import TableColumn, DataTable
 
 #<editor-fold create():
 def create(game_parts, config):
-    columns = []
-
     fields = ["footedness", "aim_direction", "chances"]
+
+    columns = []
     for i in range(len(fields)):
         column = TableColumn(field=fields[i], title=config.titles[i])
         columns.append(column)

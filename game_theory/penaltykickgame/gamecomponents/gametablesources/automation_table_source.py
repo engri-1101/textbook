@@ -16,11 +16,11 @@ def create(game_parts, config, base_chances):
         base_chances[4], base_chances[5]
     ]
 
-    data = dict(
-        footedness = footedness,
-        aim_direction = aim_direction,
-        chances = chances
-    )
+    data = {
+        "footedness" : footedness,
+        "aim_direction" : aim_direction,
+        "chances" : chances
+    }
 
     table_src = ColumnDataSource(data)
     game_parts.sources["automation_table"] = table_src

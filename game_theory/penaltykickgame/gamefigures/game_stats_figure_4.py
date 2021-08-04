@@ -1,10 +1,9 @@
 from . import figure_creation as fig_creation
-# from bokeh.plotting import figure
 from bokeh.models import (CustomJSHover, ColumnDataSource, HoverTool,
                           CustomJSTransform)
 from bokeh.transform import transform
 
-#<editor-fold fig_4_ys_custom:
+#<editor-fold ys code string:
 ysCode = """
 const index = special_vars.index;
 const data = src.data;
@@ -16,7 +15,7 @@ return data['ys'][index].toString();
 """
 #</editor-fold>
 
-#<editor-fold avgs_custom_code:
+#<editor-fold avgs code string:
 avgsCode = """
 const index = special_vars.index;
 const data = src.data;
@@ -65,7 +64,7 @@ custom_tooltip = """
 """
 #</editor-fold>
 
-#<editor-fold Get Average Code String:
+#<editor-fold Get Avgs Code String:
 getAvgs = """
 let newXs = [];
 xs.forEach(
@@ -76,6 +75,7 @@ return newXs;
 """
 #</editor-fold>
 
+#<editor-fold Configs:
 class Configs:
     """Objects of this class are used to organize and pass parameters to
     Stats Figure 4. All arguments are mutable, and default values for them are
@@ -85,6 +85,7 @@ class Configs:
     directly to the default values of the arguments in this class after
     successful testing.
     """
+    #<editor-fold __init__():
     def __init__(
         self, fig_base_tools="", fig_toolbar_loc="below",
         fig_toolbar_sticky=False, fig_title="Score Chance Over Iterations",
@@ -133,7 +134,10 @@ class Configs:
         self.plot_highlight_dot_outline_color = plot_highlight_dot_outline_color
         self.plot_avgs_line_color = plot_avgs_line_color
         #</editor-fold>
+    #</editor-fold>
+#</editor-fold>
 
+#<editor-fold create():
 def create(game_parts, configs = Configs()):
 
     fig = fig_creation.make_fig(configs.fig)
@@ -143,19 +147,17 @@ def create(game_parts, configs = Configs()):
     for i in range(1, 51):
         src_xs.append(i)
 
-    src_data = dict(
-        xs = src_xs,
-        ys = [0] * 50,
-        feet = [None] * 50,
-        directions = [None] * 50,
-        actions = [None] * 50,
-        highlight_alphas = [0] * 50,
-        avgs_placeholder = [0] * 50
-    )
+    src_data = {
+        "xs" : src_xs,
+        "ys" : [0] * 50,
+        "feet" : [None] * 50,
+        "directions" : [None] * 50,
+        "actions" : [None] * 50,
+        "highlight_alphas" : [0] * 50,
+        "avgs_placeholder" : [0] * 50
+    }
     fig_src = ColumnDataSource(data=src_data)
     #</editor-fold>
-
-    get_avgs = CustomJSTransform(v_func=getAvgs)
 
     #<editor-fold Plot Figure Elements:
     fig.circle_dot(
@@ -176,6 +178,8 @@ def create(game_parts, configs = Configs()):
         line_alpha=configs.hitbox_alpha, line_color="black"
     )
 
+    get_avgs = CustomJSTransform(v_func=getAvgs)
+
     avgs_line = fig.line(
         x="xs", y=transform("ys", get_avgs), source=fig_src,
         line_color=configs.plot_avgs_line_color
@@ -195,7 +199,7 @@ def create(game_parts, configs = Configs()):
 
     #<editor-fold Create HoverTool:
     #Custom HoverTool:
-    hover_main_args_dict = dict(src=fig_src)
+    hover_main_args_dict = {"src" : fig_src}
     ys_custom = CustomJSHover(code=ysCode, args=hover_main_args_dict)
     avgs_custom = CustomJSHover(code=avgsCode, args=hover_main_args_dict)
     hovertool_formatters = {"@ys" : ys_custom,
@@ -209,3 +213,4 @@ def create(game_parts, configs = Configs()):
 
     game_parts.figures["stats_4"] = fig
     game_parts.sources["stats_fig_4"] = fig_src
+#</editor-fold>

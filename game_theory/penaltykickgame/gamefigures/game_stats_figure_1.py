@@ -1,10 +1,11 @@
 from . import figure_creation as fig_creation
-# from bokeh.plotting import figure
 from bokeh.models import (CustomJSHover, ColumnDataSource, CustomJSTransform,
                           HoverTool, Legend)
 from bokeh.transform import transform
+
 BAR_NAMES = ["scored", "blockedl", "blockedm", "blockedr"]
-#<editor-fold hovered_ws_code_strings:
+
+#<editor-fold bar_ws_code():
 def bar_ws_code(bar_name):
     bar_value = str(BAR_NAMES.index(bar_name) + 1)
 
@@ -17,7 +18,7 @@ return newXs;
     return codeString
 #</editor-fold>
 
-#<editor-fold bar_cs_code_strings:
+#<editor-fold bar_cs_code():
 def bar_cs_code(bar_name):
     bar_value = BAR_NAMES.index(bar_name) - 1
     calcNewXs = "newXs[i] = v/2"
@@ -89,8 +90,9 @@ custom_tooltip = """
 """
 #</editor-fold>
 
-#<editor-fold Stats_fig_1_configs
+#<editor-fold Configs:
 class Configs():
+    #<editor-fold __init__():
     def __init__(
         self, bar_colors=["#3F6750", "#64A580", "#8AD3AA", "#CBEBD9"],
         bar_width=0.9, fig_base_tools="", fig_toolbar_loc=None,
@@ -107,10 +109,9 @@ class Configs():
         leg_label_height=10, leg_padding=0, leg_border_line_alpha=0,
         leg_background_fill_alpha=0, hitbox_alpha=0
     ):
-        #<editor-fold bars:
         self.bar_colors = bar_colors
         self.bar_width = bar_width
-        #</editor-fold>>
+
         #<editor-fold figure:
         self.fig = fig_creation.FigureConfigs(
             base_tools=fig_base_tools, toolbar_loc=fig_toolbar_loc,
@@ -130,6 +131,7 @@ class Configs():
             y_grid_line_color=fig_ygrid_line_color
         )
         #</editor-fold>
+
         #<editor-fold legends:
         self.leg_widths = [leg1_width, leg2_width]
         self.leg_y_locs = [leg1_y_loc, leg2_y_loc]
@@ -139,10 +141,12 @@ class Configs():
         self.leg_border_line_alpha = leg_border_line_alpha
         self.leg_background_fill_alpha = leg_background_fill_alpha
         #</editor-fold>
+
         self.hitbox_alpha = hitbox_alpha
+    #</editor-fold>
 #</editor-fold>
 
-#<editor-fold stats_figure_1_setup:
+#<editor-fold create():
 def create(game_parts, configs=Configs()):
     fig = fig_creation.make_fig(configs.fig)
 
@@ -160,6 +164,7 @@ def create(game_parts, configs=Configs()):
         "Scored", "Goalie Blocked By Going Left",
         "Goalie Blocked By Going Middle", "Goalie Blocked By Going Right"
     ]
+
     legs = []
     for i in range(2):
         item_1 = (leg_item_texts[2 * i], [color_circles[2 * i]])
@@ -181,67 +186,70 @@ def create(game_parts, configs=Configs()):
     #</editor-fold>
 
     #<editor-fold ColumnDataSource Creation:
-    src_data = dict(
-        x = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5],
-        scored_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        blockedl_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        blockedm_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        blockedr_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        hovered_widths = ["", "", "", "", "", ""]
-    )
+    src_data = {
+        "x" : [0.5, 1.5, 2.5, 3.5, 4.5, 5.5],
+        "scored_y" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "blockedl_y" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "blockedm_y" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "blockedr_y" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "hovered_widths" : ["", "", "", "", "", ""]
+    }
     fig_src = ColumnDataSource(src_data)
     #</editor-fold>
 
     #<editor-fold CustomJSTransform Creation:
+    args_dict = {"src" : fig_src}
+
     gcs = []
     gws = []
-
-    args_dict = dict(src=fig_src)
     for i in range(4):
         gc = CustomJSTransform(
             v_func=bar_cs_code(BAR_NAMES[i]), args=args_dict
         )
-        gcs.append(gc)
         gw = CustomJSTransform(v_func=bar_ws_code(BAR_NAMES[i]))
+        gcs.append(gc)
         gws.append(gw)
     #</editor-fold>
 
     #<editor-fold Plot Figure Elements:
-    hbs = []
-    bars = []
-
     hb_ids = ["scored_y", "blockedl_y", "blockedm_y", "blockedr_y"]
     hb_names = ["Scored", "Blocked Left", "Blocked Middle", "Blocked Right"]
+
+    hbs = []
+    bars = []
     for i in range(4):
         hb = fig.rect(
             x="x", y=transform(hb_ids[i], gcs[i]), source=fig_src, width=1,
             height=hb_ids[i], alpha=configs.hitbox_alpha, fill_alpha=0,
             name=hb_names[i], color=configs.bar_colors[i]
         )
-        hbs.append(hb)
         bar = fig.rect(
             x="x", y=transform(hb_ids[i], gcs[i]), source=fig_src,
             width=transform("hovered_widths", gws[i]), height=hb_ids[i],
             color=configs.bar_colors[i]
         )
+        hbs.append(hb)
         bars.append(bar)
     #</editor-fold>
 
     #<editor-fold Create HoverTool:
-    args_dict = dict(src = fig_src)
+    args_dict = {"src" : fig_src}
     xs_custom = CustomJSHover(code=xsCode)
     hovered_custom = CustomJSHover(code=hoveredBarCode)
     height_custom = CustomJSHover(code=barHeightCode, args=args_dict)
 
-    hovertool_formatters = {"@x" : xs_custom,
-                            "@scored_y" : hovered_custom,
-                            "@blockedl_y" : height_custom}
+    hovertool_formatters = {
+        "@x" : xs_custom,
+        "@scored_y" : hovered_custom,
+        "@blockedl_y" : height_custom
+    }
     hover_tool = HoverTool(
         tooltips=custom_tooltip, formatters=hovertool_formatters,
         mode="mouse", point_policy="follow_mouse", renderers=hbs
     )
     fig.add_tools(hover_tool)
+    #</editor-fold>
+
     game_parts.figures["stats_1"] = fig
     game_parts.sources["stats_fig_1"] = fig_src
-    #</editor-fold>
  #</editor-fold>

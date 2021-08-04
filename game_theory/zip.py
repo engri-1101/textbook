@@ -12,4 +12,5 @@ with ZipFile('game_theory_lab.zip', 'w') as zipObj:
     zipObj.write('game_theory_lab.ipynb')
     write_dir(zipObj, 'data')
     write_dir(zipObj, 'images')
+    write_dir(zipObj, 'penaltykickgame')
     zipObj.close()

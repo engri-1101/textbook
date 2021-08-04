@@ -1,8 +1,7 @@
 from . import gamecomponents as components
-from collections import namedtuple
 from . import game_layout
 from . import gamefigures as figs
-
+import asyncio
 INDENT = "    "
 B_FIG_NAMES = ["game_fig", "fig_1", "fig_2", "fig_3", "fig_4"]
 #<editor-fold _GameParts:
@@ -282,524 +281,472 @@ class MainGame:
         #</editor-fold>
 
     #<editor-fold __make_game_components():
-    def __make_game_components(self, log_steps=False):
+    async def __make_game_components(self, text_queue, log_steps=False):
+        loop = asyncio.get_running_loop()
         #<editor-fold Game Figs:
-        if (log_steps):
-            print(INDENT + "Creating game figs:")
-
-        figs.game_fig.create(self.game_parts, self.game_fig)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Main game fig created")
-
-        figs.stats_fig_1.create(self.game_parts, self.stats_fig_1)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Game stats fig 1 created")
-
-        figs.stats_fig_2.create(self.game_parts, self.stats_fig_2)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Game stats fig 2 created")
-
-        figs.stats_fig_3.create(self.game_parts, self.stats_fig_3)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Game stats fig 3 created")
-
-        figs.stats_fig_4.create(self.game_parts, self.stats_fig_4)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Game stats fig 4 created")
-
-        if (log_steps):
-            print(INDENT + "Game fig creation completed")
+        await text_queue.put(INDENT + "Creating game figs:")
+        await loop.run_in_executor(
+            None, figs.game_fig.create, self.game_parts, self.game_fig
+        )
+        await text_queue.put(INDENT + INDENT + "Main game fig created")
+        await loop.run_in_executor(
+            None, figs.stats_fig_1.create, self.game_parts, self.stats_fig_1
+        )
+        await text_queue.put(INDENT + INDENT + "Game stats fig 1 created")
+        await loop.run_in_executor(
+            None, figs.stats_fig_2.create, self.game_parts, self.stats_fig_2
+        )
+        await text_queue.put(INDENT + INDENT + "Game stats fig 2 created")
+        await loop.run_in_executor(
+            None, figs.stats_fig_3.create, self.game_parts, self.stats_fig_3
+        )
+        await text_queue.put(INDENT + INDENT + "Game stats fig 3 created")
+        await loop.run_in_executor(
+            None, figs.stats_fig_4.create, self.game_parts, self.stats_fig_4
+        )
+        await text_queue.put(INDENT + INDENT + "Game stats fig 4 created")
+        await text_queue.put(INDENT + "Game fig creation completed")
         #</editor-fold>
 
         #<editor-fold Gameview Text:
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print(INDENT + "Creating game fig screen text:")
-
-        components.text.scr_text.create(self.game_parts, self.scr_text)
-
-        if (log_steps):
-            print(INDENT + INDENT + "scr_text created")
-
-        components.labels.scr_labels.create(self.game_parts, self.scr_labels)
-        if (log_steps):
-            print(INDENT + INDENT + "scr_labels created")
+        await text_queue.put("")
+        await text_queue.put(INDENT + "Creating game fig screen text:")
+        await loop.run_in_executor(
+            None, components.text.scr_text.create, self.game_parts,
+            self.scr_text
+        )
+        await text_queue.put(INDENT + INDENT + "scr_text created")
+        await loop.run_in_executor(
+            None, components.labels.scr_labels.create, self.game_parts,
+            self.scr_labels
+        )
+        await text_queue.put(INDENT + INDENT + "scr_labels created")
 
         self.game_parts.figures["game_figure"].add_glyph(
             self.game_parts.texts["scr_text"],
             self.game_parts.labels["scr_text"]
         )
 
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Added scr_text and scr_labels to main game fig")
-
-        if (log_steps):
-            print(INDENT + "Game fig screen text creation completed")
+        await text_queue.put(
+            INDENT + INDENT + "Added scr_text and scr_labels to main game fig"
+        )
+        await text_queue.put(INDENT + "Game fig screen text creation completed")
         #</editor-fold>
 
         #<editor-fold Divs:
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print(INDENT + "Creating game divs:")
-
-        components.divs.basic.create_game_vars(self.game_parts)
-
-        if(log_steps):
-            print(INDENT + "Basic game value tracking divs created")
-
-        components.divs.basic.create_configurable(
-            self.game_parts, self.select_cpu_tip, "select_cpu_tip"
+        await text_queue.put("")
+        await text_queue.put(INDENT + "Creating game divs:")
+        await loop.run_in_executor(
+            None, components.divs.basic.create_game_vars, self.game_parts
         )
-        components.divs.basic.create_configurable(
-            self.game_parts, self.chances_lt_0_tip, "chances_lt_0_tip"
+        await text_queue.put(INDENT + "Basic game value tracking divs created")
+        await loop.run_in_executor(
+            None, components.divs.basic.create_configurable, self.game_parts,
+            self.select_cpu_tip, "select_cpu_tip"
         )
-        components.divs.basic.create_configurable(
-            self.game_parts, self.chances_gt_1_tip, "chances_gt_1_tip"
+        await loop.run_in_executor(
+            None, components.divs.basic.create_configurable, self.game_parts,
+            self.chances_lt_0_tip, "chances_lt_0_tip"
         )
-        components.divs.basic.create_configurable(
-            self.game_parts, self.chances_ne_1_tip, "chances_ne_1_tip"
+        await loop.run_in_executor(
+            None, components.divs.basic.create_configurable, self.game_parts,
+            self.chances_gt_1_tip, "chances_gt_1_tip"
         )
-
-        if (log_steps):
-            print(INDENT + INDENT + "Game input tip divs created")
-
-        components.divs.cpu_selected.create(self.game_parts)
-
-        if (log_steps):
-            print(INDENT + INDENT + "CPU selection status tracking div created")
-
-        components.divs.chances_valid.create(self.game_parts)
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "User strategy validity tracking div created")
-
-        components.divs.counter_made.create(self.game_parts)
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Goalie cheats counter creation status"
-                  + " tracking div created")
-
-        components.divs.in_an_iter.create(self.game_parts)
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Game iteration running status tracking div created")
-
-        if (log_steps):
-            print(INDENT + "Game div creation completed")
+        await loop.run_in_executor(
+            None, components.divs.basic.create_configurable, self.game_parts,
+            self.chances_ne_1_tip, "chances_ne_1_tip"
+        )
+        await text_queue.put(INDENT + INDENT + "Game input tip divs created")
+        await loop.run_in_executor(
+            None, components.divs.cpu_selected.create, self.game_parts
+        )
+        await text_queue.put(
+            INDENT + INDENT + "CPU selection status tracking div created"
+        )
+        await loop.run_in_executor(
+            None, components.divs.chances_valid.create, self.game_parts
+        )
+        await text_queue.put(
+            INDENT + INDENT + "User strategy validity tracking div created"
+        )
+        await loop.run_in_executor(
+            None, components.divs.counter_made.create, self.game_parts
+        )
+        await text_queue.put(
+            INDENT + INDENT + "Goalie cheats counter creation status"
+            + " tracking div created"
+        )
+        await loop.run_in_executor(
+            None, components.divs.in_an_iter.create, self.game_parts
+        )
+        await text_queue.put(
+            INDENT + INDENT
+            + "Game iteration running status tracking div created"
+        )
+        await text_queue.put(INDENT + "Game div creation completed")
         #</editor-fold>
 
         #<editor-fold Buttons:
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print(INDENT + "Creating buttons:")
-
-        components.buttons.b_automate.create(self.game_parts, self.b_automate)
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Game automate track selection button created")
-
-        components.buttons.b_start_automate.create(
-            self.game_parts, self.b_start_automate
+        await text_queue.put("")
+        await text_queue.put(INDENT + "Creating buttons:")
+        await loop.run_in_executor(
+            None, components.buttons.b_automate.create, self.game_parts,
+            self.b_automate
         )
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Game automate track start button created")
-
-        components.buttons.b_auto_next.create(self.game_parts, self.b_auto_next)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Game automate track next button created")
-
-        components.buttons.b_make_counter.create(
-            self.game_parts, self.b_make_counter
+        await text_queue.put(
+            INDENT + INDENT
+            + "Game automate track selection button created"
         )
-
-        if (log_steps):
-            print(INDENT + INDENT + "Goalie make counter button created")
-
+        await loop.run_in_executor(
+            None, components.buttons.b_start_automate.create, self.game_parts,
+            self.b_start_automate
+        )
+        await text_queue.put(
+            INDENT + INDENT + "Game automate track start button created"
+        )
+        await loop.run_in_executor(
+            None, components.buttons.b_auto_next.create, self.game_parts,
+            self.b_auto_next
+        )
+        await text_queue.put(
+            INDENT + INDENT + "Game automate track next button created"
+        )
+        await loop.run_in_executor(
+            None, components.buttons.b_make_counter.create, self.game_parts,
+            self.b_make_counter
+        )
+        await text_queue.put(
+            INDENT + INDENT + "Goalie make counter button created"
+        )
         for i in range(len(B_FIG_NAMES)):
-            components.buttons.b_figs.create(
-                self.game_parts, self.b_fig_configs[i], B_FIG_NAMES[i]
+            await loop.run_in_executor(
+                None, components.buttons.b_figs.create, self.game_parts,
+                self.b_fig_configs[i], B_FIG_NAMES[i]
             )
-
-        if (log_steps):
-            print(INDENT + INDENT + "figure view selection buttons created")
-
-        components.buttons.b_auto_advance.create(
-            self.game_parts, self.b_auto_advance
+        await text_queue.put(
+            INDENT + INDENT + "figure view selection buttons created"
         )
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Game automation track auto advance iterations"
-                  + " toggle button created")
-
-        if (log_steps):
-            print(INDENT + "Button creation completed")
+        await loop.run_in_executor(
+            None, components.buttons.b_auto_advance.create, self.game_parts,
+            self.b_auto_advance
+        )
+        await text_queue.put(
+            INDENT + INDENT + "Game automation track auto advance iterations"
+            + " toggle button created"
+        )
+        await text_queue.put(INDENT + "Button creation completed")
         #</editor-fold>
 
         #<editor-fold Sliders:
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print(INDENT + "Creating sliders:")
-
-        components.sliders.basic.create(
-            self.game_parts, self.iterations_slider, "iterations"
+        await text_queue.put("")
+        await text_queue.put(INDENT + "Creating sliders:")
+        await loop.run_in_executor(
+            None, components.sliders.basic.create, self.game_parts,
+            self.iterations_slider, "iterations"
         )
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Game iteration length selection slider created")
-
-        components.sliders.basic.create(
-            self.game_parts, self.auto_advance_speed_slider,
-            "auto_advance_speed"
+        await text_queue.put(
+            INDENT + INDENT + "Game iteration length selection slider created"
         )
-
-        if (log_steps):
-            print(INDENT + INDENT
-                  + "Game automation track auto advance iteration"
-                  + " speed selection slider created")
-
-        if (log_steps):
-            print(INDENT + "Slider creation completed")
+        await loop.run_in_executor(
+            None, components.sliders.basic.create, self.game_parts,
+            self.auto_advance_speed_slider, "auto_advance_speed"
+        )
+        await text_queue.put(
+            INDENT + INDENT + "Game automation track auto advance iteration"
+            + " speed selection slider created"
+        )
+        await text_queue.put(INDENT + "Slider creation completed")
         #</editor-fold>
 
         #<editor-fold TextInputs:
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print(INDENT + "Creating text inputs:")
-
+        await text_queue.put("")
+        await text_queue.put(INDENT + "Creating text inputs:")
         names = ["ll", "lm", "lr", "rl", "rm", "rr"]
-
         for name in names:
-            components.textinputs.aim_text_input.create(
+            await loop.run_in_executor(
+                None, components.textinputs.aim_text_input.create,
                 self.game_parts, name, self.aim_text_inputs
             )
-
-            if (log_steps):
-                print(INDENT + INDENT + name + "_aim_text_input created")
-
-        if (log_steps):
-            print(INDENT + "Text input creation completed")
-
+            await text_queue.put(
+                INDENT + INDENT + name + "_aim_text_input created"
+            )
+        await text_queue.put(INDENT + "Text input creation completed")
         #</editor-fold>
 
         #<editor-fold Dropdowns:
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print(INDENT + "Creating dropdowns:")
-
-        components.dropdowns.cpu_strategy_dropdown.create(
+        await text_queue.put("")
+        await text_queue.put(INDENT + "Creating dropdowns:")
+        await loop.run_in_executor(
+            None, components.dropdowns.cpu_strategy_dropdown.create,
             self.game_parts, self.cpu_strategy_dropdown
         )
-
-        if (log_steps):
-            print(INDENT + INDENT + "CPU strategy to use dropdown created")
-
-        if (log_steps):
-            print(INDENT + "Dropdown creation completed")
+        await text_queue.put(
+            INDENT + INDENT + "CPU strategy to use dropdown created"
+        )
+        await text_queue.put(INDENT + "Dropdown creation completed")
         #</editor-fold>
 
         #<editor-fold Stat Tables:
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print(INDENT + "Creating game tables:")
-
-        components.tablesources.distribution_table_source.create(
+        await text_queue.put("")
+        await text_queue.put(INDENT + "Creating game tables:")
+        await loop.run_in_executor(
+            None, components.tablesources.distribution_table_source.create,
             self.game_parts, self.footedness_config, self.initial_stats
         )
-
-        if (log_steps):
-            print(INDENT + INDENT + "Distribution table source created")
-
-        components.tables.distribution_table.create(
-            self.game_parts, self.distribution_table
+        await text_queue.put(
+            INDENT + INDENT + "Distribution table source created"
         )
-
-        if (log_steps):
-            print(INDENT + INDENT + "Distribution table created")
-
-        components.tablesources.automation_table_source.create(
+        await loop.run_in_executor(
+            None, components.tables.distribution_table.create, self.game_parts,
+            self.distribution_table
+        )
+        await text_queue.put(INDENT + INDENT + "Distribution table created")
+        await loop.run_in_executor(
+            None, components.tablesources.automation_table_source.create,
             self.game_parts, self.footedness_config, self.base_chances
         )
-
-        if (log_steps):
-            print(INDENT + INDENT + "Automation table source created")
-
-        components.tables.automation_table.create(self.game_parts,
-                                                  self.automation_table)
-
-        if (log_steps):
-            print(INDENT + INDENT + "Automation table created")
-
-        if (log_steps):
-            print(INDENT + "Game table creation completed")
+        await text_queue.put(
+            INDENT + INDENT + "Automation table source created"
+        )
+        await loop.run_in_executor(
+            None, components.tables.automation_table.create, self.game_parts,
+            self.automation_table
+        )
+        await text_queue.put(INDENT + INDENT + "Automation table created")
+        await text_queue.put(INDENT + "Game table creation completed")
         #</editor-fold>
     #</editor-fold>
 
     #<editor-fold __setup_game_components():
-    def __setup_game_components(
-        self, log_steps=False, CPU_strategy=None, allow_fast_forward=True,
-        force_fast_forward=False, force_fast_forward_spd=None,
-        iterations_to_run=None, stats_fig_1_enabled=True,
-        stats_fig_2_enabled=True, stats_fig_3_enabled = True,
-        stats_fig_4_enabled=True, show_dist_table=False,
+    async def __setup_game_components(
+        self, text_queue, log_steps=False, CPU_strategy=None,
+        allow_fast_forward=True, force_fast_forward=False,
+        force_fast_forward_spd=None, iterations_to_run=None,
+        stats_fig_1_enabled=True, stats_fig_2_enabled=True,
+        stats_fig_3_enabled = True, stats_fig_4_enabled=True,
+        show_dist_table=False
     ):
-
+        loop = asyncio.get_running_loop()
     # Click callback depends on CPU_strategy, allow_fast_forward,
     # force_fast_forward, force_fast_forward_spd, iterations_to_run:
-        components.buttons.b_automate.setup(
-            self.game_parts, CPU_strategy, allow_fast_forward,
-            force_fast_forward, force_fast_forward_spd, iterations_to_run,
+        await loop.run_in_executor(
+            None, components.buttons.b_automate.setup, self.game_parts,
+            CPU_strategy, allow_fast_forward, force_fast_forward,
+            force_fast_forward_spd, iterations_to_run
         )
-
-        if (log_steps):
-            print(INDENT + "b_automate setup completed")
-
-        if (log_steps):
-            if (CPU_strategy != None):
-                print(INDENT + INDENT + "b_automate callback was adjusted to"
-                      + " reflect the pre-designated CPU Strategy.")
-
+        await text_queue.put(INDENT + "b_automate setup completed")
+        if (CPU_strategy != None):
+            await text_queue.put(
+                INDENT + INDENT + "b_automate callback was adjusted to reflect"
+                + " the pre-designated CPU Strategy."
+            )
         if (allow_fast_forward == False):
-            if (log_steps):
-                print(INDENT + INDENT + "b_automate callback was adjusted to"
-                      + " reflect that auto advancing should be disabled.")
+            await text_queue.put(
+                INDENT + INDENT + "b_automate callback was adjusted to reflect"
+                + " that auto advancing should be disabled."
+            )
         else:
             if (force_fast_forward == True):
-                if (log_steps):
-                    print(INDENT + INDENT + "b_automate callback was adjusted"
-                          + " to reflect that auto advancing should be forced.")
-
+                await text_queue.put(
+                    INDENT + INDENT + "b_automate callback was adjusted to"
+                    + " reflect that auto advancing should be forced."
+                )
             if (force_fast_forward_spd != None):
-                if (log_steps):
-                    print(INDENT + INDENT + "b_automate callback was adjusted"
-                          + " to reflect that the auto advancing speed should"
-                          + " be forcibly set to " + str(force_fast_forward_spd)
-                          + ".")
-
+                await text_queue.put(
+                    INDENT + INDENT + "b_automate callback was adjusted to"
+                    + " reflect that the auto advancing speed should be"
+                    + " forcibly set to " + str(force_fast_forward_spd) + "."
+                )
         if (iterations_to_run != None):
-            if (log_steps):
-                print(INDENT + INDENT + "b_automate callback was adjusted to"
-                      + " reflect that the game should be forcibly set to "
-                      + str(iterations_to_run) + " iterations.")
-
-        components.divs.cpu_selected.setup(self.game_parts)
-        components.divs.chances_valid.setup(self.game_parts)
-        components.divs.counter_made.setup(self.game_parts)
-
-        if (log_steps):
-            print(INDENT + "Start button prerequisite Div setups completed")
-
-        components.divs.in_an_iter.setup(self.game_parts)
-
-        if (log_steps):
-            print(INDENT
-                  + "Iteration running status tracking div setup completed")
-
-        components.buttons.b_make_counter.setup(self.game_parts)
-
-        if (log_steps):
-            print(INDENT + "Make counter button setup completed")
-
+            await text_queue.put(
+                INDENT + INDENT + "b_automate callback was adjusted to reflect"
+                + " that the game should be forcibly set to "
+                + str(iterations_to_run) + " iterations."
+            )
+        await loop.run_in_executor(
+            None, components.divs.cpu_selected.setup, self.game_parts
+        )
+        await loop.run_in_executor(
+            None, components.divs.chances_valid.setup, self.game_parts
+        )
+        await loop.run_in_executor(
+            None, components.divs.counter_made.setup, self.game_parts
+        )
+        await text_queue.put(
+            INDENT + "Start button prerequisite Div setups completed"
+        )
+        await loop.run_in_executor(
+            None, components.divs.in_an_iter.setup, self.game_parts
+        )
+        await text_queue.put(
+            INDENT + "Iteration running status tracking div setup completed"
+        )
+        await loop.run_in_executor(
+            None, components.buttons.b_make_counter.setup, self.game_parts
+        )
+        await text_queue.put(INDENT + "Make counter button setup completed")
         for i in range(len(B_FIG_NAMES)):
-            components.buttons.b_figs.setup(self.game_parts, B_FIG_NAMES[i])
-
-        if (log_steps):
-            print(INDENT
-                  + "Game stat figure view selection button setups completed")
-
+            await loop.run_in_executor(
+                None, components.buttons.b_figs.setup, self.game_parts,
+                B_FIG_NAMES[i]
+            )
+        await text_queue.put(
+            INDENT + "Game stat figure view selection button setups completed"
+        )
         # Click callback depends on stats_fig_1_enabled, stats_fig_2_enabled,
         # stats_fig_3_enabled, stats_fig_4_enabled, show_dist_table:
-        components.buttons.b_start_automate.setup(
-            self.game_parts, stats_fig_1_enabled, stats_fig_2_enabled,
-            stats_fig_3_enabled, stats_fig_4_enabled, show_dist_table,
+        await loop.run_in_executor(
+            None, components.buttons.b_start_automate.setup, self.game_parts,
+            stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
+            stats_fig_4_enabled, show_dist_table
         )
-
-        if (log_steps):
-            print(INDENT
-                  + "Start automate track selection button setup completed")
-
-        if (log_steps):
-            if (stats_fig_1_enabled == False):
-                print(INDENT + INDENT + "b_start_automate callback was adjusted"
-                      + " to reflect that stats fig 1 should be disabled.")
-
-        if (log_steps):
-            if (stats_fig_2_enabled == False):
-                print(INDENT + INDENT + "b_start_automate callback was adjusted"
-                      + " to reflect that stats fig 2 should be disabled.")
-
-        if (log_steps):
-            if (stats_fig_3_enabled == False):
-                print(INDENT + INDENT + "b_start_automate callback was adjusted"
-                      + " to reflect that stats fig 3 should be disabled.")
-
-        if (log_steps):
-            if (stats_fig_4_enabled == False):
-                print(INDENT + INDENT + "b_start_automate callback was adjusted"
-                      + " to reflect that stats fig 4 should be disabled.")
-
+        await text_queue.put(
+            INDENT + "Start automate track selection button setup completed"
+        )
+        if (stats_fig_1_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_start_automate callback was adjusted to"
+                + " reflect that stats fig 1 should be disabled."
+            )
+        if (stats_fig_2_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_start_automate callback was adjusted to"
+                + " reflect that stats fig 2 should be disabled."
+            )
+        if (stats_fig_3_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_start_automate callback was adjusted to"
+                + " reflect that stats fig 3 should be disabled."
+            )
+        if (stats_fig_4_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_start_automate callback was adjusted to"
+                + " reflect that stats fig 4 should be disabled."
+            )
         if (show_dist_table == True):
-            if (log_steps):
-                print(INDENT + INDENT + "b_automate callback was adjusted to"
-                      + " reflect that the distribution table should be shown.")
-
+            await text_queue.put(
+                INDENT + INDENT + "b_automate callback was adjusted to reflect"
+                + " that the distribution table should be shown."
+            )
         # Click callback depends on stats_fig_1_enabled, stats_fig_2_enabled,
         # stats_fig_3_enabled, stats_fig_4_enabled:
-        components.buttons.b_auto_next.setup(
-            self.game_parts, stats_fig_1_enabled, stats_fig_2_enabled,
-            stats_fig_3_enabled, stats_fig_4_enabled
+        await loop.run_in_executor(
+            None, components.buttons.b_auto_next.setup, self.game_parts,
+            stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
+            stats_fig_4_enabled
         )
-
-        if (log_steps):
-            print(INDENT + "Automate track next button setup completed")
-
-        if (log_steps):
-            if (stats_fig_1_enabled == False):
-                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
-                      + " reflect that stats fig 1 should be disabled.")
-
-        if (log_steps):
-            if (stats_fig_2_enabled == False):
-                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
-                      + " reflect that stats fig 2 should be disabled.")
-
-        if (log_steps):
-            if (stats_fig_3_enabled == False):
-                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
-                      + " reflect that stats fig 3 should be disabled.")
-
-        if (log_steps):
-            if (stats_fig_4_enabled == False):
-                print(INDENT + INDENT + "b_auto_next callback was adjusted to"
-                      + " reflect that stats fig 4 should be disabled.")
-
+        await text_queue.put(
+            INDENT + "Automate track next button setup completed"
+        )
+        if (stats_fig_1_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_auto_next callback was adjusted to reflect"
+                + " that stats fig 1 should be disabled."
+        )
+        if (stats_fig_2_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_auto_next callback was adjusted to reflect"
+                + " that stats fig 2 should be disabled."
+        )
+        if (stats_fig_3_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_auto_next callback was adjusted to reflect"
+                + " that stats fig 3 should be disabled."
+        )
+        if (stats_fig_4_enabled == False):
+            await text_queue.put(
+                INDENT + INDENT + "b_auto_next callback was adjusted to reflect"
+                + " that stats fig 4 should be disabled."
+        )
         names = ["ll", "lm", "lr", "rl", "rm", "rr"]
         for name in names:
-            components.textinputs.aim_text_input.setup(
-                name=name, game_parts=self.game_parts
+            await loop.run_in_executor(
+                None, components.textinputs.aim_text_input.setup, name,
+                self.game_parts
             )
-
-        if (log_steps):
-            print(INDENT + "Aim text input setups completed")
-
-        components.dropdowns.cpu_strategy_dropdown.setup(self.game_parts)
-
-        if (log_steps):
-            print(INDENT + "CPU strategy selection dropdown setup completed")
+        await text_queue.put(INDENT + "Aim text input setups completed")
+        await loop.run_in_executor(
+            None, components.dropdowns.cpu_strategy_dropdown.setup,
+            self.game_parts
+        )
+        await text_queue.put(
+            INDENT + "CPU strategy selection dropdown setup completed"
+        )
     #</editor-fold>
 
     #<editor-fold __format_game_layout():
-    def __format_game_layout(self, log_steps):
-        grid1 = game_layout.format(self.game_parts, self.layout, log_steps)
+    async def __format_game_layout(self, text_queue, log_steps):
+        grid1 = await game_layout.format(
+            self.game_parts, self.layout, text_queue, log_steps
+        )
         return grid1
     #</editor-fold>
 
     #<editor-fold make_game():
-    def make_game(
+    async def log_step(self, text_queue, log_steps, CPU_strategy):
+        keep_running = log_steps
+        while keep_running:
+            val = await text_queue.get()
+            print(val)
+            if (val == "Finished adjustments."):
+                keep_running = False
+                print("Done.")
+            elif(CPU_strategy == None
+                 and val == "Game layout formatting completed"):
+                keep_running = False
+                print("Done.")
+
+    async def make_game(
         self, log_steps=False, CPU_strategy=None, allow_fast_forward=True,
         force_fast_forward=False, force_fast_forward_spd=None,
         iterations_to_run=None, stats_fig_1_enabled=True,
         stats_fig_2_enabled=True, stats_fig_3_enabled=True,
         stats_fig_4_enabled=True, show_dist_table=False,
     ):
-        if (log_steps):
-            print("Starting game component creation:")
+        text_queue = asyncio.Queue()
 
-        self.__make_game_components(log_steps)
-
-        if (log_steps):
-            print("Game component creation completed")
-
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print("Starting game component setup")
-
-        self.__setup_game_components(
-            log_steps, CPU_strategy, allow_fast_forward, force_fast_forward,
-            force_fast_forward_spd, iterations_to_run, stats_fig_1_enabled,
-            stats_fig_2_enabled, stats_fig_3_enabled, stats_fig_4_enabled,
-            show_dist_table,
+        log_steps_task = asyncio.create_task(
+            self.log_step(text_queue, log_steps, CPU_strategy)
         )
 
-        if (log_steps):
-            print("Game component setup completed")
-
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print("")
-
-        if (log_steps):
-            print("Starting game layout formatting")
-
-        grid1 = self.__format_game_layout(log_steps)
-
-        if (log_steps):
-            print("Game layout formatting completed")
-
+        await text_queue.put("Starting game component creation:")
+        await self.__make_game_components(text_queue, log_steps)
+        await text_queue.put("Game component creation completed")
+        await text_queue.put("")
+        await text_queue.put("")
+        await text_queue.put("Starting game component setup")
+        await self.__setup_game_components(
+            text_queue, log_steps, CPU_strategy, allow_fast_forward,
+            force_fast_forward, force_fast_forward_spd, iterations_to_run,
+            stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
+            stats_fig_4_enabled, show_dist_table
+        )
+        await text_queue.put("Game component setup completed")
+        await text_queue.put("")
+        await text_queue.put("")
+        await text_queue.put("Starting game layout formatting")
+        grid1 = await self.__format_game_layout(text_queue, log_steps)
+        await text_queue.put("Game layout formatting completed")
         if (CPU_strategy != None):
-            if (log_steps):
-                print("")
-            if (log_steps):
-                print("CPU strategy was pre-designated,"
-                      + " making value adjustments:")
-
+            await text_queue.put("")
+            await text_queue.put(
+                "CPU strategy was pre-designated, making value adjustments:"
+            )
             self.game_parts.divs["cpu_selected"].text = "1"
-
-            if (log_steps):
-                print(INDENT + "Changed cpu_selected div to 1.")
-
+            await text_queue.put(INDENT + "Changed cpu_selected div to 1.")
             self.game_parts.divs["strategy_to_use"].text = CPU_strategy
-
-            if (log_steps):
-                print(INDENT + "Changed strategy_to_use div to " + CPU_strategy
-                      + ".")
-
+            await text_queue.put(
+                INDENT + "Changed strategy_to_use div to " + CPU_strategy + "."
+            )
             if (CPU_strategy == "Goalie_Cheats"):
                 self.game_parts.divs["counter_made"].text = "0"
-
-                if (log_steps):
-                    print(INDENT + "As CPU strategy is set to goalie cheats, "
-                          + "changed counter_made div to 0 to indicate a goalie"
-                          + " counter is needed.")
-
-            if (log_steps):
-                print("Finished adjustments.")
-
+                await text_queue.put(
+                    INDENT + "As CPU strategy is set to goalie cheats, changed"
+                    + "counter_made div to 0 to indicate a goalie counter is"
+                    + " needed."
+                )
+            await text_queue.put("Finished adjustments.")
+        await log_steps_task
         return grid1
     #</editor-fold>
 #</editor-fold>

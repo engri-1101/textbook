@@ -1,0 +1,29 @@
+Layered design to the FWS problem (introduced at different points along the semester)
+
+First piece: transportation problem formulation
+-Maybe move some stuff from the transportation lab to this? (Take out caterer's problem)
+-2 person sections (maybe 10 students, 5 classes)
+-Transportation problem models feasible solutions. Ignore "better" or "worse" feasible solutions for now; separate out the feasible set of solutions from the infeasible
+	-This can be shown on a toy model so that the students can visually find feasible solutions
+-Next, play with a "stupid" objective
+	-For example, start with an infeasible input, and have the objective function be to maximize the people who get one of their top choices (i.e., maximize flow values)
+	-Ask students what's wrong with this (ans: doesn't include a notion of preference)
+	-Could also show this by having an objective that picks the bad solution from multiple (e.g., a solution that includes more second than first preferences when compared with another)
+-Introduce the idea that we should give more "value" to first-choice matches (ask how students would do this; introduce into objective function)
+-Show trade-offs between more assigned / more first choice (figure out on sight)
+-Now, introduce full scale input and implement objective that values first choice most, then everything else equally
+-Walk through the development to the lexicographic max objective function formulation
+
+
+Second piece: min-cost flow
+-Main goal is to show how we can add lower bounds to the transportation formulation by interpreting it as min-cost flow
+...
+(AFTER Simplex/LP/IP)
+Third piece: integer program
+-Walk through integer program model
+-Think about improvements (lower bounds, binary variables for classes run/not run)
+-Return to objective function manipulation (lexicographic max or min)
+-Exercise: model the opposite one
+-As a supplemental exercise, how much bigger does weight 1 have to be than weight 2, etc. (##n, where n is number of students)
+-Relax to LP, break integrality and stress that it's just dumb luck that it didn't break before; we need an IP solver for these problems (can't rely on LP relaxation to give integral solutions)
+-Ask which of the three models (transportation, min-cost flow, IP/LP) will stay integer if we did an LP relaxation

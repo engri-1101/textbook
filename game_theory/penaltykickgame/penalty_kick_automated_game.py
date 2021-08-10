@@ -69,9 +69,8 @@ class _SliderConfig:
         self.visible = visible
 
 class _TextInputConfig:
-    def __init__(self, value, title_addition, visible):
+    def __init__(self, value, visible):
         self.value = value
-        self.title_addition = title_addition
         self.visible = visible
 
 class _DropdownConfig:
@@ -230,9 +229,7 @@ class MainGame:
         #</editor-fold>
 
         #<editor-fold TextInput Configs:
-        self.aim_text_inputs = _TextInputConfig(
-            value="0", title_addition="_aim_chance", visible=False
-        )
+        self.aim_text_inputs = _TextInputConfig(value="0", visible=False)
         #</editor-fold>
 
         #<editor-fold Dropdown Configs:
@@ -471,14 +468,14 @@ class MainGame:
         #<editor-fold TextInputs:
         await text_queue.put("")
         await text_queue.put(INDENT + "Creating text inputs:")
-        names = ["ll", "lm", "lr", "rl", "rm", "rr"]
-        for name in names:
+        ids = ["ll", "lm", "lr", "rl", "rm", "rr"]
+        for id in ids:
             await loop.run_in_executor(
                 None, components.textinputs.aim_text_input.create,
-                self.game_parts, name, self.aim_text_inputs
+                self.game_parts, id, self.aim_text_inputs
             )
             await text_queue.put(
-                INDENT + INDENT + name + "_aim_text_input created"
+                INDENT + INDENT + id + "_aim text input created"
             )
         await text_queue.put(INDENT + "Text input creation completed")
         #</editor-fold>

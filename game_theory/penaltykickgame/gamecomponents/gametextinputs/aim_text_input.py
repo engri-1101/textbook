@@ -35,12 +35,21 @@ chancesValidDiv.text = ((isValid1 && isValid2 && isValid3) ? '1' : '0');
 #</editor-fold>
 
 #<editor-fold create():
-def create(game_parts, name, config):
+def create(game_parts, id, config):
+    names = {
+        "ll" : "Left-Footed Kicker Kicking to the Left Selection Chance",
+        "lm" : "Left-Footed Kicker Kicking to the Middle Selection Chance",
+        "lr" : "Left-Footed Kicker Kicking to the Right Selection Chance",
+        "rl" : "Right-Footed Kicker Kicking to the Left Selection Chance",
+        "rm" : "Right-Footed Kicker Kicking to the Middle Selection Chance",
+        "rr" : "Right-Footed Kicker Kicking to the Right Selection Chance"
+    }
+    name = names[id]
+
     aim_text_input = TextInput(
-        value=config.value, title=(name + config.title_addition),
-        visible=config.visible
+        value=config.value, title=name, visible=config.visible
     )
-    game_parts.textinputs[name + "_aim"] = aim_text_input
+    game_parts.textinputs[id + "_aim"] = aim_text_input
 #</editor-fold>
 
 #<editor-fold setup():

@@ -11,5 +11,6 @@ def write_dir(zipObj, path):
 # Lab
 with ZipFile('transportation_lab.zip', 'w') as zipObj:
     zipObj.write('transportation_lab.ipynb')
+    zipObj.write('transportation.py')
     write_dir(zipObj, 'data')
     zipObj.close()

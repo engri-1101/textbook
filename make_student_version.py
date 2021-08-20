@@ -17,7 +17,9 @@ def make_student_version(key):
     # find all text answers (blue) and comments (red)
     comment_starts = [m.start() for m in re.finditer("<font color='red'>", file_text)]
     answer_starts = [m.start() for m in re.finditer("<font color='blue'>", file_text)]
-    text_starts = comment_starts + answer_starts
+    comment_starts_2 = [m.start() for m in re.finditer('<font color=\\\\"red\\\\">', file_text)]
+    answer_starts_2 = [m.start() for m in re.finditer('font color=\\\\"blue\\\\">', file_text)]
+    text_starts = comment_starts + answer_starts + comment_starts_2 + answer_starts_2
     text_starts.sort()
     text_ends = [m.end() for m in re.finditer("</font>", file_text)]
     assert len(text_starts) == len(text_ends)
@@ -33,17 +35,17 @@ def make_student_version(key):
         to_remove = to_remove - (j-i) # adjust other indices
 
     file.close()
-    
+
     student_file = key.replace('_key', '')
     file = open(student_file, "w")
     file.write(file_text)
     file.close()
-    
+
 args = sys.argv
 assert len(args) == 2
 key = args[1]
 make_student_version(key)
-    
+
 # find all key files
 # keys = []
 # dirs = list(walk('.'))[0][1]

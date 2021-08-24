@@ -1,12 +1,15 @@
 from bokeh.models import TextInput, CustomJS
-
-JS_FLOAT_BUFFER = "0.0000001" # THIS VARIABLE SHOULD BE TREATED AS A CONSTANT.
-# JAVASCRIPT HAS SOME ISSUES WITH FLOATS, SO CHECKING FOR EQUALITY BETWEEN
-# NUMBERS AND THE SUMS (OR OTHER OPERATIONS) OF OTHER NUMBERS IS NOT SAFE.
-# IN ORDER TO WORK AROUND THIS ISSUE, INSTEAD OF CHECKING FOR EQUALITY, CHECK
-# THAT THE VALUE IS WITHIN A RANGE OF THE EXPECTED OUTCOME.
+# FILE-WIDE CONSTANT FOR DEALING WITH JAVASCRIPT ISSUES REGARDING NUMBERS:
+JS_FLOAT_BUFFER = "0.0000001"
 
 #<editor-fold aim_inputs on change callback Code String:
+# Handles changes to the pure strategy selection chance for a given aim text
+# input. Hides the start button, then checks the values of all text inputs. If
+# all values are between 0 and 1, and they add up to 1, then the game start
+# condition tracking div enforcing player chance inputs is changed to indicate
+# proper completion. Also updates the automation table to contain the new aim
+# chances.
+
 aimTextInputsOnChange = """
 //Hide start button:
 startAutomateButton.visible = false;
@@ -36,6 +39,18 @@ chancesValidDiv.text = ((isValid1 && isValid2 && isValid3) ? '1' : '0');
 
 #<editor-fold create():
 def create(game_parts, id, config):
+    """Creates a Bokeh TextInput object for inputting the selection chance of
+    the kicker's pure strategy indicated by id, then adds it to the passed
+    _GameParts object being used to collect the game components.
+
+
+    Arguments:
+    game_parts -- The _GameParts object being used to collect game components.
+    id -- A string indicating the TextInput's corresponding pure strategy.
+      Either "ll", "lm", "lr", "rl", "rm", or "rr".
+    config -- The config object being used to configure the game's
+      aim TextInputs.
+    """
     names = {
         "ll" : "Left-Footed Kicker Kicking to the Left Selection Chance",
         "lm" : "Left-Footed Kicker Kicking to the Middle Selection Chance",
@@ -53,7 +68,13 @@ def create(game_parts, id, config):
 #</editor-fold>
 
 #<editor-fold setup():
-def setup(name, game_parts):
+def setup(game_parts):
+    """Sets up the aim TextInput objects to work in the game.
+
+
+    Argument:
+    game_parts -- The _GameParts object containing the game components.
+    """
     text_inputs = game_parts.textinputs
     divs = game_parts.divs
     aim_text_inputs = [
@@ -74,6 +95,6 @@ def setup(name, game_parts):
     aim_text_inputs_change = CustomJS(
         args=args_dict, code=aimTextInputsOnChange
     )
-    key = (name + "_aim")
-    text_inputs[key].js_on_change("value", aim_text_inputs_change)
+    for text_input in aim_text_inputs:
+        text_input.js_on_change("value", aim_text_inputs_change)
 #</editor-fold>

@@ -4,10 +4,12 @@ from bokeh.models import (CustomJSHover, ColumnDataSource, HoverTool,
 from bokeh.transform import transform
 
 #<editor-fold ys code string:
+# returns the the y value of the hovered data point, and modifies the
+# 'highlight_alphas' column to be filled with zeros, except for the hovered data
+# point's value, which is set to 1.
 ysCode = """
 const index = special_vars.index;
 const data = src.data;
-const length = data['xs'].length;
 data['highlight_alphas'].fill(0);
 data['highlight_alphas'][index] = 1;
 src.change.emit();
@@ -16,6 +18,7 @@ return data['ys'][index].toString();
 #</editor-fold>
 
 #<editor-fold avgs code string:
+# returns the average of the y values up to the hovered data point.
 avgsCode = """
 const index = special_vars.index;
 const data = src.data;
@@ -36,35 +39,22 @@ return val.toString().substring(0,5);
 #</editor-fold>
 
 #<editor-fold Custom Hover Tooltip:
+# Display for the hovered information.
 custom_tooltip = """
 <div>
-    <span style='font-size: 10px;'>Iteration:</span>
-    <span style='font-size: 10px;'>@xs</span>
-</div>
-<div>
-    <span style='font-size: 10px;'>Striker Foot:</span>
-    <span style='font-size: 10px;'>@feet</span>
-<div>
-<div>
-    <span style='font-size: 10px;'>Aim Direction:</span>
-    <span style='font-size: 10px;'>@directions</span>
-</div>
-<div>
-    <span style='font-size: 10px;'>Goalie Action:</span>
-    <span style='font-size: 10px;'>@actions</span>
-</div>
-<div>
-    <span style='font-size: 10px;'>Score Chance:</span>
-    <span style='font-size: 10px;'>@ys{custom}</span>
-</div>
-<div>
-    <span style='font-size: 10px;'>Avg Score Chance:</span>
-    <span style='font-size: 10px;'>@avgs_placeholder{custom}</span>
+  <font size="1pt"><p>Iteration: @xs<br>
+Striker Foot: @feet<br>
+Aim Direction: @directions<br>
+Goalie Action: @actions<br>
+Score Chance: @ys{custom}<br>
+Avg Score Chance: @avgs_placeholder{custom}</p></font>
 </div>
 """
 #</editor-fold>
 
-#<editor-fold Get Avgs Code String:
+# <editor-fold Get Avgs Code String:
+# returns a list with values equal to the average of the previous list's values
+# up to that index.
 getAvgs = """
 let newXs = [];
 xs.forEach(
@@ -77,69 +67,217 @@ return newXs;
 
 #<editor-fold Configs:
 class Configs:
-    """Objects of this class are used to organize and pass parameters to
-    Stats Figure 4. All arguments are mutable, and default values for them are
-    the currently decided values being used to make the game. The main purpose
-    of the configurability provided through the use of this class is to make it
-    easier to test changes. Any changes that improve the game should be made
-    directly to the default values of the arguments in this class after
-    successful testing.
+    """A class used to configure Stats Figure 4.
+
+
+    Attributes:
+    fig -- The fig_creation.FigureConfigs object being used to configure the
+      main figure.
+    plot_dots -- The _DotConfigs object being used to configure the plot
+      data dots.
+    highlight_dots -- The _DotConfigs object being used to configure the plot
+      highlight dots.
+    guiding_lines -- The _LineConfigs object being used to configure the plot's
+      guiding lines.
+    avgs_line -- The _LineConfigs object being used to configure the plot's
+      average value line.
+    hitbox_alpha -- An int or float between 0 and 1 used to set the alphas of
+      the plot's hitboxes.
+
+
+    Inner Classes:
+    _DotConfigs -- A class for configuring the dots within the plot.
+    _LineConfigs -- A class for configuring the lines within the plot.
     """
     #<editor-fold __init__():
     def __init__(
         self, fig_base_tools="", fig_toolbar_loc="below",
         fig_toolbar_sticky=False, fig_title="Score Chance Over Iterations",
         fig_width=600, fig_height=360, fig_x_range=(0.5, 50.5),
-        fig_y_range=(0, 1), fig_visibility=False,
-        fig_sizing_mode="stretch_both", fig_outline_line_color=None,
+        fig_y_range=(0.5, 1.0), fig_visibility=False,
+        fig_sizing_mode="stretch_both", fig_outline_line_color="black",
         fig_background_color="white", fig_title_font_size="16pt",
         fig_x_axis_visibility=True, fig_y_axis_visibility=True,
         fig_x_axis_line_color="black", fig_y_axis_line_color="black",
-        fig_xgrid_visibility=False, fig_ygrid_visibility=False,
-        fig_xgrid_line_color="black", fig_ygrid_line_color="black",
+        fig_x_grid_visibility=False, fig_y_grid_visibility=False,
+        fig_x_grid_line_color="black", fig_y_grid_line_color="black",
         plot_dot_line_color="#D8CB2D", plot_dot_fill_color="#ECDF41",
-        plot_dot_size=5, plot_dot_alpha=1, guiding_line_color="#000000",
-        guiding_line_alpha=0.1, hitbox_alpha=0, plot_highlight_dot_size=10,
-        plot_highlight_dot_color="#ECB841",
-        plot_highlight_dot_outline_color="#D8A42D",
-        plot_avgs_line_color="#000000"
+        plot_dot_size=5, plot_dot_alpha=1, highlight_dot_line_color="#D8A42D",
+        highlight_dot_fill_color="#ECB841", highlight_dot_size=10,
+        guiding_line_color="#000000", guiding_line_alpha=0.1,
+        avgs_line_color="#000000", avgs_line_alpha=1, hitbox_alpha=0
     ):
-        #<editor-fold figure:
+        """Initializer for the class Configs. Creates a Configs object
+        containing the relevant information for creating the figure with the
+        input argument values.
+
+
+        Keyword Arguments:
+        fig_base_tools -- A string containing the base tools to add to the
+          figure. Must be Bokeh compatible.
+        fig_toolbar_loc -- A string containing the location to use for the
+          figure toolbar. Must be Bokeh compatible.
+        fig_toolbar_sticky -- A bool for whether or not to make the figure tool
+          bar sticky.
+        fig_title -- A string. The title to use for the figure.
+        fig_width -- An int. The width to use for the figure.
+        fig_height -- An int. The width to use for the figure.
+        fig_x_range -- An (int, int) or (float, float) pair containing the
+          x range to use for the figure.
+        fig_y_range -- An (int, int) or (float, float) pair cointaining the
+          y range to use for the figure.
+        fig_visibility -- A bool for setting the figure's initial visibility.
+        fig_sizing_mode -- A string containing how the figure should be sized.
+          Must be Bokeh compatible.
+        fig_outline_line_color -- A string containing the color to use for the
+          figure outline. Must be Bokeh compatible.
+        fig_background_color -- A string containing the color to use for the
+          figure background. Must be Bokeh compatible.
+        fig_title_font_size -- A string containing the font size to use for the
+          figure title. Must be Bokeh compatible.
+        fig_x_axis_visibility -- A bool for setting the figure's
+          x axis' visibility.
+        fig_y_axis_visibility -- A bool for setting the figure's
+          y axis' visibility.
+        fig_x_axis_line_color -- A string containing the color to use for the
+          figure's x axis. Must be Bokeh compatible.
+        fig_y_axis_line_color -- A string containing the color to use for the
+          figure's y axis. Must be Bokeh compatible.
+        fig_x_grid_visibility -- A bool for setting the figure's
+          x grid's visibility.
+        fig_y_grid_visibility -- A bool for setting the figure's
+          y grid's visibility.
+        fig_x_grid_line_color -- A string containing the color to use for the
+          figure's x grid. Must be Bokeh compatible.
+        fig_y_grid_line_color -- A string containing the color to use for the
+          figure's y grid. Must be Bokeh compatible.
+        plot_dot_line_color -- A string containing the color to use for the
+          plot's data dot outline. Must be Bokeh compatible.
+        plot_dot_fill_color -- A string containing the color to use for the
+          plot's data dot fill. Must be Bokeh compatible.
+        plot_dot_size -- An int or float to use as the size of the dots for the
+          plot's data.
+        plot_dot_alpha -- An int or float between 0 and 1 to use as the alpha of
+          the plot's data dots.
+        highlight_dot_line_color -- A string containing the color to use for the
+          outline of the plot's highlight dots. Must be Bokeh compatible.
+        highlight_dot_fill_color -- A string containing the color to use for the
+          fill of the plot's highlight dots.  Must be Bokeh compatible.
+        highlight_dot_size -- An int or float to use as the size of the plot's
+          highlight dots.
+        guiding_line_color -- A string containing the color to use for the
+          guidining lines of the plot. Must be Bokeh compatible.
+        guiding_line_alpha -- An int or float between 0 and 1 to use as the
+          alpha for the plot's guiding lines.
+        avgs_line_color -- A string containing the color to use for the average
+          value line of the plot. Must be Bokeh compatible.
+        avgs_line_alpha -- An int or float between 0 and 1 to use as the alpha
+          for the average value line of the plot.
+        hitbox_alpha -- An int or float between 0 and 1 to use as the alpha for
+          the plot's hitboxes.
+        """
         self.fig = fig_creation.FigureConfigs(
-            base_tools=fig_base_tools, toolbar_loc=fig_toolbar_loc,
-            toolbar_sticky=fig_toolbar_sticky, title=fig_title, width=fig_width,
-            height=fig_height, x_range=fig_x_range, y_range=fig_y_range,
-            visibility=fig_visibility, sizing_mode=fig_sizing_mode,
-            outline_line_color=fig_outline_line_color,
-            background_color=fig_background_color,
-            title_font_size=fig_title_font_size,
-            x_axis_visibility=fig_x_axis_visibility,
-            y_axis_visibility=fig_y_axis_visibility,
-            x_axis_line_color=fig_x_axis_line_color,
-            y_axis_line_color=fig_y_axis_line_color,
-            x_grid_visibility=fig_xgrid_visibility,
-            y_grid_visibility=fig_ygrid_visibility,
-            x_grid_line_color=fig_xgrid_line_color,
-            y_grid_line_color=fig_ygrid_line_color
+            fig_base_tools, fig_toolbar_loc, fig_toolbar_sticky, fig_title,
+            fig_width, fig_height, fig_x_range, fig_y_range, fig_visibility,
+            fig_sizing_mode, fig_outline_line_color, fig_background_color,
+            fig_title_font_size, fig_x_axis_visibility, fig_y_axis_visibility,
+            fig_x_axis_line_color, fig_y_axis_line_color, fig_x_grid_visibility,
+            fig_y_grid_visibility, fig_x_grid_line_color, fig_y_grid_line_color
         )
-        self.plot_dot_line_color = plot_dot_line_color
-        self.plot_dot_fill_color = plot_dot_fill_color
-        self.plot_dot_size = plot_dot_size
-        self.plot_dot_alpha = plot_dot_alpha
-        self.guiding_line_color = guiding_line_color
-        self.guiding_line_alpha = guiding_line_alpha
+        self.plot_dots = self._DotConfigs(
+            plot_dot_line_color, plot_dot_fill_color, plot_dot_size,
+            plot_dot_alpha
+        )
+        self.highlight_dots = self._DotConfigs(
+            highlight_dot_line_color, highlight_dot_fill_color,
+            highlight_dot_size, None
+        )
+        self.guiding_lines = self._LineConfigs(
+            guiding_line_color, guiding_line_alpha
+        )
+        self.avgs_line = self._LineConfigs(
+            avgs_line_color, avgs_line_alpha
+        )
         self.hitbox_alpha = hitbox_alpha
-        self.plot_highlight_dot_size = plot_highlight_dot_size
-        self.plot_highlight_dot_color = plot_highlight_dot_color
-        self.plot_highlight_dot_outline_color = plot_highlight_dot_outline_color
-        self.plot_avgs_line_color = plot_avgs_line_color
+    #</editor-fold>
+
+    #<editor-fold _DotConfigs:
+    class _DotConfigs:
+        """A class used to configure dots on the plot.
+
+
+        Attributes:
+        line_color -- A string containing the color to use as the outline color
+          of the dot type. Must be Bokeh compatible.
+        fill_color -- A string containing the color to use as the fill color of
+          the dot type. Must be Bokeh compatible.
+        size -- An int or float used to set the size of the dot type.
+        alpha -- An int or float between 0 and 1 used to set the alpha of the
+          dot type.
+        """
+        #<editor-fold __init__():
+        def __init__(self, line_color, fill_color, size, alpha):
+            """Initializer for the class _DotConfigs. Creates a _DotConfigs
+            object with the input values from the arguments.
+
+
+            Arguments:
+            line_color -- A string containing the color used to set
+              self.line_color. Must be Bokeh compatible.
+            fill_color -- A string containing the color used to set
+              self.fill_color. Must be Bokeh compatible.
+            size -- An int or float used to set self.size.
+            alpha -- An int or float between 0 and 1 used to set self.alpha.
+            """
+            self.line_color = line_color
+            self.fill_color = fill_color
+            self.size = size
+            self.alpha = alpha
+        #</editor-fold>
+    #</editor-fold>
+
+    #<editor-fold _LineConfigs:
+    class _LineConfigs:
+        """A class used to configure lines on the plot.
+
+
+        Attributes:
+        color -- A string containing the color to use for the line type. Must be
+          Bokeh compatible.
+        alpha -- An int or float between 0 and 1 used to set the alpha of the
+          line type.
+        """
+        #<editor-fold __init__():
+        def __init__(self, color, alpha):
+            """Initializer for the class _LineConfigs. Creates a _LineConfigs
+            object with the input values from the arguments.
+
+
+            Arguments:
+            color -- A string containing the color used to set self.color. Must
+              be Bokeh compatible.
+            alpha -- An int or float between 0 and 1 used to set self.alpha.
+            """
+            self.color = color
+            self.alpha = alpha
         #</editor-fold>
     #</editor-fold>
 #</editor-fold>
 
 #<editor-fold create():
-def create(game_parts, configs = Configs()):
+def create(game_parts, configs):
+    """Creates Game Stats Figure 4 according to the passed in Configs object's
+    attributes. Also creates Game Stats Figure 4's ColumnDataSource. Game Stats
+    Figure 4 is then fully set up, before both the figure and its source are
+    added to the passed in _GameParts object being used to collect the game
+    components.
 
+
+    Arguments:
+    game_parts -- The penalty_kick_automated_game._GameParts object being used
+      to collect the game components.
+    configs -- The Configs object being used to configure the figure.
+    """
     fig = fig_creation.make_fig(configs.fig)
 
     #<editor-fold ColumnDataSource Creation:
@@ -161,20 +299,19 @@ def create(game_parts, configs = Configs()):
 
     #<editor-fold Plot Figure Elements:
     fig.circle_dot(
-        x="xs", y="ys", source=fig_src, size=configs.plot_dot_size,
-        alpha=configs.plot_dot_alpha, line_color=configs.plot_dot_line_color,
-        fill_color=configs.plot_dot_fill_color
+        x="xs", y="ys", source=fig_src, size=configs.plot_dots.size,
+        alpha=configs.plot_dots.alpha, line_color=configs.plot_dots.line_color,
+        fill_color=configs.plot_dots.fill_color
     )
 
     fig.circle_dot(
-        x="xs", y="ys", source=fig_src, size=configs.plot_highlight_dot_size,
-        alpha="highlight_alphas",
-        line_color=configs.plot_highlight_dot_outline_color,
-        fill_color=configs.plot_highlight_dot_color
+        x="xs", y="ys", source=fig_src, size=configs.highlight_dots.size,
+        alpha="highlight_alphas", line_color=configs.highlight_dots.line_color,
+        fill_color=configs.highlight_dots.fill_color
     )
 
     hbs = fig.rect(
-        x="xs", y=0.5, source=fig_src, width=1, height=1, fill_alpha=0,
+        x="xs", y=0.75, source=fig_src, width=1, height=0.5, fill_alpha=0,
         line_alpha=configs.hitbox_alpha, line_color="black"
     )
 
@@ -182,7 +319,7 @@ def create(game_parts, configs = Configs()):
 
     avgs_line = fig.line(
         x="xs", y=transform("ys", get_avgs), source=fig_src,
-        line_color=configs.plot_avgs_line_color
+        line_color=configs.avgs_line.color, alpha=configs.avgs_line.alpha
     )
 
     y_vals = [
@@ -192,8 +329,8 @@ def create(game_parts, configs = Configs()):
     for y_val in y_vals:
         fig.line(
             x="xs", y=y_val, source=fig_src,
-            line_color=configs.guiding_line_color,
-            line_alpha=configs.guiding_line_alpha
+            line_color=configs.guiding_lines.color,
+            line_alpha=configs.guiding_lines.alpha
         )
     #</editor-fold>
 

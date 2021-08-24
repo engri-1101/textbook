@@ -5,6 +5,22 @@ def createAutomateCode(
     CPU_strategy, allow_fast_forward, force_fast_forward,
     force_fast_forward_spd, iterations_to_run,
 ):
+    """Creates a string containing the JavaScript code for the automate button
+    to run, according to the arguments.
+
+
+    Arguments:
+    CPU_strategy -- A string containing a keeper strategy to use.
+    allow_fast_forward -- A bool determining whether or not automatically
+      advancing between iterations should be allowed.
+    force_fast_forward -- A bool determining whether or not automatically
+      advancing between iterations should be forcibly enabled, if
+      allow_fast_forward is True.
+    force_fast_forward_spd -- An int determining the value to forcibly set the
+      speed in miliseconds to wait between iterations when automatically
+      advancing between them. Only takes effect if the default value of None is
+      not used.
+    """
     code = """
 //Change visibilities of game items:
 automateButton.visible = false;

@@ -1,7 +1,11 @@
 from bokeh.models import Dropdown, CustomJS
 
 #<editor-fold strategy_dropdown on change callback Code String:
-stratDropdownOnChange= """
+# Code for handling selections on the cpu strategy dropdown. Updates the
+# dropdown label to indicate the choice before updateing the divs being used to
+# track the keeper strategy, its selection status, and the need to make a counter
+# strategy. Finally, it hides the tip about selecting a strategy.
+stratDropdownOnChange = """
 //Set the label of the dropdown (the text displayed) to the selected item:
 stratDropdown.label = this.item;
 
@@ -13,17 +17,11 @@ aimTextInputs.forEach(
   (v) => v.visible = true
 )
 
-//Sets the automation_table to be visible:
-automationTable.visible = true;
-
 //Sets cpuSelectedDiv to indicate that a cpu strat has been selected:
 cpuSelectedDiv.text = '1';
 
-//Checks whether the selected item is Goalie_Cheats:
-const counterNeeded = (this.item === 'Goalie_Cheats');
-
 //update the tracking div for needing a goalie cheats counter:
-counterMadeDiv.text = ((counterNeeded) ? '0' : '1');
+counterMadeDiv.text = ((this.item === 'Goalie_Cheats') ? '0' : '1');
 
 //Hides the select a cpu strategy tip:
 selectCpuTip.visible = false;
@@ -53,9 +51,7 @@ def setup(game_parts):
         "stratDropdown" : dropdowns["cpu_strategy"],
         "stratToUseDiv" : divs["strategy_to_use"],
         "aimTextInputs" : aim_text_inputs,
-        "automationTable" : game_parts.tables["automation"],
         "cpuSelectedDiv" : divs["cpu_selected"],
-        "makeCounterButton" : game_parts.buttons["make_counter"],
         "counterMadeDiv" : divs["counter_made"],
         "selectCpuTip" : divs["select_cpu_tip"]
     }

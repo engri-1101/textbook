@@ -3,6 +3,15 @@ from . import gameloop_codestrings
 
 #<editor-fold create():
 def create(game_parts, config):
+    """Creates the next button, then adds it into the passed in _GameParts
+    object being used to collect the game components.
+
+
+    Arguments:
+    game_parts -- The _GameParts object being used to collect the
+      game components.
+    config -- The config object being used to configure the button.
+    """
     button = Button(
         label=config.label, button_type=config.button_type,
         sizing_mode=config.sizing_mode, width_policy=config.width_policy,
@@ -16,6 +25,22 @@ def setup(
     game_parts, stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
     stats_fig_4_enabled
 ):
+    """Sets up the next button to be able to run its on click javascript code.
+    This is done by customizing the on click code to attach to the button
+    according to the passed arguments.
+
+
+    Arguments:
+    game_parts -- The _GameParts object containing the game components.
+    stats_fig_1_enabled -- A bool, whether or not the game should use
+      Stats Figure 1.
+    stats_fig_2_enabled -- A bool, whether or not the game should use
+      Stats Figure 2.
+    stats_fig_3_enabled -- A bool, whether or not the game should use
+      Stats Figure 3.
+    stats_fig_4_enabled -- A bool, whether or not the game should use
+      Stats Figure 4.
+    """
     divs = game_parts.divs
     srcs = game_parts.sources
     buttons = game_parts.buttons

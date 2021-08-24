@@ -1,11 +1,18 @@
 from bokeh.models import Button, ColumnDataSource, CustomJS
 
 #<editor-fold make counter on click Callback Code String:
+# Code for creating the keeper's counter to the player's input mixed strategy
+# for the kicker. Does this by first grabbing their input chances for each pure
+# strategy, hiding the aim TextInputs to prevent them from being changed,
+# calculating the expected risk of being scored on for each possible goalie
+# action, determining the lowest risk action, then updating the counter source
+# to indicate that the lowest risk action should be taken. Following that, the
+# make counter button is hidden, and the counter necessity tracking div is
+# updated to indicate that a counter is no longer needed.
 makeCounterCode = """
 const chances = automationTableSrc.data['chances'];
 
 //Hides the automation table as it is un-needed:
-automationTable.visible = false;
 aimTextInputs.forEach(
   (v) => v.visible = false
 );
@@ -57,6 +64,15 @@ counterMadeDiv.text = '1';
 
 #<editor-fold create():
 def create(game_parts, config):
+    """Creates the make counter button, and adds it to the passed _GameParts
+    object being used to collect the game components.
+
+
+    Arguments:
+    game_parts -- The _GameParts object being used to collect the
+      game components.
+    config -- The config object being used to configure the button.
+    """
     button = Button(
         label=config.label, button_type=config.button_type,
         sizing_mode=config.sizing_mode, width_policy=config.width_policy,
@@ -67,12 +83,20 @@ def create(game_parts, config):
 
 #<editor-fold setup():
 def setup(game_parts):
+    """Sets up the make counter button to be able to run its on click
+    Javascript code. Also creates and adds the goalie counter source to the
+    _GameParts object containing the game components.
+
+
+    Argument:
+    game_parts -- The _GameParts object containing the game components.
+    """
     text_inputs = game_parts.textinputs
     srcs = game_parts.sources
     buttons = game_parts.buttons
     b_make_counter = buttons["make_counter"]
     goalie_counter_src = ColumnDataSource(
-        data = dict(Left = [0, 0, 0], Right = [0, 0, 0])
+        data = {"Left" : [0, 0, 0], "Right" : [0, 0, 0]}
     )
     srcs["goalie_counter"] = goalie_counter_src
 
@@ -82,9 +106,7 @@ def setup(game_parts):
     ]
 
     args_dict = {
-        "startAutomateButton" : buttons["start"],
         "makeCounterButton" : b_make_counter,
-        "automationTable" : game_parts.tables["automation"],
         "automationTableSrc" : srcs["automation_table"],
         "counterMadeDiv" : game_parts.divs["counter_made"],
         "goalieCounterSrc" : goalie_counter_src,

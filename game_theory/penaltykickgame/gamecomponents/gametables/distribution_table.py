@@ -2,6 +2,15 @@ from bokeh.models import TableColumn, DataTable
 
 #<editor-fold create():
 def create(game_parts, config):
+    """Creates the game's distribution table then adds it to the passed in
+    _GameParts object being used to collect the game components.
+
+
+    Arguments:
+    game_parts -- The _GameParts object being used to collect the
+      game components.
+    config -- The config object being used to configure the distribution table.
+    """
     fields = [
         "footedness", "aim_direction", "freq", "decisions",
         "goalie_perceived_risks", "striker_score_chance", "striker_score_roll"

@@ -2,8 +2,20 @@
 #loop.
 #<editor-fold Function Codestrings:
   #<editor-fold iterText():
+  # String containing the JavaScript code for changing the game text according
+  # to the current iteration's game stats.
 iterText = """
 function iterText(roundsPlayed, gameScore, goal) {
+  /**
+   * Changes the game text to display the rounds played, game score and the
+   * kicker's scoring result.
+   * @param{string} roundsPlayed -- A string containing an int that shows the
+   * iterations run.
+   * @param{string} gameScore -- A string containing an int that shows the
+   * current iteration's score.
+   * @param{int} goal -- An int equal to either 1 or -1. Value of 1 is for if a
+   * goal was scored during the iteration.
+   */
   //Set Game Text Lines:
   txt.data['text'] = [
     `Rounds played: ${roundsPlayed}`,
@@ -16,8 +28,21 @@ function iterText(roundsPlayed, gameScore, goal) {
 """
   #</editor-fold>
   #<editor-fold rollKickerAction():
+  # String containing the JavaScript code for deciding the kicker's actions
+  # based off of the pure strategy selection chances input by the player.
 rollKickerAction = """
 function rollKickerAction() {
+  /**
+  * Selects a kicker pure strategy by converting the pure strategy selection
+  * chances array to a form where each value has the previous values added to
+  * them, so that the strategy can then be chosen by comparing the values to a
+  * random roll. The kicker foot and direction are then determined according to
+  * the strategy index before being returned in an array.
+  * @return{array} -- An array that contains strings representing the kicker
+  * foot, and their chosen kick direction. The kicker foot string can have value
+  * equal to 'Left' or 'Right', and the kick direction has to be equal to either
+  * 'Left', 'Middle', or 'Right'.
+  */
   //Copy chances into array, then modify array to act as roll thresholds:
   let arrVals = [0].concat(chances.slice());
   arrVals.slice(1).forEach(
@@ -40,9 +65,21 @@ function rollKickerAction() {
 """
   #</editor-fold>
   #<editor-fold fictitiousPlay():
+  # String containing the JavaScript code for handling fictitious play keeper
+  # decisions.
 fictitiousPlay = """
 //Handle Goalie Decision
 function fictitiousPlay(footIsLeft, footDict) {
+  /**
+  * Determines the keeper's action according to Fictitious Play.
+  * @param{bool} footIsLeft -- a bool containing whether or not the kicker is
+  * left-footed.
+  * @param{dict} footDict -- The dict that contains the score chances for the
+  * different possible kicker foot kicker action outcomes.
+  * @return{array} -- An array containing the direction for the keeper to dive,
+  * and the keeper's perceived risks for each possible action from left to
+  * right.
+  */
   //Set decision making values to use according to kickerFoot:
   const freqs = (footIsLeft) ? freq.slice(0, 3) : freq.slice(3, 6);
 
@@ -69,6 +106,14 @@ function fictitiousPlay(footIsLeft, footDict) {
 #Runs the optimal mixed strategy found in the lab.
 optimalMixed = """
 function optimalMixed(kickerFoot) {
+  /**
+  * Determines the keeper's action according to the optimal mixed strategy for
+  * the keeper.
+  * param{string} kickerFoot -- Either 'Left' or 'Right' representing the
+  * kicker's footedness.
+  * return{string} -- Either 'Left', 'Middle', or 'Right' representing the
+  * keeper's direction to dive.
+  */
   //selects and returns an action based off of optimal mixed strategy chances:
   const thresholds = {
     'Left'  : 0.8,
@@ -84,6 +129,11 @@ function optimalMixed(kickerFoot) {
 #at random.
 randomChoice = """
 function randomChoice() {
+  /**
+  * Determines the keeper's action at random.
+  * return{string} -- Either 'Left', 'Middle', or 'Right' representing the
+  * keeper's direction to dive.
+  */
   //Selects and returns an action from directions at an equal chance:
   const actionIndex = Math.round(Math.random()*3 - 0.5);
   return directions[actionIndex];
@@ -95,6 +145,13 @@ function randomChoice() {
 #Uses the optimal pure strategy to counter the player's mixed strategy.
 goalieCheats = """
 function goalieCheats(kickerFoot) {
+  /**
+  * Determines the keeper's action according to a previously created strategy.
+  * param{string} kickerFoot -- Either 'Left' or 'Right' representing the
+  * kicker's footedness.
+  * return{string} -- Either 'Left', 'Middle', or 'Right' representing the
+  * keeper's direction to dive.
+  */
   //return the action of the pure strategy corresponding to the kicker foot:
 
   const actionIndex = counterSrc.data[kickerFoot].indexOf(1);
@@ -107,6 +164,20 @@ def make_handleFigVisibility(
     stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
     stats_fig_4_enabled
 ):
+    """Creates and returns a string containing the function for handling figure
+    visibility at the end of the demo.
+
+
+    Arguments:
+    stats_fig_1_enabled -- A bool for whether or not Game Stats Figure 1 should
+      be available.
+    stats_fig_2_enabled -- A bool for whether or not Game Stats Figure 2 should
+      be available.
+    stats_fig_3_enabled -- A bool for whether or not Game Stats Figure 3 should
+      be available.
+    stats_fig_4_enabled -- A bool for whether or not Game Stats Figure 4 should
+      be available.
+    """
     handleFigVisibility = """
 function handleFigVisibility(stratIsFictPlay) {
   nextButton.visible = false;
@@ -145,6 +216,18 @@ function handleFigVisibility(stratIsFictPlay) {
   #<editor-fold scoring():
 scoring = """
 function scoring(footDict, kickerKick, goalieAction, actionsIndexKFKK) {
+  /**
+  * Handles the scoring for the game.
+  * param{dict} footDict -- The dict containing the score chances according to
+  * the different possible kicker kick direction and keeper dive direction
+  * outcomes for the kicker's footedness.
+  * param{string} kickerKick -- Either 'Left', 'Middle', or 'Right' for the
+  * kicker's kick direction.
+  * param{string} goalieAction -- Either 'Left', 'Middle', or 'Right' for the
+  * keeper's dive direction.
+  * param{int} actionsIndexKFKK -- an int designating an index selected
+  * previously according to the kicker's footedness and kick directions.
+  */
   //Set function values:
   const scoreRoll = Math.random();
   const scoreChance = footDict[kickerKick + goalieAction];
@@ -171,6 +254,10 @@ function scoring(footDict, kickerKick, goalieAction, actionsIndexKFKK) {
   #<editor-fold _moveGoalie():
 _moveGoalie = """
 function _moveGoalie(xLoc) {
+  /**
+  * Moves the goalie to the specified x coordinate.
+  * param{int} xLoc -- The x coord to move to.
+  */
   //Move both components of the goalie:
   goalieBody.x = xLoc;
   goalieHead.x = xLoc;
@@ -180,6 +267,14 @@ function _moveGoalie(xLoc) {
   #<editor-fold animateIter():
 animateIter = """
 function animateIter(goalieAction, kickerKick, goal) {
+  /**
+  * Handles the animation for the iteration.
+  * @param{string} goalieAction -- Either 'Left', 'Middle', 'Right' signifying
+  * the keeper's dive direction.
+  * @param{string} kickerKick -- Either 'Left', 'Middle', 'Right' signifying the
+  * kicker's kick direction.
+  * @param{int} goal -- Either 1 or -1 for the iteration score change.
+  */
   //Set positions and store ball roll for handling cases:
   const goalieActionIsKickerKick = (goalieAction === kickerKick);
   const goalNotScored = (goal === -1);
@@ -218,6 +313,14 @@ function _updateDecisionTableRisks(
   perceivedRiskR,
   kfRAdjust
 ) {
+  /**
+  * updates the dist table's risk values.
+  * @param{float} perceivedRiskL -- The keeper's perceived risks for diving left.
+  * @param{float} perceivedRiskM -- The keeper's perceived risks for diving middle.
+  * @param{float} perceivedRiskR -- The keeper's perceived risks for diving right.
+  * @param{int} kfRAdjust -- An int for adjusting indexes if the kicker is
+  * right-footed.
+  */
   //Reset column then set perceived risk for rows corresponding to kicker foot:
   const risks = distData['goalie_perceived_risks'];
 
@@ -244,6 +347,20 @@ function goalieDecisionTracking(
   perceivedRiskM,
   perceivedRiskR
 ) {
+  /**
+  * Tracks game data and puts it into the dist table.
+  * @param{int} actionsIndexKFKK -- An int for adjusting indexes around the
+  * kicker foot and kicker kick directions.
+  * @param{int} kfRAdjust -- An int for adjusting indexes if the kicker is
+  * right-footed.
+  * @param{int} directionsIndexGa -- An int for the index of the keeper
+  * dive direction.
+  * @param{bool} stratIsFictPlay -- A bool for whether or not the keeper is
+  * using fictitious play.
+  * @param{float} perceivedRiskL -- The keeper's perceived risks for diving left.
+  * @param{float} perceivedRiskM -- The keeper's perceived risks for diving middle.
+  * @param{float} perceivedRiskR -- The keeper's perceived risks for diving right.
+  */
 
   //Increase corresponding trackers to KFKK and KFGA:
   freq[actionsIndexKFKK] += 1;
@@ -274,6 +391,17 @@ function _fig1Iter(
   fig1Data,
   actionsIndexKFKK
 ) {
+  /**
+  * Handles the data for an iteration in Game Stats Figure 1.
+  * @param{int} goal -- Either -1 or 1 for the iterations score change.
+  * @param{int} directionsIndexGa -- An int for the index of the keeper
+  * dive direction.
+  * @param{array} sections -- An array containing the column names for the bar
+  * sections in Figure 1.
+  * @param{dict} fig1Data -- The data for game stats figure 1.
+  * @param{int} actionsIndexKFKK -- An int for adjusting indexes around the
+  * kicker foot and kicker kick directions.
+  */
   //Increase section value of iteration result by 1:
   const sectionIndex = (goal === 1) ? 0 : directionsIndexGa + 1;
   const section = sections[sectionIndex];
@@ -284,6 +412,12 @@ function _fig1Iter(
   #<editor-fold _fig1Adjust():
 _fig1Adjust = """
 function _fig1Adjust(sections, fig1Data) {
+  /**
+  * Adjusts Game Stats Figure 1.
+  * @param{array} sections -- An array containing the column names for the bar
+  * sections in Figure 1.
+  * @param{dict} fig1Data -- The data for game stats figure 1.
+  */
   //Get total heights of kfkk bars:
   const heights = [0, 0, 0, 0, 0, 0]
   sections.forEach(
@@ -305,6 +439,15 @@ function updateFig1(
   actionsIndexKFKK,
   roundIsLastIter
 ) {
+  /**
+  * Updates the data for Game Stats Figure 1.
+  * @param{int} goal -- Either -1 or 1 for the iterations score change.
+  * @param{int} directionsIndexGa -- An int for the index of the keeper
+  * dive direction.
+  * @param{int} actionsIndexKFKK -- An int for adjusting indexes around the
+  * kicker foot and kicker kick directions.
+  * @param{bool} roundIsLastIter -- Whether or not the iteration is the last one.
+  */
   //create constants for referencing:
   const fig1Data = statsFig1Src.data;
   const sections = ['scored_y', 'blockedl_y', 'blockedm_y', 'blockedr_y'];
@@ -323,6 +466,13 @@ function updateFig1(
   #<editor-fold _fig2Iter():
 _fig2Iter = """
 function _fig2Iter(fig2Data, roundsPlayed, gameScore, roundScoreChance) {
+  /**
+  * Handles an iteration of data for Game Stats Figure 2.
+  * @param{dict} fig2Data -- The data for Game Stats Figure 2.
+  * @param{int} roundsPlayed -- The number of iterations played.
+  * @param{int} gameScore -- The score for the game at the current iteration.
+  * @param{float} roundScoreChance -- The chance of scoring for the played iteration.
+  */
   //Plot Values:
   fig2Data['ys'][roundsPlayed] = gameScore;
   fig2Data['chance_ys'][roundsPlayed] = 2*roundScoreChance - 1;
@@ -332,6 +482,11 @@ function _fig2Iter(fig2Data, roundsPlayed, gameScore, roundScoreChance) {
   #<editor-fold _fig2Adjust():
 _fig2Adjust = """
 function _fig2Adjust(fig2Data, itersToRun) {
+  /**
+  * Adjusts the data for Game Stats Figure 2.
+  * @param{dict} fig2Data -- The data for Game Stats Figure 2.
+  * @param{int} itersToRun -- The number of iterations total for the game.
+  */
   //Adjust chanceYs:
   const chanceYs = fig2Data['chance_ys'];
   chanceYs.slice(1).forEach(
@@ -365,6 +520,14 @@ function updateFig2(
   roundIsLastIter,
   itersToRun
 ) {
+  /**
+  * Updates the data for Game Stats Figure 2.
+  * @param{int} roundsPlayed -- The number of iterations played.
+  * @param{int} gameScore -- The score for the game at the current iteration.
+  * @param{float} roundScoreChance -- The chance of scoring for the played iteration.
+  * @param{bool} roundIsLastIter -- Whether or not the iteration is the last one.
+  * @param{int} itersToRun -- The number of iterations total for the game.
+  */
   //Store reference to fig 2 data:
   const fig2Data = statsFig2Src.data;
 
@@ -382,6 +545,10 @@ function updateFig2(
   #<editor-fold _fig3Iter():
 _fig3Iter = """
 function _fig3Iter(ys, roundsPlayed) {
+  /** Handles the data for an iteration for Game Stats Figure 3.
+  * @param{array} ys -- An array containing the ys columns of figure 3.
+  * @param{int} roundsPlayed -- The number of iterations played.
+  */
   //For each foot:
   ['Left', 'Right'].forEach(
     (footVal, footIndex) => {
@@ -412,6 +579,12 @@ function _fig3Iter(ys, roundsPlayed) {
   #<editor-fold _fig3Adjust():
 _fig3Adjust = """
 function _fig3Adjust(fig3Data, itersToRun, ys) {
+  /**
+  * Adjusts Game Stats Figure 3's data.
+  * @param{dict} fig3Data -- The data for Game Stats figure 3.
+  * @param{int} itersToRun -- The total number of iterations in the game.
+  * @param{array} ys -- An array containing the ys columns of figure 3.
+  */
   //store fig3Data hb columns for iteration and reference:
   const hbs = [
     fig3Data['hb1'],
@@ -471,6 +644,12 @@ function _fig3Adjust(fig3Data, itersToRun, ys) {
   #<editor-fold updateFig3():
 updateFig3 = """
 function updateFig3(roundsPlayed, roundIsLastIter, itersToRun) {
+  /**
+  * Updates the data for Game Stats Figure 3.
+  * @param{int} roundsPlayed -- The number of iterations played.
+  * @param{bool} roundIsLastIter -- Whether or not the iteration is the last one.
+  * @param{int} itersToRun -- The number of iterations total for the game.
+  */
   //Store values for reference:
   let fig3Data = statsFig3Src.data;
   const ys = [
@@ -498,6 +677,18 @@ function updateFig4(
   kickerKick,
   goalieAction
 ) {
+  /**
+  * Updates the data for Game Stats Figure 4.
+  * @param{int} roundsPlayed -- The number of iterations played.
+  * @param{float} roundScoreChance -- The chance of scoring for the most
+  * recent iteration.
+  * @param{string} kickerFoot -- Either 'Left' or 'Right' signifying the kicker's
+  * footedness.
+  * @param{string} kickerKick -- Either 'Left', 'Middle', 'Right' signifying the
+  * kicker's kick direction.
+  * @param{string} goalieAction -- Either 'Left', 'Middle', 'Right' signifying
+  * the keeper's dive direction.
+  */
   const fig4Data = statsFig4Src.data;
   const index = roundsPlayed - 1;
   fig4Data['ys'][index] = roundScoreChance;
@@ -513,6 +704,7 @@ function updateFig4(
 
 #<editor-fold Running the game Codestrings:
   #<editor-fold GameConstants:
+  # A string containing the code for constants throughout the game iteration.
 gameConstants = """
 const rDict = {
   'LeftLeft'   : 0.55, 'LeftMiddle'   : 0.65, 'LeftRight'   : 0.93,
@@ -544,6 +736,20 @@ def make_gameIter(
     stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
     stats_fig_4_enabled
 ):
+    """Creates and returns a string containing the code for an iteration of the
+    game.
+
+
+    Arguments:
+    stats_fig_1_enabled -- A bool for whether or not Game Stats Figure 1 should
+      be available.
+    stats_fig_2_enabled -- A bool for whether or not Game Stats Figure 2 should
+      be available.
+    stats_fig_3_enabled -- A bool for whether or not Game Stats Figure 3 should
+      be available.
+    stats_fig_4_enabled -- A bool for whether or not Game Stats Figure 4 should
+      be available.
+    """
     gameIter = """
 function gameIter(){
   const itersToRun = iterSlider.value;
@@ -661,6 +867,7 @@ function gameIter(){
   #</editor-fold>
 
   #<editor-fold gameRunner:
+  # A string containing code to use to run the game.
 gameRunner = """
 //Setup the promise that enforces waiting for the delay to finish:
 const iterationDelay = (
@@ -677,6 +884,10 @@ const iterationDelay = (
 );
 
 async function gameLoop(){
+  /**
+  * An async function that runs each iteration of the game. Recurses after a
+  * delay if the necessary conditions are fulfilled.
+  */
   //Take value for if another iteration is running:
   let tempIterVal = inAnIter.text;
 
@@ -729,6 +940,14 @@ gameLoop();
 #in order to change the user view from that used in the earlier menu like
 #screens to one used for the game screens.
 def make_initialGuiDisplay(show_dist_table):
+    """Creates and returns a string for setting the initial changes to viewable
+    objects for the first iteration of the game.
+
+
+    Argument:
+    show_dist_table -- A bool for whether or not to show the dist table for
+      debugging purposes.
+    """
     initialGuiDisplay = """
 startButton.visible = false;
 nextButton.visible = true;
@@ -751,6 +970,9 @@ distTable.visible = true;
 #<editor-fold initialIterationAdjustments:
 initialIterationAdjustments = """
 function initialIterationAdjustments(){
+  /**
+  * A function for making initial adjustments for the iteration.
+  */
   //Set references:
   const fig2Data = statsFig2Src.data;
   const fig3Data = statsFig3Src.data;
@@ -822,6 +1044,20 @@ def make_gameCode(
     stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
     stats_fig_4_enabled
 ):
+    """Puts together and returns a string containing the full code for the main
+    game portion of the demo.
+
+
+    Arguments:
+    stats_fig_1_enabled -- A bool for whether or not Game Stats Figure 1 should
+      be available.
+    stats_fig_2_enabled -- A bool for whether or not Game Stats Figure 2 should
+      be available.
+    stats_fig_3_enabled -- A bool for whether or not Game Stats Figure 3 should
+      be available.
+    stats_fig_4_enabled -- A bool for whether or not Game Stats Figure 4 should
+      be available.
+    """
 
     goalieStrats = fictitiousPlay + optimalMixed + randomChoice + goalieCheats
 
@@ -858,6 +1094,22 @@ def make_automateStartCode(
     stats_fig_1_enabled, stats_fig_2_enabled, stats_fig_3_enabled,
     stats_fig_4_enabled, show_dist_table
 ):
+    """Puts together and returns a string containing the full code to execute
+    for the first iteration of the demo.
+
+
+    Arguments:
+    stats_fig_1_enabled -- A bool for whether or not Game Stats Figure 1 should
+      be available.
+    stats_fig_2_enabled -- A bool for whether or not Game Stats Figure 2 should
+      be available.
+    stats_fig_3_enabled -- A bool for whether or not Game Stats Figure 3 should
+      be available.
+    stats_fig_4_enabled -- A bool for whether or not Game Stats Figure 4 should
+      be available.
+    show_dist_table -- A bool for whether or not to show the dist table for
+      debugging purposes.
+    """
     initialGuiDisplay = make_initialGuiDisplay(show_dist_table)
 
     gameCode = make_gameCode(

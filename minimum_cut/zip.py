@@ -12,6 +12,7 @@ def write_dir(zipObj, path):
 with ZipFile('minimum_cut_lab.zip', 'w') as zipObj:
     zipObj.write('minimum_cut_lab.ipynb')
     zipObj.write('max_flow.py')
+    zipObj.write('social_network.py')
     write_dir(zipObj, 'images-lab')
     write_dir(zipObj, 'images-key')
     write_dir(zipObj, 'data-lab')

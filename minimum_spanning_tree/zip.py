@@ -11,4 +11,5 @@ def write_dir(zipObj, path):
 with ZipFile('minimum_spanning_tree_lab.zip', 'w') as zipObj:
     zipObj.write('minimum_spanning_tree_lab.ipynb')
     write_dir(zipObj, 'data')
+    write_dir(zipObj, 'images')
     zipObj.close()

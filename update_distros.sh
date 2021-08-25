@@ -40,6 +40,7 @@ make_student_version shortest_path
 make_student_version travelling_salesman_problem
 make_student_version redistricting
 make_student_version minimum_spanning_tree
+make_student_version minimum_cut
 
 zip transportation
 zip tsp_integer_programming
@@ -56,3 +57,4 @@ zip diet
 zip game_theory
 zip redistricting
 zip minimum_spanning_tree
+zip minimum_cut

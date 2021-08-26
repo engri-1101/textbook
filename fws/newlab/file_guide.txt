@@ -1,0 +1,13 @@
+**Please contact Ben Caplan (bwc73) with questions regarding files in the folder fws/newlab**
+
+A quick summary of files in this directory is as follows.
+
+-"fws_lab_new_draft.ipynb": The Jupyter notebook file for the restructured FWS lab. This contains three *independent* lab parts, each corresponding to the introduction of a model for the FWS assignment problem (i.e., transportation, min-cost flow, integer program). Note that as of now, all three parts import functions from the same .py file ("fws_lab_new.py"). The flow of this lab is based on a series of recommendations from Professor David Shmoys, which is summarized in "desiredflow.txt". The content is derived principally from the (beginning of Summer 2021) GitHub FWS lab, the Canvas version of the lab offered in Fall 2020, and the FWS "lab extension" written in Summer 2021.
+
+-"fws_lab_new.py": An accompanying .py file for the aforementioned lab draft. Note that this contains functions for all three parts of the lab.
+
+-"fws_7_students.csv": A CSV file with a small (toy) input used in the lab.
+
+-"s21_fws_ballots.csv": A CSV file listing the top five class (1-141) preferences for each student (1-2285). You may notice that for some students (e.g., student #17), there are zeroes in the CSV file. This means that the student listed fewer than five valid preferences (the zeroes essentially indicate no preference was given). This is accounted for in the parsing function specified in "fws_lab_new.py" and no other action is required.
+
+-"desiredflow.txt": A text file with the recommendations from Prof. Shmoys regarding the desired lab flow.

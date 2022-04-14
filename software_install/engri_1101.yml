@@ -11,7 +11,7 @@ dependencies:
   - pip
   - pip:
     - bokeh==2.2.3
-    - gilp==1.0.0rc4
+    - gilp==1.0.0rc5
     - matplotlib==3.3.3
     - networkx==2.5
     - numpy==1.19.3

@@ -129,3 +129,5 @@ Create a python script called `zip.py` using one from another lab as a template.
 | [shortest_path](shortest_path)                 | Modeling example of text splitting (past HW)  |
 | [vinal](https://github.com/henryrobbins/vinal) package| Make bottom text more visible (highlight / color) |
 | [baseball_elimination](baseball_elimination)   | ECAC Cornell Hockey |
+| N/A                                            | Github [Markup
+rendering](https://github.com/github/markup/issues/369) |

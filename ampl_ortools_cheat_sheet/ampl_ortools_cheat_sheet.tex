@@ -1,0 +1,117 @@
+\documentclass[6pt]{article}
+\usepackage{pdflscape}
+\pagenumbering{gobble}
+\usepackage[bmargin=0in,tmargin=0.15in,lmargin=0.17in,rmargin=0.15in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsfonts,amsmath,color,amssymb, url, enumerate, bbm}
+\usepackage{pgfplotstable, pgfplots}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[title,titletoc]{appendix}
+\usetikzlibrary{patterns, arrows}
+\usepackage{subcaption}
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithm}
+\usepackage{float}
+\usepackage{dashbox}
+\pgfplotsset{compat=newest}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lm}{Lemma}[section]
+\newtheorem{pf}{Proof}[section]
+\newtheorem{defn}{Definition}[section]
+
+\newcommand{\mcom}[1]{\marginpar{#1}}
+\newcommand{\ilcom}[1]{\textcolor{red}{[#1]}}   
+\newcommand{\dbbox}[1]{\dashbox{\textbf{#1}}}          
+
+\begin{document}
+
+\footnotesize
+\begin{landscape}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Description} & \textbf{Math} & \textbf{AMPL} & \textbf{OR-Tools (Direct)} &  \textbf{OR-Tools (Dataframes)} \\
+\hline
+Sets & Let \texttt{<name>} denote the set of \texttt{<something>} & \texttt{set <NAME>;}  & \texttt{<NAME> = list(<something>)} & \texttt{<NAME> = list(<something>.index)} \\
+        & Let \texttt{<name>} be a subset of $\{(i,j) : i \in \texttt{<this>}, j \in \texttt{<that>}\}$ & \texttt{set <NAME> within <this> cross <that>;} & & \\
+\hline
+Parameters & Let $\texttt{<name>}_i$ denote \texttt{<name>} for $i \in $ \texttt{<SET>} & \texttt{param <name> \{i in <SET>\};} & \texttt{<name> = dict(<name>)} & \texttt{<name> = <SET>\lbrack<name>\rbrack.to\_dict()} \\ 
+\hline
+Input Check & $\texttt{<name>}_i \geq 0$ for $i \in $ \texttt{<SET>} & \texttt{check \{i in <SET>\}: <name>\lbrack i\rbrack \enspace >= 0;} & \multicolumn{2}{l|}{\texttt{for i in <SET>}} \\	
+&  & & \multicolumn{2}{l|}{\quad \texttt{assert <name>\lbrack i\rbrack \enspace >= 0}} \\			
+
+\hline
+Model & & & \multicolumn{2}{l|}{\texttt{m = OR.Solver(<name>, <solver>)}} \\
+          &  &  & \multicolumn{2}{l|}{\texttt{OR.Solver.GLOP\_LINEAR\_PROGRAMMING}: Open-source LP solver} \\\
+          &  &  & \multicolumn{2}{l|}{\texttt{OR.Solver.CBC\_MIXED\_INTEGER\_PROGRAMMING}: Open-source MIP solver} \\
+          &  &  & \multicolumn{2}{l|}{\texttt{OR.Solver.GUROBI\_MIXED\_INTEGER\_PROGRAMMING}: Commercial MIP solver} \\
+          \hline
+Variables & Let $x_i \geq 0$ denote \texttt{<name>} for $i \in $ \texttt{<SET>}  & \texttt{var x \{i in <SET>\} >= 0;} & \multicolumn{2}{l|}{\texttt{x = \{\}}} \\
+& & & \multicolumn{2}{l|}{\texttt{for i in <SET>:}} \\
+& & & \multicolumn{2}{l|}{\quad \texttt{x\lbrack i\rbrack = m.NumVar(0, m.infinity(), ("(\%s)" \% (i)))}} \\
+& \textit{(Integer variables)}  & \texttt{var x \{i in <SET>\} >= 0 integer;} & \multicolumn{2}{l|}{\texttt{x = \{\}}} \\
+& & & \multicolumn{2}{l|}{\texttt{for i in <SET>:}} \\
+& & & \multicolumn{2}{l|}{\quad \texttt{x\lbrack i\rbrack = m.IntVar(0, m.infinity(), ("(\%s)" \% (i)))}} \\
+& Let $x_{ij} \geq 0$ denote \texttt{<name>} for $(i,j) \in $ \texttt{<SET>}  & \texttt{var x \{(i,j) in <SET>\} >= 0;} & \multicolumn{2}{l|}{\texttt{x = \{\}}} \\
+& & & \multicolumn{2}{l|}{\texttt{for i,j in <SET>:}} \\
+& & & \multicolumn{2}{l|}{\quad \texttt{x\lbrack i,j\rbrack = m.NumVar(0, m.infinity(), ("(\%s, \%s)" \% (i,j)))}} \\
+\hline
+Summation & \normalsize $\sum_{i \in \texttt{<SET>}} x_i$ \footnotesize & \texttt{sum \{i in <SET>\} x\lbrack i\rbrack;} & \multicolumn{2}{l|}{\texttt{sum(x\lbrack i\rbrack \enspace for i in <SET>)}} \\			
+& \normalsize $\sum_{(i,j) \in \texttt{<SET>}} x_{ij}$ \footnotesize & \texttt{sum \{(i,j) in <SET>\} x\lbrack i,j\rbrack;} & \multicolumn{2}{l|}{\texttt{sum(x\lbrack i,j\rbrack \enspace for i,j in <SET>)}} \\	
+\hline
+Objective & $\max \enspace \texttt{<expression>}$ & \texttt{maximize <Some\_Name>: <expression>;} & \multicolumn{2}{l|}{\texttt{m.Maximize(<expression>)}} \\	
+Function & $\min \enspace \texttt{<expression>}$ & \texttt{minimize <Some\_Name>: <expression>;} & \multicolumn{2}{l|}{\texttt{m.Minimize(<expression>)}} \\	
+\hline
+Constraints & such that \texttt{<expression>} & \texttt{subject to <Some\_Name>: <expression>;} & \multicolumn{2}{l|}{\texttt{m.Add(<expression>)}} \\	
+& such that \texttt{<expression>} for $i \in$ \texttt{<SET>}& \texttt{subject to <Some\_Name> \{i in <SET>\}:} & \multicolumn{2}{l|}{\texttt{for i in <SET>:}} \\	
+& & \quad \texttt{<expression>;} & \multicolumn{2}{l|}{\quad \texttt{m.Add(<expression>)}} \\
+& such that \texttt{<expression>} for $(i,j) \in$ \texttt{<SET>}& \texttt{subject to <Some\_Name> \{(i,j) in <SET>\}:} & \multicolumn{2}{l|}{\texttt{for i,j in <SET>:}} \\	
+& & \quad \texttt{<expression>;} & \multicolumn{2}{l|}{\quad \texttt{m.Add(<expression>)}} \\
+\hline
+Set Data & & \texttt{set <NAME> := <item1> <item2> <item3>;} & \texttt{<name> = \lbrack<item1>,<item2>\rbrack} & \texttt{<SET>,<name>} \\
+\cline{1-4}
+Parameter Data & $\texttt{<name>}_i$ for $i \in $ \texttt{<SET>} & \texttt{param <name> :=} & \texttt{<name> = \{i:<name>$_i$,} & \texttt{i,<name>$_i$} \\
+& & \texttt{\quad i \quad <name>$_i$;}  & \texttt{\qquad \qquad \quad j:<name>$_j$\}} & \texttt{j,<name>$_j$} \\
+
+& $\texttt{<name>}_{ij}$ for $(i,j) \in $ \texttt{<SET>} & \texttt{param <name> :=} & \texttt{<name> = \{(i,j):<name>$_{ij}$,} & \\
+& & \texttt{\quad  i j \quad <name>$_{ij}$;}  & \texttt{\qquad \qquad \quad (a,b):<name>$_{ab}$\}} & \\
+\hline
+Min-Cost Flow & Consider the directed graph $G=(N,E)$ & \texttt{set NODES;} & \texttt{NODES = list(nodes)} & \texttt{NODES = list(nodes.index)} \\
+&   & \texttt{set EDGES within (NODES cross NODES);} & \texttt{EDGES = list(edges)} & \texttt{EDGES = list(edges.index)} \\
+& & & &  \\
+& Let $b_i$ be the supply at node $i \in N$ & \texttt{param b \{i in NODES\};} & \texttt{b = dict(b)} & \texttt{b = nodes["b"].to\_dict()} \\
+& Let $c_i$ be the cost of edge $(i,j) \in E$ & \texttt{param c \{(i,j) in EDGES\};} & \texttt{c = dict(c)} & \texttt{c = edges["c"].to\_dict()} \\
+& Let $u_i$ be the upper bound of edge $(i,j) \in E$ & \texttt{param u \{(i,j) in EDGES\};} & \texttt{u = dict(u)} & \texttt{u = nodes["u"].to\_dict()} \\
+\cline{4-5}
+& & & \multicolumn{2}{l|}{} \\
+& & & \multicolumn{2}{l|}{\texttt{m = OR.Solver("mincostflow", OR.Solver.GLOP\_LINEAR\_PROGRAMMING)}} \\	
+& & & \multicolumn{2}{l|}{} \\
+& Let $x_{ij} \geq 0$ be the flow on edge $(i,j) \in E$ & \texttt{var x \{(i,j) in EDGES\} >= 0;} & \multicolumn{2}{l|}{\texttt{x = \{\}}} \\
+& & & \multicolumn{2}{l|}{\texttt{for i,j in EDGES:}} \\
+& & & \multicolumn{2}{l|}{\quad \texttt{x\lbrack i,j\rbrack = m.NumVar(0, m.infinity(), ("(\%s, \%s)" \% (i,j)))}} \\
+& & & \multicolumn{2}{l|}{} \\
+& \normalsize $\max \sum_{(i,j) \in E} c_{ij}x_{ij}$ \footnotesize & \texttt{minimize Total\_Cost:} & \multicolumn{2}{l|}{\texttt{m.Minimize(sum(c[i,j] * x[i,j] for i,j in EDGES))}} \\	
+& & \quad \texttt{sum {(i,j) in EDGES} c[i,j]*x[i,j];} & \multicolumn{2}{l|}{} \\	
+& & & \multicolumn{2}{l|}{} \\
+& s.t. \quad $x_{ij} \leq u_{ij} \quad \forall (i,j) \in E$ & \texttt{subject to Capacity \{(i,j) in EDGES\}:} & \multicolumn{2}{l|}{\texttt{for i,j in EDGES:}} \\	
+& & \quad \texttt{x[i,j] <= u[i,j];} & \multicolumn{2}{l|}{\quad \texttt{m.Add(x[i,j] <= u[i,j])}} \\	
+& & & \multicolumn{2}{l|}{} \\
+& s.t. \normalsize $\sum_{(i,j) \in E} x_{ij} - \sum_{(j,i) \in E} x_{ji} = b_i \quad \forall i \in N $ \footnotesize & \texttt{subject to Supply {i in NODES}:} & \multicolumn{2}{l|}{\texttt{for k in NODES:}} \\	
+& & \quad \texttt{(sum {(i,j) in EDGES} x[i,j] - } & \multicolumn{2}{l|}{\quad \texttt{m.Add(sum(x[i,j] for i,j in EDGES if i == k)}} \\	
+& & \quad \texttt{ sum {(j,i) in EDGES} x[j,i] = b[i]);} & \multicolumn{2}{l|}{\qquad \qquad \texttt{- sum(x[i,j] for i,j in EDGES if j == k) == b[k])}} \\	
+\hline
+\end{tabular}
+\end{landscape}
+
+\end{document}

@@ -7,11 +7,21 @@ This git repo serves as the standard for ENGRI 1101 lab software / files (while 
 
 ### Installation
 
-For those interested in using these labs or developing them further, we provide a breif introduction. Some labs have distribution files which are too large to upload to GitHub (300.00 MB size limit). To generate the distribution files for these labs, run the following lines:
+For those interested in using these labs or developing them further, we provide
+a breif introduction. The following commands clone the repo and apply the given
+git configuration.
 
 ```
 git clone https://github.coecis.cornell.edu/hwr26/engri-1101-labs.git
 cd engri-1101-labs
+git config --local include.path ../.gitconfig
+```
+
+Some labs have distribution files which are too large to upload to GitHub
+(300.00 MB size limit). To generate the distribution files for these labs, run
+the following bash script.
+
+```
 bash update_distros.sh
 ```
 

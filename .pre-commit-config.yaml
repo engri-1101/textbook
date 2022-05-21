@@ -1,9 +1,0 @@
-# This pre-commit hook strips all output from Jupyter Notebooks
-# Commenting this out temporarily as key files should retain output.
-
-# repos:
-# - repo: https://github.com/kynan/nbstripout
-#   rev: master
-#   hooks:
-#     - id: nbstripout
-#       files: ".ipynb"

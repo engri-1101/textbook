@@ -4,9 +4,9 @@ KEY = $(LAB)_key
 DATA = data/*
 SRC = max_flow.py
 
-all: $(MAIN)
+all: lab
 
-$(MAIN): $(KEY).ipynb $(DATA)
+lab: $(KEY).ipynb $(DATA)
 	python ../make_student_version.py $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(SRC)
 

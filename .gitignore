@@ -130,3 +130,6 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
+# ignore distribution files and student versions
+labs/*/*.zip
+labs/*/*_lab.ipynb

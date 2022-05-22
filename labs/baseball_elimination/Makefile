@@ -11,7 +11,7 @@ $(MAIN): $(KEY).ipynb $(DATA)
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(SRC)
 
 clean:
-	-rm -f $(LAB).{zip,ipynb}
+	rm -rf {*.zip,$(LAB).ipynb}
 
 .PHONY: clean all
 

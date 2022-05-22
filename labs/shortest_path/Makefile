@@ -1,4 +1,4 @@
-MAIN = diet
+MAIN = shortest_path
 LAB = $(MAIN)_lab
 KEY = $(LAB)_key
 DEMO = $(MAIN)_demo

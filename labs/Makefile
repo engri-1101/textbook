@@ -13,7 +13,9 @@ LABS = baseball_elimination \
 	   simplex \
 	   transportation \
 	   travelling_salesman_problem \
-	   tsp_integer_programming
+	   tsp_integer_programming \
+	   minimum_cut \
+	   project_selection
 
 all:
 	for lab in $(LABS); do \

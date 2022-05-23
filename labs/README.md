@@ -56,5 +56,6 @@ directories contain some subset of the following:
 | 15    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78 + hwr26    |
 | 16    | Minimum-cost Flow                 | Jupyter Notebook | [min-cost_flow](min-cost_flow)                             | aaj54 + hwr26    |
 | 17    | Redistricting                     | Jupyter Notebook | [redistricting](redistricting)                             | rwg97 + hwr26    |
+| 18    | Minimum Cut                       | Jupyter Notebook | [minimum_cut](minimum_cut)                                 | kz226            |
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.

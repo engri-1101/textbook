@@ -50,16 +50,6 @@ Create a python script called `zip.py` using one from another lab as a template.
 
 ### Directory Structure
 
-- **Labs:** Each lab has a corresponding directory in the repo. Lab directories contain some subset of the following:
-    - Tex files / pdfs for the prelab and/or lab (time stamp indicates the day they were pulled from [Overleaf](https://www.overleaf.com/project/5ecf1b879f37710001f9f54d))
-    - Relevant notebooks for generating data used in the labs
-    - Notes from Fall 2020 semester with common issues / questions regarding the lab
-    - `data-lab` / `data-demo` for data used in the lab or demo respectively
-    - `images-lab` / `images-key` / `images-demo` for images used in the lab, answer key, or demo respectively
-    - `.py` files used by the lab and/or demo
-    - Jupyter notebooks for lab, answer key, and demos (`_colab` indicates compatibility with [Google Colab](https://colab.research.google.com/notebooks/intro.ipynb))
-    - `.zip` files used to distribute the lab and demos to students
-    - `zip.py` for generating the distribution files from other files in the directory
 - **Website:** The directory [public_html](public_html) contains the source code for the course site ([http://engri1101.orie.cornell.edu/](http://engri1101.orie.cornell.edu/)). It also contains the [raphael](https://github.com/DmitryBaranovskiy/raphael) JavaScript vector library used by the web-based labs. Each web-based lab directory contains a file called web_lab_source.md which contains a link to that lab's source code in [public_html](public_html). The document root of the course site is set to be [public_html](public_html). Hence, any changes within [public_html](public_html) will be reflected on the website in the next pull. For this reason, <ins> *exercise extra precaution when updating the source code of web-based labs!* </ins>
 - [software_install](software_install) contains software installation instructions and a notebook to test the installation.
 - [tutorials](tutorials) contains tutorials for OR-Tools (aimed at those coming

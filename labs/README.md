@@ -1,4 +1,41 @@
-### Current Table of Labs
+# Labs
+
+## Distribution Files
+
+The git repository only maintains a lab key file from which the student
+version and distribution zip file can be generated. To make the distribution
+files for every lab, run the following commands. Be aware this takes a moment.
+
+```
+cd labs
+make all
+```
+
+To make the distribution files for a single lab, navigate to that lab's
+directory and run `make`. Some labs may have targets in addition to `lab`
+such as `demo`. For example, if you want to make the distribution file for the
+shortest path lab demo, you would run
+
+```
+cd labs/shortest_path
+make demo
+```
+
+If you are not familiar with the Make system, feel free to reach out to Henry
+(hwr26@cornell.edu) with any questions.
+
+## Lab Directory Structure
+
+Every lab has a corresponding directory in this directory. These lab
+directories contain some subset of the following:
+- Relevant notebooks for generating data used in the labs
+- Notes from Fall 2020 semester with common issues / questions regarding the lab
+- `*_lab_key.ipynb` which are the lab key file
+- `data-lab` / `data-demo` for data used in the lab or demo respectively
+- `images-lab` / `images-key` / `images-demo` for images used in the lab, answer key, or demo respectively
+- `.py` files used by the lab and/or demo
+
+## Current Table of Labs
 
 | Lab # | Name                              | Mode             | Directory                                                  | Author(s) NetID* |
 |-------|-----------------------------------|------------------|------------------------------------------------------------|------------------|

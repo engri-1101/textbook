@@ -4,10 +4,9 @@
 
 The git repository only maintains a lab key file from which the student
 version and distribution zip file can be generated. To make the distribution
-files for every lab, run the following commands. Be aware this takes a moment.
+files for every lab, run the following command. Be aware this takes a moment.
 
 ```
-cd labs
 make all
 ```
 
@@ -26,14 +25,48 @@ If you are not familiar with the Make system, feel free to reach out to Henry
 
 ## Lab Directory Structure
 
-Every lab has a corresponding directory in this directory. These lab
-directories contain some subset of the following:
+Every lab has a corresponding directory. These lab directories contain some
+subset of the following:
 - Relevant notebooks for generating data used in the labs
 - Notes from Fall 2020 semester with common issues / questions regarding the lab
-- `*_lab_key.ipynb` which are the lab key file
+- `<lab_name>_lab_key.ipynb` which is the lab key file
 - `data-lab` / `data-demo` for data used in the lab or demo respectively
 - `images-lab` / `images-key` / `images-demo` for images used in the lab, answer key, or demo respectively
 - `.py` files used by the lab and/or demo
+
+## Development
+
+For those interested in creating a new lab, there are a few tools provided in
+the repo to ease this process. First, create a new directory called
+`<lab_name>`. All dependencies for this lab:
+data, images, python scripts, etc.. should be put in this directory. Build the
+key Jupyter Notebook file. This should be named `<lab_name>_lab_key.ipynb`.
+There are two types of supported questions: text and code. To generate the
+student version correctly, the following format should be used:
+
+TEXT
+```
+**Q1:** Your question here?
+
+**A:** <font color='blue'> Your answer here.</font>
+```
+
+CODE
+```
+# TODO: Assign a the value 1101
+# a = XXX
+
+### BEGIN SOLUTION
+a = 1101
+### END SOLUTION
+```
+
+Create a `Makefile` using one from another lab as a template. The Makefile
+states which files / directories should be contained in the distribution file
+(reach out to Henry (hwr26@cornell.edu) if you are unfamiliar with the Make
+system). The file `<lab_name>_lab.ipynb` is the student version of the lab
+which is generated from the key file. It should be included in the distribution
+file. Lastly, edit the main [Makefile](Makefile) to include the new lab.
 
 ## Current Table of Labs
 

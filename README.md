@@ -40,39 +40,8 @@ git config --local include.path ../.gitconfig
 ```
 
 Here, the last command configures git to filter out Jupyter Notebook output and
-metadata. This makes version control of Jupyter Notebooks more pleasant.
-
-For those interested in developing a new lab, there are a few tools provided in
-the repo to ease this process. First, create a new directory within the
-[labs](labs) directory called `<lab_name>`. All dependencies for this lab:
-data, images, python scripts, etc.. should be put in this directory. Build the
-key Jupyter Notebook file. This should be named `<lab_name>_lab_key.ipynb`.
-There are two types of supported questions: text and code. To generate the
-student version correctly, the following format should be used:
-
-TEXT
-```
-**Q1:** Your question here?
-
-**A:** <font color='blue'> Your answer here.</font>
-```
-
-CODE
-```
-# TODO: Assign a the value 1101
-# a = XXX
-
-### BEGIN SOLUTION
-a = 1101
-### END SOLUTION
-```
-
-Create a `Makefile` using one from another lab as a template. The Makefile
-states which files / directories should be contained in the distribution file
-(reach out to Henry (hwr26@cornell.edu) if you are unfamiliar with the Make
-system). The file `<lab_name>_lab.ipynb` is the student version of the lab
-which is generated from the key file. It should be included in the distribution
-file. Lastly, edit the main [Makefile](labs/Makefile) to include the new lab.
+metadata. This makes version control of Jupyter Notebooks more pleasant. See
+the labs [README](labs/README.md) for instructions on creating a new lab.
 
 ## Directory Structure
 
@@ -86,7 +55,7 @@ file. Lastly, edit the main [Makefile](labs/Makefile) to include the new lab.
   within [public_html](public_html) will be reflected on the website in the
   next pull. For this reason, <ins> *exercise extra precaution when updating
   the source code of web-based labs!* </ins>
-- [labs](labs) contains all lab directories and a [README](labs/README)
+- [labs](labs) contains all lab directories and a [README](labs/README.md)
   summarizing how to build labs, lab directory structure, and a list of labs.
 - [software_install](software_install) contains software installation
   instructions and a notebook to test the installation.
@@ -98,8 +67,6 @@ file. Lastly, edit the main [Makefile](labs/Makefile) to include the new lab.
   Python-based LP packages (Summer 2020).
 - [gilp_lab_submissions](gilp_lab_submissions) contains parsed student lab
   submissions (Fall 2020) for labs using the `gilp` python package.
-- [make_student_version.py](make_student_version.py) is a python script for
-  creating a student version of a lab from a key file.
 
 ## TODO
 

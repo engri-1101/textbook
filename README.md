@@ -74,7 +74,7 @@ need access to this archive, please email hwr26@cornell.edu.
 | [minimum_spanning_tree](minimum_spanning_tree) | Review clustering application to NYC taxi data | |
 | [redistricting](redistricting)                 | Optimize the redistricting 5x10 example <br/> Tetrominoes Tetris completion example | scs293 |
 | [vinal](https://github.com/henryrobbins/vinal) package| Make bottom text more visible (highlight / color) | hwr26 |
-| [baseball_elimination](baseball_elimination)   | ECAC Cornell Hockey | |
+| [baseball_elimination](baseball_elimination)   | Finish incorporating ECAC Cornell Hockey | |
 | N/A                                            | Github [Markup rendering](https://github.com/github/markup/issues/369) | hwr26 |
 | [project_selection](labs/project_selection)    | Review and standardize                        | |
 | [minimum_cut](labs/minimum_cut)                | Review and standardize                        | |

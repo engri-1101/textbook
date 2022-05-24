@@ -43,7 +43,7 @@ directories contain some subset of the following:
 | 2     | Dijkstra's Shortest Path          | Web-based        | [shortest_path](shortest_path)                             | sea78, tw454 + hwr26, ejb284 + kkg35 |
 | 3     | Minimum Spanning Tree (MST)       | Web-based        | [minimum_spanning_tree](minimum_spanning_tree)             | tw454 + hwr26    |
 | 4     | Maximum Flow                      | Jupyter Notebook | [maximum_flow](maximum_flow)                               | fms9             |
-| 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               | qz245            |
+| 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               | qz245 + yz544    |
 | 6     | Transportation I+II               | Jupyter Notebook | [transportation](transportation)                           | qz245            |
 | 7     | First-Year Writing Seminar        | Jupyter Notebook | [fws](fws)                                                 | qz245 + bwc73     |
 | 8     | Simplex                           | Jupyter Notebook | [simplex](simplex)                                         | hwr26            |

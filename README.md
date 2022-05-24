@@ -76,6 +76,7 @@ need access to this archive, please email hwr26@cornell.edu.
 | [vinal](https://github.com/henryrobbins/vinal) package| Make bottom text more visible (highlight / color) | hwr26 |
 | [baseball_elimination](baseball_elimination)   | Finish incorporating ECAC Cornell Hockey | |
 | N/A                                            | Github [Markup rendering](https://github.com/github/markup/issues/369) | hwr26 |
+| N/A                                            | Build labs from parts in separate notebooks   | hwr26 |
 | [project_selection](labs/project_selection)    | Review and standardize                        | |
 | [minimum_cut](labs/minimum_cut)                | Review and standardize                        | |
 | [fws](labs/fws)                                | Review and standardize                        | |

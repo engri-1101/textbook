@@ -71,7 +71,7 @@ need access to this archive, please email hwr26@cornell.edu.
 
 | Link                                           | TODO                                          |
 |------------------------------------------------|-----------------------------------------------|
-| [minimum_spanning_tree](minimum_spanning_tree) | Clustering application to NYC taxi data <br/> Some at scale visualization |
+| [minimum_spanning_tree](minimum_spanning_tree) | Review clustering application to NYC taxi data |
 | [redistricting](redistricting)                 | Optimize the redistricting 5x10 example <br/> Tetrominoes Tetris completion example |
 | [vinal](https://github.com/henryrobbins/vinal) package| Make bottom text more visible (highlight / color) |
 | [baseball_elimination](baseball_elimination)   | ECAC Cornell Hockey |

@@ -45,7 +45,7 @@ directories contain some subset of the following:
 | 4     | Maximum Flow                      | Jupyter Notebook | [maximum_flow](maximum_flow)                               | fms9             |
 | 5     | Baseball Elimination              | Jupyter Notebook | [baseball_elimination](baseball_elimination)               | qz245            |
 | 6     | Transportation I+II               | Jupyter Notebook | [transportation](transportation)                           | qz245            |
-| 7     | First-Year Writing Seminar        | Jupyter Notebook | [fws](fws)                                                 | qz245            |
+| 7     | First-Year Writing Seminar        | Jupyter Notebook | [fws](fws)                                                 | qz245 + bwc73     |
 | 8     | Simplex                           | Jupyter Notebook | [simplex](simplex)                                         | hwr26            |
 | 9     | LP Formulation                    | Jupyter Notebook | [lp_formulation](lp_formulation)                           | hwr26            |
 | 10    | TSP and Integer Programming       | Jupyter Notebook | [tsp_integer_programming](tsp_integer_programming)         | hwr26            |

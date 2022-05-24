@@ -73,7 +73,6 @@ need access to this archive, please email hwr26@cornell.edu.
 |------------------------------------------------|-----------------------------------------------|
 | [minimum_spanning_tree](minimum_spanning_tree) | Clustering application to NYC taxi data <br/> Some at scale visualization |
 | [game_theory](game_theory)                     | Verify correctness of penalty kick game        |
-| [fws](fws)                                     | Add section minimum constraint for IP example |
 | [redistricting](redistricting)                 | Optimize the redistricting 5x10 example <br/> Tetrominoes Tetris completion example |
 | [shortest_path](shortest_path)                 | Modeling example of text splitting (past HW)  |
 | [vinal](https://github.com/henryrobbins/vinal) package| Make bottom text more visible (highlight / color) |
@@ -81,3 +80,4 @@ need access to this archive, please email hwr26@cornell.edu.
 | N/A                                            | Github [Markup rendering](https://github.com/github/markup/issues/369) |
 | [project_selection](labs/project_selection)    | Review and standardize                        |
 | [minimum_cut](labs/minimum_cut)                | Review and standardize                        |
+| [fws](labs/fws)                                | Review and standardize                        |

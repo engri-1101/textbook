@@ -33,8 +33,7 @@ def delete(string, index_pairs):
     return string
 
 
-# TODO: Probably rename this function and this module
-def make_student_version(key):
+def main(key):
     """Make a student version of the given lab key in the same directory."""
     with open(key, "r") as f:
         nb = json.load(f)
@@ -56,4 +55,4 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--key', help="Jupyter Notebook key file")
     args = parser.parse_args()
-    make_student_version(args.key)
+    main(args.key)

@@ -8,8 +8,8 @@ SRC = penaltykickgame/*
 all: lab
 
 lab: $(KEY).ipynb $(DATA) $(IMAGES)
-	python ../make_student_version.py $(KEY).ipynb
-	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(IMAGES) $(SRC)  
+	python ../distribute.py --key $(KEY).ipynb
+	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(IMAGES) $(SRC)
 
 clean:
 	rm -rf {*.zip,$(LAB).ipynb}

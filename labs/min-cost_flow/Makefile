@@ -9,7 +9,7 @@ SRC = routing.py
 all: lab demo
 
 lab: $(KEY).ipynb $(DATA) $(SRC) $(IMAGES)
-	python ../make_student_version.py $(KEY).ipynb
+	python ../distribute.py --key $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(SRC) $(IMAGES)
 
 demo: $(DEMO).ipynb $(DATE) $(SRC)

@@ -133,3 +133,6 @@ dmypy.json
 # ignore distribution files and student versions
 labs/*/*.zip
 labs/*/*_lab.ipynb
+
+# developmental Jupyter Notebook
+labs/dev.ipynb

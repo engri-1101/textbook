@@ -1,0 +1,9 @@
+city,supply,demand
+PITT,450,0
+NE,0,0
+SE,0,0
+BOS,0,90
+EWR,0,120
+BWI,0,120
+ATL,0,70
+MCO,0,50

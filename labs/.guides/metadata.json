@@ -18,10 +18,11 @@
       "files": [
         {
           "action": "open", 
-          "path": "simplex_lab_key.ipynb", 
+          "path": "lab_name_key.ipynb", 
           "panel": 0
         }
       ], 
+      "id": "id_from_codio",
       "chapter": false, 
       "layout": "2-panels", 
       "title": "Using Jupyter Notebooks", 

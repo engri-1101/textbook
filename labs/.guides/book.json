@@ -1,0 +1,12 @@
+{
+  "name": "lab_name", 
+  "children": [
+    {
+      "type": "page", 
+      "title": "Using Jupyter Notebooks",
+      "id": "id_from_codio",
+      "pageId": "id_from_codio"
+    }
+  ]
+}
+

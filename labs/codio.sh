@@ -10,13 +10,14 @@ git init
 git remote add -f origin git@github.coecis.cornell.edu:hwr26/engri-1101-labs.git
 git config core.sparseCheckout true
 echo "labs/$1" >> .git/info/sparse-checkout
+echo "labs/.guides" >> .git/info/sparse-checkout
 git pull origin codio
 
 # move files from lab path to current directory
 mv labs/$1/* .
-mv labs/$1/.guides .guides
+mv labs/.guides .guides
 rm -rf labs
 
 # pull id from .guides_tmp into .guides and remove
-python codio.py
+python codio.py $1
 rm .guides_tmp

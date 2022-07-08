@@ -1,7 +1,7 @@
 import sys
 import json
 
-lab_name = sys.argv[0]
+lab_name = sys.argv[1]
 
 # get auto-generated id from .guides_tmp
 with open(".guides_tmp/metadata.json") as f:

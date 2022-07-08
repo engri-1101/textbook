@@ -2,7 +2,7 @@
   "allowGuideClose": false, 
   "hideBackToDashboard": true, 
   "useMarkAsComplete": true, 
-  "hideMenu": true, 
+  "hideMenu": false,
   "suppressPageNumbering": true, 
   "protectLayout": true, 
   "useSubmitButtons": true, 

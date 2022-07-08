@@ -20,4 +20,4 @@ rm -rf labs
 
 # pull id from .guides_tmp into .guides and remove
 python codio.py $1
-rm .guides_tmp
+rm -rf .guides_tmp

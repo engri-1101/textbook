@@ -14,6 +14,7 @@ git pull origin codio
 
 # move files from lab path to current directory
 mv labs/$1/* .
+mv labs/$1/.guides .guides
 rm -rf labs
 
 # pull id from .guides_tmp into .guides and remove

@@ -1,0 +1,37 @@
+{
+  "allowGuideClose": false, 
+  "hideBackToDashboard": true, 
+  "useMarkAsComplete": true, 
+  "hideMenu": true, 
+  "suppressPageNumbering": true, 
+  "protectLayout": true, 
+  "useSubmitButtons": true, 
+  "theme": "light", 
+  "lexikonTopic": "", 
+  "scripts": [
+    ".guides/load.js"
+  ], 
+  "collapsedOnStart": true, 
+  "hideSectionsToggle": true, 
+  "sections": [
+    {
+      "files": [
+        {
+          "action": "open", 
+          "path": "simplex_lab_key.ipynb", 
+          "panel": 0
+        }
+      ], 
+      "chapter": false, 
+      "layout": "2-panels", 
+      "title": "Using Jupyter Notebooks", 
+      "learningObjectives": "", 
+      "reset": [], 
+      "teacherOnly": false, 
+      "closeTerminalSession": true, 
+      "content-file": ".guides/content/Using-Jupyter-Notebooks.md", 
+      "path": [], 
+      "type": "markdown"
+    }
+  ]
+}

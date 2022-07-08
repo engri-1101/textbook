@@ -12,7 +12,7 @@ with open(".guides_tmp/metadata.json") as f:
 with open(".guides/metadata.json", "r") as f:
   metadata = json.load(f)
   metadata["sections"][0]["id"] = id
-  metadata["sections"][0]["files"]["path"] = "{lab_name}_key.ipynb".format(lab_name = lab_name)
+  metadata["sections"][0]["files"][0]["path"] = "{lab_name}_key.ipynb".format(lab_name = lab_name)
 
 with open(".guides/metadata.json", "w") as f:
   json.dump(metadata, f, indent=2)

@@ -1,4 +1,4 @@
-MAIN = max_flow
+MAIN = maximum_flow
 LAB = $(MAIN)_lab
 KEY = $(LAB)_key
 IMAGES = images-lab/*

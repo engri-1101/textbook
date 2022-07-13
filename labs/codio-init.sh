@@ -12,13 +12,13 @@ git config core.sparseCheckout true
 echo "labs/$1" >> .git/info/sparse-checkout
 echo "labs/.guides" >> .git/info/sparse-checkout
 echo "labs/.codio-menu" >> .git/info/sparse-checkout
+echo "labs/distribute.py" >> .git/info/sparse-checkout
 git pull origin codio
 
-# move files from lab path to current directory
-mv labs/$1/* .
-mv labs/.guides .guides
-mv labs/.codio-menu .codio-menu
-rm -rf labs
+# copy files from lab path to current directory
+cp -r labs/$1/* .
+cp -r labs/.guides .guides
+cp -r labs/.codio-menu .codio-menu
 
 # pull id from .guides_tmp into .guides and remove
 python codio.py $1

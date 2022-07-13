@@ -8,7 +8,7 @@ SRCS = max_flow.py social_network.py
 all: lab
 
 lab: $(KEY).ipynb $(DATA) $(IMAGES) $(SRCS)
-	python ../distribute.py --key $(KEY).ipynb
+	python3 ../distribute.py --key $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(IMAGES) $(SRCS)
 
 clean:

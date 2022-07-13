@@ -8,7 +8,7 @@ SRC = graph_tools.py
 all: lab demo
 
 lab: $(KEY).ipynb $(DATA) $(SRC)
-	python ../distribute.py --key $(KEY).ipynb
+	python3 ../distribute.py --key $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(SRC)
 
 demo: $(DEMO).ipynb $(DATA) $(SRC)

@@ -10,7 +10,7 @@ SRC = tsp.py
 all: lab demo
 
 lab: $(KEY).ipynb $(DATA) $(IMAGES) $(SRC)
-	python ../distribute.py --key $(KEY).ipynb
+	python3 ../distribute.py --key $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(IMAGES) $(SRC)
 
 demo: $(DEMO).ipynb $(DEMO_DATA)

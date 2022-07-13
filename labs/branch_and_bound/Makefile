@@ -9,7 +9,7 @@ DEMO_IMAGES = images-demo/*
 all: lab demo bin-packing
 
 lab: $(KEY).ipynb $(DATA) $(LAB_IMAGES)
-	python ../distribute.py --key $(KEY).ipynb
+	python3 ../distribute.py --key $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(LAB_IMAGES)
 
 demo: $(DEMO).ipynb $(DEMO_IMAGES)

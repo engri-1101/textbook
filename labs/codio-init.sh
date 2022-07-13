@@ -15,6 +15,11 @@ echo "labs/.codio-menu" >> .git/info/sparse-checkout
 echo "labs/distribute.py" >> .git/info/sparse-checkout
 git pull origin codio
 
+# build
+cd labs/$1
+make
+cd ../..
+
 # copy files from lab path to current directory
 cp -r labs/$1/* .
 cp -r labs/.guides .guides

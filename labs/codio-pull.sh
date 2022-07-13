@@ -8,6 +8,11 @@ mv .guides .guides_tmp
 # checkout only the desired lab 
 git pull origin codio
 
+# build
+cd labs/$1
+make
+cd ../..
+
 # copy files from lab path to current directory
 cp -r labs/$1/* .
 cp -r labs/.guides .guides

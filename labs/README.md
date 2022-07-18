@@ -91,5 +91,6 @@ file. Lastly, edit the main [Makefile](Makefile) to include the new lab.
 | 17    | Redistricting                     | Jupyter Notebook | [redistricting](redistricting)                             | rwg97 + hwr26    |
 | 18    | Minimum Cut                       | Jupyter Notebook | [minimum_cut](minimum_cut)                                 | kz226            |
 | 19    | Project Selection                 | Jupyter Notebook | [project_selection](project_selection)                     | wpv6             |
+| 20    | Assignment                        | Jupyter Notebook | [assignment](assignment)                                   | jmd477             |
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.

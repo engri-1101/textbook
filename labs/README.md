@@ -86,10 +86,11 @@ file. Lastly, edit the main [Makefile](Makefile) to include the new lab.
 | 12    | Knapsack                          | Web (Figma)      | [knapsack](knapsack)                                       | qz245            |
 | 13    | Branch and Bound                  | Jupyter Notebook | [branch_and_bound](branch_and_bound)                       | hwr26            |
 | 14    | Diet                              | Jupyter Notebook | [diet](diet)                                               | hwr26            |
-| 15    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78 + hwr26 + kkg35 |
+| 15    | Game Theory                       | Jupyter Notebook | [game_theory](game_theory)                                 | sea78 + hwr26 + kkg35 + jmd477 |
 | 16    | Minimum-cost Flow                 | Jupyter Notebook | [min-cost_flow](min-cost_flow)                             | aaj54 + hwr26    |
 | 17    | Redistricting                     | Jupyter Notebook | [redistricting](redistricting)                             | rwg97 + hwr26    |
 | 18    | Minimum Cut                       | Jupyter Notebook | [minimum_cut](minimum_cut)                                 | kz226            |
 | 19    | Project Selection                 | Jupyter Notebook | [project_selection](project_selection)                     | wpv6             |
+| 20    | Assignment                        | Jupyter Notebook | [assignment](assignment)                                   | jmd477             |
 
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.

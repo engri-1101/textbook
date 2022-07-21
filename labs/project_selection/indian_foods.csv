@@ -1,0 +1,1137 @@
+Name,Recipe Revenue,Ingredient,Ingredient Cost
+Balu Shahi,93,Maida Flour,63
+Balu Shahi,25,Yogurt,38
+Balu Shahi,80,Oil,58
+Balu Shahi,100,Sugar,95
+Boondi,17,Gram Flour,100
+Boondi,90,Ghee,83
+Boondi,5,Sugar,95
+Gajar Ka Halwa,50,Carrots,70
+Gajar Ka Halwa,91,Milk,91
+Gajar Ka Halwa,31,Sugar,95
+Gajar Ka Halwa,44,Ghee,83
+Gajar Ka Halwa,99,Cashews,12
+Gajar Ka Halwa,61,Raisins,98
+Ghevar,4,Flour,59
+Ghevar,35,Ghee,83
+Ghevar,64,Kewra,3
+Ghevar,81,Milk,91
+Ghevar,42,Clarified Butter,79
+Ghevar,81,Sugar,95
+Ghevar,19,Almonds,72
+Ghevar,95,Pistachio,60
+Ghevar,99,Saffron,33
+Ghevar,69,Green Cardamom,76
+Gulab Jamun,91,Milk Powder,2
+Gulab Jamun,24,Plain Flour,99
+Gulab Jamun,88,Baking Powder,13
+Gulab Jamun,83,Ghee,83
+Gulab Jamun,99,Milk,91
+Gulab Jamun,18,Sugar,95
+Gulab Jamun,32,Water,72
+Gulab Jamun,38,Rose Water,58
+Imarti,38,Sugar Syrup,40
+Imarti,79,Lentil Flour,63
+Jalebi,24,Maida,54
+Jalebi,21,Corn Flour,76
+Jalebi,19,Baking Soda,42
+Jalebi,63,Vinegar,71
+Jalebi,63,Curd,100
+Jalebi,53,Water,72
+Jalebi,33,Turmeric,50
+Jalebi,39,Saffron,33
+Jalebi,32,Cardamom,7
+Kaju Katli,8,Cashews,12
+Kaju Katli,99,Ghee,83
+Kaju Katli,32,Cardamom,7
+Kaju Katli,53,Sugar,95
+Kalakand,32,Milk,91
+Kalakand,70,Cottage Cheese,42
+Kalakand,15,Sugar,95
+Kheer,82,Milk,91
+Kheer,37,Rice,90
+Kheer,11,Sugar,95
+Kheer,55,Dried Fruits,77
+Laddu,74,Gram Flour,100
+Laddu,46,Ghee,83
+Laddu,70,Sugar,95
+Lassi,14,Yogurt,38
+Lassi,40,Milk,91
+Lassi,96,Nuts,8
+Lassi,25,Sugar,95
+Nankhatai,76,Refined Flour,17
+Nankhatai,83,Besan,58
+Nankhatai,51,Ghee,83
+Nankhatai,74,Powdered Sugar,1
+Nankhatai,20,Yoghurt,19
+Nankhatai,72,Green Cardamom,76
+Petha,38,Firm White Pumpkin,21
+Petha,77,Sugar,95
+Petha,56,Kitchen Lime,79
+Petha,63,Alum Powder,27
+Phirni,73,Rice,90
+Phirni,92,Sugar,95
+Phirni,81,Nuts,8
+Rabri,74,Condensed Milk,72
+Rabri,84,Sugar,95
+Rabri,57,Spices,16
+Rabri,9,Nuts,8
+Sheera,8,Semolina,22
+Sheera,4,Ghee,83
+Sheera,4,Nuts,8
+Sheera,87,Milk,91
+Singori,80,Khoa,49
+Singori,85,Coconut,39
+Singori,72,Molu Leaf,8
+Sohan Halwa,20,Corn Flour,76
+Sohan Halwa,41,Ghee,83
+Sohan Halwa,19,Dry Fruits,93
+Sohan Papdi,27,Gram Flour,100
+Sohan Papdi,13,Ghee,83
+Sohan Papdi,50,Sugar,95
+Sohan Papdi,23,Milk,91
+Sohan Papdi,11,Cardamom,7
+Chhena Jalebi,90,Chhena,54
+Chhena Jalebi,57,Sugar,95
+Chhena Jalebi,1,Ghee,83
+Chhena Kheeri,30,Chhena,54
+Chhena Kheeri,14,Sugar,95
+Chhena Kheeri,51,Milk,91
+Chhena Poda,98,Sugar,95
+Chhena Poda,78,Chenna Cheese,86
+Cham Cham,64,Flour,59
+Cham Cham,71,Cream,73
+Cham Cham,91,Sugar,95
+Cham Cham,59,Saffron,33
+Cham Cham,36,Lemon Juice,83
+Cham Cham,47,Coconut Flakes,3
+Kheer Sagar,68,Chenna,28
+Kheer Sagar,31,Condensed Milk,72
+Kheer Sagar,58,Sugar,95
+Kheer Sagar,45,Saffron,33
+Kheer Sagar,3,Cardamom,7
+Ledikeni,86,Chhena,54
+Ledikeni,3,Sugar,95
+Ledikeni,94,Ghee,83
+Lyangcha,22,Flour,59
+Lyangcha,41,Fried Milk Power,43
+Lyangcha,76,Sugar Syrup,40
+Malapua,19,Yoghurt,19
+Malapua,48,Refined Flour,17
+Malapua,84,Ghee,83
+Malapua,27,Fennel Seeds,73
+Mihidana,42,Besan Flour,93
+Mihidana,83,Sugar,95
+Mihidana,0,Ghee,83
+Misti Doi,96,Milk,91
+Misti Doi,79,Jaggery,77
+Pantua,62,Chhena,54
+Pantua,38,Sugar,95
+Pantua,17,Ghee,83
+Pantua,92,Flour,59
+Pithe,4,Rice Flour,37
+Pithe,34,Wheat Flour,25
+Rasabali,31,Chenna,28
+Rasabali,63,Sweetened Milk,83
+Ras Malai,72,Chhena,54
+Ras Malai,1,Reduced Milk,43
+Ras Malai,0,Pistachio,60
+Rasgulla,35,Chhena,54
+Rasgulla,32,Sugar,95
+Rasgulla,2,Cardamom,7
+Sandesh,57,Milk,91
+Sandesh,48,Sugar,95
+Sandesh,2,Saffron,33
+Sandesh,38,Cardamom,7
+Adhirasam,57,Rice Flour,37
+Adhirasam,36,Jaggery,77
+Adhirasam,21,Ghee,83
+Adhirasam,87,Vegetable Oil,0
+Adhirasam,59,Elachi,97
+Ariselu,6,Rice Flour,37
+Ariselu,88,Jaggery,77
+Ariselu,96,Ghee,83
+Bandar Laddu,66,Besan,58
+Bandar Laddu,77,Jaggery,77
+Bandar Laddu,25,Cardamom Powder,2
+Bandar Laddu,46,Ghee,83
+Bandar Laddu,97,Cashews And Raisins,61
+Bandar Laddu,39,Jaggery Syrup,59
+Bandar Laddu,80,Sugar,95
+Chikki,60,Peanuts,41
+Chikki,13,Jaggery,77
+Dharwad Pedha,59,Milk,91
+Dharwad Pedha,11,Sugar,95
+Dharwad Pedha,36,Dharwadi Buffalo Milk,83
+Double Ka Meetha,20,Loaf Bread,95
+Double Ka Meetha,73,Milk,91
+Gavvalu,21,Rice Flour,37
+Gavvalu,6,Sugar,95
+Gavvalu,30,Salt,59
+Gavvalu,63,Ghee,83
+Gavvalu,49,Semolina,22
+Kakinada Khaja,29,Wheat Flour,25
+Kakinada Khaja,68,Sugar,95
+Kuzhi Paniyaram,69,Black Lentils,59
+Kuzhi Paniyaram,81,Rice,90
+Mysore Pak,97,Besan Flour,93
+Mysore Pak,60,Semolina,22
+Mysore Pak,46,Mung Bean,79
+Mysore Pak,77,Jaggery,77
+Mysore Pak,63,Coconut,39
+Mysore Pak,50,Skimmed Milk Powder,10
+Mysore Pak,79,Sugar,95
+Mysore Pak,7,Ghee,83
+Obbattu Holige,43,Maida Flour,63
+Obbattu Holige,54,Turmeric,50
+Obbattu Holige,7,Coconut,39
+Obbattu Holige,22,Chickpeas,55
+Obbattu Holige,7,Jaggery,77
+Obbattu Holige,13,Ghee,83
+Obbattu Holige,32,Cardamom,7
+Palathalikalu,18,Rice Flour,37
+Palathalikalu,91,Milk,91
+Poornalu,6,Chana Dal,42
+Poornalu,53,Jaggery,77
+Pongal,43,Rice,90
+Pongal,83,Jaggery,77
+Pongal,48,Cashews,12
+Pongal,15,Ghee,83
+Pootharekulu,24,Rice Flour,37
+Pootharekulu,9,Powdered Sugar,1
+Pootharekulu,28,Ghee,83
+Qubani Ka Meetha,79,Apricots,53
+Qubani Ka Meetha,26,Sugar Syrup,40
+Sheer Korma,81,Vermicelli Pudding,100
+Sheer Korma,35,Milk,91
+Unni Appam,6,Rice Flour,37
+Unni Appam,4,Banana,79
+Unni Appam,7,Jaggery,77
+Unni Appam,11,Coconut,39
+Kajjikaya,71,Rice Flour,37
+Kajjikaya,39,Jaggery,77
+Kajjikaya,86,Coconut,39
+Anarsa,73,Rice Flour,37
+Anarsa,56,Jaggery,77
+Anarsa,9,Khus-Khus Seeds,8
+Basundi,82,Sugar,95
+Basundi,17,Milk,91
+Basundi,6,Nuts,8
+Dhondas,2,Cucumber,1
+Dhondas,28,Rava,37
+Doodhpak,94,Milk,91
+Doodhpak,90,Rice,90
+Doodhpak,90,Sugar,95
+Doodhpak,99,Dry Fruits,93
+Mahim Halwa,40,Semolina,22
+Mahim Halwa,20,Sugar,95
+Modak,23,Rice Flour,37
+Modak,50,Coconut,39
+Modak,20,Jaggery,77
+Shankarpali,81,Sugar,95
+Shankarpali,6,Ghee,83
+Shankarpali,4,Maida Flour,63
+Shankarpali,22,Semolina,22
+Shrikhand,51,Curd,100
+Shrikhand,88,Sugar,95
+Shrikhand,71,Saffron,33
+Shrikhand,85,Cardamom,7
+Sutar Feni,26,Maida,54
+Sutar Feni,25,Sugar,95
+Sutar Feni,30,Ghee,83
+Maach Jhol,2,Fish,33
+Maach Jhol,0,Potol,18
+Maach Jhol,32,Tomato,67
+Maach Jhol,19,Chillies,97
+Maach Jhol,70,Ginger,4
+Maach Jhol,83,Garlic,63
+Pork Bharta,25,Boiled Pork,16
+Pork Bharta,65,Onions,98
+Pork Bharta,4,Chillies,97
+Pork Bharta,42,Ginger And Garlic,4
+Chak Hao Kheer,41,Rice,90
+Chak Hao Kheer,19,Milk,91
+Chak Hao Kheer,60,Sugar,95
+Chak Hao Kheer,30,Cardamom,7
+Galho,29,Rice,90
+Galho,8,Axone,84
+Galho,35,Salt,59
+Galho,4,Water,72
+Galho,46,Chillies,97
+Galho,88,Pork,98
+Aloo Gobi,57,Cauliflower,4
+Aloo Gobi,30,Potato,27
+Aloo Gobi,22,Garam Masala,7
+Aloo Gobi,2,Turmeric,50
+Aloo Gobi,40,Curry Leaves,68
+Aloo Tikki,67,Rice Flour,37
+Aloo Tikki,39,Potato,27
+Aloo Tikki,86,Bread Crumbs,32
+Aloo Tikki,96,Garam Masala,7
+Aloo Tikki,90,Salt,59
+Aloo Matar,69,Potato,27
+Aloo Matar,51,Peas,34
+Aloo Matar,60,Chillies,97
+Aloo Matar,63,Ginger,4
+Aloo Matar,8,Garam Masala,7
+Aloo Matar,65,Garlic,63
+Aloo Methi,12,Potato,27
+Aloo Methi,6,Fenugreek Leaves,91
+Aloo Methi,88,Chillies,97
+Aloo Methi,81,Salt,59
+Aloo Methi,94,Oil,58
+Aloo Shimla Mirch,94,Potato,27
+Aloo Shimla Mirch,14,Shimla Mirch,94
+Aloo Shimla Mirch,20,Garam Masala,7
+Aloo Shimla Mirch,18,Amchur Powder,48
+Aloo Shimla Mirch,69,Salt,59
+Bhatura,52,Chole,57
+Bhatura,63,Rava,37
+Bhatura,35,Yogurt,38
+Bhatura,20,Plain Flour,99
+Bhatura,28,Baking Soda,42
+Bhindi Masala,25,Ladies Finger,60
+Bhindi Masala,66,Garam Masala,7
+Bhindi Masala,51,Kasuri Methi,46
+Bhindi Masala,49,Tomatoes,45
+Bhindi Masala,75,Chili Powder,15
+Biryani,24,Chicken Thighs,1
+Biryani,26,Basmati Rice,13
+Biryani,60,Star Anise,7
+Biryani,12,Sweet,23
+Biryani,90,Green Chillies,53
+Butter Chicken,87,Chicken,81
+Butter Chicken,5,Greek Yogurt,50
+Butter Chicken,82,Cream,73
+Butter Chicken,6,Garam Masala Powder,13
+Butter Chicken,11,Cashew Nuts,59
+Butter Chicken,5,Butter,92
+Chana Masala,56,Chickpeas,55
+Chana Masala,11,Tomato Paste,3
+Chana Masala,9,Garam Masala,7
+Chana Masala,64,Ginger,4
+Chana Masala,27,Red Onion,88
+Chana Masala,18,Avocado Oil,51
+Chapati,73,Whole Wheat Flour,38
+Chapati,58,Olive Oil,70
+Chapati,13,Hot Water,95
+Chapati,25,All Purpose Flour,98
+Chicken Razala,77,Chicken,81
+Chicken Razala,24,Dahi,49
+Chicken Razala,90,Sesame Seeds,93
+Chicken Razala,17,Garam Masala Powder,13
+Chicken Razala,51,Cashew Nuts,59
+Chicken Razala,39,Saffron,33
+Chicken Tikka Masala,91,Naan Bread,100
+Chicken Tikka Masala,43,Tomato Sauce,13
+Chicken Tikka Masala,86,Skinless Chicken Breasts,8
+Chicken Tikka Masala,37,Heavy Cream,81
+Chicken Tikka Masala,40,Garam Masala,7
+Chicken Tikka,57,Chicken,81
+Chicken Tikka,100,Whole Wheat Bread,24
+Chicken Tikka,12,Rice Flour,37
+Chicken Tikka,55,Garam Masala Powder,13
+Chicken Tikka,14,Whole Egg,34
+Chole Bhature,48,Chole,57
+Chole Bhature,69,Bhatura,73
+Chole Bhature,12,Garam Masala,7
+Chole Bhature,56,Bay Leaf,80
+Chole Bhature,56,Cinnamon Stick,32
+Daal Baati Churma,17,Moong Dal,42
+Daal Baati Churma,75,Masoor Dal,58
+Daal Baati Churma,52,Chana Dal,42
+Daal Baati Churma,49,Wheat Flour,25
+Daal Baati Churma,60,Almond,24
+Daal Puri,48,Moong Dal,42
+Daal Puri,18,Garam Masala Powder,13
+Daal Puri,46,Garlic,63
+Daal Puri,73,Green Chilli,76
+Daal Puri,31,All Purpose Flour,98
+Dal Makhani,34,Red Kidney Beans,56
+Dal Makhani,6,Urad Dal,99
+Dal Makhani,72,Cream,73
+Dal Makhani,67,Garam Masala,7
+Dal Makhani,91,Chili Powder,15
+Dal Tadka,95,Pigeon Peas,45
+Dal Tadka,11,Garam Masala,7
+Dal Tadka,56,Ginger,4
+Dal Tadka,89,Red Onion,88
+Dal Tadka,77,Kasuri Methi,46
+Dum Aloo,39,Baby Potatoes,31
+Dum Aloo,13,Garam Masala,7
+Dum Aloo,30,Cashew Nuts,59
+Dum Aloo,100,Kasuri Methi,46
+Dum Aloo,11,Tomatoes,45
+Poha,65,Beaten Rice Flakes,41
+Poha,84,Potato,27
+Poha,59,Curry Leaves,68
+Poha,55,Green Chilies,66
+Poha,95,Lemon Juice,83
+Fara,96,Chana Dal,42
+Fara,30,Whole Wheat Flour,38
+Fara,5,Arhar Dal,81
+Fara,93,White Urad Dal,62
+Fara,71,Garam Masala Powder,13
+Kachori,98,Moong Dal,42
+Kachori,32,Rava,37
+Kachori,34,Garam Masala,7
+Kachori,91,Dough,66
+Kachori,71,Fennel Seeds,73
+Kadai Paneer,35,Cottage Cheese,42
+Kadai Paneer,31,Bell Peppers,90
+Kadai Paneer,20,Gravy,72
+Kadai Paneer,16,Garam Masala,7
+Kadai Paneer,22,Cashew Nuts,59
+Kadhi Pakoda,2,Besan,58
+Kadhi Pakoda,2,Garam Masala Powder,13
+Kadhi Pakoda,63,Gram Flour,100
+Kadhi Pakoda,0,Ginger,4
+Kadhi Pakoda,70,Curry Leaves,68
+Karela Bharta,20,Bitter Gourd,50
+Karela Bharta,62,Fennel,86
+Karela Bharta,57,Garam Masala Powder,13
+Karela Bharta,79,Chili Powder,15
+Karela Bharta,22,Amchur Powder,48
+Khichdi,74,Moong Dal,42
+Khichdi,54,Green Peas,68
+Khichdi,37,Ginger,4
+Khichdi,95,Tomato,67
+Khichdi,36,Green Chili,12
+Kofta,44,Paneer,83
+Kofta,78,Potato,27
+Kofta,1,Cream,73
+Kofta,49,Corn Flour,76
+Kofta,88,Garam Masala,7
+Kulfi Falooda,96,Rose Syrup,62
+Kulfi Falooda,27,Falooda Sev,26
+Kulfi Falooda,9,Mixed Nuts,81
+Kulfi Falooda,90,Saffron,33
+Kulfi Falooda,20,Sugar,95
+Lauki Ke Kofte,73,Bottle Gourd,75
+Lauki Ke Kofte,0,Garam Masala Powder,13
+Lauki Ke Kofte,63,Gram Flour,100
+Lauki Ke Kofte,68,Ginger,4
+Lauki Ke Kofte,8,Chillies,97
+Lauki Ki Subji,89,Bottle Gourd,75
+Lauki Ki Subji,11,Coconut Oil,40
+Lauki Ki Subji,90,Garam Masala,7
+Lauki Ki Subji,1,Ginger,4
+Lauki Ki Subji,94,Green Chillies,53
+Litti Chokha,100,Wheat Flour,25
+Litti Chokha,30,Roasted Gram Flour,60
+Litti Chokha,87,Tomato,67
+Litti Chokha,44,Nigella Seeds,92
+Litti Chokha,38,Chilli,70
+Makki Di Roti Sarson Da Saag,40,Palak,18
+Makki Di Roti Sarson Da Saag,92,Makki Atta,57
+Makki Di Roti Sarson Da Saag,6,Mustard Green,86
+Makki Di Roti Sarson Da Saag,47,Garam Masala,7
+Makki Di Roti Sarson Da Saag,36,Ginger,4
+Misi Roti,77,Whole Wheat Flour,38
+Misi Roti,40,Chickpea Flour,89
+Misi Roti,95,Green Chilies,66
+Mushroom Do Pyaza,27,Mushroom,84
+Mushroom Do Pyaza,20,Malai,52
+Mushroom Do Pyaza,8,Garam Masala,7
+Mushroom Do Pyaza,27,Ginger,4
+Mushroom Do Pyaza,58,Capsicum,14
+Mushroom Matar,82,Canned Coconut Milk,52
+Mushroom Matar,80,Frozen Green Peas,19
+Mushroom Matar,59,Wild Mushrooms,17
+Mushroom Matar,95,Garam Masala,7
+Mushroom Matar,92,Tomatoes,45
+Naan,86,Whole Wheat Flour,38
+Naan,72,Honey,42
+Naan,83,Butter,92
+Naan,76,Garlic,63
+Navrattan Korma,35,Green Beans,0
+Navrattan Korma,17,Potatoes,30
+Navrattan Korma,15,Khus Khus,27
+Navrattan Korma,65,Low Fat,0
+Navrattan Korma,32,Garam Masala Powder,13
+Palak Paneer,12,Cottage Cheese,42
+Palak Paneer,38,Palak,18
+Palak Paneer,89,Cream,73
+Palak Paneer,28,Garam Masala,7
+Palak Paneer,93,Butter,92
+Paneer Butter Masala,68,Paneer,83
+Paneer Butter Masala,42,Whipping Cream,57
+Paneer Butter Masala,60,Garam Masala,7
+Paneer Butter Masala,7,Cashew Nuts,59
+Paneer Butter Masala,59,Butter,92
+Paneer Tikka Masala,89,Paneer,83
+Paneer Tikka Masala,69,Greek Yogurt,50
+Paneer Tikka Masala,24,Tandoori Masala,54
+Paneer Tikka Masala,53,Cream,73
+Paneer Tikka Masala,59,Bell Pepper,28
+Pani Puri,89,Kala Chana,6
+Pani Puri,94,Mashed Potato,42
+Pani Puri,62,Boondi,49
+Pani Puri,72,Sev,51
+Pani Puri,41,Lemon,6
+Panjeeri,41,Whole Wheat Flour,38
+Panjeeri,66,Musk Melon Seeds,82
+Panjeeri,75,Poppy Seeds,86
+Panjeeri,53,Edible Gum,74
+Panjeeri,50,Semolina,22
+Papad,86,Urad Dal,99
+Papad,70,Sev,51
+Papad,59,Lemon Juice,83
+Papad,68,Chopped Tomatoes,23
+Paratha,38,Wheat Flour,25
+Paratha,54,Butter,92
+Paratha,53,Potato,27
+Paratha,16,Coriander,15
+Pattor,47,Arbi Ke Patte,81
+Pattor,67,Sesame Seeds,93
+Pattor,13,Gur,61
+Pattor,56,Bengal Gram Flour,19
+Pattor,13,Imli,12
+Pindi Chana,35,Fennel,86
+Pindi Chana,16,Tea Bags,36
+Pindi Chana,95,Tomato,67
+Pindi Chana,96,Kasuri Methi,46
+Pindi Chana,85,Cinnamon,31
+Rajma Chaval,42,Red Kidney Beans,56
+Rajma Chaval,17,Garam Masala Powder,13
+Rajma Chaval,98,Ginger,4
+Rajma Chaval,37,Tomato,67
+Rajma Chaval,90,Mustard Oil,44
+Rongi,68,Garam Masala Powder,13
+Rongi,20,Tomato,67
+Rongi,90,Kasuri Methi,46
+Rongi,10,Cinnamon,31
+Rongi,57,Mustard Oil,44
+Samosa,7,Potatoes,30
+Samosa,12,Green Peas,68
+Samosa,33,Garam Masala,7
+Samosa,96,Ginger,4
+Samosa,37,Dough,66
+Sattu Ki Roti,63,Sattu,13
+Sattu Ki Roti,85,Atta,4
+Sattu Ki Roti,70,Dough,66
+Sattu Ki Roti,61,Filling,47
+Sattu Ki Roti,53,Mustard Oil,44
+Shahi Paneer,99,Cottage Cheese,42
+Shahi Paneer,21,Malai,52
+Shahi Paneer,94,Garam Masala,7
+Shahi Paneer,39,Ginger,4
+Shahi Paneer,10,Tomato,67
+Shahi Tukra,94,Rose Water,58
+Shahi Tukra,54,Milk,91
+Shahi Tukra,5,White Bread Slices,55
+Shahi Tukra,85,Saffron,33
+Shahi Tukra,96,Almonds,72
+Vegetable Jalfrezi,66,Baby Corn,96
+Vegetable Jalfrezi,71,French Beans,33
+Vegetable Jalfrezi,58,Garam Masala,7
+Vegetable Jalfrezi,42,Ginger,4
+Vegetable Jalfrezi,58,Carrot,13
+Tandoori Chicken,24,Greek Yogurt,50
+Tandoori Chicken,65,Garam Masala,7
+Tandoori Chicken,62,Kasuri Methi,46
+Tandoori Chicken,20,Marinade,0
+Tandoori Chicken,39,Mustard Oil,44
+Tandoori Fish Tikka,66,Chickpea Flour,89
+Tandoori Fish Tikka,52,Biryani Masala Powder,22
+Tandoori Fish Tikka,43,Yogurt,38
+Tandoori Fish Tikka,20,Fish Fillets,73
+Tandoori Fish Tikka,68,Green Bell Pepper,100
+Attu,67,Whole Wheat Flour,38
+Attu,53,Arhar Dal,81
+Attu,83,Ginger,4
+Attu,22,Kala Jeera,25
+Attu,89,Green Chilli,76
+Avial,79,Raw Banana,42
+Avial,32,Elephant Foot Yam,27
+Avial,64,Long Beans,5
+Avial,12,Tindora,79
+Avial,99,Urad Dal,99
+Bisi Bele Bath,25,Split Pigeon Peas,77
+Bisi Bele Bath,1,Chana Dal,42
+Bisi Bele Bath,86,Urad Dal,99
+Bisi Bele Bath,6,Green Peas,68
+Bisi Bele Bath,10,French Beans,33
+Currivepillai Sadam,61,Chana Dal,42
+Currivepillai Sadam,97,Urad Dal,99
+Currivepillai Sadam,81,Fresh Coconut,44
+Currivepillai Sadam,62,Sesame Seeds,93
+Currivepillai Sadam,4,Curry Leaves,68
+Dosa,33,Chana Dal,42
+Dosa,89,Urad Dal,99
+Dosa,48,Whole Urad Dal,26
+Dosa,81,Blend Rice,29
+Dosa,97,Rock Salt,7
+Idiappam,98,Rice Flour,37
+Idiappam,27,Hot Water,95
+Idiappam,15,Grated Coconut,46
+Idli,85,Split Urad Dal,39
+Idli,53,Urad Dal,99
+Idli,3,Idli Rice,41
+Idli,36,Thick Poha,32
+Idli,3,Rock Salt,7
+Kanji,40,Carrot,13
+Kanji,17,Yellow Mustard,71
+Kanji,7,Red Chilli,77
+Kanji,57,Black Salt,77
+Kaara Kozhambu,36,Sesame Oil,93
+Kaara Kozhambu,4,Drumstick,21
+Kaara Kozhambu,71,Tamarind Paste,72
+Kaara Kozhambu,25,Sambar Powder,60
+Kaara Kozhambu,55,Tomato,67
+Keerai Kootu,55,Moong Dal,42
+Keerai Kootu,30,Chana Dal,42
+Keerai Kootu,21,Spinach,33
+Keerai Kootu,39,Urad Dal,99
+Keerai Kootu,97,Coconut Oil,40
+Keerai Masiyal,49,Urad Dal,99
+Keerai Masiyal,51,Curry Leaves,68
+Keerai Masiyal,78,Sugar,95
+Keerai Masiyal,28,Mustard Seeds,83
+Keerai Masiyal,74,Spinach,33
+Keerai Sadam,33,Greens,81
+Keerai Sadam,16,Tomato,67
+Keerai Sadam,9,Mustard Seeds,83
+Keerai Sadam,11,Fenugreek Seeds,23
+Keerai Poriyal,84,Amaranth Leaves,20
+Keerai Poriyal,47,Split Urad Dal,39
+Keerai Poriyal,37,Mustard Seeds,83
+Keerai Poriyal,13,Grated Coconut,46
+Keerai Poriyal,96,Red Chili,85
+Beef Fry,60,Beef,65
+Beef Fry,81,Coconut,39
+Beef Fry,84,Garam Masala,7
+Beef Fry,26,Curry Leaves,68
+Beef Fry,6,Green Chilies,66
+Beef Fry,6,Chili Powder,15
+Kootu,26,Chana Dal,42
+Kootu,22,Urad Dal,99
+Kootu,0,Potato,27
+Kootu,20,Beans,30
+Kootu,63,Peas,34
+Kos Kootu,54,Moong Dal,42
+Kos Kootu,78,Chana Dal,42
+Kos Kootu,24,Cabbage,60
+Kos Kootu,98,Tamarind,22
+Kos Kootu,68,Curry Leaves,68
+Koshambri,94,Moong Dal,42
+Koshambri,82,Cucumber,1
+Koshambri,73,Curry Leaves,68
+Koshambri,24,Green Chili,12
+Koshambri,90,Lemon Juice,83
+Kothamali Sadam,64,Chana Dal,42
+Kothamali Sadam,22,Urad Dal,99
+Kothamali Sadam,56,Gooseberry,51
+Kothamali Sadam,87,Raw Rice,34
+Kothamali Sadam,51,Curry Leaves,68
+Kuzhakkattai,28,Sesame Oil,93
+Kuzhakkattai,68,Raw Rice,34
+Kuzhakkattai,2,Jaggery,77
+Kuzhakkattai,8,Grated Coconut,46
+Kuzhambu,56,Pearl Onions,18
+Kuzhambu,26,Urad Dal,99
+Kuzhambu,36,Drumsticks,27
+Kuzhambu,39,Tomato,67
+Kuzhambu,74,Curry Leaves,68
+Masala Dosa,21,Chana Dal,42
+Masala Dosa,6,Urad Dal,99
+Masala Dosa,29,Potatoes,30
+Masala Dosa,84,Idli Rice,41
+Masala Dosa,33,Thick Poha,32
+Pachadi,86,Coconut Oil,40
+Pachadi,2,Cucumber,1
+Pachadi,34,Curd,100
+Pachadi,3,Curry Leaves,68
+Pachadi,83,Mustard Seeds,83
+Paniyaram,42,Yogurt,38
+Paniyaram,5,Ginger,4
+Paniyaram,9,Curry Leaves,68
+Paniyaram,2,Baking Soda,42
+Paniyaram,70,Green Chilli,76
+Papadum,45,Lentils,19
+Papadum,93,Black Pepper,95
+Papadum,21,Vegetable Oil,0
+Paravannam,68,Raw Rice,34
+Paravannam,53,Jaggery,77
+Paravannam,42,Milk,91
+Payasam,23,Rice,90
+Payasam,53,Cashew Nuts,59
+Payasam,56,Milk,91
+Payasam,58,Raisins,98
+Payasam,19,Sugar,95
+Paruppu Sadam,50,Arhar Dal,81
+Paruppu Sadam,83,Sambar Powder,60
+Paruppu Sadam,16,Tomato,67
+Paruppu Sadam,8,Curry Leaves,68
+Paruppu Sadam,61,Fennel Seeds,73
+Pesarattu,8,Green Moong Beans,94
+Pesarattu,14,Rice Flour,37
+Poriyal,10,Chana Dal,42
+Poriyal,68,Urad Dal,99
+Poriyal,64,Beans,30
+Poriyal,52,Coconut,39
+Poriyal,25,Mustard,61
+Puli Sadam,7,Urad Dal,99
+Puli Sadam,90,Lemon,6
+Puli Sadam,42,Tamarind,22
+Puli Sadam,42,Cooked Rice,37
+Puli Sadam,86,Curry Leaves,68
+Rasam,85,Tomato,67
+Rasam,31,Curry Leaves,68
+Rasam,76,Garlic,63
+Rasam,29,Mustard Seeds,83
+Rasam,83,Hot Water,95
+Puttu,70,Brown Rice Flour,60
+Puttu,87,Sugar,95
+Puttu,83,Grated Coconut,46
+Sambar,91,Pigeon Peas,45
+Sambar,37,Eggplant,21
+Sambar,54,Drumsticks,27
+Sambar,43,Sambar Powder,60
+Sambar,21,Tamarind,22
+Sandige,43,Thin Rice Flakes,94
+Sandige,64,Black Sesame Seeds,3
+Sandige,39,Curry Leaves,68
+Sevai,81,Sevai,42
+Sevai,70,Parboiled Rice,76
+Sevai,10,Steamer,44
+Thayir Sadam,62,Urad Dal,99
+Thayir Sadam,12,Curd,100
+Thayir Sadam,65,Sesame Oil,93
+Thayir Sadam,38,Ginger,4
+Thayir Sadam,58,Curry Leaves,68
+Thayir Sadam,0,Mustard Seeds,83
+Theeyal,58,Coconut,39
+Theeyal,52,Whole Red Beans,96
+Theeyal,50,Masala,20
+Theeyal,9,Sesame Oil,93
+Theeyal,0,Tamarind,22
+Uttapam,47,Chana Dal,42
+Uttapam,91,Urad Dal,99
+Uttapam,68,Thick Poha,32
+Uttapam,68,Tomato,67
+Uttapam,43,Butter,92
+Vada,92,Urad Dal,99
+Vada,20,Ginger,4
+Vada,68,Curry Leaves,68
+Vada,11,Green Chilies,66
+Vada,22,Black Pepper,95
+Chicken Varuval,52,Meat Curry Powder,7
+Chicken Varuval,92,Chicken Chunks,73
+Chicken Varuval,61,Ginger,4
+Chicken Varuval,16,Tomato,67
+Chicken Varuval,1,Cinnamon,31
+Upma,3,Chana Dal,42
+Upma,35,Urad Dal,99
+Upma,73,Ginger,4
+Upma,3,Curry Leaves,68
+Upma,44,Sugar,95
+Amti,29,Kala Masala,8
+Amti,75,Arhar Dal,81
+Amti,68,Curry Leaves,68
+Amti,45,Mustard Seeds,83
+Amti,73,Hot Water,95
+Zunka,97,Gram Flour,100
+Zunka,80,Mustard,61
+Zunka,2,Garlic,63
+Zunka,90,Turmeric,50
+Zunka,27,Red Chilli,77
+Kolim Jawla,59,Baingan,50
+Kolim Jawla,71,Fish,33
+Kolim Jawla,98,Coconut Oil,40
+Kolim Jawla,87,Fresh Coconut,44
+Kolim Jawla,61,Ginger,4
+Saath,33,Urad Dal,99
+Saath,10,Potatoes,30
+Saath,43,Wheat Flour,25
+Saath,97,Sooji,49
+Bajri No Rotlo,66,Wheat Flour,25
+Bajri No Rotlo,99,Pearl Millet Flour,53
+Bajri No Rotlo,52,Hot Water,95
+Coconut Vadi,83,Condensed Milk,72
+Coconut Vadi,34,Mawa,79
+Coconut Vadi,7,Desiccated Coconut,59
+Coconut Vadi,65,Almonds,72
+Coconut Vadi,96,Cashews,12
+Bhakri,22,Jowar Flour,42
+Bhakri,64,Sesame Seeds,93
+Bombil Fry,16,Bombay Duck,51
+Bombil Fry,0,Malvani Masala,80
+Bombil Fry,58,Rice Flour,37
+Bombil Fry,32,Bombay Rava,35
+Bombil Fry,96,Green Chilies,66
+Chakali,80,Rice Flour,37
+Chakali,93,Sesame,73
+Chakali,23,Plain Flour,99
+Chakali,88,Turmeric,50
+Chakali,3,Red Chilli,77
+Chevdo,57,Citric Acid,50
+Chevdo,34,Fry,16
+Chevdo,24,Raisins,98
+Chevdo,90,Sugar,95
+Chevdo,72,Chana Daal,89
+Chorafali,14,Urad Dal,99
+Chorafali,64,Bengal Gram Flour,19
+Chorafali,7,Dried Mango,11
+Chorafali,66,Baking Soda,42
+Chorafali,70,Black Salt,77
+Copra Paak,56,Condensed Milk,72
+Copra Paak,24,Nestle Cream,63
+Copra Paak,14,Coconut Ice,88
+Copra Paak,69,Red Food Coloring,12
+Copra Paak,62,Desiccated Coconut,59
+Daal Dhokli,6,Whole Wheat Flour,38
+Daal Dhokli,62,Dal,89
+Daal Dhokli,87,Kokum,67
+Daal Dhokli,77,Gur,61
+Daal Dhokli,92,Bengal Gram Flour,19
+Kutchi Dabeli,13,Pav,78
+Kutchi Dabeli,50,Aloo,91
+Kutchi Dabeli,44,Peanut,77
+Kutchi Dabeli,35,Pomegranate,35
+Kutchi Dabeli,100,Star Anise,7
+Dahi Vada,83,Urad Dal,99
+Dahi Vada,14,Bhuna Chana,88
+Dahi Vada,73,Garam Masala,7
+Dahi Vada,81,Dates,91
+Dahi Vada,78,Tamarind,22
+Dalithoy,83,Arhar Dal,81
+Dalithoy,0,Coconut Oil,40
+Dalithoy,88,Curry Leaves,68
+Dalithoy,8,Mustard Seeds,83
+Dalithoy,94,Red Chilli,77
+Dhokla,27,Rava,37
+Dhokla,17,Coconut,39
+Dhokla,19,Gram Flour,100
+Dhokla,98,Mustard,61
+Dhokla,80,Sesame,73
+Dudhi Halwa,53,Bottle Gourd,75
+Dudhi Halwa,11,Green,38
+Dudhi Halwa,13,Raisins,98
+Dudhi Halwa,88,Sugar,95
+Dudhi Halwa,86,Clarified Butter,79
+Gatta Curry,96,Yogurt,38
+Gatta Curry,40,Besan,58
+Gatta Curry,19,Sauce,89
+Gatta Curry,19,Garam Masala Powder,13
+Gatta Curry,24,Gram Flour,100
+Gud Papdi,64,Wheat Flour,25
+Gud Papdi,18,Jaggery,77
+Gud Papdi,12,Clarified Butter,79
+Gud Papdi,71,Sliced Almonds,91
+Ghooghra,70,Dry Fruits,93
+Ghooghra,7,Semolina,22
+Ghooghra,17,All Purpose Flour,98
+Handwo,64,Bottle Gourd,75
+Handwo,26,Chana Dal,42
+Handwo,46,Cabbage,60
+Handwo,52,Urad Dal,99
+Handwo,26,Toor Dal,45
+Halvasan,9,Whole Wheat Rava,25
+Halvasan,75,Chia Seed,7
+Halvasan,89,Lemon,6
+Halvasan,87,Edible Gum,74
+Halvasan,43,Litre Milk,96
+Jeera Aloo,47,Green Chilies,66
+Jeera Aloo,44,Lemon Juice,83
+Jeera Aloo,16,Chili Powder,15
+Jeera Aloo,77,Boiled Potatoes,58
+Kansar,57,Wheat Flour,25
+Kansar,23,Cashews,12
+Kansar,21,Rapeseed Oil,29
+Keri No Ras,11,Mango,76
+Keri No Ras,37,Sugar,95
+Khakhra,83,Whole Wheat Flour,38
+Khakhra,32,Low Fat,0
+Khakhra,29,Bengal Gram Flour,19
+Khandvi,60,Green Chili Paste,2
+Khandvi,25,White Sesame Seeds,53
+Khandvi,2,Gram Flour,100
+Khandvi,26,Curry Leaves,68
+Khandvi,24,Green Chili,12
+Kombdi Vade,67,Rice Flour,37
+Kombdi Vade,21,Urad Dal,99
+Kombdi Vade,93,Wheat Flour,25
+Kombdi Vade,96,Gram Flour,100
+Kombdi Vade,82,Turmeric,50
+Laapsi,30,Cinnamon,31
+Laapsi,33,Jaggery,77
+Laapsi,61,Clarified Butter,79
+Laapsi,57,Dry Roasted,13
+Koshimbir,42,Cucumber,1
+Koshimbir,9,Carrot,13
+Koshimbir,9,Tomatoes,45
+Koshimbir,67,Cilantro,23
+Methi Na Gota,35,Rava,37
+Methi Na Gota,45,Gram Flour,100
+Methi Na Gota,46,Lemon Juice,83
+Methi Na Gota,99,Turmeric,50
+Methi Na Gota,35,Fenugreek Leaves,91
+Mohanthal,60,Rose Water,58
+Mohanthal,25,Pistachio,60
+Mohanthal,94,Badam,50
+Mohanthal,74,Bengal Gram Flour,19
+Mohanthal,16,Saffron,33
+Muthiya,59,Bottle Gourd,75
+Muthiya,7,Whole Wheat Flour,38
+Muthiya,9,Rava,37
+Muthiya,66,Sesame Seeds,93
+Muthiya,67,Bengal Gram Flour,19
+Patra,51,Arbi Ke Patte,81
+Patra,52,Sesame Seeds,93
+Patra,88,Gur,61
+Patra,76,Bengal Gram Flour,19
+Patra,76,Imli,12
+Pav Bhaji,74,Pav Bhaji Masala,55
+Pav Bhaji,20,Gobi,39
+Pav Bhaji,45,Potatoes,30
+Pav Bhaji,93,Green Peas,68
+Pav Bhaji,48,Dinner Rolls,61
+Puri Bhaji,55,Aloo,91
+Puri Bhaji,87,Urad Dal,99
+Puri Bhaji,17,Mustard,61
+Puri Bhaji,46,Ginger,4
+Puri Bhaji,26,Curry Leaves,68
+Sabudana Khichadi,96,Raw Peanuts,92
+Sabudana Khichadi,40,Sabudana,12
+Sabudana Khichadi,30,Lemon,6
+Sabudana Khichadi,93,Avocado Oil,51
+Sabudana Khichadi,54,Curry Leaves,68
+Sabudana Khichadi,94,Green Chili,12
+Sev Khamani,19,Khaman,89
+Sev Khamani,42,Pomegranate,35
+Sev Khamani,35,Sev,51
+Sev Khamani,11,Powdered Sugar,1
+Sev Khamani,29,Garlic,63
+Sev Tameta,75,Sev,51
+Sev Tameta,15,Ginger,4
+Sev Tameta,43,Tomato,67
+Sev Tameta,83,Sugar,95
+Namakpara,86,Wheat Flour,25
+Namakpara,49,Baking Soda,42
+Namakpara,21,All Purpose Flour,98
+Namakpara,13,Black Pepper,95
+Namakpara,43,Sunflower Oil,43
+Sukhdi,61,Whole Wheat Flour,38
+Sukhdi,41,Gur,61
+Sukhdi,14,Clarified Butter,79
+Surnoli,34,Rice Flakes,54
+Surnoli,53,Yogurt,38
+Surnoli,80,Raw Rice,34
+Surnoli,28,Jaggery,77
+Surnoli,74,Grated Coconut,46
+Thalipeeth,84,Whole Wheat Flour,38
+Thalipeeth,37,Rice Flour,37
+Thalipeeth,94,Pearl Millet Flour,53
+Thalipeeth,28,Sorghum Flour,36
+Thalipeeth,42,Sesame Seeds,93
+Undhiyu,27,Sweet Potato,25
+Undhiyu,21,Surti Papdi,11
+Undhiyu,5,Baby Potatoes,31
+Undhiyu,63,Valor Papdi,75
+Undhiyu,11,Green Peas,68
+Veg Kolhapuri,16,Gobi,39
+Veg Kolhapuri,99,Potato,27
+Veg Kolhapuri,71,Beans,30
+Veg Kolhapuri,74,Khus Khus,27
+Veg Kolhapuri,90,Coconut,39
+Vindaloo,26,Chicken,81
+Vindaloo,94,Coconut Oil,40
+Vindaloo,21,Wine Vinegar,40
+Vindaloo,55,Ginger,4
+Vindaloo,96,Green,38
+Vindaloo,99,Cinnamon,31
+Lilva Kachori,90,Green Garlic Chutney,34
+Lilva Kachori,13,Fresh Green Peas,55
+Lilva Kachori,54,Ginger,4
+Lilva Kachori,6,Lemon Juice,83
+Lilva Kachori,79,Plain Flour,99
+Mag Dhokli,76,Moong Beans,50
+Mag Dhokli,42,Jaggery,77
+Mag Dhokli,27,Red Chillies,72
+Mag Dhokli,54,Oil,58
+Mag Dhokli,72,Salt,59
+Khichu,2,Rice Flour,37
+Khichu,9,Sesame Seeds,93
+Khichu,96,Baking Soda,42
+Khichu,38,Peanut Oil,73
+Thepla,95,Chickpea Flour,89
+Thepla,39,Methi Leaves,2
+Thepla,69,Jowar Flour,42
+Thepla,43,Wheat Flour,25
+Farsi Puri,58,Semolina,22
+Farsi Puri,69,Clarified Butter,79
+Farsi Puri,85,Oil,58
+Farsi Puri,43,White Flour,51
+Farsi Puri,9,Black Pepper,95
+Khaman,67,Yogurt,38
+Khaman,65,Fresh Coconut,44
+Khaman,1,Sesame Seeds,93
+Khaman,65,Semolina,22
+Khaman,48,Gram Flour,100
+Turiya Patra Vatana Sabji,40,Ridge Gourd,52
+Turiya Patra Vatana Sabji,11,Baking Soda,42
+Turiya Patra Vatana Sabji,5,Sugar,95
+Turiya Patra Vatana Sabji,70,Grated Coconut,46
+Turiya Patra Vatana Sabji,13,Peas,34
+Churma Ladoo,35,Whole Wheat Flour,38
+Churma Ladoo,84,Khus Khus,27
+Churma Ladoo,12,Sesame Seeds,93
+Churma Ladoo,58,Dry Coconut,10
+Churma Ladoo,28,Gur,61
+Cheera Doi,31,Rice,90
+Cheera Doi,39,Mango,76
+Cheera Doi,35,Curd,100
+Gheela Pitha,90,Sticky Rice,51
+Gheela Pitha,19,Rice Flour,37
+Gheela Pitha,8,Jaggery,77
+Gheela Pitha,70,Orange Rind,34
+Khar,0,Raw Papaya,87
+Khar,46,Panch Phoran Masala,13
+Khar,55,Nigella Seeds,92
+Khar,17,Mustard Oil,44
+Khar,71,Fennel Seeds,73
+Kumol Sawul,48,Rice,90
+Kumol Sawul,65,Eggs,73
+Kumol Sawul,98,Carrot,13
+Kumol Sawul,26,Beetroot,9
+Luchi,20,Maida,54
+Luchi,49,Vegetable Oil,0
+Alu Pitika,32,Potatoes,30
+Alu Pitika,1,Mustard Oil,44
+Alu Pitika,12,Fish,33
+Alu Pitika,28,Green Chillies,53
+Masor Tenga,51,Ridge Gourd,52
+Masor Tenga,42,Fish,33
+Masor Tenga,46,Lemon,6
+Masor Tenga,37,Tomatoes,45
+Masor Tenga,100,Mustard Oil,44
+Bengena Pitika,97,Brinjal,54
+Bengena Pitika,100,Onions,98
+Bengena Pitika,65,Salt,59
+Bengena Pitika,88,Sesame Seeds,93
+Bengena Pitika,51,Coriander,15
+Bilahi Maas,80,Potatoes,30
+Bilahi Maas,78,Garam Masala,7
+Bilahi Maas,20,Tomatoes,45
+Bilahi Maas,97,Mustard Oil,44
+Bilahi Maas,78,Bay Leaf,80
+Black Rice,76,Forbidden Black Rice,34
+Black Rice,44,Chicken,81
+Black Rice,20,Olive Oil,70
+Black Rice,6,Slivered Almonds,68
+Black Rice,53,Garlic Powder,17
+Bora Sawul,34,Biryani Masala,28
+Bora Sawul,72,Mixed Vegetables,90
+Bora Sawul,96,Yellow Moong Daal,13
+Bora Sawul,21,Whole Red,44
+Bora Sawul,43,Mustard Seeds,83
+Brown Rice,51,Brown Rice,76
+Brown Rice,28,Soy Sauce,67
+Brown Rice,54,Olive Oil,70
+Chingri Malai Curry,4,Coconut Milk,10
+Chingri Malai Curry,15,Lobster,95
+Chingri Malai Curry,64,Fresh Green Chilli,87
+Chingri Malai Curry,80,Ginger,4
+Chingri Malai Curry,21,Red Onion,88
+Goja,38,Baking Soda,42
+Goja,48,Clarified Butter,79
+Goja,48,Oil,58
+Goja,86,All Purpose Flour,98
+Hando Guri,14,Jaggery,77
+Hando Guri,45,Raisins,98
+Haq Maas,14,Lamb,69
+Haq Maas,19,Garam Masala Powder,13
+Haq Maas,49,Curd,100
+Haq Maas,91,Turmeric,50
+Haq Maas,93,Bay Leaf,80
+Chingri Bhape,56,Coconut,39
+Chingri Bhape,32,Prawns,54
+Chingri Bhape,45,Curd,100
+Chingri Bhape,83,Mustard Seed,12
+Chingri Bhape,35,Green Chili,12
+Kabiraji,14,Fish Fillet,25
+Kabiraji,15,Besan,58
+Kabiraji,13,Lemon,6
+Kabiraji,8,Mint,65
+Kabiraji,21,Ginger,4
+Khorisa,8,Fermented Bamboo Shoot,98
+Khorisa,70,Potato,27
+Khorisa,15,Ginger,4
+Khorisa,25,Green,38
+Khorisa,54,Mustard Oil,44
+Koldil Chicken,98,Banana Flower,63
+Koldil Chicken,21,Chicken,81
+Koldil Chicken,11,Green Chili,12
+Koldil Chicken,48,Mustard Oil,44
+Koldil Chicken,52,Lemon Juice,83
+Konir Dom,30,Aloo,91
+Konir Dom,15,Tomatoes,45
+Konir Dom,80,Mustard Oil,44
+Konir Dom,74,Bay Leaf,80
+Konir Dom,99,Cinnamon Stick,32
+Koldil Duck,62,Rice Flour,37
+Koldil Duck,86,Mutton,11
+Koldil Duck,65,Banana,79
+Koldil Duck,72,Gram Flour,100
+Koldil Duck,32,Olive Oil,70
+Koldil Duck,37,Baking Powder,13
+Masor Koni,47,Fish Roe,15
+Masor Koni,83,Pumpkin Flowers,74
+Masor Koni,50,Mustard Oil,44
+Masor Koni,23,Turmeric,50
+Masor Koni,79,Tomato,67
+Mishti Chholar Dal,32,Chana Dal,42
+Mishti Chholar Dal,72,Fresh Coconut,44
+Mishti Chholar Dal,63,Ginger,4
+Mishti Chholar Dal,34,Cinnamon,31
+Mishti Chholar Dal,9,Raisins,98
+Pakhala,18,Curd,100
+Pakhala,65,Cooked Rice,37
+Pakhala,62,Curry Leaves,68
+Pakhala,4,Dry Chilli,83
+Pani Pitha,94,Tea Leaves,72
+Pani Pitha,50,White Sesame Seeds,53
+Pani Pitha,89,Dry Coconut,10
+Pani Pitha,37,Soaked Rice,100
+Payokh,13,Basmati Rice,13
+Payokh,39,Rose Water,58
+Payokh,26,Sugar,95
+Payokh,18,Clarified Butter,79
+Payokh,52,Cardamom Pods,86
+Prawn Malai Curry,15,Coconut Milk,10
+Prawn Malai Curry,42,Prawns,54
+Prawn Malai Curry,2,Garlic,63
+Prawn Malai Curry,0,Turmeric,50
+Prawn Malai Curry,76,Sugar,95
+Red Rice,36,Red Pepper,46
+Red Rice,90,Red Onion,88
+Red Rice,90,Butter,92
+Red Rice,33,Watercress,77
+Red Rice,0,Olive Oil,70
+Shukto,85,Green Beans,0
+Shukto,97,Bitter Gourd,50
+Shukto,56,Ridge Gourd,52
+Shukto,63,Banana,79
+Shukto,81,Brinjal,54
+Til Pitha,61,Glutinous Rice,32
+Til Pitha,6,Black Sesame Seeds,3
+Til Pitha,33,Gur,61
+Bebinca,33,Coconut Milk,10
+Bebinca,33,Egg Yolks,8
+Bebinca,91,Clarified Butter,79
+Bebinca,12,All Purpose Flour,98
+Shufta,99,Cottage Cheese,42
+Shufta,56,Dry Dates,74
+Shufta,20,Dried Rose Petals,10
+Shufta,43,Pistachio,60
+Shufta,39,Badam,50
+Mawa Bati,79,Milk Powder,2
+Mawa Bati,86,Dry Fruits,93
+Mawa Bati,50,Arrowroot Powder,82
+Mawa Bati,7,All Purpose Flour,98
+Pinaca,68,Brown Rice,76
+Pinaca,54,Fennel Seeds,73
+Pinaca,4,Grated Coconut,46
+Pinaca,98,Black Pepper,95
+Pinaca,22,Ginger Powder,82

@@ -31,7 +31,8 @@ pre-lab or lab handouts.
 ## Development
 
 To work on developing these labs, you will need to run an additional command
-after cloning the repository.
+after cloning the repository. If you are new to using Git, see the
+[Git Tutorial](tutorials/git/git.md).
 
 ```
 git clone https://github.coecis.cornell.edu/hwr26/engri-1101-labs.git

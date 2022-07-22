@@ -41,3 +41,11 @@ terminal tool. Run the following command:
 ```
 bash codio-pull.sh [lab_name]
 ```
+
+**NOTE**: The current [codio.py](codio.py) file sets the file shown to
+students as `"{lab_name}_lab_key.ipynb"` which is the key file. This is being
+done for development purposes right now. To change this, there are two options:
+change the `codio.py` script to reference `"{lab_name}_lab.ipynb"` or manually
+make the change in Codio. Click the pencil icon above the file tree then
+"Layout". You will see the tabs configured for the layout and can change the
+file to the student version.

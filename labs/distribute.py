@@ -45,6 +45,8 @@ def main(key):
                 index_pairs = delete_pairs(source, CODE_ANSWER_START, CODE_ANSWER_END)
             source = delete(source, index_pairs)
             cell["source"] = [line + "\n" for line in source.split("\n")]
+            # delete last line break after last line
+            cell["source"][-1] = cell["source"][-1][:-1]
 
     student = key.replace("_key", "")
     with open(student, "w") as f:

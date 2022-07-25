@@ -12,3 +12,14 @@ parts:
     - file: chapters/tsp/algorithms.md
     - file: chapters/tsp/tsp_modeling.md
     - file: chapters/tsp/vsli.md
+
+  - caption: Linear Programming and the Simplex Method
+    chapters:
+    - file: chapters/lp/so_far.md
+    - file: chapters/lp/lp.md
+    - file: chapters/lp/opt_sol.md
+    - file: chapters/lp/three_vars.md
+    - file: chapters/lp/simplex.md
+    - file: chapters/lp/summary.md
+    - file: chapters/lp/argue_optimality.md
+    - file: chapters/lp/geometry.md

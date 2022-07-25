@@ -94,11 +94,16 @@ take the non-stop flight, then the fares are said to satisfy the *it triangle
 inequality*.  In cases such as the one above, they are said to *it violate*
 the triangle inequality.  We shall assume that the salesman is pressed for
 time, and always takes the non-stop flight between each of his stops on his
-tour. Thus, the cost of the tour proposed above is: $$135 + 180 + 39 + 195 +
-135 + 160 + 202 = 1046.$$ Furthermore, if he were to go from NY to Syracuse to
-San Francisco to LA to Chicago to Detroit to Atlanta to NY, then the cost would
-be $$202+445 + 39 + 180 + 105 + 135 + 129 = 1235.$$ Clearly, the first tour is
-better.
+tour. Thus, the cost of the tour proposed above is:
+
+$$135 + 180 + 39 + 195 + 135 + 160 + 202 = 1046.$$
+
+Furthermore, if he were to go from NY to Syracuse to San Francisco to LA to
+Chicago to Detroit to Atlanta to NY, then the cost would be
+
+$$202+445 + 39 + 180 + 105 + 135 + 129 = 1235.$$
+
+Clearly, the first tour isbetter.
 
 The salesman would like to choose the order in which to
 visit the cities so as to minimize the total cost of his trip.

@@ -4,3 +4,11 @@ parts:
   - caption: Introduction
     chapters:
     - file: chapters/intro/what_is_or.md
+
+  - caption: The Traveling Salesman Problem
+    chapters:
+    - file: chapters/tsp/intro.md
+    - file: chapters/tsp/model.md
+    - file: chapters/tsp/algorithms.md
+    - file: chapters/tsp/tsp_modeling.md
+    - file: chapters/tsp/vsli.md

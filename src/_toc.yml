@@ -4,6 +4,7 @@ parts:
   - caption: Introduction
     chapters:
     - file: chapters/intro/what_is_or.md
+    - file: chapters/intro/python_intro.ipynb
 
   - caption: The Traveling Salesman Problem
     chapters:

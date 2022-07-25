@@ -103,7 +103,7 @@ Chicago to Detroit to Atlanta to NY, then the cost would be
 
 $$202+445 + 39 + 180 + 105 + 135 + 129 = 1235.$$
 
-Clearly, the first tour isbetter.
+Clearly, the first tour is better.
 
 The salesman would like to choose the order in which to
 visit the cities so as to minimize the total cost of his trip.

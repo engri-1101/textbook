@@ -127,10 +127,10 @@ constraint $z_2 = 1 - x + z_4$, which was indeed the most limiting constraint.
 
 We can start to see a pattern here.
 
-```{admonition}
+```{note}
 
 The point is that the solution associated with the dictionaries in Simplex
-Method correspond to ``corner points'' of the feasible region. Intuitively we
+Method correspond to "corner points" of the feasible region. Intuitively we
 can interpret every step in the Simplex Method as moving the current feasible
 solution to a next one, by moving along a boundary line of the feasible region,
 until a next constraint is hit.

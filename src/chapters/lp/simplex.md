@@ -41,7 +41,7 @@ Recall the LP we are trying to solve:
 
 $$\begin{align*}
 \text{maximize}\ & 2x_1+x_2+x_3\\
-\text{such that}\\ & x_1 \leq 4 \\
+\text{such that}\ & x_1 \leq 4 \\
 & x_2 \leq 4 \\
 & x_1 + x_2 \leq 6 \\
 & -x_1+2x_3 \leq 4 \\
@@ -296,7 +296,7 @@ And let's do it a quick check and plug this solution into the LP we started with
 
 $$\begin{align*}
 \text{maximize}\ & 2x_1+x_2+x_3\\
-\text{such that}\\ & x_1 \leq 4 \\
+\text{such that}\ & x_1 \leq 4 \\
 & x_2 \leq 4 \\
 & x_1 + x_2 \leq 6 \\
 & -x_1+2x_3 \leq 4 \\

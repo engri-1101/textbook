@@ -5,7 +5,7 @@ Method is doing. The LP we considered was
 
 $$\begin{align*}
 \text{maximize}\ & 3x+2y\\
-\text{such that}\\ & x \leq 4 \\
+\text{such that}\  & x \leq 4 \\
 & y \leq 2 \\
 & 2x + y \leq 6 \\
 & y-x \leq 1 \\
@@ -24,7 +24,7 @@ and a new variable $z_0$ for the objective function.
 
 $$\begin{alignat*}{20}
 \text{maximize}\ &&z_0&=\ &&& 3x&+&2y\\
-\text{such that}\& & z_1 &=& 4 &-& x \\
+\text{such that}\ & & z_1 &=& 4 &-& x \\
 && z_2 &=& 2 && &-& y \\
 && z_3 &=& 6 &-& 2x &-&y\\
 && z_4 &=& 1 &+& x &-& y
@@ -50,7 +50,7 @@ function, and get
 
 $$\begin{alignat*}{20}
 \text{maximize}\ &&z_0&=\ &&& 3x&+&2(1+x-z_4)\\
-\text{such that}\& & z_1 &=& 4 &-& x \\
+\text{such that}\ & & z_1 &=& 4 &-& x \\
 && z_2 &=& 2 && &-& (1+x-z_4) \\
 && z_3 &=& 6 &-& 2x &-&(1+x-z_4)\\
 && y &=& 1 &+& x &-& z_4
@@ -62,7 +62,7 @@ which simplifies to
 
 $$\begin{alignat*}{20}
 \text{maximize}\ &&z_0 &=\ &2&+& 5x&-&2z_4\\
-\text{such that}\& & z_1 &=& 4 &-& x \\
+\text{such that}\ & & z_1 &=& 4 &-& x \\
 && z_2 &=& 1 &-&x &+& z_4 \\
 && z_3 &=& 5 &-& 3x &+&z_4\\
 && y &=& 1 &+& x &-& z_4
@@ -90,7 +90,7 @@ every other constraint and the objective function, and get
 
 $$\begin{alignat*}{20}
 \text{maximize}\ &&z_0 &=\ &2&+& 5(1-z_2+z_4)&-&2z_4\\
-\text{such that}\& & z_1 &=& 4 &-& (1-z_2+z_4) \\
+\text{such that}\ & & z_1 &=& 4 &-& (1-z_2+z_4) \\
 && x &=& 1 &-&z_2 &+& z_4 \\
 && z_3 &=& 5 &-& 3(1-z_2+z_4) &+&z_4\\
 && y &=& 1 &+& (1-z_2+z_4) &-& z_4
@@ -102,7 +102,7 @@ which simplifies to
 
 $$\begin{alignat*}{20}
 \text{maximize}\ &&z_0 &=\ &7&-& 5z_2&+&3z_4\\
-\text{such that}\& & z_1 &=& 3 &+& z_2&-&z_4 \\
+\text{such that}\ & & z_1 &=& 3 &+& z_2&-&z_4 \\
 && x &=& 1 &-&z_2 &+& z_4 \\
 && z_3 &=& 2 &+& 3z_2 &-&2z_4\\
 && y &=& 2 &-& z_2
@@ -148,7 +148,7 @@ every other constraint and the objective function, and get
 
 $$\begin{alignat*}{20}
 \text{maximize}\ &&z_0 &=\ &7&-& 5z_2&+&3(1+\tfrac 32 z_2 - \tfrac 12 z_3)\\
-\text{such that}\& & z_1 &=& 5 &+& z_2&-&(1+\tfrac 32 z_2 - \tfrac 12 z_3) \\
+\text{such that}\ & & z_1 &=& 5 &+& z_2&-&(1+\tfrac 32 z_2 - \tfrac 12 z_3) \\
 && x &=& 1 &-&z_2 &+& (1+\tfrac 32 z_2 - \tfrac 12 z_3) \\
 && z_4 &=& 1 &+& \tfrac 32 z_2 &-&\tfrac 12z_3\\
 && y &=& 2 &-& z_2
@@ -160,7 +160,7 @@ which simplifies to
 
 $$\begin{alignat*}{20}
 \text{maximize}\ &&z_0 &=\ &10&-& \tfrac 12 z_2&-&\tfrac 32 z_3\\
-\text{such that}\& & z_1 &=& 4 &-& \tfrac 12 z_2&+& \tfrac 12 z_3 \\
+\text{such that}\ & & z_1 &=& 4 &-& \tfrac 12 z_2&+& \tfrac 12 z_3 \\
 && x &=& 2 &+&\tfrac 12 z_2 &-&  \tfrac 12 z_3 \\
 && z_4 &=& 1 &+& \tfrac 32 z_2 &-&\tfrac 12z_3\\
 && y &=& 2 &-& z_2

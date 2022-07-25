@@ -36,6 +36,9 @@ deploy: html pdf
 	cp ${LATEX}/book.pdf ${HTML}/${PDF_NAME} \
 	  && ghp-import -n -p -f ${HTML} -r ${REMOTE} -m "Update textbook"
 
+deploy-html: html
+	ghp-import -n -p -f ${HTML} -r ${REMOTE} -m "Update textbook"
+
 wc:
 	find src/chapters -type f -name "*.md" -exec cat {} \; | pandoc -f commonmark -t plain | wc -w
 

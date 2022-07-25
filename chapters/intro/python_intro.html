@@ -1,0 +1,1758 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introduction to Python and Mathematical Syntax &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="The Traveling Salesman Problem" href="../tsp/intro.html" />
+    <link rel="prev" title="What is Operations Research?" href="what_is_or.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="what_is_or.html">
+   What is Operations Research?
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Introduction to Python and Mathematical Syntax
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  The Traveling Salesman Problem
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tsp/intro.html">
+   The Traveling Salesman Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tsp/model.html">
+   Mathematical Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tsp/algorithms.html">
+   Solving a Problem – Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tsp/tsp_modeling.html">
+   Modeling with the Traveling Salesman Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tsp/vsli.html">
+   Etching VLSI Computer Chips
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming and the Simplex Method
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/so_far.html">
+   Optimization Models So Far
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/lp.html">
+   Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/opt_sol.html">
+   Finding an Optimal Solution of a Linear Program
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/three_vars.html">
+   Soldiering On - Linear Programs with Three Variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/simplex.html">
+   Simplex Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/summary.html">
+   Summary of Simplex Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/argue_optimality.html">
+   Argument that Solution is Optimal
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../lp/geometry.html">
+   Geometry of the Simplex Method
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.coecis.cornell.edu/hwr26/engri-1101-labs"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.coecis.cornell.edu/hwr26/engri-1101-labs/issues/new?title=Issue%20on%20page%20%2Fchapters/intro/python_intro.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/hwr26/engri-1101-labs/edit/textbook/src/chapters/intro/python_intro.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/chapters/intro/python_intro.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#orienting-yourself-jupyter-notebooks">
+   Orienting Yourself: Jupyter Notebooks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-python-and-juypter-running-cells-variables-printing-and-comparisons">
+   Basic Python and Juypter: Running Cells, Variables, Printing, and Comparisons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#collections-of-objects-lists-vs-sets">
+   Collections of Objects: Lists vs. Sets
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#accessing-and-changing-list-elements">
+     Accessing and Changing List Elements
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#for-loops-and-summation">
+   For Loops and Summation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-range-for-larger-lists">
+     Using Range for Larger Lists
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#more-succinct-sums-with-range">
+     More Succinct Sums with Range
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lists-and-text-based-data">
+     Lists and Text-Based Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#doubly-indexed-lists-and-nested-for-loops">
+   Doubly-Indexed Lists and Nested For Loops
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nested-for-loops">
+     Nested For Loops
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conditional-statements">
+   Conditional Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#defining-functions">
+   Defining Functions
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Introduction to Python and Mathematical Syntax</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#orienting-yourself-jupyter-notebooks">
+   Orienting Yourself: Jupyter Notebooks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-python-and-juypter-running-cells-variables-printing-and-comparisons">
+   Basic Python and Juypter: Running Cells, Variables, Printing, and Comparisons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#collections-of-objects-lists-vs-sets">
+   Collections of Objects: Lists vs. Sets
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#accessing-and-changing-list-elements">
+     Accessing and Changing List Elements
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#for-loops-and-summation">
+   For Loops and Summation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-range-for-larger-lists">
+     Using Range for Larger Lists
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#more-succinct-sums-with-range">
+     More Succinct Sums with Range
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lists-and-text-based-data">
+     Lists and Text-Based Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#doubly-indexed-lists-and-nested-for-loops">
+   Doubly-Indexed Lists and Nested For Loops
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nested-for-loops">
+     Nested For Loops
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conditional-statements">
+   Conditional Statements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#defining-functions">
+   Defining Functions
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="introduction-to-python-and-mathematical-syntax">
+<h1>Introduction to Python and Mathematical Syntax<a class="headerlink" href="#introduction-to-python-and-mathematical-syntax" title="Permalink to this headline">#</a></h1>
+<div class="section" id="orienting-yourself-jupyter-notebooks">
+<h2>Orienting Yourself: Jupyter Notebooks<a class="headerlink" href="#orienting-yourself-jupyter-notebooks" title="Permalink to this headline">#</a></h2>
+<p>In ENGRI 1101, labs will be done through <em>Jupyter Notebooks</em>.  The name “Jupyter Notebook” tries to convey what these are: <em>notebooks</em> that contain snippets of various items, including text, pictures,  mathematical equations, and Python code. This handout is meant to be viewed as a Jupyter Notebook (more details below), in which case it will be interactive: you’ll be able to run code demos, double-click blocks of text to make edits, modify and write code, and type answers to questions.  However, there is also a PDF version of this notebook meant as a reference handout.  If you’re viewing the PDF version, you will not be able to interact with it.  Instead, in the PDF version you will see code appear in gray boxes showing both the input and the output.</p>
+<p>⚡ <strong>Key Note:</strong> In this course, we will use Python code for computation.  Python is a powerful and relatively straightforward programming language.  However, 1101 is neither a programming class nor does it have programming as a prerequisite!  Our goal is for you to be able to read and make small changes to Python code, but we’re not expecting you to type large swaths of Python by yourself!</p>
+<p>With that preamble, we can go into a bit more detail on Jupyter notebooks.  A Jupyter notebook consists of cells of two main types: text cells (written using raw text and Markdown for formatting) and Code. So far, this notebook has only used text cells in Markdown, which allow you to do things like make tables and mathematical equations. Right now, you are seeing the Markdown text after it is already compiled. Double-click the bold text <strong>CLICK HERE</strong> to see the Markdown before it is compiled (assuming you’re viewing this handout as a Jupyter notebook and not a PDF).  When you double click, you should see two asterisks (**) flanking each side of the bold text; those double-asterisks signify that you want bold text in Markdown.  To go back to the compiled version of this text (and see all the formatting), press either CTRL+Enter (which  compiles the cell) or Shift+Enter (which compiles this cell and moves to the next).</p>
+<p><strong>Task 1:</strong> Double-click and edit the next cell to fill in your name, then hit CTRL+Enter to compile the cell.</p>
+<p>Name:</p>
+</div>
+<div class="section" id="basic-python-and-juypter-running-cells-variables-printing-and-comparisons">
+<h2>Basic Python and Juypter: Running Cells, Variables, Printing, and Comparisons<a class="headerlink" href="#basic-python-and-juypter-running-cells-variables-printing-and-comparisons" title="Permalink to this headline">#</a></h2>
+<p>Python is a powerful programming language.  Here, we’ll just scratch the surface (take CS 1110 for more!): our goal is to summarize some of the main syntax that will help you read and understand code in future labs.</p>
+<p>The next cell is our first example of a <em>code cell</em>, which contains (and lets the user run) Python code.  The code in the next cell first creates a variable <code class="docutils literal notranslate"><span class="pre">x</span></code> and uses the equals sign to <em>assign</em> the value 1101 to x.</p>
+<p>⚡ <strong>Key Note:</strong> In Python, the equals sign and notion of a variable are different from what you’ve probably seen in high school math.  In high school, you generally think of a variable as something you solve for.  In Python, you should think of a variable as a labeled envelope that stores data.  In Python syntax, we use the equals sign to assign data to a variable.  Hence, the code below effectively creates an envelope <code class="docutils literal notranslate"><span class="pre">x</span></code> containing the data <code class="docutils literal notranslate"><span class="pre">1101</span></code>.  When we ask Python to <code class="docutils literal notranslate"><span class="pre">print(x)</span></code>, Python prints the corresponding data in that envelope (<code class="docutils literal notranslate"><span class="pre">1101</span></code>).</p>
+<p>There are lots of ways you can <em>execute</em> the code (i.e., actually run the code): the easiest is to press CTRL+Enter or Shift+Enter, as you did with text cells earlier.  There may also be a triangular run button (►) to the left of the cell or at the top of the Jupyter notebook which you can also click manually, like a play-button on Youtube.</p>
+<p><strong>Task 2:</strong> Run the cell below.  As a sanity check, you should see 1101 printed after you run it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">=</span><span class="mi">1101</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1101
+</pre></div>
+</div>
+</div>
+</div>
+<p>While the single equals sign <code class="docutils literal notranslate"><span class="pre">=</span></code> denotes <em>assignment</em> in Python, we can use the double-equals sign <code class="docutils literal notranslate"><span class="pre">==</span></code> in the more familiar sense to compare data/values.  For instance, run the cell below.  It reassigns <code class="docutils literal notranslate"><span class="pre">x</span></code> to a new value <code class="docutils literal notranslate"><span class="pre">1091</span></code>, and then runs two comparisons: whether or not <code class="docutils literal notranslate"><span class="pre">x</span></code> equals 1091 (which is True) and whether or not <code class="docutils literal notranslate"><span class="pre">x</span></code> equals 1101 (which is False, now that we have reassigned <code class="docutils literal notranslate"><span class="pre">x</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">=</span><span class="mi">1091</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">1091</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">1101</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+False
+</pre></div>
+</div>
+</div>
+</div>
+<p>After you run the above code cells, you might also notice a number appear in brackets next to it.  These numbers allow you to tell which code cells have been run and in which order.  If you run the above code cell again, for instance, you will see the number increase!</p>
+<p>In addition to creating and printing variables, we can modify them.  The following code increases <code class="docutils literal notranslate"><span class="pre">x</span></code> by 10.</p>
+<p><strong>Task 3:</strong> Run the cell below several times.  Each time you run it, you should see <code class="docutils literal notranslate"><span class="pre">x</span></code> continuing to increase.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="mi">10</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1101
+</pre></div>
+</div>
+</div>
+</div>
+<p>⚡ <strong>Key Note:</strong> Code cells within Jupyter notebooks are dependent on each other (and specifically, on which cells have been run and in what order).  For instance, the above cell uses the fact that the variable <code class="docutils literal notranslate"><span class="pre">x</span></code> was defined in previously-run cell. Had you not already defined <code class="docutils literal notranslate"><span class="pre">x</span></code>, Python would not be able to evaluate <code class="docutils literal notranslate"><span class="pre">x=x+10</span></code> and would produce an error.  These labs are generally designed to be worked through sequentially, so that some code cells may only work if you have run previous code cells.  <em>As you move through Jupyter notebooks, make sure to run all intermediate code cells to avoid errors.</em></p>
+<p>Python can also compare variables and numbers, as the following cell shows: we first have <code class="docutils literal notranslate"><span class="pre">x</span></code> store the value 42, and then run four different comparisons.  Each print statement first describes the comparison.  Then, syntax like <code class="docutils literal notranslate"><span class="pre">x&gt;42</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>, depending on the results of the comparison.  The comma in the middle joins the text in quotes to the True/False output.</p>
+<p><strong>Task 4:</strong> Run the below cell.  What would you expect to print if x was defined to be 50 instead of 42?  Think through what should print out “by hand”, and then edit the value of <code class="docutils literal notranslate"><span class="pre">x</span></code> in the code cell to check your answer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">=</span><span class="mi">42</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is x bigger than 42: &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">&gt;</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is x at most 42: &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">&lt;=</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is x equal to 42: &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">==</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is x not equal to 42: &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">!=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Is x bigger than 42:  False
+Is x at most 42:  True
+Is x equal to 42:  True
+Is x not equal to 42:  False
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the above cells, we created a single variable <code class="docutils literal notranslate"><span class="pre">x</span></code> and then assigned it a value / modified its value.  Often we might want to define several variables, or define one in terms of another.</p>
+<p><strong>Task 5:</strong> What do you think the below code snippet should print?  Think through what should happen “by hand” to <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> on each line of code, and then check your work by adding a statement that prints <code class="docutils literal notranslate"><span class="pre">y</span></code> and running the cell!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">y</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="mi">100</span>
+<span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="collections-of-objects-lists-vs-sets">
+<h2>Collections of Objects: Lists vs. Sets<a class="headerlink" href="#collections-of-objects-lists-vs-sets" title="Permalink to this headline">#</a></h2>
+<p>Above, we saw variables that stored a single piece of data.  We might also be interested in storing collections of data.</p>
+<p>A <strong>set</strong> is a collection of objects, <em>where the order of objects does not matter</em>.  Mathematically, a set is denoted using curly braces, <span class="math notranslate nohighlight">\(\{\)</span> and <span class="math notranslate nohighlight">\(\}\)</span>.  For example, $<span class="math notranslate nohighlight">\(\{1, 2, 7\}\)</span><span class="math notranslate nohighlight">\( is a set consisting of 3 numbers (namely: the numbers 1, 2, and 7).  Note that \)</span><span class="math notranslate nohighlight">\(\{1, 2, 7\}=\{2, 1, 7\}\)</span><span class="math notranslate nohighlight">\( since both sets have the exact same objects in them.  Sets need not be numerical: as another example, \)</span><span class="math notranslate nohighlight">\(\{\text{MATH 1910, PHYS 1112, CHEM 2090, ENGRI 1101, ENGRG 1050, ENGL 1111}\}\)</span><span class="math notranslate nohighlight">\( might be the set of courses a first-year engineer is taking at Cornell.  Note that this is *the exact same* set of courses as if we reversed the order: \)</span><span class="math notranslate nohighlight">\(\{\text{ENGL 1111, ENGRG 1050, ENGRI 1101,  CHEM 2090, PHYS 1112, MATH 1910}\}.\)</span>$ Both sets represent the exact same collection of courses.</p>
+<p>The following cell shows how to define a set in Python.  The code below works like our earlier code, and creates two variables (<code class="docutils literal notranslate"><span class="pre">set1</span></code> and <code class="docutils literal notranslate"><span class="pre">set2</span></code> that, like <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> above, are assigned data). Note that Python recognizes that <code class="docutils literal notranslate"><span class="pre">set1</span></code> and <code class="docutils literal notranslate"><span class="pre">set2</span></code> the same.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span>
+<span class="n">set2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">set1</span><span class="o">==</span><span class="n">set2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Mathematically, we use the symbol <span class="math notranslate nohighlight">\(\in\)</span> to mean “in” or “is a member of.” For example, $<span class="math notranslate nohighlight">\(2\in \{1, 2, 7\}\)</span><span class="math notranslate nohighlight">\( since \)</span>2<span class="math notranslate nohighlight">\( is a member of the set \)</span>{1, 2, 7}$.  Python can also evaluate these statements using the word <code class="docutils literal notranslate"><span class="pre">in</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">2</span> <span class="ow">in</span> <span class="n">set1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Task 6:</strong> Change the below cell to define <code class="docutils literal notranslate"><span class="pre">newset</span></code> as the set of all even numbers between 2 and 10, including both 2 and 10.  Then print whether or not 7 is in the new set.  Do you expect the answer to be true or false?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hide outputs</span>
+<span class="n">newset</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">2</span> <span class="ow">in</span> <span class="n">newset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>A <strong>list</strong> is another way to store a collection of data, but where <em>the order of objects matters.</em>  For example, suppose a friend was visiting Cornell’s campus, and you wanted to suggest a route for them to take through campus using the following map:</p>
+<p><img alt="Selected Locations on Cornell's Campus" src="../../_images/campus_map.png" /></p>
+<p>One route might be to start at Rhodes Hall (8), then visit Gates Hall (7), then visit the Lynah Hockey Rink (14), and finally visit the Lindseth Climbing Center (13).  Using the map and key above, you could succinctly list this route as <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">7,</span> <span class="pre">14,</span> <span class="pre">13].</span></code>  This is distinctly different than if you switched the two middle numbers and gave the list/route <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">14,</span> <span class="pre">7,</span> <span class="pre">13]</span></code>: Google maps reports that the first route would take about 8 minutes to walk, but the second (which involves a lot of backtracking) is more than twice as long at 17 minutes!</p>
+<p>In Python, we use the bracket notation (rather than curly brace notation) to define a list. Run the cell below, and contrast the output with the example using <code class="docutils literal notranslate"><span class="pre">set1</span></code> and <code class="docutils literal notranslate"><span class="pre">set2.</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+<span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">list1</span><span class="o">==</span><span class="n">list2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use the exact same <code class="docutils literal notranslate"><span class="pre">in</span></code> syntax to determine whether or not something is in our list:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is 2 in list1: &quot;</span><span class="p">,</span> <span class="mi">2</span> <span class="ow">in</span> <span class="n">list1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is 8 in list1: &quot;</span><span class="p">,</span> <span class="mi">8</span> <span class="ow">in</span> <span class="n">list1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Is 2 in list1:  False
+Is 8 in list1:  True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="accessing-and-changing-list-elements">
+<h3>Accessing and Changing List Elements<a class="headerlink" href="#accessing-and-changing-list-elements" title="Permalink to this headline">#</a></h3>
+<p>We can also access and change specific elements of a list.  Python indexes from 0, so the first item of the list is at position 0, the second item is at position 1, and so on.  For instance, the syntax below prints the data at position 2 of each of our previous route lists; we can see that the items at position 2 (the third visit in each route) are different.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+<span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">list1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">list2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14
+7
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Task 8</strong>: Will the following code evaluate to true or false? Think through it by hand before running the cell.  Make sure you understand the output!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list1</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">list2</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">list1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">list2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<p>Just like we can access individual elements of a list, we can also change them.  For instance,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list1</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">list1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">1101</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1101, 2, 3, 4]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Task 9</strong>: What will list1 be at the end of the end of the following code block?  Think through this by hand, but feel free to add a print statement to check your work!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list1</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">list1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">list1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">list1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="n">list1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>⚡ <strong>Key Note:</strong> Remember that Python indexes from 0, so “the first thing in <code class="docutils literal notranslate"><span class="pre">list1</span></code>” is <code class="docutils literal notranslate"><span class="pre">list1[0],</span></code> the thing at <em>index</em> 0.  This can take some getting used to!</p>
+</div>
+</div>
+<div class="section" id="for-loops-and-summation">
+<h2>For Loops and Summation<a class="headerlink" href="#for-loops-and-summation" title="Permalink to this headline">#</a></h2>
+<p>In the first lecture, we saw an equation like $<span class="math notranslate nohighlight">\(\texttt{time}[\texttt{visit}[1], \texttt{visit}[2]]+\texttt{time}[\texttt{visit}[2], \texttt{visit}[3]]+\cdots+\texttt{time}[\texttt{visit}[n-1], \texttt{visit}[n]]+\texttt{time}[\texttt{visit}[n], \texttt{visit}[1]].\)</span>$</p>
+<p>This is a bit lengthy to write, and throughout this course, we will use summation notation to be more succinct. When we want to evaluate large sums explicitly, we’ll use Python syntax that mirrors our mathematical notation.</p>
+<p>Mathematically, we use the symbol <span class="math notranslate nohighlight">\(\sum\)</span> to denote a sum.  For example, the notation $<span class="math notranslate nohighlight">\(\sum_{i=0}^3 i^2\)</span><span class="math notranslate nohighlight">\( means &quot;sum the function \)</span>i^2<span class="math notranslate nohighlight">\( for all values of \)</span>i<span class="math notranslate nohighlight">\( from \)</span>i=0<span class="math notranslate nohighlight">\( to \)</span>i=3<span class="math notranslate nohighlight">\( (including both 0 and 3)&quot;.   That is \)</span><span class="math notranslate nohighlight">\(\sum_{i=0}^3 i^2= 0^2+1^2+2^2+3^2 = 0+1+4+9=13.\)</span>$</p>
+<p>In Python, we can use <code class="docutils literal notranslate"><span class="pre">sum</span></code> to directly add things in a list.  For instance, to compute the above sum, run the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">answer</span><span class="o">=</span><span class="nb">sum</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14
+</pre></div>
+</div>
+</div>
+</div>
+<p>Thus, one way to compute <span class="math notranslate nohighlight">\(\sum_{i=0}^3 i^2\)</span> is to manually compute the individual terms (<span class="math notranslate nohighlight">\(0^2, 1^2, 2^2,\)</span> and <span class="math notranslate nohighlight">\(3^2\)</span>), type them in a list, and ask Python to <code class="docutils literal notranslate"><span class="pre">sum</span></code> the elements of that list.  This approach, however, still requires us manually computing all the individual terms – we can make our lives even easier if we have Python build up the list of individual terms!  To do so, we can use <code class="docutils literal notranslate"><span class="pre">for</span></code> loops, which allow us to step through collections of data.</p>
+<p>Here, we will want use a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to step through our values from <span class="math notranslate nohighlight">\(i=0\)</span> to <span class="math notranslate nohighlight">\(i=3\)</span>, computing <span class="math notranslate nohighlight">\(i^2\)</span> for each (and adding all values of <span class="math notranslate nohighlight">\(i^2\)</span> from <span class="math notranslate nohighlight">\(i=0\)</span> to <span class="math notranslate nohighlight">\(i=3\)</span> together).  As a quick interlude, we’ll certainly need to compute squares to add these squares.  Python syntax for <span class="math notranslate nohighlight">\(a^b\)</span> is <code class="docutils literal notranslate"><span class="pre">a**b</span></code>.  For example, <code class="docutils literal notranslate"><span class="pre">3**2</span></code> is how we’d compute <span class="math notranslate nohighlight">\(3^2\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now lets first define a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop that steps through our list <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> of possible values of <span class="math notranslate nohighlight">\(i\)</span>.  At each step, we create a variable <code class="docutils literal notranslate"><span class="pre">square</span></code> storing the value of <span class="math notranslate nohighlight">\(i^2\)</span>, and then print this information:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;i is &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;its square is &quot;</span><span class="p">,</span> <span class="n">square</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>i is  0
+its square is  0 
+
+i is  1
+its square is  1 
+
+i is  2
+its square is  4 
+
+i is  3
+its square is  9 
+</pre></div>
+</div>
+</div>
+</div>
+<p>When we defined our for loop, we used the syntax <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]:</span></code>. Using this syntax allows us to specify what list we’re iterating/stepping through (in our example, <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code>, which comes after the keyword <code class="docutils literal notranslate"><span class="pre">in</span></code>).  We also pick the name of the variable that “steps through” the list (in our example, <code class="docutils literal notranslate"><span class="pre">i</span></code>, which comes between the <code class="docutils literal notranslate"><span class="pre">for</span></code> and  <code class="docutils literal notranslate"><span class="pre">in</span></code> keywords).</p>
+<p>To compute our actual sum, we want to build a list <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">9]</span></code> of terms to add.</p>
+<p><strong>Task 10</strong>: Run the code cell below, which computes the sum <span class="math notranslate nohighlight">\(\sum_{i=0}^3 i^2\)</span> in a similar fashion to how we expanded it out mathematically.  The code uses a little bit of new list syntax, but we’ll shortly step through exactly what’s happening.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Appending the next term we want to add, when i=&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;So far, we have built up the list &quot;</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We want to add the terms in the final list &quot;</span><span class="p">,</span> <span class="n">terms</span><span class="p">)</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sum is &quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Appending the next term we want to add, when i= 0
+So far, we have built up the list  [0] 
+
+Appending the next term we want to add, when i= 1
+So far, we have built up the list  [0, 1] 
+
+Appending the next term we want to add, when i= 2
+So far, we have built up the list  [0, 1, 4] 
+
+Appending the next term we want to add, when i= 3
+So far, we have built up the list  [0, 1, 4, 9] 
+
+We want to add the terms in the final list  [0, 1, 4, 9]
+The sum is  14
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s trace through what just happened: we first build an empty list <code class="docutils literal notranslate"><span class="pre">terms</span></code>.  We then use a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to step through our list <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> and iterate from <code class="docutils literal notranslate"><span class="pre">i=0</span></code> to <code class="docutils literal notranslate"><span class="pre">i=3</span></code>.  For each value of <code class="docutils literal notranslate"><span class="pre">i</span></code>, we compute <span class="math notranslate nohighlight">\(i^2\)</span> and append it to the end of the list: we can see how the list <code class="docutils literal notranslate"><span class="pre">terms</span></code> grows from <code class="docutils literal notranslate"><span class="pre">[]</span></code> to <code class="docutils literal notranslate"><span class="pre">[0^2]</span></code> to <code class="docutils literal notranslate"><span class="pre">[0^2,</span> <span class="pre">1^2]</span></code> to <code class="docutils literal notranslate"><span class="pre">[0^2,</span> <span class="pre">1^2,</span> <span class="pre">2^2]</span></code> to <code class="docutils literal notranslate"><span class="pre">[0^2,</span> <span class="pre">1^2,</span> <span class="pre">2^2,</span> <span class="pre">3^2]</span></code>.  When we finally have a full list of all terms we want to add, we use the <code class="docutils literal notranslate"><span class="pre">sum</span></code> function to add up all terms in that list and print the answer.</p>
+<p>We can rewrite the code more succinctly by removing print statements:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sum is &quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sum is  14
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Task 11</strong>: Modify the above code so that it computes <span class="math notranslate nohighlight">\(\sum_{i=2}^{6} i^2.\)</span></p>
+<p>This syntax also allows us to sum over sets that are not just composed of successive integers.  For instance, suppose we wanted to compute a sum $<span class="math notranslate nohighlight">\(\sum_{i\in \{1, 2, 7\}} 2i,\)</span><span class="math notranslate nohighlight">\( which means &quot;sum \)</span>2i<span class="math notranslate nohighlight">\( for each member \)</span>i<span class="math notranslate nohighlight">\( of the set {1, 2, 7}.&quot;  Thus \)</span><span class="math notranslate nohighlight">\(\sum_{i\in \{1, 2, 7\}} 2i = 2(1)+2(2)+2(7)=20.\)</span>$  In Python, we can compute:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">]:</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span>
+    <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sum is &quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sum is  20
+</pre></div>
+</div>
+</div>
+</div>
+<p>⚡ <strong>Key Note:</strong> Notice that, in the above code cells, several lines are often indented under each for loop.  Indents allow Python to recognize if a line is part of the for loop (and should be run at each step through it) or should be run after the entire for loop has completed.</p>
+<p><strong>Task 12:</strong> Run the following two code cells and compare the output.  The first code cell is one we’ve seen before.  In the second, where only the first line in the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop is indented, we don’t compute and print <span class="math notranslate nohighlight">\(i^2\)</span> at every step of the for loop: we only print it once, after we’ve fully gone through the for loop (and <code class="docutils literal notranslate"><span class="pre">i</span></code> stores the data 3, the last value it took on during the for loop).  Remember: <strong>Indentation matters!</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;i is &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;its square is &quot;</span><span class="p">,</span> <span class="n">square</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>i is  0
+its square is  0 
+
+i is  1
+its square is  1 
+
+i is  2
+its square is  4 
+
+i is  3
+its square is  9 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;i is &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+<span class="n">square</span> <span class="o">=</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;its square is &quot;</span><span class="p">,</span> <span class="n">square</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>i is  0
+i is  1
+i is  2
+i is  3
+its square is  9 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-range-for-larger-lists">
+<h3>Using Range for Larger Lists<a class="headerlink" href="#using-range-for-larger-lists" title="Permalink to this headline">#</a></h3>
+<p>Suppose we wanted to compute $<span class="math notranslate nohighlight">\(\sum_{i=0}^{100} i^2,\)</span><span class="math notranslate nohighlight">\( the sum of \)</span>i^2<span class="math notranslate nohighlight">\( from \)</span>i=0<span class="math notranslate nohighlight">\( to \)</span>i=100$.  Mirroring our work above, we could use a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop like <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">...,</span> <span class="pre">100]</span></code>.  Typing out that full list of all integers from 0 to 100, however, would be quite tedious.  Happily, Python has syntax for doing so using <code class="docutils literal notranslate"><span class="pre">range</span></code>. For example, run the following two code cells.  Notice that they do exactly the same thing!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+1
+2
+3
+4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+1
+2
+3
+4
+</pre></div>
+</div>
+</div>
+</div>
+<p>⚡ <strong>Key Note:</strong> Remember that Python’s indexing might seem a bit funky.  <code class="docutils literal notranslate"><span class="pre">range(5)</span></code> goes through “the first 5 numbers, starting at 0”: it starts at 0, and goes up to (but does <strong>not</strong> include 5).</p>
+<p><strong>Task 13:</strong> Use <code class="docutils literal notranslate"><span class="pre">range</span></code> to rewrite the following so that it computes <span class="math notranslate nohighlight">\(\sum_{i=0}^{100} i^2\)</span>.  All you have to do is replace the list in the <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> with the appropriate range statement.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hide outputs</span>
+<span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sum is &quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sum is  14
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you got 328350, you’ve probably made a small mistake with Python’s indexing, and may want to review the key note above.</p>
+</div>
+<div class="section" id="more-succinct-sums-with-range">
+<h3>More Succinct Sums with Range<a class="headerlink" href="#more-succinct-sums-with-range" title="Permalink to this headline">#</a></h3>
+<p>For loops allow us to understand how Python might evaluate a sum term-by-term, but in practice we’ll often use more succinct notation that mirrors the mathematical sum notation.  To do so, we use <em>list comprehension</em> notation and effectively build and sum the list <code class="docutils literal notranslate"><span class="pre">terms</span></code> in one foul swoop.  We won’t go into much detail in list comprehensions in this course, but the syntax should start to feel a bit readable:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">our_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">our_sum</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14
+</pre></div>
+</div>
+</div>
+</div>
+<p>What’s the syntax doing?  We create a variable <code class="docutils literal notranslate"><span class="pre">our_sum</span></code> to store the sum.  Then we tell python to take a <code class="docutils literal notranslate"><span class="pre">sum</span></code>, and we specify that sum in parenthesis with syntax <code class="docutils literal notranslate"><span class="pre">sum(SOME</span> <span class="pre">FUNCTION</span> <span class="pre">OF</span> <span class="pre">i</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(4))</span></code>.  Here <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(4)</span></code> specifies that we want to iterate <code class="docutils literal notranslate"><span class="pre">i</span></code> through <code class="docutils literal notranslate"><span class="pre">range(4)</span></code>, that is through <code class="docutils literal notranslate"><span class="pre">i=0</span></code>, <code class="docutils literal notranslate"><span class="pre">i=1</span></code>, <code class="docutils literal notranslate"><span class="pre">i=2</span></code>, and <code class="docutils literal notranslate"><span class="pre">i=3</span></code>.  We are specifically asking to sum <code class="docutils literal notranslate"><span class="pre">i**2</span></code> (i.e. <span class="math notranslate nohighlight">\(i^2\)</span>) as i iterates through this range.</p>
+<p>Let’s look at one more example to highlight the connection between mathematical notation and Python syntax.  Suppose we defined the function <span class="math notranslate nohighlight">\(f(x)=x^3\)</span>. Then the notation $<span class="math notranslate nohighlight">\(\sum_{x=3}^6 f(x)\)</span><span class="math notranslate nohighlight">\( means &quot;sum the function \)</span>f(x)=x^3<span class="math notranslate nohighlight">\( starting at \)</span>x=3<span class="math notranslate nohighlight">\( and going until \)</span>x=6.<span class="math notranslate nohighlight">\(&quot;  So: \)</span><span class="math notranslate nohighlight">\(\sum_{x=3}^6 f(x) = f(3)+f(4)+f(5)+f(6) = 3^3+4^3+5^3+6^3.\)</span>$</p>
+<p>The Python syntax to evaluate this sum will almost exactly match our verbal interpretation “sum the function <span class="math notranslate nohighlight">\(x^3\)</span> for starting at <span class="math notranslate nohighlight">\(x=3\)</span> and going until <span class="math notranslate nohighlight">\(x=6.\)</span>”  Our Python syntax translation is below.  It uses <code class="docutils literal notranslate"><span class="pre">range(a,</span> <span class="pre">b)</span></code>, which tells Python to start at <code class="docutils literal notranslate"><span class="pre">a</span></code> and go up to (but not including) <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">our_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">our_sum</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>432
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Task 14</strong>: Compute the following sum by hand: <span class="math notranslate nohighlight">\(\sum_{i=-1}^{2} f(i)\)</span> where <span class="math notranslate nohighlight">\(f(i)=(i^2+1)\)</span>.    Then edit and run the cell below to check your work.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hide outputs</span>
+<span class="n">our_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">our_sum</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>432
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="lists-and-text-based-data">
+<h3>Lists and Text-Based Data<a class="headerlink" href="#lists-and-text-based-data" title="Permalink to this headline">#</a></h3>
+<p>Above, we’ve seen <code class="docutils literal notranslate"><span class="pre">for</span></code> loops that iterate through collections of numbers.  However, we might also want to iterate through text.  For example, lets make a list of the stops on our earlier jaunt through Cornell highlights, and print the stops out one-at-a-time.  This time, we’ll store our route as <em>a list of strings</em> rather than the list of integers <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">7,</span> <span class="pre">14,</span> <span class="pre">13]</span></code> we had before.  <strong>Strings</strong> allow us to store text data, and are sandwiched between quote marks (it’s OK to use single quotes or double quotes, as long as you’re consistent!).</p>
+<p>Run the two cells below.  Notice that the first just prints the entire list.  The second <em>iterates</em> (i.e., steps) through each thing in <code class="docutils literal notranslate"><span class="pre">route</span></code>.  Thus, the for loop allows us to step through the items in <code class="docutils literal notranslate"><span class="pre">route</span></code>, one at a time; first the variable <code class="docutils literal notranslate"><span class="pre">visit</span></code> is assigned the data  <code class="docutils literal notranslate"><span class="pre">route[0]</span></code> (in this case, Rhodes Hall) and is printed.  Then we step to the next thing in the list; <code class="docutils literal notranslate"><span class="pre">visit</span></code> is assigned the data  <code class="docutils literal notranslate"><span class="pre">route[1]</span></code> (in this case, Gates Hall) and is printed.  We continue stepping through until we reach the end of the list.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">route</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Rhodes Hall&quot;</span><span class="p">,</span> <span class="s2">&quot;Gates Hall&quot;</span><span class="p">,</span> <span class="s2">&quot;Lynah Hockey Rink&quot;</span><span class="p">,</span> <span class="s2">&quot;Lindseth Climbing Center&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">route</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Rhodes Hall&#39;, &#39;Gates Hall&#39;, &#39;Lynah Hockey Rink&#39;, &#39;Lindseth Climbing Center&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">visit</span> <span class="ow">in</span> <span class="n">route</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">visit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rhodes Hall
+Gates Hall
+Lynah Hockey Rink
+Lindseth Climbing Center
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that we used the exact same <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">VARIABLE</span> <span class="pre">NAME</span> <span class="pre">in</span> <span class="pre">COLLECTION:</span></code> syntax as when using <code class="docutils literal notranslate"><span class="pre">for</span></code> loops to compute sums: here the collection we step through is the list <code class="docutils literal notranslate"><span class="pre">route</span></code>; as we step through all Cornell locations in that list, we create and print a variable named <code class="docutils literal notranslate"><span class="pre">visit</span></code> storing location.  We could use any other variable name, like in the example below (where <code class="docutils literal notranslate"><span class="pre">hamburger</span></code> is used instead of <code class="docutils literal notranslate"><span class="pre">visit</span></code>).  However, in practice it’s much better to use a helpful variable name like <code class="docutils literal notranslate"><span class="pre">visit</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">hamburger</span> <span class="ow">in</span> <span class="n">route</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hamburger</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rhodes Hall
+Gates Hall
+Lynah Hockey Rink
+Lindseth Climbing Center
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="doubly-indexed-lists-and-nested-for-loops">
+<h2>Doubly-Indexed Lists and Nested For Loops<a class="headerlink" href="#doubly-indexed-lists-and-nested-for-loops" title="Permalink to this headline">#</a></h2>
+<p>Sometimes we will want to work with collections of data that depend on multiple variables.  For example, imagine the setup to <em>The Astronomer’s Problem</em>: we have <span class="math notranslate nohighlight">\(n\)</span> stars, and for each pair of stars <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code>, a value <code class="docutils literal notranslate"><span class="pre">time[i,</span> <span class="pre">j]</span></code> encoding the time it takes to move the telescope from star <code class="docutils literal notranslate"><span class="pre">i</span></code> to star <code class="docutils literal notranslate"><span class="pre">j</span></code>.  The value <code class="docutils literal notranslate"><span class="pre">time[i,</span> <span class="pre">j]</span></code> thus depends on two variables: the star we’re moving from and the star we’re moving to.</p>
+<p>Intuitively, it might be easiest to view these times as coming from a table.  Concretely, suppose we had a toy example with four stars 0, 1, 2, and 3.  Our <code class="docutils literal notranslate"><span class="pre">time</span></code> table might look like:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>j=0</p></th>
+<th class="head"><p>j=1</p></th>
+<th class="head"><p>j=2</p></th>
+<th class="head"><p>j=3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>i = 0</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>i = 1</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-even"><td><p>i = 2</p></td>
+<td><p>5</p></td>
+<td><p>4</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>i = 3</p></td>
+<td><p>2</p></td>
+<td><p>7</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>From the table, e.g., we can see that <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">2]=5</span></code> (the entry in the <code class="docutils literal notranslate"><span class="pre">i=0</span></code> row and <code class="docutils literal notranslate"><span class="pre">j=2</span></code> column), indicating that it takes 5 units of time to move the telescope from star 0 to star 2.</p>
+<p>In Python, we can store such a table as a <em>list of lists</em>, though the syntax is a little messier: we create a variable <code class="docutils literal notranslate"><span class="pre">time</span></code> that stores four things, but each thing is its own list of length four.  The idea is that the first thing in time (<code class="docutils literal notranslate"><span class="pre">time[0]</span></code>) corresponds to the first row of our table, the second thing in time (<code class="docutils literal notranslate"><span class="pre">time[1]</span></code>) corresponds to the second row of our table, and so on.  For example, run the following cell to see the first row:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> 
+      <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> 
+      <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> 
+      <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 3, 5, 2]
+</pre></div>
+</div>
+</div>
+</div>
+<p>So <code class="docutils literal notranslate"><span class="pre">time[0]</span></code> is just an ordinary list.  If we wanted to get the entry corresponding to the time it takes to move the telescope from star 0 to star 2, we want the thing in row 0 and column 2 of <code class="docutils literal notranslate"><span class="pre">time</span></code>.  That is, the entry in index 2 of <code class="docutils literal notranslate"><span class="pre">time[0]</span></code>.  Since <code class="docutils literal notranslate"><span class="pre">time[0]</span></code> is itself a list, find our answer by typing <code class="docutils literal notranslate"><span class="pre">time[0][2]</span></code>. Run the cell below to see this in action, and note that the answer happily matches what we found “by hand” in our table above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nested-for-loops">
+<h3>Nested For Loops<a class="headerlink" href="#nested-for-loops" title="Permalink to this headline">#</a></h3>
+<p>We can iterate through this style of data using <em>nested for loops</em>. Run the code cell below to see an example of nested for loops.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 0
+0 1
+1 0
+1 1
+2 0
+2 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>The outermost loop slowly iterates <code class="docutils literal notranslate"><span class="pre">i</span></code> through values in <code class="docutils literal notranslate"><span class="pre">range(3)</span></code> (i.e. from <code class="docutils literal notranslate"><span class="pre">i=0</span></code> to <code class="docutils literal notranslate"><span class="pre">i=1</span></code> to <code class="docutils literal notranslate"><span class="pre">i=2</span></code>).  For each value of <code class="docutils literal notranslate"><span class="pre">i</span></code>, we go through another for loop, iterating <code class="docutils literal notranslate"><span class="pre">j</span></code> through values in <code class="docutils literal notranslate"><span class="pre">range(2)</span></code> (i.e. from <code class="docutils literal notranslate"><span class="pre">j=0</span></code> to <code class="docutils literal notranslate"><span class="pre">j=1</span></code>).  We then print the pair <code class="docutils literal notranslate"><span class="pre">i,</span> <span class="pre">j</span></code>, allowing us to see how Python iterates through these values.  Note that, when <code class="docutils literal notranslate"><span class="pre">i=0</span></code>, we fully run through the inner loop (printing both <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">1</span></code>).  Then once we’ve fully executed that inner loop, we bump <code class="docutils literal notranslate"><span class="pre">i</span></code> up to <code class="docutils literal notranslate"><span class="pre">1</span></code> and start the inner loop all over again.</p>
+<p>Let’s go back to our table storing the times of moving a telescope between various pairs of stars:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>j=0</p></th>
+<th class="head"><p>j=1</p></th>
+<th class="head"><p>j=2</p></th>
+<th class="head"><p>j=3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>i = 0</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>i = 1</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-even"><td><p>i = 2</p></td>
+<td><p>5</p></td>
+<td><p>4</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>i = 3</p></td>
+<td><p>2</p></td>
+<td><p>7</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>We stored this in Python as a list-of-lists <code class="docutils literal notranslate"><span class="pre">time</span></code>.  If we wanted to print the time it takes to move the telescope between various pairs of stars, we can do so by using two for loops: one iterating through values of <code class="docutils literal notranslate"><span class="pre">i</span></code> and one iterating through values of <code class="docutils literal notranslate"><span class="pre">j</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> 
+      <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> 
+      <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> 
+      <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We are at i=&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The time to move the telescope from star i=&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot; to j=&quot;</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="s2">&quot; is &quot;</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We are at i= 0
+The time to move the telescope from star i= 0  to j= 1  is  3
+The time to move the telescope from star i= 0  to j= 2  is  5
+The time to move the telescope from star i= 0  to j= 3  is  2
+
+
+We are at i= 1
+The time to move the telescope from star i= 1  to j= 2  is  4
+The time to move the telescope from star i= 1  to j= 3  is  7
+
+
+We are at i= 2
+The time to move the telescope from star i= 2  to j= 3  is  3
+</pre></div>
+</div>
+</div>
+</div>
+<p>There’s a lot going on in the above cell.  One of the reasons is that the telescope-moving times in <code class="docutils literal notranslate"><span class="pre">time</span></code> happen to be <em>symmetric</em>, so for example <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">1]=time[1,</span> <span class="pre">0]=3</span></code> (and in general, <code class="docutils literal notranslate"><span class="pre">time[i,</span> <span class="pre">j]=time[j,</span> <span class="pre">i]</span></code> for all <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code>).  Thus, we don’t need to display both <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">1]</span></code> AND <code class="docutils literal notranslate"><span class="pre">time[1,</span> <span class="pre">0]</span></code>: we can get away with only printing one. We structured the code above to only print <code class="docutils literal notranslate"><span class="pre">time[i,</span> <span class="pre">j]</span></code> with <span class="math notranslate nohighlight">\(i&lt;j\)</span>.</p>
+<p>The first loop takes us through all values of <code class="docutils literal notranslate"><span class="pre">i</span></code> in <code class="docutils literal notranslate"><span class="pre">range(3)</span></code> and prints the value of i.  We then have a nested for loop that starts at <code class="docutils literal notranslate"><span class="pre">i+1</span></code> and goes up to (but not including) 4.</p>
+<p>For example, the very first value of <code class="docutils literal notranslate"><span class="pre">i</span></code> is 0.  When <code class="docutils literal notranslate"><span class="pre">i</span></code> is 0, we print <code class="docutils literal notranslate"><span class="pre">We</span> <span class="pre">are</span> <span class="pre">at</span> <span class="pre">i=</span> <span class="pre">0</span></code> and then go into the inner for loop.  When <code class="docutils literal notranslate"><span class="pre">i</span></code> is 0, this loop simplifies to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The time to move the telescope from star i=&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot; to j=&quot;</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="s2">&quot; is &quot;</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+
+</pre></div>
+</div>
+<p>That is, we go and print <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">1]</span></code>, then <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">2]</span></code>, and then <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">3]</span></code>.</p>
+<p>⚡ <strong>Key Note:</strong> Remember that spacing allows Python to keep track of what lines are “nested under” each loop.  For instance, the <code class="docutils literal notranslate"><span class="pre">print(&quot;The</span> <span class="pre">time</span> <span class="pre">to...&quot;)</span></code> line is nested under the second for loop, and runs for each value of <code class="docutils literal notranslate"><span class="pre">j</span></code> in that loop (so it prints three times when <code class="docutils literal notranslate"><span class="pre">i=0</span></code>).  The next line, <code class="docutils literal notranslate"><span class="pre">print(&quot;\n&quot;)</span></code>, is unindented.  It thus runs after the entire <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">j</span> <span class="pre">in</span> <span class="pre">range(i+1,</span> <span class="pre">4)</span></code> loop has completed, and adds a blank line between each <code class="docutils literal notranslate"><span class="pre">i=</span></code> case.</p>
+</div>
+</div>
+<div class="section" id="conditional-statements">
+<h2>Conditional Statements<a class="headerlink" href="#conditional-statements" title="Permalink to this headline">#</a></h2>
+<p>Conditional statements allow Python to recognize and respond to different situations.  For example, suppose we had a list of numbers, and wanted to respond differently to even and odd numbers.  We can detect whether an individual number is even or odd by computing its remainder when we divide by 2.  The Python syntax for remainder is <code class="docutils literal notranslate"><span class="pre">%</span></code>; below we compute the remainder of 5 when we divide by 2 and then the remainder of 117 when we divide by 10 (both of which you should sanity check!)</p>
+<p><strong>Task 15</strong>: Update the following cell to also have Python compute the remainder when you divide 340872 by 9183.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">5</span><span class="o">%</span><span class="k">2</span>)
+<span class="nb">print</span><span class="p">(</span><span class="mi">117</span><span class="o">%</span><span class="k">10</span>)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+7
+</pre></div>
+</div>
+</div>
+</div>
+<p>To tell if a number is even or odd, we look at its remainder when we divide by 2.  The following code block uses this idea to detect which numbers in a list are even:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mylist</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">mylist</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is: &quot;</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">number</span><span class="o">%</span><span class="k">2</span> == 0:
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is even! WOOHOO!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number is:  1
+
+
+number is:  2
+number is even! WOOHOO!
+
+
+number is:  3
+
+
+number is:  4
+number is even! WOOHOO!
+</pre></div>
+</div>
+</div>
+</div>
+<p>The the <code class="docutils literal notranslate"><span class="pre">if</span></code> block checks if number is even (by looking at <code class="docutils literal notranslate"><span class="pre">number%2</span></code>).  If so, we print that it’s even. Otherwise we don’t do anything and just skip over that <code class="docutils literal notranslate"><span class="pre">if</span></code> block, printing the empty line and moving on to the next <code class="docutils literal notranslate"><span class="pre">number</span></code> in <code class="docutils literal notranslate"><span class="pre">mylist</span></code>.</p>
+<p>If we wanted to separately respond to even and odd numbers, we could add another <code class="docutils literal notranslate"><span class="pre">if</span></code> statement that checked whether or not <code class="docutils literal notranslate"><span class="pre">number</span></code> was odd.  But Python lets us be more clever, using an <code class="docutils literal notranslate"><span class="pre">else</span></code> statement: if number is not even, it must be odd, and the <code class="docutils literal notranslate"><span class="pre">else</span></code> statement tells us what to do in any case where the <code class="docutils literal notranslate"><span class="pre">if</span></code> condition is not met.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mylist</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">mylist</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is: &quot;</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">number</span><span class="o">%</span><span class="k">2</span> == 0:
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is even! WOOHOO!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is odd. Boo!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number is:  1
+number is odd. Boo!
+
+
+number is:  2
+number is even! WOOHOO!
+
+
+number is:  3
+number is odd. Boo!
+
+
+number is:  4
+number is even! WOOHOO!
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can extend this example with <code class="docutils literal notranslate"><span class="pre">if,</span> <span class="pre">elif,</span> <span class="pre">else</span></code> logic: <code class="docutils literal notranslate"><span class="pre">elif</span></code> stands for “else if” and allows us to have additional conditional statements.  For example, in the following code cell there are three possible cases: if a number is negative, positive, or zero. Our code works as follows:</p>
+<ol class="simple">
+<li><p>We first check if the number is negative and, if so, respond accordingly.</p></li>
+<li><p>If not, we go to the next condition in our <code class="docutils literal notranslate"><span class="pre">elif</span></code> statement and check if the number is positive.  If so, we respond accordingly.</p></li>
+<li><p>If not, we enter our <code class="docutils literal notranslate"><span class="pre">else</span></code> statement that catches every other case.  If we make it to the <code class="docutils literal notranslate"><span class="pre">else</span></code> statement, we know that <code class="docutils literal notranslate"><span class="pre">number</span></code> is neither <code class="docutils literal notranslate"><span class="pre">&lt;0</span></code> nor <code class="docutils literal notranslate"><span class="pre">&gt;0</span></code> and so must be exactly zero!</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mylist</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1101</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">mylist</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is: &quot;</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is negative&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is positive&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number is zero&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number is:  -2
+number is negative
+
+
+number is:  42
+number is positive
+
+
+number is:  0
+number is zero
+
+
+number is:  1101
+number is positive
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="defining-functions">
+<h2>Defining Functions<a class="headerlink" href="#defining-functions" title="Permalink to this headline">#</a></h2>
+<p>Above, we’ve seen lots of examples of code snippets that do something specific.  However, so far they’ve all been applied to one specific set of data (a list of numbers, a doubly-indexed list of times, etc).  Python allows us to define functions that are much more general.</p>
+<p>For example, suppose we wanted to count the number of elements in a list that were even.  We could use our machinery with <code class="docutils literal notranslate"><span class="pre">for</span></code> loops and <code class="docutils literal notranslate"><span class="pre">if</span></code> statements to do this: we can define a <code class="docutils literal notranslate"><span class="pre">count_so_far</span></code> variable thats initialized to 0, step through our list, and increase <code class="docutils literal notranslate"><span class="pre">count_so_far</span></code> every time we see an even number:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myList</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="n">count_so_far</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">myList</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">number</span><span class="o">%</span><span class="k">2</span> == 0:
+        <span class="n">count_so_far</span> <span class="o">=</span> <span class="n">count_so_far</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count_so_far</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we wanted to do this for a bunch of lists, copy/pasting and specializing the code for each list would get real tedious real fast – and that’s only for about 5 lines of code!  Instead, we will write a new function that takes in a list and outputs (or returns) the number of even elements.</p>
+<p>Mathematically, we know how to work with a function <span class="math notranslate nohighlight">\(f(x)=x^2\)</span> (e.g. we can evaluate <span class="math notranslate nohighlight">\(f(3)=3^2=9\)</span>).  We can think of what we’re about to do as defining a new function that acts on lists, like $<span class="math notranslate nohighlight">\(f(list) = \text{Number of even elements in list},\)</span><span class="math notranslate nohighlight">\( so that \)</span>f([1, 2, 3, 4, 5, 6])=3$.  The Python syntax is below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_even</span><span class="p">(</span><span class="n">input_list</span><span class="p">):</span>
+    <span class="n">count_so_far</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">input_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">%</span><span class="k">2</span> == 0:
+            <span class="n">count_so_far</span> <span class="o">=</span> <span class="n">count_so_far</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">count_so_far</span>
+
+<span class="n">count_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+<p>As usual, lets step through it.  The first line tells Python that we are <strong>defining</strong> (<code class="docutils literal notranslate"><span class="pre">def</span></code>) a function called <code class="docutils literal notranslate"><span class="pre">count_even</span></code> (a more helpful name than <span class="math notranslate nohighlight">\(f\)</span>!), and that its input will be a variable called <code class="docutils literal notranslate"><span class="pre">input_list</span></code> (just like <span class="math notranslate nohighlight">\(x\)</span> or <span class="math notranslate nohighlight">\(list\)</span> in our math notation above).</p>
+<p>After telling Python that we are defining a function, all of the logic for that function is indented (like we’ve seen lots of times by this point!).  The actual code for the function is almost exactly what we did before, except that we end with a <code class="docutils literal notranslate"><span class="pre">return</span></code> statement.  This return statement specifies what the function will return to the user.  In this case, our function returns the final value of <code class="docutils literal notranslate"><span class="pre">count_so_far</span></code>, the count of the even number of elements.  This would allow us to potentially store these counts, like in the code below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list1</span><span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">list2</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">count1</span> <span class="o">=</span> <span class="n">count_even</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span>
+<span class="n">count2</span> <span class="o">=</span> <span class="n">count_even</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;list1 has &quot;</span><span class="p">,</span> <span class="n">count1</span><span class="p">,</span> <span class="s2">&quot; even numbers&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;list2 has &quot;</span><span class="p">,</span> <span class="n">count2</span><span class="p">,</span> <span class="s2">&quot; even numbers&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;In total, list1 and list2 have &quot;</span><span class="p">,</span> <span class="n">count1</span><span class="o">+</span><span class="n">count2</span><span class="p">,</span> <span class="s2">&quot; even numbers&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>list1 has  1  even numbers
+list2 has  4  even numbers
+In total, list1 and list2 have  5  even numbers
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, when we run the functon <code class="docutils literal notranslate"><span class="pre">count_even</span></code> on <code class="docutils literal notranslate"><span class="pre">list1</span></code>, the function returns 1 (the number of evens in <code class="docutils literal notranslate"><span class="pre">list</span></code>) to the variable <code class="docutils literal notranslate"><span class="pre">count1</span></code>.  Thus we can save that count to print in a subsequent line, and we can add it to <code class="docutils literal notranslate"><span class="pre">count2</span></code> later.  This is the advantage of ending a function with a <strong>return</strong> statement instead of a <strong>print</strong> statement: instead of just printing a single line for the user, we return the value for them to do with as they please!</p>
+<p><strong>Task 16</strong>: rewrite <code class="docutils literal notranslate"><span class="pre">count_even</span></code> as a new function <code class="docutils literal notranslate"><span class="pre">count_1101</span></code> that counts the number of occurences of 1101 in a list.  Then run the cell to test your work!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hide outputs</span>
+<span class="k">def</span> <span class="nf">count_1101</span><span class="p">(</span><span class="n">input_list</span><span class="p">):</span>
+    <span class="n">count_so_far</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">input_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">%</span><span class="k">2</span> == 0:
+            <span class="n">count_so_far</span> <span class="o">=</span> <span class="n">count_so_far</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">count_so_far</span>
+
+<span class="n">count_1101</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1101</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1101</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we start to see larger and larger Python functions, it will help to be able to “mark them up” with comments.  To do so, we use the # symbol.  Comments prefaced with this symbol don’t actually affect how the code compiles, but can be helpful to guide a reader through lines of your code.</p>
+<p><strong>Task 17</strong>: What does the following function do?  Trace through each step through the for loop, and use the comments to help figure out what’s going on!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fun_fcn</span><span class="p">(</span><span class="n">input_list</span><span class="p">):</span>
+        
+    <span class="c1"># Set special_number to be the first element</span>
+    <span class="n">special_number</span> <span class="o">=</span> <span class="n">input_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Iterate through the list one at a time.</span>
+    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">input_list</span><span class="p">:</span>
+        <span class="c1"># Whenever we find an element bigger than special_number,</span>
+        <span class="c1"># update special_number to be that element</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="n">special_number</span><span class="p">:</span>
+            <span class="n">special_number</span> <span class="o">=</span> <span class="n">number</span>
+    
+    <span class="k">return</span> <span class="n">special_number</span>
+
+<span class="n">fun_fcn</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1101</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">56</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1101
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Task 18</strong>: (Bonus task!) Put together everything you’ve learned to write a function <code class="docutils literal notranslate"><span class="pre">fizz_buzz</span></code> that takes in a variable <code class="docutils literal notranslate"><span class="pre">n</span></code> and prints the first <code class="docutils literal notranslate"><span class="pre">n</span></code>. Specifically, modify the below code cell so that it iterates from 1 up to <code class="docutils literal notranslate"><span class="pre">n</span></code>; for each number thats divisible by 3 it should print “fizz”; for each number that is divisible by 5 it should print “buzz”; for each number divisible by both 3 and 5 it should print “fizz_buzz”; and for all other numbers it should print the number.</p>
+<p>Thus, if you called <code class="docutils literal notranslate"><span class="pre">fizz_buzz(16)</span></code>, your output should be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span>
+<span class="mi">2</span>
+<span class="n">fizz</span>
+<span class="mi">4</span>
+<span class="n">buzz</span>
+<span class="n">fizz</span>
+<span class="mi">7</span>
+<span class="mi">8</span>
+<span class="n">fizz</span>
+<span class="n">buzz</span>
+<span class="mi">11</span>
+<span class="n">fizz</span>
+<span class="mi">13</span>
+<span class="mi">14</span>
+<span class="n">fizz_buzz</span>
+<span class="mi">16</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hide outputs</span>
+<span class="k">def</span> <span class="nf">fizz_buzz</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>  
+    <span class="c1"># Here is some starter code - but it doesn&#39;t quite work!</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="k">3</span> == 0:
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fizz&quot;</span><span class="p">)</span>        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">fizz_buzz</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fizz
+1
+2
+fizz
+4
+5
+fizz
+7
+8
+fizz
+10
+11
+fizz
+13
+14
+fizz
+16
+17
+fizz
+19
+20
+fizz
+22
+23
+fizz
+25
+26
+fizz
+28
+29
+fizz
+31
+32
+fizz
+34
+35
+fizz
+37
+38
+fizz
+40
+41
+fizz
+43
+44
+fizz
+46
+47
+fizz
+49
+50
+fizz
+52
+53
+fizz
+55
+56
+fizz
+58
+59
+fizz
+61
+62
+fizz
+64
+65
+fizz
+67
+68
+fizz
+70
+71
+fizz
+73
+74
+fizz
+76
+77
+fizz
+79
+80
+fizz
+82
+83
+fizz
+85
+86
+fizz
+88
+89
+fizz
+91
+92
+fizz
+94
+95
+fizz
+97
+98
+fizz
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "textbook",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./chapters/intro"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="what_is_or.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">What is Operations Research?</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../tsp/intro.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The Traveling Salesman Problem</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By David B. Shmoys, Samuel C. Gutekunst, Frans Schalekamp, and David P. Williamson<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

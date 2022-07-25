@@ -1,7 +1,6 @@
 format: jb-book
 root: cover.md
 parts:
-  - caption: Test
+  - caption: Introduction
     chapters:
-    - file: chapters/test/test.md
-    - file: chapters/test/other.md
+    - file: chapters/intro/what_is_or.md

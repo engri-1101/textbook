@@ -18,6 +18,9 @@ sphinx:
     # By default MathJax version 2 is currently used.
     # MathJax version 3 is recommended for projects with lots of math
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    # This is included to render gilp Plotly visualizations
+    html_js_files:
+    - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html

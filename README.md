@@ -11,7 +11,7 @@ the standard for pre-lab/lab handouts. Archives of distribution files
 (including both pre-lab and lab handouts) can be found on
 [box](https://cornell.box.com/s/t3f8yntntr8z265decbkjzhz2fdbd6t9).
 The archive currently includes the Fall 2020 and Spring 2022 semesters. If you
-need access to this archive, please email Henry (hwr26@cornell.edu).
+need access to this archive, please email Ricky (rls499@cornell.edu).
 
 ## Installation
 

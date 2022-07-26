@@ -1,1 +1,2 @@
-The source code for the minimum spanning tree lab is under [public_html/mst_source](../public_html/mst_source)
+The source code for the minimum spanning tree lab is on the
+[website](https://github.com/engri-1101/website/tree/master/mst_source) repo.

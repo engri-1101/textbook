@@ -1,1 +1,2 @@
-The source code for the Dijkstra's shortest path lab is under [public_html/shortest_path_source](../public_html/shortest_path_source)
+The source code for the Dijkstra's shortest path lab is on the
+[website](https://github.com/engri-1101/website/tree/master/shortest_path_source) repo.

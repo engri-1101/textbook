@@ -46,16 +46,6 @@ the labs [README](labs/README.md) for instructions on creating a new lab.
 
 ## Directory Structure
 
-- [public_html](public_html) contains the source code for the course site
-  ([http://engri1101.orie.cornell.edu/](http://engri1101.orie.cornell.edu/)).
-  It also contains the [raphael](https://github.com/DmitryBaranovskiy/raphael)
-  JavaScript vector library used by the web-based labs. Each web-based lab
-  directory contains a file called web_lab_source.md which contains a link to
-  that lab's source code in [public_html](public_html). The document root of
-  the course site is set to be [public_html](public_html). Hence, any changes
-  within [public_html](public_html) will be reflected on the website in the
-  next pull. For this reason, <ins> *exercise extra precaution when updating
-  the source code of web-based labs!* </ins>
 - [labs](labs) contains all lab directories and a [README](labs/README.md)
   summarizing how to build labs, lab directory structure, and a list of labs.
 - [software_install](software_install) contains software installation

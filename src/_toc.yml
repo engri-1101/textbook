@@ -7,6 +7,7 @@ parts:
     - file: chapters/intro/python_intro.ipynb
 
   - caption: The Traveling Salesman Problem
+    numbered: True
     chapters:
     - file: chapters/tsp/intro.md
     - file: chapters/tsp/model.md
@@ -15,6 +16,7 @@ parts:
     - file: chapters/tsp/vsli.md
 
   - caption: Linear Programming and the Simplex Method
+    numbered: True
     chapters:
     - file: chapters/lp/so_far.md
     - file: chapters/lp/lp.md

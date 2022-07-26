@@ -36,7 +36,7 @@ latex:
 
 # Information about where the book exists on the web
 repository:
-  url: https://github.coecis.cornell.edu/hwr26/engri-1101-labs # Online location of your book
+  url: https://github.com/engri-1101/textbook.git # Online location of your book
   path_to_book: src  # Optional path to your book, relative to the repository root
   branch: textbook  # Which branch of the repository should be used when creating links (optional)
 

@@ -1,7 +1,7 @@
 # Edited from: https://github.com/cs3110/textbook/blob/main/Makefile
 # REMOTE is the name of the git remote that hosts
-# https://github.coecis.cornell.edu/hwr26/engri-1101-labs. The gh-pages branch
-# there is automatically served by #TODO get the link
+# https://github.com/engri-1101/textbook.git. The gh-pages branch
+# there is automatically served by https://engri-1101.github.io/textbook
 REMOTE=origin
 
 BOOK=src

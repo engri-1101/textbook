@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simplex Method &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
+    <title>10. Simplex Method &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -54,8 +54,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Summary of Simplex Method" href="summary.html" />
-    <link rel="prev" title="Soldiering On - Linear Programs with Three Variables" href="three_vars.html" />
+    <link rel="next" title="11. Summary of Simplex Method" href="summary.html" />
+    <link rel="prev" title="9. Soldiering On - Linear Programs with Three Variables" href="three_vars.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -127,27 +127,27 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../tsp/intro.html">
-   The Traveling Salesman Problem
+   1. The Traveling Salesman Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../tsp/model.html">
-   Mathematical Model
+   2. Mathematical Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../tsp/algorithms.html">
-   Solving a Problem – Algorithms
+   3. Solving a Problem – Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../tsp/tsp_modeling.html">
-   Modeling with the Traveling Salesman Problem
+   4. Modeling with the Traveling Salesman Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../tsp/vsli.html">
-   Etching VLSI Computer Chips
+   5. Etching VLSI Computer Chips
   </a>
  </li>
 </ul>
@@ -159,47 +159,47 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="so_far.html">
-   Optimization Models So Far
+   6. Optimization Models So Far
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lp.html">
-   Linear Programming
+   7. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_sol.html">
-   Finding an Optimal Solution of a Linear Program
+   8. Finding an Optimal Solution of a Linear Program
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="three_vars.html">
-   Soldiering On - Linear Programs with Three Variables
+   9. Soldiering On - Linear Programs with Three Variables
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Simplex Method
+   10. Simplex Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="summary.html">
-   Summary of Simplex Method
+   11. Summary of Simplex Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="argue_optimality.html">
-   Argument that Solution is Optimal
+   12. Argument that Solution is Optimal
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="geometry.html">
-   Geometry of the Simplex Method
+   13. Geometry of the Simplex Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="simplex_visual.html">
-   Simplex Visualization
+   14. Simplex Visualization
   </a>
  </li>
 </ul>
@@ -398,27 +398,27 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#first-steps">
-   First Steps
+   10.1. First Steps
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#rewriting-the-lp">
-   Rewriting the LP
+   10.2. Rewriting the LP
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#rewriting-the-lp-again">
-   Rewriting the LP Again
+   10.3. Rewriting the LP Again
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#and-again">
-   And Again
+   10.4. And Again
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#done">
-   Done!
+   10.5. Done!
   </a>
  </li>
 </ul>
@@ -442,27 +442,27 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#first-steps">
-   First Steps
+   10.1. First Steps
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#rewriting-the-lp">
-   Rewriting the LP
+   10.2. Rewriting the LP
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#rewriting-the-lp-again">
-   Rewriting the LP Again
+   10.3. Rewriting the LP Again
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#and-again">
-   And Again
+   10.4. And Again
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#done">
-   Done!
+   10.5. Done!
   </a>
  </li>
 </ul>
@@ -476,7 +476,7 @@ title="Print to PDF"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="simplex-method">
-<h1>Simplex Method<a class="headerlink" href="#simplex-method" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">10. </span>Simplex Method<a class="headerlink" href="#simplex-method" title="Permalink to this headline">#</a></h1>
 <p>How about finding the optimal solution to the following LP:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*}
@@ -508,7 +508,7 @@ the type of LP that we are considering drastically, but all of these
 restrictions can be dropped. You will learn more about this in your homework,
 and when you take ORIE 3300.</p>
 <div class="section" id="first-steps">
-<h2>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">10.1. </span>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">#</a></h2>
 <p>Recall the LP we are trying to solve:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*}
@@ -577,7 +577,7 @@ and <span class="math notranslate nohighlight">\(x_3\)</span> all appear with a 
 and all these variables are equal to <span class="math notranslate nohighlight">\(0\)</span> in this solution.</p>
 </div>
 <div class="section" id="rewriting-the-lp">
-<h2>Rewriting the LP<a class="headerlink" href="#rewriting-the-lp" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">10.2. </span>Rewriting the LP<a class="headerlink" href="#rewriting-the-lp" title="Permalink to this headline">#</a></h2>
 <p>This motivates us to do the following. We want to find a solution where <span class="math notranslate nohighlight">\(x_1\)</span>,
 <span class="math notranslate nohighlight">\(x_2\)</span> or <span class="math notranslate nohighlight">\(x_3\)</span> is positive — let’s choose <span class="math notranslate nohighlight">\(x_1\)</span>. We will find a different
 dictionary for the LP, so that <span class="math notranslate nohighlight">\(x_1\)</span> will now appear <em>on the left-hand side</em> of
@@ -650,7 +650,7 @@ appear in the objective function). The solution associated with this dictionary
 is <span class="math notranslate nohighlight">\( x_2=  x_3=  x_4=0\)</span>, and <span class="math notranslate nohighlight">\( x_1=4\)</span>, <span class="math notranslate nohighlight">\( x_5=4\)</span>, <span class="math notranslate nohighlight">\( x_6=2\)</span>, <span class="math notranslate nohighlight">\( x_7=8\)</span>.</p>
 </div>
 <div class="section" id="rewriting-the-lp-again">
-<h2>Rewriting the LP Again<a class="headerlink" href="#rewriting-the-lp-again" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">10.3. </span>Rewriting the LP Again<a class="headerlink" href="#rewriting-the-lp-again" title="Permalink to this headline">#</a></h2>
 <p>Can we find a feasible solution with an even higher objective value? Well,
 <span class="math notranslate nohighlight">\(x_2\)</span> and <span class="math notranslate nohighlight">\(x_3\)</span> appear in the objective function with a positive coefficient,
 and these variables are currently <span class="math notranslate nohighlight">\(0\)</span> in the solution that we associate with
@@ -690,7 +690,7 @@ third equation with the expression we obtain: <span class="math notranslate nohi
 x_2=2\)</span>, <span class="math notranslate nohighlight">\( x_5=2\)</span>, <span class="math notranslate nohighlight">\( x_7=8\)</span>, with objective value <span class="math notranslate nohighlight">\(10\)</span>.</p>
 </div>
 <div class="section" id="and-again">
-<h2>And Again<a class="headerlink" href="#and-again" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">10.4. </span>And Again<a class="headerlink" href="#and-again" title="Permalink to this headline">#</a></h2>
 <p>The variable <span class="math notranslate nohighlight">\(x_3\)</span> appears in the objective function with a positive
 coefficient, and this variable is currently <span class="math notranslate nohighlight">\(0\)</span> in the solution that we
 associate with the current dictionary. So let’s see if we can further improve
@@ -724,7 +724,7 @@ only constraint that puts a limit on the increase of <span class="math notransla
 \[x_1,x_2,x_3,x_4,x_5, x_6, x_7 \geq 0,\]</div>
 </div>
 <div class="section" id="done">
-<h2>Done!<a class="headerlink" href="#done" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">10.5. </span>Done!<a class="headerlink" href="#done" title="Permalink to this headline">#</a></h2>
 <p>Note that this last LP is exactly in the form that we wanted (many pages ago):
 The coefficients of all variables in the objective function are negative, and
 all variables are constrained to be nonnegative. This means that we have an
@@ -779,13 +779,13 @@ satisfied), and indeed has objective value <span class="math notranslate nohighl
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Soldiering On - Linear Programs with Three Variables</p>
+            <p class="prev-next-title"><span class="section-number">9. </span>Soldiering On - Linear Programs with Three Variables</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="summary.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Summary of Simplex Method</p>
+        <p class="prev-next-title"><span class="section-number">11. </span>Summary of Simplex Method</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

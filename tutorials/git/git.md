@@ -30,7 +30,7 @@ Git to filter out Jupyter Notebook output and metadata. This makes version
 control of Jupyter Notebooks more pleasant.
 
 ```
-git clone https://github.coecis.cornell.edu/hwr26/engri-1101-labs.git
+git clone git@github.com:engri-1101/textbook.git
 cd engri-1101-labs
 git config --local include.path ../.gitconfig
 ```
@@ -120,7 +120,7 @@ Compressing objects: 100% (2/2), done.
 Writing objects: 100% (3/3), 296 bytes | 296.00 KiB/s, done.
 Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
 remote: Resolving deltas: 100% (1/1), completed with 1 local object.
-To github.coecis.cornell.edu:hwr26/engri-1101-labs.git
+To git@github.com:engri-1101/textbook.git
    12674b9..e0545c7  master -> master
 ```
 
@@ -191,9 +191,9 @@ Total 2 (delta 1), reused 0 (delta 0), pack-reused 0
 remote: Resolving deltas: 100% (1/1), completed with 1 local object.
 remote:
 remote: Create a pull request for 'henry' on GitHub by visiting:
-remote:      https://github.coecis.cornell.edu/hwr26/engri-1101-labs/pull/new/henry
+remote:      https://github.com/engri-1101/textbook/pull/new/henry
 remote:
-To github.coecis.cornell.edu:hwr26/engri-1101-labs.git
+To git@github.com:engri-1101/textbook.git
  * [new branch]      henry -> henry
 Branch 'henry' set up to track remote branch 'henry' from 'origin'.
 ```

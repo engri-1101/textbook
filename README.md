@@ -19,7 +19,7 @@ To clone the repo and create distribution files for the latest versions of
 these labs, run the following commands. Be aware this takes a moment.
 
 ```
-git clone https://github.coecis.cornell.edu/hwr26/engri-1101-labs.git
+git clone git@github.com:engri-1101/textbook.git
 cd engri-1101-labs/labs
 make all
 ```
@@ -35,7 +35,7 @@ after cloning the repository. If you are new to using Git, see the
 [Git Tutorial](tutorials/git/git.md).
 
 ```
-git clone https://github.coecis.cornell.edu/hwr26/engri-1101-labs.git
+git clone git@github.com:engri-1101/textbook.git
 cd engri-1101-labs
 git config --local include.path ../.gitconfig
 ```

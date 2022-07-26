@@ -24,3 +24,4 @@ parts:
     - file: chapters/lp/summary.md
     - file: chapters/lp/argue_optimality.md
     - file: chapters/lp/geometry.md
+    - file: chapters/lp/simplex_visual.ipynb

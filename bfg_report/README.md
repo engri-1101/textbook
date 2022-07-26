@@ -28,3 +28,6 @@ Lastly, the reports also include a `object-id-map.old-new.txt` file. As the
 Git history is rewritten, all commit IDs change. This file maintains a mapping
 from the previous commit IDs to the new ones. Additionally, affected prior
 commits have `Former-commit-id: xxxxx` appended to their commit messages.
+
+For access to the state of the repo before the Git history was altered, please
+email Ricky (rls499@cornell.edu).

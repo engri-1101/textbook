@@ -1,9 +1,9 @@
 ENGRI 1101 Labs
 ===============
 
-**NOTE:** This repo was created at the end of Summer 2020 after significant
-course development. All labs were replaced with a web-based or Jupyter Notebook
-equivalent. AMPL was replaced by Google's OR-Tools.
+**NOTE:** This repo was transferred from
+[Cornell's GitHub](https://github.coecis.cornell.edu) in July 2022. For more
+details on the transfer, see [bfg_report](bfg_report).
 
 This repo serves as the standard for ENGRI 1101 lab software / files.
 [Overleaf](https://www.overleaf.com/project/5ecf1b879f37710001f9f54d) serves as

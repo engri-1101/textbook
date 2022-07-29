@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>10. Simplex Method &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -51,8 +52,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="11. Summary of Simplex Method" href="summary.html" />
@@ -488,7 +489,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="simplex-method">
+  <section class="tex2jax_ignore mathjax_ignore" id="simplex-method">
 <h1><span class="section-number">10. </span>Simplex Method<a class="headerlink" href="#simplex-method" title="Permalink to this headline">#</a></h1>
 <p>How about finding the optimal solution to the following LP:</p>
 <div class="math notranslate nohighlight">
@@ -520,7 +521,7 @@ right-hand sides, and nonnegative variables. It may seem that we have narrowed
 the type of LP that we are considering drastically, but all of these
 restrictions can be dropped. You will learn more about this in your homework,
 and when you take ORIE 3300.</p>
-<div class="section" id="first-steps">
+<section id="first-steps">
 <h2><span class="section-number">10.1. </span>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">#</a></h2>
 <p>Recall the LP we are trying to solve:</p>
 <div class="math notranslate nohighlight">
@@ -588,8 +589,8 @@ above is <span class="math notranslate nohighlight">\(0\)</span>. Another nice c
 that we see that there may be better solutions, because variables <span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(x_2\)</span>
 and <span class="math notranslate nohighlight">\(x_3\)</span> all appear with a <em>positive</em> coefficient in the objective function,
 and all these variables are equal to <span class="math notranslate nohighlight">\(0\)</span> in this solution.</p>
-</div>
-<div class="section" id="rewriting-the-lp">
+</section>
+<section id="rewriting-the-lp">
 <h2><span class="section-number">10.2. </span>Rewriting the LP<a class="headerlink" href="#rewriting-the-lp" title="Permalink to this headline">#</a></h2>
 <p>This motivates us to do the following. We want to find a solution where <span class="math notranslate nohighlight">\(x_1\)</span>,
 <span class="math notranslate nohighlight">\(x_2\)</span> or <span class="math notranslate nohighlight">\(x_3\)</span> is positive — let’s choose <span class="math notranslate nohighlight">\(x_1\)</span>. We will find a different
@@ -661,8 +662,8 @@ objective value of the solution that we had before (we can actually immediately
 see the objective value <span class="math notranslate nohighlight">\(z\)</span> is <span class="math notranslate nohighlight">\(8\)</span> because only right-hand side variables
 appear in the objective function). The solution associated with this dictionary
 is <span class="math notranslate nohighlight">\( x_2=  x_3=  x_4=0\)</span>, and <span class="math notranslate nohighlight">\( x_1=4\)</span>, <span class="math notranslate nohighlight">\( x_5=4\)</span>, <span class="math notranslate nohighlight">\( x_6=2\)</span>, <span class="math notranslate nohighlight">\( x_7=8\)</span>.</p>
-</div>
-<div class="section" id="rewriting-the-lp-again">
+</section>
+<section id="rewriting-the-lp-again">
 <h2><span class="section-number">10.3. </span>Rewriting the LP Again<a class="headerlink" href="#rewriting-the-lp-again" title="Permalink to this headline">#</a></h2>
 <p>Can we find a feasible solution with an even higher objective value? Well,
 <span class="math notranslate nohighlight">\(x_2\)</span> and <span class="math notranslate nohighlight">\(x_3\)</span> appear in the objective function with a positive coefficient,
@@ -701,8 +702,8 @@ third equation with the expression we obtain: <span class="math notranslate nohi
 \[x_1,x_2,x_3,x_4,x_5, x_6, x_7 \geq 0,\]</div>
 <p>We have found the feasible solution <span class="math notranslate nohighlight">\( x_3=  x_4=  x_6=0\)</span>, and <span class="math notranslate nohighlight">\( x_1=4\)</span>, <span class="math notranslate nohighlight">\(
 x_2=2\)</span>, <span class="math notranslate nohighlight">\( x_5=2\)</span>, <span class="math notranslate nohighlight">\( x_7=8\)</span>, with objective value <span class="math notranslate nohighlight">\(10\)</span>.</p>
-</div>
-<div class="section" id="and-again">
+</section>
+<section id="and-again">
 <h2><span class="section-number">10.4. </span>And Again<a class="headerlink" href="#and-again" title="Permalink to this headline">#</a></h2>
 <p>The variable <span class="math notranslate nohighlight">\(x_3\)</span> appears in the objective function with a positive
 coefficient, and this variable is currently <span class="math notranslate nohighlight">\(0\)</span> in the solution that we
@@ -735,8 +736,8 @@ only constraint that puts a limit on the increase of <span class="math notransla
 \end{alignat*}\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[x_1,x_2,x_3,x_4,x_5, x_6, x_7 \geq 0,\]</div>
-</div>
-<div class="section" id="done">
+</section>
+<section id="done">
 <h2><span class="section-number">10.5. </span>Done!<a class="headerlink" href="#done" title="Permalink to this headline">#</a></h2>
 <p>Note that this last LP is exactly in the form that we wanted (many pages ago):
 The coefficients of all variables in the objective function are negative, and
@@ -758,8 +759,8 @@ which means we found an optimal solution!</p>
 \end{align*}\end{split}\]</div>
 <p>Note that <span class="math notranslate nohighlight">\(x_1^*=4, x_2^*=2, x_3^*=4\)</span> is indeed feasible (all constraints are
 satisfied), and indeed has objective value <span class="math notranslate nohighlight">\(14\)</span> as expected.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

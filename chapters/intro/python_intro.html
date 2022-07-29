@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Introduction to Python and Mathematical Syntax &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -51,8 +52,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="1. The Traveling Salesman Problem" href="../tsp/intro.html" />
@@ -617,17 +618,17 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="introduction-to-python-and-mathematical-syntax">
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-python-and-mathematical-syntax">
 <h1>Introduction to Python and Mathematical Syntax<a class="headerlink" href="#introduction-to-python-and-mathematical-syntax" title="Permalink to this headline">#</a></h1>
-<div class="section" id="orienting-yourself-jupyter-notebooks">
+<section id="orienting-yourself-jupyter-notebooks">
 <h2>Orienting Yourself: Jupyter Notebooks<a class="headerlink" href="#orienting-yourself-jupyter-notebooks" title="Permalink to this headline">#</a></h2>
 <p>In ENGRI 1101, labs will be done through <em>Jupyter Notebooks</em>.  The name “Jupyter Notebook” tries to convey what these are: <em>notebooks</em> that contain snippets of various items, including text, pictures,  mathematical equations, and Python code. This handout is meant to be viewed as a Jupyter Notebook (more details below), in which case it will be interactive: you’ll be able to run code demos, double-click blocks of text to make edits, modify and write code, and type answers to questions.  However, there is also a PDF version of this notebook meant as a reference handout.  If you’re viewing the PDF version, you will not be able to interact with it.  Instead, in the PDF version you will see code appear in gray boxes showing both the input and the output.</p>
 <p>⚡ <strong>Key Note:</strong> In this course, we will use Python code for computation.  Python is a powerful and relatively straightforward programming language.  However, 1101 is neither a programming class nor does it have programming as a prerequisite!  Our goal is for you to be able to read and make small changes to Python code, but we’re not expecting you to type large swaths of Python by yourself!</p>
 <p>With that preamble, we can go into a bit more detail on Jupyter notebooks.  A Jupyter notebook consists of cells of two main types: text cells (written using raw text and Markdown for formatting) and Code. So far, this notebook has only used text cells in Markdown, which allow you to do things like make tables and mathematical equations. Right now, you are seeing the Markdown text after it is already compiled. Double-click the bold text <strong>CLICK HERE</strong> to see the Markdown before it is compiled (assuming you’re viewing this handout as a Jupyter notebook and not a PDF).  When you double click, you should see two asterisks (**) flanking each side of the bold text; those double-asterisks signify that you want bold text in Markdown.  To go back to the compiled version of this text (and see all the formatting), press either CTRL+Enter (which  compiles the cell) or Shift+Enter (which compiles this cell and moves to the next).</p>
 <p><strong>Task 1:</strong> Double-click and edit the next cell to fill in your name, then hit CTRL+Enter to compile the cell.</p>
 <p>Name:</p>
-</div>
-<div class="section" id="basic-python-and-juypter-running-cells-variables-printing-and-comparisons">
+</section>
+<section id="basic-python-and-juypter-running-cells-variables-printing-and-comparisons">
 <h2>Basic Python and Juypter: Running Cells, Variables, Printing, and Comparisons<a class="headerlink" href="#basic-python-and-juypter-running-cells-variables-printing-and-comparisons" title="Permalink to this headline">#</a></h2>
 <p>Python is a powerful programming language.  Here, we’ll just scratch the surface (take CS 1110 for more!): our goal is to summarize some of the main syntax that will help you read and understand code in future labs.</p>
 <p>The next cell is our first example of a <em>code cell</em>, which contains (and lets the user run) Python code.  The code in the next cell first creates a variable <code class="docutils literal notranslate"><span class="pre">x</span></code> and uses the equals sign to <em>assign</em> the value 1101 to x.</p>
@@ -712,8 +713,8 @@ Is x not equal to 42:  False
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="collections-of-objects-lists-vs-sets">
+</section>
+<section id="collections-of-objects-lists-vs-sets">
 <h2>Collections of Objects: Lists vs. Sets<a class="headerlink" href="#collections-of-objects-lists-vs-sets" title="Permalink to this headline">#</a></h2>
 <p>Above, we saw variables that stored a single piece of data.  We might also be interested in storing collections of data.</p>
 <p>A <strong>set</strong> is a collection of objects, <em>where the order of objects does not matter</em>.  Mathematically, a set is denoted using curly braces, <span class="math notranslate nohighlight">\(\{\)</span> and <span class="math notranslate nohighlight">\(\}\)</span>.  For example,
@@ -807,7 +808,7 @@ Is 8 in list1:  True
 </div>
 </div>
 </div>
-<div class="section" id="accessing-and-changing-list-elements">
+<section id="accessing-and-changing-list-elements">
 <h3>Accessing and Changing List Elements<a class="headerlink" href="#accessing-and-changing-list-elements" title="Permalink to this headline">#</a></h3>
 <p>We can also access and change specific elements of a list.  Python indexes from 0, so the first item of the list is at position 0, the second item is at position 1, and so on.  For instance, the syntax below prints the data at position 2 of each of our previous route lists; we can see that the items at position 2 (the third visit in each route) are different.</p>
 <div class="cell docutils container">
@@ -868,9 +869,9 @@ Is 8 in list1:  True
 </div>
 </div>
 <p>⚡ <strong>Key Note:</strong> Remember that Python indexes from 0, so “the first thing in <code class="docutils literal notranslate"><span class="pre">list1</span></code>” is <code class="docutils literal notranslate"><span class="pre">list1[0],</span></code> the thing at <em>index</em> 0.  This can take some getting used to!</p>
-</div>
-</div>
-<div class="section" id="for-loops-and-summation">
+</section>
+</section>
+<section id="for-loops-and-summation">
 <h2>For Loops and Summation<a class="headerlink" href="#for-loops-and-summation" title="Permalink to this headline">#</a></h2>
 <p>In the first lecture, we saw an equation like</p>
 <div class="math notranslate nohighlight">
@@ -1065,7 +1066,7 @@ its square is  9
 </div>
 </div>
 </div>
-<div class="section" id="using-range-for-larger-lists">
+<section id="using-range-for-larger-lists">
 <h3>Using Range for Larger Lists<a class="headerlink" href="#using-range-for-larger-lists" title="Permalink to this headline">#</a></h3>
 <p>Suppose we wanted to compute</p>
 <div class="math notranslate nohighlight">
@@ -1127,8 +1128,8 @@ its square is  9
 </div>
 </div>
 <p>If you got 328350, you’ve probably made a small mistake with Python’s indexing, and may want to review the key note above.</p>
-</div>
-<div class="section" id="more-succinct-sums-with-range">
+</section>
+<section id="more-succinct-sums-with-range">
 <h3>More Succinct Sums with Range<a class="headerlink" href="#more-succinct-sums-with-range" title="Permalink to this headline">#</a></h3>
 <p>For loops allow us to understand how Python might evaluate a sum term-by-term, but in practice we’ll often use more succinct notation that mirrors the mathematical sum notation.  To do so, we use <em>list comprehension</em> notation and effectively build and sum the list <code class="docutils literal notranslate"><span class="pre">terms</span></code> in one foul swoop.  We won’t go into much detail in list comprehensions in this course, but the syntax should start to feel a bit readable:</p>
 <div class="cell docutils container">
@@ -1180,8 +1181,8 @@ its square is  9
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="lists-and-text-based-data">
+</section>
+<section id="lists-and-text-based-data">
 <h3>Lists and Text-Based Data<a class="headerlink" href="#lists-and-text-based-data" title="Permalink to this headline">#</a></h3>
 <p>Above, we’ve seen <code class="docutils literal notranslate"><span class="pre">for</span></code> loops that iterate through collections of numbers.  However, we might also want to iterate through text.  For example, lets make a list of the stops on our earlier jaunt through Cornell highlights, and print the stops out one-at-a-time.  This time, we’ll store our route as <em>a list of strings</em> rather than the list of integers <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">7,</span> <span class="pre">14,</span> <span class="pre">13]</span></code> we had before.  <strong>Strings</strong> allow us to store text data, and are sandwiched between quote marks (it’s OK to use single quotes or double quotes, as long as you’re consistent!).</p>
 <p>Run the two cells below.  Notice that the first just prints the entire list.  The second <em>iterates</em> (i.e., steps) through each thing in <code class="docutils literal notranslate"><span class="pre">route</span></code>.  Thus, the for loop allows us to step through the items in <code class="docutils literal notranslate"><span class="pre">route</span></code>, one at a time; first the variable <code class="docutils literal notranslate"><span class="pre">visit</span></code> is assigned the data  <code class="docutils literal notranslate"><span class="pre">route[0]</span></code> (in this case, Rhodes Hall) and is printed.  Then we step to the next thing in the list; <code class="docutils literal notranslate"><span class="pre">visit</span></code> is assigned the data  <code class="docutils literal notranslate"><span class="pre">route[1]</span></code> (in this case, Gates Hall) and is printed.  We continue stepping through until we reach the end of the list.</p>
@@ -1231,9 +1232,9 @@ Lindseth Climbing Center
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="doubly-indexed-lists-and-nested-for-loops">
+</section>
+</section>
+<section id="doubly-indexed-lists-and-nested-for-loops">
 <h2>Doubly-Indexed Lists and Nested For Loops<a class="headerlink" href="#doubly-indexed-lists-and-nested-for-loops" title="Permalink to this headline">#</a></h2>
 <p>Sometimes we will want to work with collections of data that depend on multiple variables.  For example, imagine the setup to <em>The Astronomer’s Problem</em>: we have <span class="math notranslate nohighlight">\(n\)</span> stars, and for each pair of stars <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code>, a value <code class="docutils literal notranslate"><span class="pre">time[i,</span> <span class="pre">j]</span></code> encoding the time it takes to move the telescope from star <code class="docutils literal notranslate"><span class="pre">i</span></code> to star <code class="docutils literal notranslate"><span class="pre">j</span></code>.  The value <code class="docutils literal notranslate"><span class="pre">time[i,</span> <span class="pre">j]</span></code> thus depends on two variables: the star we’re moving from and the star we’re moving to.</p>
 <p>Intuitively, it might be easiest to view these times as coming from a table.  Concretely, suppose we had a toy example with four stars 0, 1, 2, and 3.  Our <code class="docutils literal notranslate"><span class="pre">time</span></code> table might look like:</p>
@@ -1307,7 +1308,7 @@ Lindseth Climbing Center
 </div>
 </div>
 </div>
-<div class="section" id="nested-for-loops">
+<section id="nested-for-loops">
 <h3>Nested For Loops<a class="headerlink" href="#nested-for-loops" title="Permalink to this headline">#</a></h3>
 <p>We can iterate through this style of data using <em>nested for loops</em>. Run the code cell below to see an example of nested for loops.</p>
 <div class="cell docutils container">
@@ -1413,9 +1414,9 @@ The time to move the telescope from star i= 2  to j= 3  is  3
 </div>
 <p>That is, we go and print <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">1]</span></code>, then <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">2]</span></code>, and then <code class="docutils literal notranslate"><span class="pre">time[0,</span> <span class="pre">3]</span></code>.</p>
 <p>⚡ <strong>Key Note:</strong> Remember that spacing allows Python to keep track of what lines are “nested under” each loop.  For instance, the <code class="docutils literal notranslate"><span class="pre">print(&quot;The</span> <span class="pre">time</span> <span class="pre">to...&quot;)</span></code> line is nested under the second for loop, and runs for each value of <code class="docutils literal notranslate"><span class="pre">j</span></code> in that loop (so it prints three times when <code class="docutils literal notranslate"><span class="pre">i=0</span></code>).  The next line, <code class="docutils literal notranslate"><span class="pre">print(&quot;\n&quot;)</span></code>, is unindented.  It thus runs after the entire <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">j</span> <span class="pre">in</span> <span class="pre">range(i+1,</span> <span class="pre">4)</span></code> loop has completed, and adds a blank line between each <code class="docutils literal notranslate"><span class="pre">i=</span></code> case.</p>
-</div>
-</div>
-<div class="section" id="conditional-statements">
+</section>
+</section>
+<section id="conditional-statements">
 <h2>Conditional Statements<a class="headerlink" href="#conditional-statements" title="Permalink to this headline">#</a></h2>
 <p>Conditional statements allow Python to recognize and respond to different situations.  For example, suppose we had a list of numbers, and wanted to respond differently to even and odd numbers.  We can detect whether an individual number is even or odd by computing its remainder when we divide by 2.  The Python syntax for remainder is <code class="docutils literal notranslate"><span class="pre">%</span></code>; below we compute the remainder of 5 when we divide by 2 and then the remainder of 117 when we divide by 10 (both of which you should sanity check!)</p>
 <p><strong>Task 15</strong>: Update the following cell to also have Python compute the remainder when you divide 340872 by 9183.</p>
@@ -1536,8 +1537,8 @@ number is positive
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="defining-functions">
+</section>
+<section id="defining-functions">
 <h2>Defining Functions<a class="headerlink" href="#defining-functions" title="Permalink to this headline">#</a></h2>
 <p>Above, we’ve seen lots of examples of code snippets that do something specific.  However, so far they’ve all been applied to one specific set of data (a list of numbers, a doubly-indexed list of times, etc).  Python allows us to define functions that are much more general.</p>
 <p>For example, suppose we wanted to count the number of elements in a list that were even.  We could use our machinery with <code class="docutils literal notranslate"><span class="pre">for</span></code> loops and <code class="docutils literal notranslate"><span class="pre">if</span></code> statements to do this: we can define a <code class="docutils literal notranslate"><span class="pre">count_so_far</span></code> variable thats initialized to 0, step through our list, and increase <code class="docutils literal notranslate"><span class="pre">count_so_far</span></code> every time we see an even number:</p>
@@ -1794,8 +1795,8 @@ fizz
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

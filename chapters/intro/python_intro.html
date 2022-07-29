@@ -716,7 +716,17 @@ Is x not equal to 42:  False
 <div class="section" id="collections-of-objects-lists-vs-sets">
 <h2>Collections of Objects: Lists vs. Sets<a class="headerlink" href="#collections-of-objects-lists-vs-sets" title="Permalink to this headline">#</a></h2>
 <p>Above, we saw variables that stored a single piece of data.  We might also be interested in storing collections of data.</p>
-<p>A <strong>set</strong> is a collection of objects, <em>where the order of objects does not matter</em>.  Mathematically, a set is denoted using curly braces, <span class="math notranslate nohighlight">\(\{\)</span> and <span class="math notranslate nohighlight">\(\}\)</span>.  For example, $<span class="math notranslate nohighlight">\(\{1, 2, 7\}\)</span><span class="math notranslate nohighlight">\( is a set consisting of 3 numbers (namely: the numbers 1, 2, and 7).  Note that \)</span><span class="math notranslate nohighlight">\(\{1, 2, 7\}=\{2, 1, 7\}\)</span><span class="math notranslate nohighlight">\( since both sets have the exact same objects in them.  Sets need not be numerical: as another example, \)</span><span class="math notranslate nohighlight">\(\{\text{MATH 1910, PHYS 1112, CHEM 2090, ENGRI 1101, ENGRG 1050, ENGL 1111}\}\)</span><span class="math notranslate nohighlight">\( might be the set of courses a first-year engineer is taking at Cornell.  Note that this is *the exact same* set of courses as if we reversed the order: \)</span><span class="math notranslate nohighlight">\(\{\text{ENGL 1111, ENGRG 1050, ENGRI 1101,  CHEM 2090, PHYS 1112, MATH 1910}\}.\)</span>$ Both sets represent the exact same collection of courses.</p>
+<p>A <strong>set</strong> is a collection of objects, <em>where the order of objects does not matter</em>.  Mathematically, a set is denoted using curly braces, <span class="math notranslate nohighlight">\(\{\)</span> and <span class="math notranslate nohighlight">\(\}\)</span>.  For example,
+<span class="math notranslate nohighlight">\(\{1, 2, 7\}\)</span> is a set consisting of 3 numbers (namely: the numbers 1, 2, and 7).  Note that</p>
+<div class="math notranslate nohighlight">
+\[\{1, 2, 7\}=\{2, 1, 7\}\]</div>
+<p>since both sets have the exact same objects in them.  Sets need not be numerical: as another example,</p>
+<div class="math notranslate nohighlight">
+\[\{\text{MATH 1910, PHYS 1112, CHEM 2090, ENGRI 1101, ENGRG 1050, ENGL 1111}\}\]</div>
+<p>might be the set of courses a first-year engineer is taking at Cornell.  Note that this is <em>the exact same</em> set of courses as if we reversed the order:</p>
+<div class="math notranslate nohighlight">
+\[\{\text{ENGL 1111, ENGRG 1050, ENGRI 1101,  CHEM 2090, PHYS 1112, MATH 1910}\}.\]</div>
+<p>Both sets represent the exact same collection of courses.</p>
 <p>The following cell shows how to define a set in Python.  The code below works like our earlier code, and creates two variables (<code class="docutils literal notranslate"><span class="pre">set1</span></code> and <code class="docutils literal notranslate"><span class="pre">set2</span></code> that, like <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> above, are assigned data). Note that Python recognizes that <code class="docutils literal notranslate"><span class="pre">set1</span></code> and <code class="docutils literal notranslate"><span class="pre">set2</span></code> the same.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -732,7 +742,10 @@ Is x not equal to 42:  False
 </div>
 </div>
 </div>
-<p>Mathematically, we use the symbol <span class="math notranslate nohighlight">\(\in\)</span> to mean “in” or “is a member of.” For example, $<span class="math notranslate nohighlight">\(2\in \{1, 2, 7\}\)</span><span class="math notranslate nohighlight">\( since \)</span>2<span class="math notranslate nohighlight">\( is a member of the set \)</span>{1, 2, 7}$.  Python can also evaluate these statements using the word <code class="docutils literal notranslate"><span class="pre">in</span></code>:</p>
+<p>Mathematically, we use the symbol <span class="math notranslate nohighlight">\(\in\)</span> to mean “in” or “is a member of.” For example,</p>
+<div class="math notranslate nohighlight">
+\[2\in \{1, 2, 7\}\]</div>
+<p>since <span class="math notranslate nohighlight">\(2\)</span> is a member of the set <span class="math notranslate nohighlight">\(\{1, 2, 7\}\)</span>.  Python can also evaluate these statements using the word <code class="docutils literal notranslate"><span class="pre">in</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span>
@@ -859,9 +872,16 @@ Is 8 in list1:  True
 </div>
 <div class="section" id="for-loops-and-summation">
 <h2>For Loops and Summation<a class="headerlink" href="#for-loops-and-summation" title="Permalink to this headline">#</a></h2>
-<p>In the first lecture, we saw an equation like $<span class="math notranslate nohighlight">\(\texttt{time}[\texttt{visit}[1], \texttt{visit}[2]]+\texttt{time}[\texttt{visit}[2], \texttt{visit}[3]]+\cdots+\texttt{time}[\texttt{visit}[n-1], \texttt{visit}[n]]+\texttt{time}[\texttt{visit}[n], \texttt{visit}[1]].\)</span>$</p>
+<p>In the first lecture, we saw an equation like</p>
+<div class="math notranslate nohighlight">
+\[\texttt{time}[\texttt{visit}[1], \texttt{visit}[2]]+\texttt{time}[\texttt{visit}[2], \texttt{visit}[3]]+\cdots+\texttt{time}[\texttt{visit}[n-1], \texttt{visit}[n]]+\texttt{time}[\texttt{visit}[n], \texttt{visit}[1]].\]</div>
 <p>This is a bit lengthy to write, and throughout this course, we will use summation notation to be more succinct. When we want to evaluate large sums explicitly, we’ll use Python syntax that mirrors our mathematical notation.</p>
-<p>Mathematically, we use the symbol <span class="math notranslate nohighlight">\(\sum\)</span> to denote a sum.  For example, the notation $<span class="math notranslate nohighlight">\(\sum_{i=0}^3 i^2\)</span><span class="math notranslate nohighlight">\( means &quot;sum the function \)</span>i^2<span class="math notranslate nohighlight">\( for all values of \)</span>i<span class="math notranslate nohighlight">\( from \)</span>i=0<span class="math notranslate nohighlight">\( to \)</span>i=3<span class="math notranslate nohighlight">\( (including both 0 and 3)&quot;.   That is \)</span><span class="math notranslate nohighlight">\(\sum_{i=0}^3 i^2= 0^2+1^2+2^2+3^2 = 0+1+4+9=13.\)</span>$</p>
+<p>Mathematically, we use the symbol <span class="math notranslate nohighlight">\(\sum\)</span> to denote a sum.  For example, the notation</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=0}^3 i^2\]</div>
+<p>means “sum the function <span class="math notranslate nohighlight">\(i^2\)</span> for all values of <span class="math notranslate nohighlight">\(i\)</span> from <span class="math notranslate nohighlight">\(i=0\)</span> to <span class="math notranslate nohighlight">\(i=3\)</span> (including both 0 and 3)”.   That is</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=0}^3 i^2= 0^2+1^2+2^2+3^2 = 0+1+4+9=13.\]</div>
 <p>In Python, we can use <code class="docutils literal notranslate"><span class="pre">sum</span></code> to directly add things in a list.  For instance, to compute the above sum, run the following:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -974,7 +994,13 @@ The sum is  14
 </div>
 </div>
 <p><strong>Task 11</strong>: Modify the above code so that it computes <span class="math notranslate nohighlight">\(\sum_{i=2}^{6} i^2.\)</span></p>
-<p>This syntax also allows us to sum over sets that are not just composed of successive integers.  For instance, suppose we wanted to compute a sum $<span class="math notranslate nohighlight">\(\sum_{i\in \{1, 2, 7\}} 2i,\)</span><span class="math notranslate nohighlight">\( which means &quot;sum \)</span>2i<span class="math notranslate nohighlight">\( for each member \)</span>i<span class="math notranslate nohighlight">\( of the set {1, 2, 7}.&quot;  Thus \)</span><span class="math notranslate nohighlight">\(\sum_{i\in \{1, 2, 7\}} 2i = 2(1)+2(2)+2(7)=20.\)</span>$  In Python, we can compute:</p>
+<p>This syntax also allows us to sum over sets that are not just composed of successive integers.  For instance, suppose we wanted to compute a sum</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i\in \{1, 2, 7\}} 2i,\]</div>
+<p>which means “sum <span class="math notranslate nohighlight">\(2i\)</span> for each member <span class="math notranslate nohighlight">\(i\)</span> of the set {1, 2, 7}.”  Thus</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i\in \{1, 2, 7\}} 2i = 2(1)+2(2)+2(7)=20.\]</div>
+<p>In Python, we can compute:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1041,7 +1067,10 @@ its square is  9
 </div>
 <div class="section" id="using-range-for-larger-lists">
 <h3>Using Range for Larger Lists<a class="headerlink" href="#using-range-for-larger-lists" title="Permalink to this headline">#</a></h3>
-<p>Suppose we wanted to compute $<span class="math notranslate nohighlight">\(\sum_{i=0}^{100} i^2,\)</span><span class="math notranslate nohighlight">\( the sum of \)</span>i^2<span class="math notranslate nohighlight">\( from \)</span>i=0<span class="math notranslate nohighlight">\( to \)</span>i=100$.  Mirroring our work above, we could use a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop like <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">...,</span> <span class="pre">100]</span></code>.  Typing out that full list of all integers from 0 to 100, however, would be quite tedious.  Happily, Python has syntax for doing so using <code class="docutils literal notranslate"><span class="pre">range</span></code>. For example, run the following two code cells.  Notice that they do exactly the same thing!</p>
+<p>Suppose we wanted to compute</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=0}^{100} i^2,\]</div>
+<p>the sum of <span class="math notranslate nohighlight">\(i^2\)</span> from <span class="math notranslate nohighlight">\(i=0\)</span> to <span class="math notranslate nohighlight">\(i=100\)</span>.  Mirroring our work above, we could use a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop like <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">...,</span> <span class="pre">100]</span></code>.  Typing out that full list of all integers from 0 to 100, however, would be quite tedious.  Happily, Python has syntax for doing so using <code class="docutils literal notranslate"><span class="pre">range</span></code>. For example, run the following two code cells.  Notice that they do exactly the same thing!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
@@ -1116,7 +1145,12 @@ its square is  9
 </div>
 </div>
 <p>What’s the syntax doing?  We create a variable <code class="docutils literal notranslate"><span class="pre">our_sum</span></code> to store the sum.  Then we tell python to take a <code class="docutils literal notranslate"><span class="pre">sum</span></code>, and we specify that sum in parenthesis with syntax <code class="docutils literal notranslate"><span class="pre">sum(SOME</span> <span class="pre">FUNCTION</span> <span class="pre">OF</span> <span class="pre">i</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(4))</span></code>.  Here <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(4)</span></code> specifies that we want to iterate <code class="docutils literal notranslate"><span class="pre">i</span></code> through <code class="docutils literal notranslate"><span class="pre">range(4)</span></code>, that is through <code class="docutils literal notranslate"><span class="pre">i=0</span></code>, <code class="docutils literal notranslate"><span class="pre">i=1</span></code>, <code class="docutils literal notranslate"><span class="pre">i=2</span></code>, and <code class="docutils literal notranslate"><span class="pre">i=3</span></code>.  We are specifically asking to sum <code class="docutils literal notranslate"><span class="pre">i**2</span></code> (i.e. <span class="math notranslate nohighlight">\(i^2\)</span>) as i iterates through this range.</p>
-<p>Let’s look at one more example to highlight the connection between mathematical notation and Python syntax.  Suppose we defined the function <span class="math notranslate nohighlight">\(f(x)=x^3\)</span>. Then the notation $<span class="math notranslate nohighlight">\(\sum_{x=3}^6 f(x)\)</span><span class="math notranslate nohighlight">\( means &quot;sum the function \)</span>f(x)=x^3<span class="math notranslate nohighlight">\( starting at \)</span>x=3<span class="math notranslate nohighlight">\( and going until \)</span>x=6.<span class="math notranslate nohighlight">\(&quot;  So: \)</span><span class="math notranslate nohighlight">\(\sum_{x=3}^6 f(x) = f(3)+f(4)+f(5)+f(6) = 3^3+4^3+5^3+6^3.\)</span>$</p>
+<p>Let’s look at one more example to highlight the connection between mathematical notation and Python syntax.  Suppose we defined the function <span class="math notranslate nohighlight">\(f(x)=x^3\)</span>. Then the notation</p>
+<div class="math notranslate nohighlight">
+\[\sum_{x=3}^6 f(x)\]</div>
+<p>means “sum the function <span class="math notranslate nohighlight">\(f(x)=x^3\)</span> starting at <span class="math notranslate nohighlight">\(x=3\)</span> and going until <span class="math notranslate nohighlight">\(x=6.\)</span>”  So:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{x=3}^6 f(x) = f(3)+f(4)+f(5)+f(6) = 3^3+4^3+5^3+6^3.\]</div>
 <p>The Python syntax to evaluate this sum will almost exactly match our verbal interpretation “sum the function <span class="math notranslate nohighlight">\(x^3\)</span> for starting at <span class="math notranslate nohighlight">\(x=3\)</span> and going until <span class="math notranslate nohighlight">\(x=6.\)</span>”  Our Python syntax translation is below.  It uses <code class="docutils literal notranslate"><span class="pre">range(a,</span> <span class="pre">b)</span></code>, which tells Python to start at <code class="docutils literal notranslate"><span class="pre">a</span></code> and go up to (but not including) <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1255,6 +1289,9 @@ Lindseth Climbing Center
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 3, 5, 2]
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </div>
 </div>
 <p>So <code class="docutils literal notranslate"><span class="pre">time[0]</span></code> is just an ordinary list.  If we wanted to get the entry corresponding to the time it takes to move the telescope from star 0 to star 2, we want the thing in row 0 and column 2 of <code class="docutils literal notranslate"><span class="pre">time</span></code>.  That is, the entry in index 2 of <code class="docutils literal notranslate"><span class="pre">time[0]</span></code>.  Since <code class="docutils literal notranslate"><span class="pre">time[0]</span></code> is itself a list, find our answer by typing <code class="docutils literal notranslate"><span class="pre">time[0][2]</span></code>. Run the cell below to see this in action, and note that the answer happily matches what we found “by hand” in our table above.</p>
@@ -1352,7 +1389,10 @@ The time to move the telescope from star i= 0  to j= 2  is  5
 The time to move the telescope from star i= 0  to j= 3  is  2
 
 
-We are at i= 1
+We are at i=
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 1
 The time to move the telescope from star i= 1  to j= 2  is  4
 The time to move the telescope from star i= 1  to j= 3  is  7
 
@@ -1519,7 +1559,10 @@ number is positive
 </div>
 </div>
 <p>If we wanted to do this for a bunch of lists, copy/pasting and specializing the code for each list would get real tedious real fast – and that’s only for about 5 lines of code!  Instead, we will write a new function that takes in a list and outputs (or returns) the number of even elements.</p>
-<p>Mathematically, we know how to work with a function <span class="math notranslate nohighlight">\(f(x)=x^2\)</span> (e.g. we can evaluate <span class="math notranslate nohighlight">\(f(3)=3^2=9\)</span>).  We can think of what we’re about to do as defining a new function that acts on lists, like $<span class="math notranslate nohighlight">\(f(list) = \text{Number of even elements in list},\)</span><span class="math notranslate nohighlight">\( so that \)</span>f([1, 2, 3, 4, 5, 6])=3$.  The Python syntax is below:</p>
+<p>Mathematically, we know how to work with a function <span class="math notranslate nohighlight">\(f(x)=x^2\)</span> (e.g. we can evaluate <span class="math notranslate nohighlight">\(f(3)=3^2=9\)</span>).  We can think of what we’re about to do as defining a new function that acts on lists, like</p>
+<div class="math notranslate nohighlight">
+\[f(list) = \text{Number of even elements in list},\]</div>
+<p>so that <span class="math notranslate nohighlight">\(f([1, 2, 3, 4, 5, 6])=3\)</span>.  The Python syntax is below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_even</span><span class="p">(</span><span class="n">input_list</span><span class="p">):</span>

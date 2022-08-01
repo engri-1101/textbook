@@ -1,4 +1,4 @@
-MAIN = taxi_bipartite_matching
+MAIN = bipartite_matching
 LAB = $(MAIN)_lab
 DEMO = $(MAIN)_demo
 KEY = $(LAB)_key
@@ -9,7 +9,7 @@ SRC = matching.py
 all: lab demo
 
 lab: $(KEY).ipynb $(DATA) $(SRC) $(IMAGES)
-	python ../distribute.py --key $(KEY).ipynb
+	python3 ../distribute.py --key $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(SRC) $(IMAGES)
 
 demo: $(DEMO).ipynb $(DATE) $(SRC)

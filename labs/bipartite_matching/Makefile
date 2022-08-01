@@ -1,0 +1,22 @@
+MAIN = taxi_bipartite_matching
+LAB = $(MAIN)_lab
+DEMO = $(MAIN)_demo
+KEY = $(LAB)_key
+DATA = data/*
+IMAGES = images/*
+SRC = matching.py
+
+all: lab demo
+
+lab: $(KEY).ipynb $(DATA) $(SRC) $(IMAGES)
+	python ../distribute.py --key $(KEY).ipynb
+	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(SRC) $(IMAGES)
+
+demo: $(DEMO).ipynb $(DATE) $(SRC)
+	zip -r $(DEMO).zip $(DEMO).ipynb $(DATA) $(SRC)
+
+clean:
+	rm -rf {*.zip,$(LAB).ipynb}
+
+.PHONY: clean all
+

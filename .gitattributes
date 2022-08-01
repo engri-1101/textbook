@@ -1,3 +1,5 @@
 *.ipynb filter=strip-notebook-metadata
 labs/redistricting/data/ga_district_df.csv filter=lfs diff=lfs merge=lfs -text
 labs/redistricting/data/leaf_nodes.p filter=lfs diff=lfs merge=lfs -text
+labs/bipartite_matching/data/day_bipartite.pkl filter=lfs diff=lfs merge=lfs -text
+labs/bipartite_matching/data/time_map.pkl filter=lfs diff=lfs merge=lfs -text

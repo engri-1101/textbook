@@ -242,7 +242,7 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
 def plot_stats(og_taxi_stats, opt_taxi_stats):
     """Plot statistics using matplotlib."""        
     fig, axs = plt.subplots(2, 2, tight_layout=True, figsize=(15,10))
-    FONT_SIZE = 15
+    FONT_SIZE = 20
     plt.rcParams.update({'font.size': FONT_SIZE})
     
     def plot_histogram(stat, title, x_label, i, j):

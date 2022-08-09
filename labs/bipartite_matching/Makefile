@@ -4,7 +4,7 @@ DEMO = $(MAIN)_demo
 KEY = $(LAB)_key
 DATA = data/*
 IMAGES = images/*
-SRC = matching.py
+SRC = bipartite_matching.py
 
 all: lab demo
 

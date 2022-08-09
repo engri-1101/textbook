@@ -222,7 +222,7 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
     # define initial location nodes
     graph.node_renderer.data_source.add(start_nodes, 'index')
     graph.node_renderer.data_source.add(start_colors, 'start_colors')
-    graph.node_renderer.glyph = Circle(size=10,line_width=0,fill_alpha=1, fill_color='start_colors')
+    graph.node_renderer.glyph = Circle(size=10,line_width=1,fill_alpha=1, fill_color='start_colors', line_color='black')
 
      # define network edges
     graph.edge_renderer.data_source.data = dict(start=list(start),
@@ -242,7 +242,7 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
 def plot_stats(og_taxi_stats, opt_taxi_stats):
     """Plot statistics using matplotlib."""        
     fig, axs = plt.subplots(2, 2, tight_layout=True, figsize=(15,10))
-    FONT_SIZE = 20
+    FONT_SIZE = 15
     plt.rcParams.update({'font.size': FONT_SIZE})
     
     def plot_histogram(stat, title, x_label, i, j):

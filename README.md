@@ -40,7 +40,7 @@ these labs, run the following commands. Be aware this takes a moment.
 
 ```
 git clone git@github.com:engri-1101/textbook.git
-cd engri-1101-labs/labs
+cd labs
 make all
 ```
 
@@ -57,7 +57,6 @@ after cloning the repository. If you are new to using Git, see the
 
 ```
 git clone git@github.com:engri-1101/textbook.git
-cd engri-1101-labs
 git config --local include.path ../.gitconfig
 ```
 

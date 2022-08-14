@@ -35,7 +35,7 @@ def delete(string, index_pairs):
 
 def main(key):
     """Make a student version of the given lab key in the same directory."""
-    with open(key, "r") as f:
+    with open(key, "r", encoding="utf-8") as f:
         nb = json.load(f)
         for cell in nb["cells"]:
             source = "".join(cell["source"])

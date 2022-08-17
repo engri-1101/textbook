@@ -242,8 +242,6 @@ function onWindowResize() {
 }
 
 // Handle moving the ball along the path
-// var waiting = true;
-// var currentWaitTime = 0.0;
 var lastPointTime = 0.0;
 function moveBall(deltaTime) {
     if (ballmesh === undefined){
@@ -310,8 +308,9 @@ function render() {
     renderer.render( scene, camera );
     labelRenderer.render(scene, camera);
 
+    var deltaTime = clock.getDelta();
     if (moving) {
-        moveBall(clock.getDelta());
+        moveBall(deltaTime);
     }
 }
 render();

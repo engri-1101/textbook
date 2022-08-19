@@ -11,6 +11,7 @@ console.log(solutionPath);
 if (!(solutionPath === 'data/solution.csv' || solutionPath === 'data/solution_feasible.csv' || solutionPath === 'data/solution_infeasible.csv')){
     solutionPath = 'data/solution.csv';
 }
+
 let dayLength = params.day;
 dayLength = parseFloat(dayLength);
 if (isNaN(dayLength)){
@@ -19,16 +20,28 @@ if (isNaN(dayLength)){
 }
 console.log(dayLength);
 
+let closestStar = params.minstar;
+closestStar = parseFloat(closestStar);
+if (isNaN(closestStar)) {
+    // How far from the center of the Earth (radius 1) should the closest star be
+    closestStar = 2;
+}
+
+let furthestModifier = params.maxstar;
+furthestModifier = parseFloat(furthestModifier);
+if (isNaN(furthestModifier)) {
+    // How much farther away is the furthest star than the closest star
+    furthestModifier = 0.25;
+}
+
+// Controls the maximum camera distance
+let cameraDist = -3/(1.75) * (closestStar + furthestModifier);
+
 var currentTime = 0.0;
 // How long the dot should wait at each star
 var waitTime = dayLength * 0.25/180.0;
 // Earth rotation to start at
 var startRadians = Math.PI;
-
-// How far from the center of the Earth (radius 1) should the closest star be
-var closestStar = 1.33;
-// How much farther away is the furthest star than the closest star
-var furthestModifier = 0.5;
 
 // Scene Initialization
 var scene = new THREE.Scene();
@@ -70,11 +83,11 @@ const light = new THREE.AmbientLight( 0x404040, 0.75 );
 scene.add( light );
 
 // Camera positioning
-camera.position.z = -3;
+camera.position.z = cameraDist;
 const controls = new OrbitControls(camera, labelRenderer.domElement);
 controls.target = earthmesh.position;
 controls.minDistance = 1.4;
-controls.maxDistance = 3.0;
+controls.maxDistance = -1 * cameraDist;
 controls.enablePan = false;
 
 var labels = [];

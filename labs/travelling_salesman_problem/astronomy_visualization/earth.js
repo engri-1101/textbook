@@ -8,7 +8,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 // Holds path to solution data
 let solutionPath = params.solution;
 console.log(solutionPath);
-if (!(solutionPath === 'data/solution.csv' || solutionPath === 'data/solution_infeasible.csv')){
+if (!(solutionPath === 'data/solution.csv' || solutionPath === 'data/solution_feasible.csv' || solutionPath === 'data/solution_infeasible.csv')){
     solutionPath = 'data/solution.csv';
 }
 let dayLength = params.day;
@@ -24,6 +24,11 @@ var currentTime = 0.0;
 var waitTime = dayLength * 0.25/180.0;
 // Earth rotation to start at
 var startRadians = Math.PI;
+
+// How far from the center of the Earth (radius 1) should the closest star be
+var closestStar = 1.33;
+// How much farther away is the furthest star than the closest star
+var furthestModifier = 0.5;
 
 // Scene Initialization
 var scene = new THREE.Scene();
@@ -109,7 +114,7 @@ $.get('data/formatted_data.csv', function (CSVdata){
         var id = item[1];
         var proper = item[2];
         var dist = item[3] * 3.1415 / 180;
-        var roh = 0.5 * dist/furthest_dist + 1.25;
+        var roh = furthestModifier * dist/furthest_dist + closestStar;
         var theta = item[8] * 3.1415 / 180;
         var phi = (90-item[9]) * 3.1415 / 180;
 
@@ -151,7 +156,9 @@ $.get('data/formatted_data.csv', function (CSVdata){
         // Remove non-point row
         solutions.shift();
         // Line wraps back to first point
-        solutions.push(solutions[0]);
+        if (solutions[0] !== solutions[solutions.length - 1]) {
+            solutions.push(solutions[0]);
+        }
 
         material = new THREE.LineBasicMaterial({
             color: 0xff0000
@@ -186,7 +193,7 @@ $.get('data/formatted_data.csv', function (CSVdata){
             var dist = p1.distanceTo(p2);
             totalDistance += dist;
         }
-        speed = totalDistance / (dayLength - waitTime * (ballPath.length + 1));
+        speed = totalDistance / (dayLength - waitTime * (ballPath.length - 1));
         earthmesh.rotateY(startRadians);
     });
     UpdateLabels();

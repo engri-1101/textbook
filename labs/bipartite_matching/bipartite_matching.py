@@ -347,4 +347,53 @@ def num_circulating(day_data):
     unzipped = list(zip(*day_data.values()))
     print('original number of circulating taxis', round(np.mean(unzipped[0])))
     print('optimal number of circulating taxis', round(np.mean(unzipped[1])))
+    
+def plot_wait_time(wait_times, log_scale = False):
+    '''Plot a histogram of the waiting times with optinal log scale'''
+    if log_scale:
+        plt.hist(wait_times, log = True)
+    else:
+        plt.hist(wait_times)
+    max_wait_time = np.max(wait_times)
+    plt.xticks(np.arange(max_wait_time + 1))
+    plt.xlabel('Waiting Time (mins)')
+
+def plot_weight_bipartite(B, match, paths, power, with_labels = False, edge_labels = True):
+    """Plot the weighted bipartite graph;
+    color the maximum cardinality matching in red and
+    color the nodes according to their paths"""
+    DO_nodes = {n for n, d in B.nodes(data = True) if d["bipartite"] == 0}
+    PU_nodes = set(B) - DO_nodes
+    # Sort the nodes by trip_id
+    DO_nodes = sorted(DO_nodes, key = lambda x: x[2], reverse = True)
+    PU_nodes = sorted(PU_nodes, key = lambda x: x[2], reverse = True)
+    # Edge colored in red if it belongs to the max card matching
+    edge_color = []
+    for edge in B.edges:
+        if (edge[0], edge[1]) in match.items():
+            edge_color.append('tab:red')
+        else:
+            edge_color.append('black')
+    # Decide node colors based on the correspong paths
+    color_map = []
+    colors = palettes.Plasma[len(paths)]
+    for node in B:
+        for i in range(len(paths)):
+            if node in list(zip(*paths[i]))[0] + list(zip(*paths[i]))[1]:
+                color_map.append(colors[i])
+                
+    plt.figure(figsize=(8, 6), dpi = 100)
+    plt.margins(x=0.3)
+    pos = dict()
+    pos.update((n, (1, i+1)) for i, n in enumerate(DO_nodes)) 
+    pos.update((n, (5, i+1)) for i, n in enumerate(PU_nodes)) 
+    nx.draw(B, pos=pos , with_labels = with_labels, node_size = 500, node_color = color_map,alpha = 0.75, edge_color = edge_color, width = 2, linewidths = 2, edgecolors = 'black',font_size=10)
+    if edge_labels:
+        labels = nx.get_edge_attributes(B,'weight')
+        if power != 0:
+            labels = {k: int(round((-v)**(1/power))) for k, v in labels.items()}
+        else:
+            labels = {k: -v for k, v in labels.items()}
+        nx.draw_networkx_edge_labels(B,pos,edge_labels=labels, label_pos=0.75, font_size =8, font_color = 'b')
+    plt.show()
 

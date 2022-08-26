@@ -34,6 +34,13 @@ if (isNaN(furthestModifier)) {
     furthestModifier = 0.25;
 }
 
+let ambientLight = params.light;
+ambientLight = parseFloat(ambientLight);
+if (isNaN(ambientLight)) {
+    // How bright should the dark side of the Earth be?
+    ambientLight = 1.25;
+}
+
 // Controls the maximum camera distance
 let cameraDist = -3/(1.75) * (closestStar + furthestModifier);
 
@@ -58,9 +65,15 @@ labelRenderer.domElement.style.position = 'absolute';
 labelRenderer.domElement.style.top = '0px';
 document.body.appendChild( labelRenderer.domElement );
 
-// Create the mesh
-var geometry = new THREE.SphereGeometry( 1, 32, 32 );
+// Create a parent object for stars
+var geometry = new THREE.SphereGeometry( 0.1, 32, 32 );
 var material = new THREE.MeshPhongMaterial();
+var parentmesh = new THREE.Mesh( geometry, material );
+scene.add(parentmesh);
+
+// Create the mesh
+geometry = new THREE.SphereGeometry( 1, 32, 32 );
+material = new THREE.MeshPhongMaterial();
 var earthmesh = new THREE.Mesh( geometry, material );
 scene.add( earthmesh );
 
@@ -79,7 +92,7 @@ directionalLight.position.set(0,0,1)
 directionalLight.target = earthmesh;
 scene.add( directionalLight );
 
-const light = new THREE.AmbientLight( 0x404040, 0.75 );
+const light = new THREE.AmbientLight( 0x404040, ambientLight );
 scene.add( light );
 
 // Camera positioning
@@ -136,7 +149,7 @@ $.get('data/formatted_data.csv', function (CSVdata){
         var material = new THREE.MeshPhongMaterial({emissive: 'white'});
         if (item[2] === 'Test') {material = new THREE.MeshPhongMaterial({color: 'red'});}
         var starmesh = new THREE.Mesh( geometry, material );
-        earthmesh.add(starmesh);
+        parentmesh.add(starmesh);
 
         // Position star
         var x = roh * Math.cos(theta) * Math.sin(phi);
@@ -189,13 +202,13 @@ $.get('data/formatted_data.csv', function (CSVdata){
         const geometry = new THREE.BufferGeometry().setFromPoints( points );
         
         line = new THREE.Line( geometry, material );
-        earthmesh.add( line );
+        parentmesh.add( line );
 
          // Create ball to trace the path
         var geometry2 = new THREE.SphereGeometry( 0.02, 32, 32 );
         var material2 = new THREE.MeshPhongMaterial({emissive: 'cyan'});
         ballmesh = new THREE.Mesh( geometry2, material2 );
-        earthmesh.add(ballmesh);
+        parentmesh.add(ballmesh);
         var point = ballPath[currentPoint];
         currentPoint += 1;
         ballmesh.position.set(point.x, point.y, point.z);
@@ -208,6 +221,7 @@ $.get('data/formatted_data.csv', function (CSVdata){
         }
         speed = totalDistance / (dayLength - waitTime * (ballPath.length - 1));
         earthmesh.rotateY(startRadians);
+        parentmesh.rotateY(startRadians);
     });
     UpdateLabels();
 });
@@ -317,7 +331,7 @@ function moveBall(deltaTime) {
 
     // Rotate Earth
     var rotationSpeed = 2 * Math.PI / dayLength;
-    earthmesh.rotateY(-1 * rotationSpeed * deltaTime);
+    parentmesh.rotateY(-1 * rotationSpeed * deltaTime);
     UpdateLabels();
 
 }

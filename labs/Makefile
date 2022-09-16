@@ -1,5 +1,6 @@
 LABS = baseball_elimination \
 	   branch_and_bound \
+	   bipartite_matching \
 	   diet \
 	   fws \
 	   game_theory \

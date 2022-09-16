@@ -92,5 +92,5 @@ file. Lastly, edit the main [Makefile](Makefile) to include the new lab.
 | 18    | Minimum Cut                       | Jupyter Notebook | [minimum_cut](minimum_cut)                                 | kz226            |
 | 19    | Project Selection                 | Jupyter Notebook | [project_selection](project_selection)                     | wpv6             |
 | 20    | Assignment                        | Jupyter Notebook | [assignment](assignment)                                   | jmd477             |
-
+| 21    | Bipartite Matching                        | Jupyter Notebook | [bipartite_matching](bipartite_matching)                                   | ty357            |
 *Authors should be listed in chronological order of their latest contribution. Hence, the right-most person should serve as the first point of contact for questions regarding the lab.

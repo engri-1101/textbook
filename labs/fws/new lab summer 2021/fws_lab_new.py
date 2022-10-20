@@ -9,7 +9,7 @@ from ortools.linear_solver import pywraplp as OR
 
 # graph visualization for small examples (1 or 2 preferences)
 # 'students' and 'classes' are lists, 'edges' is a dictionary of edges : unit costs
-def small_ex(students,classes,edges):
+def small_ex(classes,students,edges):
     EDGES = [*edges]
 
     students_seen = []
@@ -28,8 +28,8 @@ def small_ex(students,classes,edges):
 
     # graph creation
     B = nx.DiGraph()
-    B.add_nodes_from(students,bipartite=0)
-    B.add_nodes_from(classes,bipartite=1)
+    B.add_nodes_from(classes,bipartite=0)
+    B.add_nodes_from(students,bipartite=1)
     for edge in first_edges:
         B.add_edges_from([edge], edgetype='first')
     for edge in second_edges:
@@ -79,9 +79,9 @@ def inputData(preferences, cost):
 
     # dictionary of edges : edge costs
     edges = {}
-    for s in students:
-        for c in preferences:
-            edges[(s, preferences.at[int(s),c])] = cost[int(c)]
+    for c in preferences:
+        for s in students:
+            edges[(preferences.at[int(s),c], s)] = cost[int(c)]
 
     # add dummy if necessary
     if 'dummy' in cost.keys():
@@ -100,8 +100,8 @@ def inputData(preferences, cost):
 
         for edge in edges_to_delete:
             del edges[edge]
-
-    return students, classes, edges
+    print('updated')
+    return classes, students, edges
 
 
 # return the counts of every assigned preference for some FWS solution

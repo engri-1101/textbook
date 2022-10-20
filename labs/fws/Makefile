@@ -7,7 +7,7 @@ all: lab
 
 lab: $(KEY).ipynb $(DATA)
 	python3 ../distribute.py --key $(KEY).ipynb
-	zip -r $(LAB).zip $(LAB).ipynb $(DATA)
+	zip -r $(LAB).zip $(LAB).ipynb $(LAB).py $(DATA)
 
 clean:
 	rm -rf {*.zip,$(LAB).ipynb}

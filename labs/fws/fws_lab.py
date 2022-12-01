@@ -7,23 +7,54 @@ import networkx as nx
 from networkx.algorithms import bipartite
 from ortools.linear_solver import pywraplp as OR
 
+def ex0(data):
+    STUDENTS = list(data.index)
+    CLASSES = []
+    for c in data.columns:
+        CLASSES = CLASSES + list(data[c].unique())
+    CLASSES = sorted(list(set(CLASSES)))
+    # graph creation
+    B = nx.DiGraph()
+    B.add_nodes_from(STUDENTS,bipartite=0)
+    B.add_nodes_from(CLASSES,bipartite=1)
+    for s in STUDENTS:
+        for c in data:
+            B.add_edge(data.at[int(s),c],s)
+    
+    # node placement
+    pos = {}
+    pos.update((node,(1,-index*2)) for index,node in list(enumerate(CLASSES)))
+    pos.update((node,(2,-1.5*(index+0.5))) for index,node in list(enumerate(STUDENTS)))
+    
+    options = {
+    'node_color': 'lightblue',
+    'node_size': 500,
+    }
+
+
+    nx.draw_networkx(B, pos=pos, arrows=False, **options)
+    nx.draw_networkx_edges(B, pos, arrows=False)
+    plt.axis('off')
+    plt.show()
+
+
 # example 1 visualization
 # 'students' and 'classes' are lists, 'edges' is a dictionary of edges : preference
-def ex1(students,classes,edges):
+def ex1(classes,students,edges):
     EDGES = [*edges]
     
     # graph creation
     B = nx.DiGraph()
-    B.add_nodes_from(students,bipartite=0)
-    B.add_nodes_from(classes,bipartite=1)
+    B.add_nodes_from(classes,bipartite=0)
+    B.add_nodes_from(students,bipartite=1)
     for edge in EDGES:
         B.add_edges_from([edge], weight=edges[edge])
     edge_weight=nx.get_edge_attributes(B,'weight')
     
     # node placement
     pos = {}
-    pos.update((node,(1,-index)) for index,node in list(enumerate(students)))
-    pos.update((node,(2,-1.5*(index+0.5))) for index,node in list(enumerate(classes)))
+    pos.update((node,(1,-1.5*(index+0.5))) for index,node in list(enumerate(classes)))
+    pos.update((node,(2,-index)) for index,node in list(enumerate(students)))
     
     options = {
     'node_color': 'lightblue',
@@ -33,13 +64,12 @@ def ex1(students,classes,edges):
     for e in EDGES:
         if not edge_weight[e] in costs:
             costs.append(edge_weight[e])
-    edge_col = ['blue' if edge_weight[e]==costs[0] else 'orange' if edge_weight[e]==costs[1] else 'lightgrey' for e in EDGES]
+    edge_col = ['blue' if edge_weight[e]==costs[0] else 'orange' if edge_weight[e]==costs[1] else 'lightgrey' for e in B.edges]
 
-    nx.draw_networkx(B, pos=pos, arrows=True, **options)
+    nx.draw_networkx(B, pos=pos, arrows=False, **options)
     nx.draw_networkx_edges(B, pos, edge_color= edge_col)
     plt.axis('off')
     plt.show()
-
 
 # example 2 visualization
 # 'students' is a list, 'edges' is a dictionary of edges : preference
@@ -69,14 +99,14 @@ def ex2(students,edges):
     
     # node placement
     pos = {}
-    pos.update((node,(1,-1.25*index)) for index,node in list(enumerate(STUDENT)))
-    pos.update((node,(2,-2*(index+0.75))) for index,node in list(enumerate(CLASS)))
+    pos.update((node,(1,-2*(index+0.75))) for index,node in list(enumerate(STUDENT)))
+    pos.update((node,(2,-1.25*index)) for index,node in list(enumerate(CLASS)))
     
     options = {
     'node_color': 'lightblue',
     'node_size': 500,
     }
-    edge_col = ['blue' if edge_weight[e]==1 else 'orange' if edge_weight[e]==2 else 'lightgrey' for e in EDGES]
+    edge_col = ['blue' if edge_weight[e]==1 else 'orange' if edge_weight[e]==2 else 'lightgrey' for e in B.edges]
     
     nx.draw_networkx(B, pos=pos, arrows=True, **options)
     nx.draw_networkx_edges(B, pos, edge_color= edge_col)

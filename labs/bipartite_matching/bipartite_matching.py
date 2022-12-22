@@ -396,4 +396,3 @@ def plot_weight_bipartite(B, match, paths, power, with_labels = False, edge_labe
             labels = {k: -v for k, v in labels.items()}
         nx.draw_networkx_edge_labels(B,pos,edge_labels=labels, label_pos=0.75, font_size =8, font_color = 'b')
     plt.show()
-

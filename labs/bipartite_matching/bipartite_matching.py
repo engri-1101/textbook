@@ -2,6 +2,7 @@ import math
 import pandas as pd
 import numpy as np
 import networkx as nx
+from networkx.classes.function import path_weight
 import matplotlib.pyplot as plt
 from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 import copy
@@ -10,9 +11,12 @@ from bokeh import palettes
 from bokeh.plotting import figure, show
 from bokeh.io import output_notebook
 from bokeh.tile_providers import get_provider, Vendors
-from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider,
+from bokeh.models import (GraphRenderer, Circle, MultiLine, Rect, Text, StaticLayoutProvider,
                           HoverTool, TapTool, EdgesAndLinkedNodes, NodesAndLinkedEdges,
-                          ColumnDataSource, LabelSet, NodesOnly)
+                          ColumnDataSource, CustomJSTransform, LabelSet, NodesOnly)
+from bokeh.models.markers import Triangle
+from bokeh.transform import transform
+
 
 def pu_do_nodes(trips):
     # Intialize nodes and edges
@@ -79,7 +83,7 @@ def get_og_path(trips):
         og_paths.append(path)
     return og_paths
     
-def street_network(nodes_df, arcs_df):
+def street_network(nodes_df, arcs_df, weight):
     # Construct the street network
     G = nx.Graph()
     for l in range(len(nodes_df)):
@@ -87,7 +91,7 @@ def street_network(nodes_df, arcs_df):
     for index, row in arcs_df.iterrows():
         i = row['start']
         j = row['end']
-        G.add_edge(i, j, weight = row['trip_time'])
+        G.add_edge(i, j, weight = row[weight])
     return G
 
 def get_taxi_stats(taxi_paths, trips_df):
@@ -149,12 +153,12 @@ def plot_ex_bipartite(B, match, paths, with_labels = False):
     edge_color = []
     for edge in B.edges:
         if (edge[0], edge[1]) in match.items():
-            edge_color.append('tab:red')
+            edge_color.append('gold')
         else:
             edge_color.append('black')
     # Decide node colors based on the correspong paths
     color_map = []
-    colors = palettes.Plasma[len(paths)]
+    colors = palettes.Category10[len(paths)]
     for node in B:
         for i in range(len(paths)):
             if node in list(zip(*paths[i]))[0] + list(zip(*paths[i]))[1]:
@@ -175,12 +179,15 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
     end = []  # end node
     color = []  # color code by taxi
     alpha = []  # opacity lower on trip arcs
+    pus = []  # pickup node
+    dos = []  # drop-off node
+    pu_do_colors = []
 
     # parallel lists for initial location nodes
     start_nodes = []
     start_colors = []
 
-    colors = palettes.Plasma[len(paths)]
+    colors = palettes.Category10[len(paths)]
     c = 0
 
     for path in paths:
@@ -188,14 +195,20 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
         start_nodes.append(path[0][0][0])
         start_colors.append(colors[c])
         for comp in path:
+            if comp[2]:
+                pus.append(comp[0][0])
+                dos.append(comp[1][0])
+                pu_do_colors.append(colors[c])
+
             try:
-                shortest_path = nx.shortest_path(G, source= comp[0][0], target= comp[1][0], weight = 'weight')
+                shortest_path = nx.dijkstra_path(G, source= comp[0][0], target= comp[1][0], weight = 'weight')
                 for i in range(0, len(shortest_path) - 1):
                     start.append(shortest_path[i])
                     end.append(shortest_path[i + 1])
                     alpha.append({True : 1, False : 0.3}[comp[2]])
                     color.append(colors[c])
             except nx.NetworkXNoPath:
+                print('source', comp[0][0], 'sink', comp[1][0])
                 start.append(comp[0][0])
                 end.append(comp[1][0])
                 alpha.append({True : 1, False : 0.3}[comp[2]])
@@ -222,9 +235,9 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
     # define initial location nodes
     graph.node_renderer.data_source.add(start_nodes, 'index')
     graph.node_renderer.data_source.add(start_colors, 'start_colors')
-    graph.node_renderer.glyph = Circle(size=10,line_width=1,fill_alpha=1, fill_color='start_colors', line_color='black')
+    graph.node_renderer.glyph = Triangle(size= 10,line_width=2,fill_alpha=1, fill_color='start_colors',line_color='black')
 
-     # define network edges
+    # define network edges
     graph.edge_renderer.data_source.data = dict(start=list(start),
                                                 end=list(end),
                                                 color=list(color),
@@ -237,6 +250,478 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
     graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
 
     plot.renderers.append(graph)
+
+    graph2 = GraphRenderer()
+    # define pickup location nodes
+    graph2.node_renderer.data_source.add(pus, 'index')
+    graph2.node_renderer.data_source.add(pu_do_colors, 'pu_colors')
+    graph2.node_renderer.glyph = Circle(size=7,line_width=1,fill_alpha=1, fill_color='pu_colors', line_color='black')
+    graph2.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    plot.renderers.append(graph2)
+
+    graph3 = GraphRenderer()
+    # define drop-off location nodes
+    graph3.node_renderer.data_source.add(dos, 'index')
+    graph3.node_renderer.data_source.add(pu_do_colors, 'do_colors')
+    graph3.node_renderer.glyph = Rect(width=100, height = 100, line_width=1, fill_alpha=1, fill_color='do_colors', line_color='black')
+    graph3.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    plot.renderers.append(graph3)
+
+    show(plot)
+
+
+def plot_bipartite_graph2(B, match, paths, G, nodes_df, title = 'Taxi Routes'):
+    """Plot the bipartite graph on the Manhattan grid."""
+
+    DO_nodes = {n for n, d in B.nodes(data = True) if d["bipartite"] == 0}
+    PU_nodes = set(B) - DO_nodes
+    # Sort the nodes by trip_id
+    DO_nodes = sorted(DO_nodes, key = lambda x: x[2], reverse = True)
+    PU_nodes = sorted(PU_nodes, key = lambda x: x[2], reverse = True)
+
+    dos = [x[0] for x in DO_nodes]
+    pus = [x[0] for x in PU_nodes]
+    start = list(list(zip(*list(zip(*list(B.edges)))[0]))[0]) # edge start nodes
+    end = list(list(zip(*list(zip(*list(B.edges)))[1]))[0]) # edge end nodes
+    edge_colors = [{True: 'gold', False: 'black'}[(e[0], e[1]) in match.items()] for e in list(B.edges)] # edge colors
+    alpha = [{True: 1, False: 0.6}[(e[0], e[1]) in match.items()] for e in list(B.edges)] # edge line style
+
+    colors = palettes.Category10[10] # color of nodes
+
+    pu_colors = []
+    do_colors = []
+
+    for x in DO_nodes:
+        for i in range(len(paths)):
+            if x in list(zip(*paths[i]))[0] + list(zip(*paths[i]))[1]:
+                do_colors.append(colors[i])
+                break
+    
+    for x in PU_nodes:
+        for i in range(len(paths)):
+            if x in list(zip(*paths[i]))[0] + list(zip(*paths[i]))[1]:
+                pu_colors.append(colors[i])
+                break
+
+    # parallel lists for initial location nodes
+    start_nodes = []
+    start_colors = []
+
+    c = 0
+    for path in paths:
+        # add start node information for this taxi
+        start_nodes.append(path[0][0][0])
+        start_colors.append(colors[c])
+        c = c + 1 if c < len(colors)-1 else 0
+    
+    def travel_time(start, end):
+        shortest_path = nx.dijkstra_path(G, start, target= end, weight = 'weight')
+        return int(path_weight(G, shortest_path, weight="weight"))
+
+    # parallel lists for nodes
+    nodes = nodes_df.loc[list(set(dos + pus))]
+    node_ids = nodes.name.values.tolist()
+    x = nodes.x.values.tolist()
+    y = nodes.y.values.tolist()
+
+    # get plot boundaries
+    min_x, max_x = min(nodes.x)-1000, max(nodes.x)+1000
+    min_y, max_y = min(nodes.y)-1000, max(nodes.y)+1000
+
+    plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
+                  x_axis_type="mercator", y_axis_type="mercator",
+                  title= title, plot_width=600, plot_height=470)
+    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+
+    graph = GraphRenderer()
+
+    # define pickup location nodes
+    graph.node_renderer.data_source.add(pus, 'index')
+    graph.node_renderer.data_source.add(pu_colors, 'pu_colors')
+    graph.node_renderer.glyph = Circle(size=7,line_width=1,fill_alpha=1, fill_color='pu_colors', line_color='black')
+
+    # define network edges
+    graph.edge_renderer.data_source.data = dict(start=list(start),
+                                                end=list(end),
+                                                color=list(edge_colors),
+                                                alpha = list(alpha))
+    graph.edge_renderer.glyph = MultiLine(line_color='color', line_alpha = 'alpha',
+                                         line_width=3,line_cap='round')
+
+    # set node locations
+    graph_layout = dict(zip(node_ids, zip(x, y)))
+    graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+
+    plot.renderers.append(graph)
+
+    # # add the labels to the node renderer data source
+    # source = graph.node_renderer.data_source
+    # source.data['names'] = [str(x) for x in source.data['index']]
+    # # source.data['colors'] = list(color)
+
+    # # create a transform that can extract and average the actual x,y positions
+    # code = """
+    #     const result = new Float64Array(xs.length)
+    #     const coords = provider.get_node_coordinates(source)[%s]
+    #     for (let i = 0; i < xs.length; i++) {
+    #         result[i] = (coords[i][0] + coords[i][1])/2
+    #     }
+    #     return result
+    # """
+    # xcoord = CustomJSTransform(v_func=code % "0", args=dict(provider=graph.layout_provider, source=source))
+    # ycoord = CustomJSTransform(v_func=code % "1", args=dict(provider=graph.layout_provider, source=source))
+
+    # # Use the transforms to supply coords to a LabelSet
+    # labels = LabelSet(x=transform('index', xcoord),
+    #                 y=transform('index', ycoord),
+    #                 text='names', text_font_size="12px",
+    #                 text_color = 'black',
+    #                 x_offset=0, y_offset=5,
+    #                 source=source, render_mode='canvas')
+
+    # plot.add_layout(labels)
+
+    # add the labels to the edge renderer data source
+    source = graph.edge_renderer.data_source
+    source.data['names'] = [f"{travel_time(x, y)} " for (x,y) in zip(source.data['start'], source.data['end'])]
+    # source.data['colors'] = list(color)
+
+    # create a transform that can extract and average the actual x,y positions
+    code = """
+        const result = new Float64Array(xs.length)
+        const coords = provider.get_edge_coordinates(source)[%s]
+        for (let i = 0; i < xs.length; i++) {
+            result[i] = (coords[i][0] + coords[i][1])/2
+        }
+        return result
+    """
+    xcoord = CustomJSTransform(v_func=code % "0", args=dict(provider=graph.layout_provider, source=source))
+    ycoord = CustomJSTransform(v_func=code % "1", args=dict(provider=graph.layout_provider, source=source))
+
+    # Use the transforms to supply coords to a LabelSet
+    labels = LabelSet(x=transform('start', xcoord),
+                    y=transform('start', ycoord),
+                    text='names', text_font_size="11px",
+                    text_color = 'black',
+                    x_offset=-2, y_offset=-8,
+                    source=source, render_mode='canvas')
+
+    plot.add_layout(labels)
+
+    
+    graph2 = GraphRenderer()
+
+    # define dropoff location nodes
+    graph2.node_renderer.data_source.add(dos, 'index')
+    graph2.node_renderer.data_source.add(do_colors, 'do_colors')
+    graph2.node_renderer.glyph = Rect(width=100, height = 100, line_width=1, fill_alpha=1, fill_color='do_colors', line_color='black')
+
+    # Add trip edges
+    graph2.edge_renderer.data_source.data = dict(start=list(pus),
+                                                end=list(dos),
+                                                color=list(do_colors))
+    graph2.edge_renderer.glyph = MultiLine(line_color='color', line_dash = 'dotted',
+                                         line_width= 2,line_cap='round')
+
+    graph2.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    
+    plot.renderers.append(graph2)
+
+
+    # add the labels to hidden edges
+    source = graph2.edge_renderer.data_source
+    source.data['names'] = [f"{travel_time(x, y)} " for (x,y) in zip(source.data['start'], source.data['end'])]
+
+    # create a transform that can extract and average the actual x,y positions
+    code = """
+        const result = new Float64Array(xs.length)
+        const coords = provider.get_edge_coordinates(source)[%s]
+        for (let i = 0; i < xs.length; i++) {
+            result[i] = (coords[i][0] + coords[i][1])/2
+        }
+        return result
+    """
+    xcoord = CustomJSTransform(v_func=code % "0", args=dict(provider=graph.layout_provider, source=source))
+    ycoord = CustomJSTransform(v_func=code % "1", args=dict(provider=graph.layout_provider, source=source))
+
+    # Use the transforms to supply coords to a LabelSet
+    labels2 = LabelSet(x=transform('start', xcoord),
+                    y=transform('start', ycoord),
+                    text='names', text_font_size="10px",
+                    text_color = 'black',
+                    x_offset=-5, y_offset=-5,
+                    source=source, render_mode='canvas')
+
+    # plot.add_layout(labels2)
+
+    graph3 = GraphRenderer()
+
+    # define initial location nodes
+    graph3.node_renderer.data_source.add(start_nodes, 'index')
+    graph3.node_renderer.data_source.add(start_colors, 'start_colors')
+    graph3.node_renderer.glyph = Triangle(size= 10 ,line_width=1,fill_alpha=1, fill_color='start_colors',line_color='black')
+    graph3.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    plot.renderers.append(graph3)
+
+    show(plot)
+
+
+def plot_pairwise_incompatible(B, match, paths, G, nodes_df, incomp_trips, title = 'Taxi Routes'):
+    """Plot the bipartite graph on the Manhattan grid highlighting the set of pairwise incompatible trips"""
+
+    DO_nodes = {n for n, d in B.nodes(data = True) if d["bipartite"] == 0}
+    PU_nodes = set(B) - DO_nodes
+    # Sort the nodes by trip_id
+    DO_nodes = sorted(DO_nodes, key = lambda x: x[2], reverse = True)
+    PU_nodes = sorted(PU_nodes, key = lambda x: x[2], reverse = True)
+
+    dos = [x[0] for x in DO_nodes]
+    pus = [x[0] for x in PU_nodes]
+    start = list(list(zip(*list(zip(*list(B.edges)))[0]))[0]) # edge start nodes
+    end = list(list(zip(*list(zip(*list(B.edges)))[1]))[0]) # edge end nodes
+    edge_colors = [{True: 'gold', False: 'black'}[(e[0], e[1]) in match.items()] for e in list(B.edges)] # edge colors
+    alpha = [{True: 1, False: 0.6}[(e[0], e[1]) in match.items()] for e in list(B.edges)] # edge line style
+
+    colors = palettes.Category10[10] # color of nodes
+
+    h_edge_colors = []
+    for x in DO_nodes:
+        if x[2] in incomp_trips:
+            h_edge_colors.append('red')
+        else:
+            h_edge_colors.append('blue')
+
+    # parallel lists for initial location nodes
+    start_nodes = []
+    start_colors = []
+
+    c = 0
+    for path in paths:
+        # add start node information for this taxi
+        start_nodes.append(path[0][0][0])
+        start_colors.append(colors[c])
+        c = c + 1 if c < len(colors)-1 else 0
+    
+    def travel_time(start, end):
+        shortest_path = nx.dijkstra_path(G, start, target= end, weight = 'weight')
+        return int(path_weight(G, shortest_path, weight="weight"))
+
+    # parallel lists for nodes
+    nodes = nodes_df.loc[list(set(dos + pus))]
+    node_ids = nodes.name.values.tolist()
+    x = nodes.x.values.tolist()
+    y = nodes.y.values.tolist()
+
+    # get plot boundaries
+    min_x, max_x = min(nodes.x)-1000, max(nodes.x)+1000
+    min_y, max_y = min(nodes.y)-1000, max(nodes.y)+1000
+
+    plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
+                  x_axis_type="mercator", y_axis_type="mercator",
+                  title= title, plot_width=600, plot_height=470)
+    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+
+    graph = GraphRenderer()
+
+    # define pickup location nodes
+    graph.node_renderer.data_source.add(pus, 'index')
+    graph.node_renderer.glyph = Circle(size=7,line_width=1,fill_alpha=1, fill_color='blue', line_color='black')
+
+    # define network edges
+    graph.edge_renderer.data_source.data = dict(start=list(start),
+                                                end=list(end),
+                                                color=list(edge_colors),
+                                                alpha = list(alpha))
+    graph.edge_renderer.glyph = MultiLine(line_color='color', line_alpha = 'alpha',
+                                         line_width=3,line_cap='round')
+
+    # set node locations
+    graph_layout = dict(zip(node_ids, zip(x, y)))
+    graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+
+    plot.renderers.append(graph)
+
+    # Add the labels to the edge renderer data source
+    source = graph.edge_renderer.data_source
+    source.data['names'] = [f"{travel_time(x, y)} " for (x,y) in zip(source.data['start'], source.data['end'])]
+    # source.data['colors'] = list(color)
+
+    # create a transform that can extract and average the actual x,y positions
+    code = """
+        const result = new Float64Array(xs.length)
+        const coords = provider.get_edge_coordinates(source)[%s]
+        for (let i = 0; i < xs.length; i++) {
+            result[i] = (coords[i][0] + coords[i][1])/2
+        }
+        return result
+    """
+    xcoord = CustomJSTransform(v_func=code % "0", args=dict(provider=graph.layout_provider, source=source))
+    ycoord = CustomJSTransform(v_func=code % "1", args=dict(provider=graph.layout_provider, source=source))
+
+    # Use the transforms to supply coords to a LabelSet
+    labels = LabelSet(x=transform('start', xcoord),
+                    y=transform('start', ycoord),
+                    text='names', text_font_size="11px",
+                    text_color = 'black',
+                    x_offset=-2, y_offset=-8,
+                    source=source, render_mode='canvas')
+
+    plot.add_layout(labels)
+
+    
+    graph2 = GraphRenderer()
+    # define dropoff location nodes
+    graph2.node_renderer.data_source.add(dos, 'index')
+    graph2.node_renderer.glyph = Rect(width=100, height = 100, line_width=1, fill_alpha=1, fill_color='blue', line_color='black')
+
+    # Add trip edges
+    graph2.edge_renderer.data_source.data = dict(start=list(pus),
+                                                end=list(dos),
+                                                color=list(h_edge_colors))
+    graph2.edge_renderer.glyph = MultiLine(line_color='color', line_dash = 'dotted',
+                                         line_width= 2,line_cap='round')
+    graph2.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    plot.renderers.append(graph2)
+
+    graph3 = GraphRenderer()
+    # define initial location nodes
+    graph3.node_renderer.data_source.add(start_nodes, 'index')
+    graph3.node_renderer.data_source.add(start_colors, 'start_colors')
+    graph3.node_renderer.glyph = Triangle(size= 10 ,line_width=1,fill_alpha=1, fill_color='blue',line_color='black')
+    graph3.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    plot.renderers.append(graph3)
+
+    show(plot)
+
+def plot_bipartite_route(G, paths, nodes_df, title = 'Taxi Routes'):
+    """Plot the bipartite graph on the Manhattan grid."""
+    # parallel lists for every arc
+    pus = []  # pickup node
+    dos = []  # drop-off node
+    start = []  # start node
+    end = []  # end node
+    color = []  # color code by taxi
+    alpha = []  # opacity lower on trip arcs
+    time = {} # travel time for each trip
+
+    # parallel lists for initial location nodes
+    start_nodes = []
+    start_colors = []
+
+    colors = palettes.Category10[len(paths)]
+    c = 0
+
+    for path in paths:
+        # add start node information for this taxi
+        start_nodes.append(path[0][0][0])
+        start_colors.append(colors[c])
+        for comp in path:
+            shortest_path = nx.dijkstra_path(G, source= comp[0][0], target= comp[1][0], weight = 'weight')
+            travel_time = int(path_weight(G, shortest_path, weight="weight"))
+            time[(comp[0][0], comp[1][0])] = travel_time
+            start.append(comp[0][0])
+            end.append(comp[1][0])
+            color.append(colors[c])
+            if comp[2]:
+                pus.append(shortest_path[0])
+                dos.append(shortest_path[-1])
+                alpha.append(1)
+
+            else:
+                pus.append(shortest_path[-1])
+                dos.append(shortest_path[0])
+                alpha.append(0.3)
+
+        c = c + 1 if c < len(colors)-1 else 0
+
+    # parallel lists for nodes
+    nodes = nodes_df.loc[list(set(start + end))]
+    node_ids = nodes.name.values.tolist()
+    x = nodes.x.values.tolist()
+    y = nodes.y.values.tolist()
+
+    # get plot boundaries
+    min_x, max_x = min(nodes.x)-1000, max(nodes.x)+1000
+    min_y, max_y = min(nodes.y)-1000, max(nodes.y)+1000
+
+    plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
+                  x_axis_type="mercator", y_axis_type="mercator",
+                  title= title, plot_width=600, plot_height=470)
+    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+
+    graph = GraphRenderer()
+
+    # define initial location nodes
+    graph.node_renderer.data_source.add(pus, 'index')
+    graph.node_renderer.data_source.add(color, 'pu_colors')
+    graph.node_renderer.glyph = Circle(size=8,line_width=1,fill_alpha=1, fill_color='pu_colors', line_color='black')
+
+    # define network edges
+    graph.edge_renderer.data_source.data = dict(start=list(start),
+                                                end=list(end),
+                                                color=list(color),
+                                                alpha=list(alpha))
+    graph.edge_renderer.glyph = MultiLine(line_color='color', line_alpha='alpha',
+                                         line_width=3,line_cap='round')
+
+
+    # set node locations
+    graph_layout = dict(zip(node_ids, zip(x, y)))
+    graph.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+
+    plot.renderers.append(graph)
+
+    # add the labels to the edge renderer data source
+    source = graph.edge_renderer.data_source
+    # source.data['names'] = [f"{time[(x, y)]} " for (x,y) in zip(source.data['start'], source.data['end'])]
+    source.data['names'] = [f"{(x, y)} " for (x,y) in zip(source.data['start'], source.data['end'])]
+    source.data['colors'] = list(color)
+
+    # create a transform that can extract and average the actual x,y positions
+    code = """
+        const result = new Float64Array(xs.length)
+        const coords = provider.get_edge_coordinates(source)[%s]
+        for (let i = 0; i < xs.length; i++) {
+            result[i] = (coords[i][0] + coords[i][1])/2
+        }
+        return result
+    """
+    xcoord = CustomJSTransform(v_func=code % "0", args=dict(provider=graph.layout_provider, source=source))
+    ycoord = CustomJSTransform(v_func=code % "1", args=dict(provider=graph.layout_provider, source=source))
+
+    # Use the transforms to supply coords to a LabelSet
+    labels = LabelSet(x=transform('start', xcoord),
+                    y=transform('start', ycoord),
+                    text='names', text_font_size="12px",
+                    text_color = 'black', border_line_color = 'black',
+                    x_offset=0, y_offset=5,
+                    source=source, render_mode='canvas')
+
+    # plot.add_layout(labels)
+
+    
+    graph2 = GraphRenderer()
+
+    # define dropoff location nodes
+    graph2.node_renderer.data_source.add(dos, 'index')
+    graph2.node_renderer.data_source.add(color, 'do_colors')
+    graph2.node_renderer.glyph = Rect(width=120, height = 120, line_width=1,fill_alpha=1, fill_color='do_colors', line_color='black')
+
+
+    graph2.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    
+    plot.renderers.append(graph2)
+
+
+    graph3 = GraphRenderer()
+
+    # define initial location nodes
+    graph3.node_renderer.data_source.add(start_nodes, 'index')
+    graph3.node_renderer.data_source.add(start_colors, 'start_colors')
+    graph3.node_renderer.glyph = Triangle(size= 10,line_width=2,fill_alpha=1, fill_color='start_colors',line_color='black')
+    graph3.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
+    plot.renderers.append(graph3)
+
     show(plot)
 
 def plot_stats(og_taxi_stats, opt_taxi_stats):

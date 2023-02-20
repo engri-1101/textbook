@@ -123,98 +123,41 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  The Traveling Salesman Problem
+  Textbook
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../tsp/intro.html">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../tsp/intro1.html">
    1. The Traveling Salesman Problem
   </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../tsp/model.html">
-   2. Mathematical Model
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../tsp/algorithms.html">
-   3. Solving a Problem – Algorithms
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../tsp/tsp_modeling.html">
-   4. Modeling with the Traveling Salesman Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../tsp/vsli.html">
-   5. Etching VLSI Computer Chips
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Linear Programming and the Simplex Method
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/so_far.html">
-   6. Optimization Models So Far
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/lp.html">
-   7. Linear Programming
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/opt_sol.html">
-   8. Finding an Optimal Solution of a Linear Program
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/three_vars.html">
-   9. Soldiering On - Linear Programs with Three Variables
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/simplex.html">
-   10. Simplex Method
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/summary.html">
-   11. Summary of Simplex Method
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/argue_optimality.html">
-   12. Argument that Solution is Optimal
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../lp/geometry.html">
-   13. Geometry of the Simplex Method
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Testing
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../testing/gilp.html">
-   Simplex Visualization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../testing/vinal.html">
-   Vinal
-  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/model1.html">
+     1.1. Mathematical Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/algorithms1.html">
+     1.2. Solving a Problem – Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/tsp_modeling1.html">
+     1.3. Modeling with the Traveling Salesman Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/vsli1.html">
+     1.4. Etching VLSI Computer Chips
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -289,7 +232,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://github.com/engri-1101/textbook.git"
+        <a href="https://github.com/engri-1101/textbook"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -306,7 +249,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/engri-1101/textbook.git/issues/new?title=Issue%20on%20page%20%2Fchapters/intro/what_is_or.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/engri-1101/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/intro/what_is_or.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -323,7 +266,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/engri-1101/textbook.git/edit/textbook/src/chapters/intro/what_is_or.md"
+        <a href="https://github.com/engri-1101/textbook/edit/textbook/src/chapters/intro/what_is_or.md"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -542,7 +485,7 @@ course.</p>
     {
         requestKernel: true,
         binderOptions: {
-            repo: "engri-1101/textbook.git",
+            repo: "engri-1101/textbook",
             ref: "textbook",
         },
         codeMirrorConfig: {
@@ -550,8 +493,8 @@ course.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
-            path: "./chapters/intro"
+            name: "python3",
+            path: "./chapters\intro"
         },
         predefinedOutput: true
     }

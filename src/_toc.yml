@@ -6,32 +6,12 @@ parts:
     - file: chapters/intro/what_is_or.md
     - file: chapters/intro/python_intro.ipynb
 
-  - caption: The Traveling Salesman Problem
-    numbered: True
+  - caption: Textbook
+    numbered: 2
     chapters:
-    - file: chapters/tsp/intro.md
-    - file: chapters/tsp/model.md
-    - file: chapters/tsp/algorithms.md
-    - file: chapters/tsp/tsp_modeling.md
-    - file: chapters/tsp/vsli.md
-
-  - caption: Linear Programming and the Simplex Method
-    numbered: True
-    chapters:
-    - file: chapters/lp/so_far.md
-    - file: chapters/lp/lp.md
-    - file: chapters/lp/opt_sol.md
-    - file: chapters/lp/three_vars.md
-    - file: chapters/lp/simplex.md
-    - file: chapters/lp/summary.md
-    - file: chapters/lp/argue_optimality.md
-    - file: chapters/lp/geometry.md
-
-  - caption: Testing
-    chapters:
-    - file: testing/gilp.ipynb
-    - file: testing/vinal.ipynb
-    - file: labs/travelling_salesman_problem/astronomy_visualization/astronomy_visualization_demo.ipynb
-    - file: labs/seat_packing/seat_packing_lab_key.ipynb
-    - file: labs/project_selection/project_selection_lab_key.ipynb
-
+    - file: chapters/tsp/intro1.ipynb
+      sections:
+      - file: chapters/tsp/model1.ipynb
+      - file: chapters/tsp/algorithms1.ipynb
+      - file: chapters/tsp/tsp_modeling1.ipynb
+      - file: chapters/tsp/vsli1.ipynb

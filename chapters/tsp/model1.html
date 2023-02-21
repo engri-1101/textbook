@@ -476,7 +476,7 @@ minimize the cost of the tour, i.e., minimize</p>
 <span class="c1"># This cell contains multiple import statements. Each import statement gives the notebook access to pre-bundled</span>
 <span class="c1"># python code that serves some functionality. The first import statement imports all of the python code in the</span>
 <span class="c1"># file tsp.py. You can open this file and examine it if you so choose!</span>
-
+<span class="kn">import</span> <span class="nn">httpimport</span>
 <span class="k">with</span> <span class="n">httpimport</span><span class="o">.</span><span class="n">remote_repo</span><span class="p">(</span><span class="s1">&#39;https://engri-1101.github.io/textbook/modules/tsp.py&#39;</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">tsp</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">vinal</span> <span class="k">as</span> <span class="nn">vl</span>
@@ -484,6 +484,27 @@ minimize the cost of the tour, i.e., minimize</p>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">bokeh.io</span> <span class="kn">import</span> <span class="n">output_notebook</span><span class="p">,</span> <span class="n">show</span>
 <span class="n">output_notebook</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">7</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">httpimport</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="k">with</span> <span class="n">httpimport</span><span class="o">.</span><span class="n">remote_repo</span><span class="p">(</span><span class="s1">&#39;https://engri-1101.github.io/textbook/modules/tsp.py&#39;</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">7</span>     <span class="kn">from</span> <span class="nn">tsp</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">import</span> <span class="nn">vinal</span> <span class="k">as</span> <span class="nn">vl</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">File</span> <span class="o">~</span>\<span class="n">Documents</span>\<span class="n">GitHub</span>\<span class="n">textbook</span>\<span class="n">src</span>\<span class="n">chapters</span>\<span class="n">tsp</span>\<span class="n">tsp</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">6</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">vinal.algorithms</span> <span class="kn">import</span> <span class="n">tour_cost</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">ortools.constraint_solver</span> <span class="kn">import</span> <span class="n">pywrapcp</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">figure</span><span class="p">,</span> <span class="n">Figure</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">bokeh.models.widgets.markups</span> <span class="kn">import</span> <span class="n">Div</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">bokeh.models.widgets.tables</span> <span class="kn">import</span> <span class="n">TableColumn</span><span class="p">,</span> <span class="n">DataTable</span>
+
+<span class="ne">ImportError</span>: cannot import name &#39;Figure&#39; from &#39;bokeh.plotting&#39; (C:\Users\zhujo\anaconda3\envs\engri_1101\lib\site-packages\bokeh\plotting\__init__.py)
 </pre></div>
 </div>
 </div>
@@ -499,6 +520,148 @@ minimize the cost of the tour, i.e., minimize</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1800</td>
+      <td>964</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2058</td>
+      <td>878</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2104</td>
+      <td>936</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2146</td>
+      <td>988</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2244</td>
+      <td>1090</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1340</td>
+      <td>1116</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1566</td>
+      <td>970</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1758</td>
+      <td>1018</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1776</td>
+      <td>898</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1942</td>
+      <td>1072</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1916</td>
+      <td>562</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1642</td>
+      <td>624</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1770</td>
+      <td>522</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1954</td>
+      <td>248</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>2026</td>
+      <td>122</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1174</td>
+      <td>418</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1520</td>
+      <td>280</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1266</td>
+      <td>292</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>474</td>
+      <td>542</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>220</td>
+      <td>626</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>258</td>
+      <td>552</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>98</td>
+      <td>850</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>246</td>
+      <td>1418</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>We can use the function <code class="docutils literal notranslate"><span class="pre">vl.create_network()</span></code> to create a graph from this CSV file of nodes.</p>
 <div class="cell docutils container">

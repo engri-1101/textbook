@@ -477,7 +477,8 @@ minimize the cost of the tour, i.e., minimize</p>
 <span class="c1"># python code that serves some functionality. The first import statement imports all of the python code in the</span>
 <span class="c1"># file tsp.py. You can open this file and examine it if you so choose!</span>
 
-<span class="kn">from</span> <span class="nn">tsp</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">with</span> <span class="n">httpimport</span><span class="o">.</span><span class="n">remote_repo</span><span class="p">(</span><span class="s1">&#39;https://engri-1101.github.io/textbook/modules/tsp.py&#39;</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">tsp</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">vinal</span> <span class="k">as</span> <span class="nn">vl</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
@@ -493,7 +494,7 @@ minimize the cost of the tour, i.e., minimize</p>
 <span class="c1"># The data from the CSV file is put in the variable nodes.</span>
 <span class="c1"># Using display(), we can see the contents of this file: each city (node) and its (x,y) position.</span>
 
-<span class="n">nodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/us_cities_23.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">nodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://engri-1101.github.io/textbook/data/tsp/us_cities_23.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -544,16 +545,16 @@ minimize the cost of the tour, i.e., minimize</p>
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "engri_1101"
+            mode: "python"
         },
         kernelOptions: {
-            name: "engri_1101",
+            name: "python3",
             path: "./chapters\tsp"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'engri_1101'</script>
+    <script>kernelName = 'python3'</script>
 
               </div>
               

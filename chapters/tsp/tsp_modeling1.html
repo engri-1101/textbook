@@ -479,7 +479,7 @@ title="Print to PDF"
 <p>Let’s start by looking at a small PCB drilling instance: <code class="docutils literal notranslate"><span class="pre">xqf131</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/xqf131.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://engri-1101.github.io/textbook/data/tsp/xqf131.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">nodes</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c1"># .head() restricts the display to just show the first 5 rows</span>
 </pre></div>
 </div>
@@ -533,7 +533,7 @@ title="Print to PDF"
 <p>Next, let’s look at a well-cited PCB instance in TSP literature: <code class="docutils literal notranslate"><span class="pre">pcb442</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/pcb442.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://engri-1101.github.io/textbook/data/tsp/pcb442.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">vl</span><span class="o">.</span><span class="n">create_network</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
 </pre></div>
 </div>

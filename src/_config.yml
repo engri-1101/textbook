@@ -14,7 +14,7 @@ sphinx:
     # All files from these paths will be included in the generated
     # HTML output, even if they are not linked from any page
     # TODO: Unknown if we will need this
-    # html_extra_path: ['assets']
+    html_extra_path: ['assets']
     # By default MathJax version 2 is currently used.
     # MathJax version 3 is recommended for projects with lots of math
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

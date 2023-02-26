@@ -9,9 +9,9 @@ parts:
   - caption: Textbook
     numbered: 2
     chapters:
-    - file: chapters/tsp/intro1.ipynb
+    - file: chapters/tsp/intro_web.ipynb
       sections:
-      - file: chapters/tsp/model1.ipynb
-      - file: chapters/tsp/algorithms1.ipynb
-      - file: chapters/tsp/tsp_modeling1.ipynb
-      - file: chapters/tsp/vsli1.ipynb
+      - file: chapters/tsp/model_web.ipynb
+      - file: chapters/tsp/algorithms_web.ipynb
+      - file: chapters/tsp/tsp_modeling_web.ipynb
+      - file: chapters/tsp/vlsi_web.ipynb

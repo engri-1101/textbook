@@ -14,7 +14,7 @@ from bokeh.models import (HoverTool, TapTool, ColumnDataSource, LabelSet,
 
 def optimal_tour(name):
     """Return an optimal tour for some instance name."""
-    with open('data/optimal_tours.pickle', 'rb') as f:
+    with open('https://engri-1101.github.io/textbook/data/tsp/optimal_tours.pickle', 'rb') as f:
         optimal_tours = pickle.load(f)
     return optimal_tours[name]
 

@@ -31,11 +31,15 @@ def main(nb_string, name):
     nb = concatenate(nb_string)
 
     # Find and remove cells with tag 'web-only'
+    indices_to_pop = []
     for i, c in enumerate(nb.cells):
         cell_tags = c.metadata.get('tags')
         if cell_tags:
             if 'web-only' in cell_tags:
-                nb.cells.pop(i)
+                indices_to_pop.append(i)
+    indices_to_pop.reverse()
+    for i in indices_to_pop:
+        nb.cells.pop(i)
 
     # Save the new notebook
     nbformat.write(nb, name)

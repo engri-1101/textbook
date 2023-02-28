@@ -16,15 +16,20 @@ def main(notebooks):
 
     # Find and remove cells with tag 'non-web'
     for i in range(n):
-      nb = read[i]
-      for j, c in enumerate(nb.cells):
-          cell_tags = c.metadata.get('tags')
-          if cell_tags:
-              if 'non-web' in cell_tags:
-                  nb.cells.pop(j)
-      # Save the new notebook
-      name = nb_list[i].replace("_master", "_web")
-      nbformat.write(nb, name)
+        nb = read[i]
+        indices_to_pop = []
+        for j, c in enumerate(nb.cells):
+            cell_tags = c.metadata.get('tags')
+            if cell_tags:
+                if 'non-web' in cell_tags:
+                    indices_to_pop.append(j)
+        indices_to_pop.reverse()
+        for j in indices_to_pop:
+            nb.cells.pop(j)
+        
+        # Save the new notebook
+        name = nb_list[i].replace("_master", "_web")
+        nbformat.write(nb, name)
 
 
 if __name__ == "__main__":

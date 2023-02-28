@@ -448,19 +448,49 @@ title="Print to PDF"
 <p>It is important to note that this exactly captures what is needed in a 24-hour cycle of stellar observations. Hence, we could take our data for re-positioning the telescope, apply a standard software package for the traveling salesman problem (such as Concorde, which is the state of the art in this case), and be able to interpret the optimal solution for the corresponding traveling salesman input as an (optimal) solution to our telescope problem.</p>
 <hr class="docutils" />
 <p>💡<strong>Demo</strong></p>
-<div class="cell tag_thebe-init tag_hide-input tag_web-only docutils container">
+<div class="cell tag_thebe-init tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
-<span class="n">IFrame</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;https://engri-1101.github.io/textbook/other/radio_telescope_demo_improved.html&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">http</span>
+
+<span class="k">class</span> <span class="nc">StoppableHTTPServer</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c1"># Clean-up server (close socket, etc.)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_close</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">CustomHttpRequestHandler</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">do_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;index.html&#39;</span>
+        <span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span><span class="o">.</span><span class="n">do_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">StoppableHTTPServer</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">),</span>
+                             <span class="n">CustomHttpRequestHandler</span><span class="p">)</span>
+
+<span class="c1"># Start processing requests</span>
+<span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">server</span><span class="o">.</span><span class="n">run</span><span class="p">)</span>
+<span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Display the demo embedded in the notebook</span>
+<span class="n">IFrame</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;http://localhost:8080/?solution=data/solution.csv&amp;day=120&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
 <iframe
-    width="750"
-    height="550"
-    src="https://engri-1101.github.io/textbook/other/radio_telescope_demo_improved.html"
+    width="700"
+    height="700"
+    src="http://localhost:8080/?solution=data/solution.csv&day=120"
     frameborder="0"
     allowfullscreen
 

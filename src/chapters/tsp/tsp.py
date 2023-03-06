@@ -3,7 +3,7 @@ import networkx as nx
 from vinal.plot import _blank_plot
 from vinal.algorithms import tour_cost
 from ortools.constraint_solver import pywrapcp
-from bokeh.plotting import figure, Figure
+from bokeh.plotting import figure
 from bokeh.models.widgets.markups import Div
 from bokeh.models.widgets.tables import TableColumn, DataTable
 from bokeh.models.renderers import GlyphRenderer

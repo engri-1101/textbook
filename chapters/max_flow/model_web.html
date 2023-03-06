@@ -6,55 +6,58 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
+    <title>2.1. Mathematical Model &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="What is Operations Research?" href="chapters/intro/what_is_or.html" />
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.2. Verifying a Solution" href="verify_web.html" />
+    <link rel="prev" title="2. The Maximum Flow Problem" href="intro_web.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -89,14 +92,14 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="bd-sidebar noprint" id="site-navigation">
     <div class="bd-sidebar__content">
         <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+    <a class="navbar-brand text-wrap" href="../../index.html">
       
       
       
       <h1 class="site-logo" id="site-title">Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</h1>
       
     </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
@@ -108,12 +111,12 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="chapters/intro/what_is_or.html">
+  <a class="reference internal" href="../intro/what_is_or.html">
    What is Operations Research?
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="chapters/intro/python_intro.html">
+  <a class="reference internal" href="../intro/python_intro.html">
    Introduction to Python and Mathematical Syntax
   </a>
  </li>
@@ -123,9 +126,9 @@ const thebe_selector_output = ".output, .cell_output"
   Textbook
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="chapters/tsp/intro_web.html">
+  <a class="reference internal" href="../tsp/intro_web.html">
    1. The Traveling Salesman Problem
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
@@ -135,54 +138,54 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="chapters/tsp/model_web.html">
+    <a class="reference internal" href="../tsp/model_web.html">
      1.1. Mathematical Model
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="chapters/tsp/algorithms_web.html">
+    <a class="reference internal" href="../tsp/algorithms_web.html">
      1.2. Solving a Problem – Algorithms
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="chapters/tsp/tsp_modeling_web.html">
+    <a class="reference internal" href="../tsp/tsp_modeling_web.html">
      1.3. Modeling with the Traveling Salesman Problem
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="chapters/tsp/vlsi_web.html">
+    <a class="reference internal" href="../tsp/vlsi_web.html">
      1.4. Etching VLSI Computer Chips
     </a>
    </li>
   </ul>
  </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="chapters/max_flow/intro_web.html">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="intro_web.html">
    2. The Maximum Flow Problem
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="chapters/max_flow/model_web.html">
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      2.1. Mathematical Model
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="chapters/max_flow/verify_web.html">
+    <a class="reference internal" href="verify_web.html">
      2.2. Verifying a Solution
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="chapters/max_flow/towards_algorithm_web.html">
+    <a class="reference internal" href="towards_algorithm_web.html">
      2.3. Towards an Algorithm
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="chapters/max_flow/algorithms_web.html">
+    <a class="reference internal" href="algorithms_web.html">
      2.4. Algorithms
     </a>
    </li>
@@ -239,6 +242,53 @@ title="Toggle navigation"
         
     </div>
     <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/engri-1101/textbook/textbook?urlpath=tree/src/chapters/max_flow/model_web.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
 <button onclick="toggleFullScreen()"
   class="headerbtn"
   data-toggle="tooltip"
@@ -278,7 +328,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/engri-1101/textbook/issues/new?title=Issue%20on%20page%20%2Fcover.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/engri-1101/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/max_flow/model_web.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -295,7 +345,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/engri-1101/textbook/edit/textbook/src/cover.md"
+        <a href="https://github.com/engri-1101/textbook/edit/textbook/src/chapters/max_flow/model_web.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -323,7 +373,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="_sources/cover.md"
+        <a href="../../_sources/chapters/max_flow/model_web.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -334,7 +384,7 @@ title="Download source file"
 <span class="headerbtn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.md</span>
+<span class="headerbtn__text-container">.ipynb</span>
 </a>
 
       </li>
@@ -372,7 +422,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</h1>
+                <h1>Mathematical Model</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -384,19 +434,44 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="data-science-and-decision-making-an-elementary-introduction-to-modeling-and-optimization">
-<h1>Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization<a class="headerlink" href="#data-science-and-decision-making-an-elementary-introduction-to-modeling-and-optimization" title="Permalink to this headline">#</a></h1>
-<p>Introduction to the problems and methods of operations research and information
-engineering focusing on problem areas (including inventory, network design, and
-resource allocation), the situations in which these problems arise, and several
-standard solution techniques. In the computational laboratory, students
-encounter problem simulations and use some standard commercial software
-packages.</p>
-<p><em>taken from the <a class="reference external" href="https://classes.cornell.edu/browse/roster/SP22/class/ENGRI/1101">Spring 2022 Cornell Class Roster</a></em></p>
-<div class="toctree-wrapper compound">
+  <section class="tex2jax_ignore mathjax_ignore" id="mathematical-model">
+<h1><span class="section-number">2.1. </span>Mathematical Model<a class="headerlink" href="#mathematical-model" title="Permalink to this headline">#</a></h1>
+<p>We shall model this problem in the following way. The network of pipes corresponds to a directed graph <span class="math notranslate nohighlight">\(G = (V,A)\)</span>. Each arc <span class="math notranslate nohighlight">\((v,w) \in A\)</span> has specified capacity <span class="math notranslate nohighlight">\(u(v,w)\)</span>. There is a specified source node <span class="math notranslate nohighlight">\(s \in V\)</span> and a specified sink node <span class="math notranslate nohighlight">\(t \in V\)</span>. This is the entire input to the maximum flow problem.</p>
+<p>To specify a solution for this input, we must give a flow value <span class="math notranslate nohighlight">\(f(v,w)\)</span> for each arc <span class="math notranslate nohighlight">\((v,w) \in A\)</span>. Such a solution <span class="math notranslate nohighlight">\(f\)</span> is feasible if</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(0 \leq f(v,w) \leq u(v,w)\)</span> for each <span class="math notranslate nohighlight">\((v,w) \in A\)</span>; and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\displaystyle{\sum_{(w,v)\in E} f(w,v) = \sum_{(v,w)\in E} f(v,w)}\)</span> for each node <span class="math notranslate nohighlight">\(v \in V \setminus \{s,t\}\)</span>
+(i.e., for each node that is neither the source nor the sink).</p></li>
+</ol>
+<p>The first type of constraints, the inequalities, are called capacity constraints; and the second type, the equations, are called node flow conservation constraints.</p>
+<p>The value of a flow <span class="math notranslate nohighlight">\(f\)</span> is the total net flow into <span class="math notranslate nohighlight">\(t\)</span>, which is equal to</p>
+<div class="math notranslate nohighlight">
+\[\sum_{(w,t) \in A} f(w,t) - \sum_{(t,w)\in A} f(t,w).\]</div>
+<p>This is the objective function for the maximum flow problem; in other words, we wish to find a feasible flow of maximum value.</p>
+<div class="admonition-maximum-flow-problem admonition">
+<p class="admonition-title">Maximum flow problem</p>
+<p><strong>input:</strong></p>
+<ul class="simple">
+<li><p>directed graph <span class="math notranslate nohighlight">\(G=(V,A)\)</span>,</p></li>
+<li><p>a source node <span class="math notranslate nohighlight">\(s \in V\)</span>, a sink node <span class="math notranslate nohighlight">\(t\in V\)</span>, and</p></li>
+<li><p>a nonnegative capacity <span class="math notranslate nohighlight">\(u(v,w)\)</span> for each arc <span class="math notranslate nohighlight">\((v,w)\in A\)</span></p></li>
+</ul>
+<p><strong>output:</strong></p>
+<ul class="simple">
+<li><p>a flow value <span class="math notranslate nohighlight">\(f(v,w)\)</span> for each arc <span class="math notranslate nohighlight">\((v,w)\in A\)</span> so that</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(0 \leq f(v,w) \leq u(v,w)\)</span> for each <span class="math notranslate nohighlight">\((v,w) \in A\)</span>; and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\displaystyle{\sum_{(w,v)\in A} f(w,v) = \sum_{(v,w)\in A} f(v,w)}\)</span>
+for each node <span class="math notranslate nohighlight">\(v \in V \setminus \{s,t\}\)</span></p></li>
+</ol>
+</li>
+</ul>
+<p><strong>goal:</strong>
+maximize the net flow into the sink node, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[\text{maximize} \sum_{(w,t) \in A} f(w,t) - \sum_{(t,w)\in A} f(t,w)\]</div>
 </div>
-<div class="toctree-wrapper compound">
-</div>
+<p><strong>Q:</strong> Do you understand the difference between a flow and the value of a flow?</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -412,7 +487,7 @@ packages.</p>
         },
         kernelOptions: {
             name: "python3",
-            path: "./."
+            path: "./chapters\max_flow"
         },
         predefinedOutput: true
     }
@@ -426,10 +501,17 @@ packages.</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="chapters/intro/what_is_or.html" title="next page">
+    <a class='left-prev' id="prev-link" href="intro_web.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">2. </span>The Maximum Flow Problem</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="verify_web.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">What is Operations Research?</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Verifying a Solution</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -454,7 +536,7 @@ packages.</p>
     </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 
 
   </body>

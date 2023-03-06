@@ -159,6 +159,38 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../max_flow/intro_web.html">
+   2. The Maximum Flow Problem
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../max_flow/model_web.html">
+     2.1. Mathematical Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../max_flow/verify_web.html">
+     2.2. Verifying a Solution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../max_flow/towards_algorithm_web.html">
+     2.3. Towards an Algorithm
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../max_flow/algorithms_web.html">
+     2.4. Algorithms
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
     </div>
@@ -519,9 +551,9 @@ minimize the cost of the tour, i.e.,</p>
 </div>
 </div>
 </div>
-<p><strong>Q:</strong> What is the input for this problem? Is it symmetric?</p>
+<p><strong>Q:</strong> What is the input for this problem? Is it symmetric? Does it violate the triangle inequality?</p>
 <div class="toggle docutils container">
-<p><strong>A:</strong> <span class="math notranslate nohighlight">\(n = 23\)</span> cities, and <span class="math notranslate nohighlight">\(C[i,j]\)</span>, for <span class="math notranslate nohighlight">\(i=1,2,\ldots,n\)</span>, <span class="math notranslate nohighlight">\(j=1,2,\ldots,n\)</span>, is the distance between city <span class="math notranslate nohighlight">\(i\)</span> and city <span class="math notranslate nohighlight">\(j\)</span>. Both Manhattan and Euclidean distances are symmetric.</p>
+<p><strong>A:</strong> <span class="math notranslate nohighlight">\(n = 23\)</span> cities, and <span class="math notranslate nohighlight">\(C[i,j]\)</span>, for <span class="math notranslate nohighlight">\(i=1,2,\ldots,n\)</span>, <span class="math notranslate nohighlight">\(j=1,2,\ldots,n\)</span>, is the distance between city <span class="math notranslate nohighlight">\(i\)</span> and city <span class="math notranslate nohighlight">\(j\)</span>. Both Manhattan and Euclidean distances here are symmetric and satisfy the triangle inequality.</p>
 </div>
 <p>Now we can find a tour manually. Running the cell below will generate a visual of the 23 cities. Click on the cities one at a time to create a tour. Clicking on the last node will automatically complete the tour. In the lower left, you will see the cost of the tour update as you create it. In the lower right, you will see the tour.</p>
 <div class="cell tag_web-only docutils container">

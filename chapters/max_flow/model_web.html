@@ -189,6 +189,11 @@ const thebe_selector_output = ".output, .cell_output"
      2.4. Algorithms
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="algorithms_python_web.html">
+     2.5. Ford-Fulkerson in Python
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -410,12 +415,36 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   Example
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -427,6 +456,19 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   Example
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -436,7 +478,7 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="mathematical-model">
 <h1><span class="section-number">2.1. </span>Mathematical Model<a class="headerlink" href="#mathematical-model" title="Permalink to this headline">#</a></h1>
-<p>We shall model this problem in the following way. The network of pipes corresponds to a directed graph <span class="math notranslate nohighlight">\(G = (V,A)\)</span>. Each arc <span class="math notranslate nohighlight">\((v,w) \in A\)</span> has specified capacity <span class="math notranslate nohighlight">\(u(v,w)\)</span>. There is a specified source node <span class="math notranslate nohighlight">\(s \in V\)</span> and a specified sink node <span class="math notranslate nohighlight">\(t \in V\)</span>. This is the entire input to the maximum flow problem.</p>
+<p>We shall model this problem in the following way. The network of pipes corresponds to a directed graph <span class="math notranslate nohighlight">\(G = (V,A)\)</span>. Each arc <span class="math notranslate nohighlight">\((v,w) \in A\)</span> has specified capacity <span class="math notranslate nohighlight">\(u(v,w)\)</span>. There is a specified source node <span class="math notranslate nohighlight">\(s \in V\)</span> (where the flow comes from) and a specified sink node <span class="math notranslate nohighlight">\(t \in V\)</span> (where the flow goes to). This is the entire input to the maximum flow problem.</p>
 <p>To specify a solution for this input, we must give a flow value <span class="math notranslate nohighlight">\(f(v,w)\)</span> for each arc <span class="math notranslate nohighlight">\((v,w) \in A\)</span>. Such a solution <span class="math notranslate nohighlight">\(f\)</span> is feasible if</p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\(0 \leq f(v,w) \leq u(v,w)\)</span> for each <span class="math notranslate nohighlight">\((v,w) \in A\)</span>; and</p></li>
@@ -472,6 +514,22 @@ maximize the net flow into the sink node, i.e.,</p>
 \[\text{maximize} \sum_{(w,t) \in A} f(w,t) - \sum_{(t,w)\in A} f(t,w)\]</div>
 </div>
 <p><strong>Q:</strong> Do you understand the difference between a flow and the value of a flow?</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">#</a></h2>
+<p>Consider the following instance. The numbers on the arcs are the capacities.</p>
+<a class="reference internal image-reference" href="../../_images/graph1.png"><img alt="7 node example graph" class="align-center" src="../../_images/graph1.png" style="width: 500px;" /></a>
+<p><strong>Q:</strong> Which nodes are the source and sink? What is <span class="math notranslate nohighlight">\(u(1,4)\)</span>?</p>
+<div class="toggle docutils container">
+<p><strong>A:</strong> Node 0 is the source since it has no incoming arcs while node 6 is the sink since it has no outgoing arcs. <span class="math notranslate nohighlight">\(u(1,4) = 7\)</span>.</p>
+</div>
+<p>We would like to push as much flow as we can from node 0 to node 6. Say we pick the path 0-1-4-6.</p>
+<p><strong>Q:</strong> How many units of flow can be pushed through this path?</p>
+<p><strong>Q:</strong> Is there an arc which got <em>saturated</em> (that is, no more flow can go through it)?</p>
+<p>Now, we write down the flow on the arcs (number inside a box).</p>
+<div class="toggle docutils container">
+<a class="reference internal image-reference" href="../../_images/graph2.png"><img alt="example graph with flow of 4" class="align-center" src="../../_images/graph2.png" style="width: 500px;" /></a>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">

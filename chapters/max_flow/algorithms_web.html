@@ -56,6 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.5. Ford-Fulkerson in Python" href="algorithms_python_web.html" />
     <link rel="prev" title="2.3. Towards an Algorithm" href="towards_algorithm_web.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
@@ -186,6 +187,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      2.4. Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="algorithms_python_web.html">
+     2.5. Ford-Fulkerson in Python
     </a>
    </li>
   </ul>
@@ -432,6 +438,16 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-cont">
+   Example (cont.)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ford-fulkerson">
+   Ford-Fulkerson
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#integrality-property">
    Integrality Property
   </a>
@@ -455,6 +471,16 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-cont">
+   Example (cont.)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ford-fulkerson">
+   Ford-Fulkerson
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#integrality-property">
    Integrality Property
@@ -480,7 +506,18 @@ title="Print to PDF"
 <li><p>For each <span class="math notranslate nohighlight">\((v,w) \in E\)</span> with <span class="math notranslate nohighlight">\(f(v,w) &gt; 0\)</span> put <span class="math notranslate nohighlight">\((w,v) \in E_f\)</span> (not <span class="math notranslate nohighlight">\((v,w)\)</span>!) with residual capacity equal to <span class="math notranslate nohighlight">\(f(v,w)\)</span> (How much can flow on <span class="math notranslate nohighlight">\((v,w)\)</span> be decreased?)</p></li>
 </ol>
 <p>The arcs added in step 2 are called <em>forward arcs</em> since they correspond to moving the flow forward on real arcs of the input; on the other hand, the arcs added in step 3 are called <em>backward arcs</em> since flow moving on one of these corresponds to flow moving backwards on an arc of the input.</p>
-<p>If there is a path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is not optimal; we will indicate in the algorithm how this path can be used to generate a better feasible flow.</p>
+<section id="example-cont">
+<h2>Example (cont.)<a class="headerlink" href="#example-cont" title="Permalink to this headline">#</a></h2>
+<p>We pick up from the following graph.</p>
+<a class="reference internal image-reference" href="../../_images/graph2.png"><img alt="example graph with flow of 4" class="align-center" src="../../_images/graph2.png" style="width: 500px;" /></a>
+<p>Below is a partial residual graph.</p>
+<a class="reference internal image-reference" href="../../_images/graph3.png"><img alt="partial residual graph" class="align-center" src="../../_images/graph3.png" style="width: 500px;" /></a>
+<p><strong>Q:</strong> What are the residual capacities for arcs (2,4), (4,6), and (6,4)?</p>
+<p><strong>Q:</strong> Why is there no arc from 0 to 1 in the residual graph?</p>
+</section>
+<section id="ford-fulkerson">
+<h2>Ford-Fulkerson<a class="headerlink" href="#ford-fulkerson" title="Permalink to this headline">#</a></h2>
+<p>If there is a path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is not optimal; we will indicate in the algorithm how this path, called the <em>augmenting path</em>, can be used to generate a better feasible flow.</p>
 <p>If there is no path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>, let <span class="math notranslate nohighlight">\(S\)</span> be the set of nodes in <span class="math notranslate nohighlight">\(V\)</span> for which there is a path from <span class="math notranslate nohighlight">\(s\)</span> (and <span class="math notranslate nohighlight">\(T\)</span> corresponds to the restof the nodes, <span class="math notranslate nohighlight">\(V\setminus S\)</span>). Then we claim that <span class="math notranslate nohighlight">\((S,T)\)</span> is a cut of capacity equal to the value of flow <span class="math notranslate nohighlight">\(f\)</span>. We next show why this is true. First, we know that for each arc <span class="math notranslate nohighlight">\((v,w) \in D(S,T)\)</span>, it must be the case that <span class="math notranslate nohighlight">\(f(v,w)=u(v,w)\)</span>. The reason for this is easy: if <span class="math notranslate nohighlight">\(f(v,w)\)</span> was less than <span class="math notranslate nohighlight">\(u(v,w)\)</span>, then <span class="math notranslate nohighlight">\((v,w)\)</span> would be an arc in the residual graph; if <span class="math notranslate nohighlight">\(v \in S\)</span>, then there is a path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>, so there must be a path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(w\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> too, making <span class="math notranslate nohighlight">\(w \in S\)</span>. But this is a contradiction, and hence <span class="math notranslate nohighlight">\(f(v,w)=u(v,w)\)</span>. Similarly, it must be the case that for each arc <span class="math notranslate nohighlight">\((w,v)\)</span> such that <span class="math notranslate nohighlight">\(w \in T\)</span> and <span class="math notranslate nohighlight">\(v \in S\)</span>, <span class="math notranslate nohighlight">\(f(w,v)=0\)</span>. Otherwise, there would be a backwards arc <span class="math notranslate nohighlight">\((v,w)\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>, and since <span class="math notranslate nohighlight">\(v \in S\)</span>, <span class="math notranslate nohighlight">\(w\)</span> must be in <span class="math notranslate nohighlight">\(S\)</span> too, which is a contradiction. The capacity of the cut is therefore equal to the total flow from nodes in <span class="math notranslate nohighlight">\(S\)</span> to nodes in <span class="math notranslate nohighlight">\(T\)</span> minus the  total flow from nodes in <span class="math notranslate nohighlight">\(T\)</span> to nodes in <span class="math notranslate nohighlight">\(S\)</span>. The only place that flow “can end up” is the sink, and thus we can argue that the previous quantity is just the value of this flow <span class="math notranslate nohighlight">\(f\)</span>. The capacity of the cut <span class="math notranslate nohighlight">\((S,T)\)</span> is equal to the value of the flow <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>Now we can give the steps of the algorithm that either improves a given feasible flow <span class="math notranslate nohighlight">\(f\)</span> or else proves that it is optimal.</p>
 <ol>
@@ -516,6 +553,16 @@ title="Print to PDF"
 <p class="admonition-title">Note</p>
 <p>The Ford-Fulkerson algorithm computes both the maximum flow <strong>and</strong> a cut of minimum capacity. While the application that we started with was formulated as a maximum flow problem, there are also many applications in which the primary aim is computing a so-called minimum cut instead. The fact that the capacity of the minimum cut is always equal to the value of the maximum flow is called the <em>max-flow min-cut theorem</em>.</p>
 </div>
+<p><strong>Q:</strong> Use the blank graphs below to finish the algorithm for the example problem. At each step, pick a path from 0 to 6 in the residual graph (start with the one above), determine how much flow you can push through this path, write the new flow on the arcs of the graph on the left, and draw the corresponding residual graph on the right.</p>
+<a class="reference internal image-reference" href="../../_images/graph4.png"><img alt="blank example graph" class="align-center" src="../../_images/graph4.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/graph4.png"><img alt="blank example graph" class="align-center" src="../../_images/graph4.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/graph4.png"><img alt="blank example graph" class="align-center" src="../../_images/graph4.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/graph4.png"><img alt="blank example graph" class="align-center" src="../../_images/graph4.png" style="width: 500px;" /></a>
+<p><strong>Q:</strong> What is the value of the optimal flow? Did you use any reverse arcs to improve the flow?</p>
+<p><strong>Q:</strong> Take a look at the last residual graph. Why did you stop? Which nodes can be reached by a directed path from the source in the residual graph?</p>
+<p><strong>Q:</strong> Draw a cut in the last graph on the left separating those nodes that are reachable from 0 and those that are not.</p>
+<p><strong>Q:</strong> Add up the capacities on the arcs that cross the cut from the “source-side” to the “sink-side” (in the original graph). How does this value compare with the maximum flow? What can you now conclude about the flow you found? Give a short explanation.</p>
+</section>
 <section id="integrality-property">
 <h2>Integrality Property<a class="headerlink" href="#integrality-property" title="Permalink to this headline">#</a></h2>
 <p>There is one final observation that should be made about the Ford-Fulkerson algorithm. Suppose that the input has capacities that are all integers; i.e., <span class="math notranslate nohighlight">\(u(v,w)\)</span> is an integer, for each <span class="math notranslate nohighlight">\((v,w) \in E\)</span>. Then it is easy to see that the algorithm always produces an optimal solution in which each flow value <span class="math notranslate nohighlight">\(f(v,w)\)</span> is also an integer. This property is <em>very</em> important and is called the <em>integrality property</em>.</p>
@@ -556,6 +603,13 @@ title="Print to PDF"
             <p class="prev-next-subtitle">previous</p>
             <p class="prev-next-title"><span class="section-number">2.3. </span>Towards an Algorithm</p>
         </div>
+    </a>
+    <a class='right-next' id="next-link" href="algorithms_python_web.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.5. </span>Ford-Fulkerson in Python</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
     </a>
 </div>
             </footer>

@@ -1,0 +1,1131 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2.5. Ford-Fulkerson in Python &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="2.4. Algorithms" href="algorithms_web.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/what_is_or.html">
+   What is Operations Research?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/python_intro.html">
+   Introduction to Python and Mathematical Syntax
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Textbook
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../tsp/intro_web.html">
+   1. The Traveling Salesman Problem
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/model_web.html">
+     1.1. Mathematical Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/algorithms_web.html">
+     1.2. Solving a Problem – Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/tsp_modeling_web.html">
+     1.3. Modeling with the Traveling Salesman Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tsp/vlsi_web.html">
+     1.4. Etching VLSI Computer Chips
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="intro_web.html">
+   2. The Maximum Flow Problem
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="model_web.html">
+     2.1. Mathematical Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verify_web.html">
+     2.2. Verifying a Solution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="towards_algorithm_web.html">
+     2.3. Towards an Algorithm
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="algorithms_web.html">
+     2.4. Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.5. Ford-Fulkerson in Python
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/engri-1101/textbook/textbook?urlpath=tree/src/chapters/max_flow/algorithms_python_web.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/engri-1101/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/engri-1101/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/max_flow/algorithms_python_web.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/engri-1101/textbook/edit/textbook/src/chapters/max_flow/algorithms_python_web.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/chapters/max_flow/algorithms_python_web.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#labeling-algorithm">
+   Labeling Algorithm
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#putting-everything-together">
+   Putting Everything Together
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Ford-Fulkerson in Python</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#labeling-algorithm">
+   Labeling Algorithm
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#putting-everything-together">
+   Putting Everything Together
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="ford-fulkerson-in-python">
+<h1><span class="section-number">2.5. </span>Ford-Fulkerson in Python<a class="headerlink" href="#ford-fulkerson-in-python" title="Permalink to this headline">#</a></h1>
+<p>We will now use Python to help us run the Ford-Fulkerson algorithm.</p>
+<p>We start by defining the input in Python. We will use the package “NetworkX” to manipulate and display graphs. We will consider a new maximum flow instance. The nodes in this instance are numbered 1, 2, 3, 4, 5 and 6, and we want to find the maximum flow from node 1 to node 6.</p>
+<p>Read the code below, and run it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># To use a package, we use the command &quot;import&quot; in Python</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="c1"># G is directed graph </span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span> 
+
+<span class="c1"># We define G based on the edges and the capacity on each edge.</span>
+<span class="c1"># One way to do this is to specify a list of edges with each endpoint and the edge capacity.</span>
+<span class="c1"># For instance, edge (1,2) has capacity 2, (1,3) has capacity 5, etc.</span>
+<span class="n">edgeList</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="c1"># We create the graph based on this list.</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span><span class="n">edgeList</span><span class="p">,</span> <span class="s1">&#39;cap&#39;</span><span class="p">)</span>
+
+<span class="c1"># Each edge will have a flow associated with it. At the start of the algorithm, the flow on each edge is 0.</span>
+<span class="c1"># We initialize this by iterating through the edges in a for-loop and setting the attribute &#39;flow&#39; to 0.</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>Pay attention to the white space in the code. In Python, white space indentation is used to signal that certain commands are part of a group; for example, the last command above is part of the <code class="docutils literal notranslate"><span class="pre">for</span></code>-loop.</p>
+</div>
+<p>The code above initializes the graph, but it does not display anything. Let’s run some code that shows what we are doing — run the code below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pos</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">),(</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">),(</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">40</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span> <span class="c1"># node positions</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">node_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">)</span> <span class="c1"># draw graph</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, the flows and capacities are not displayed on the graph. To do this, you can run the following code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define edge labels</span>
+<span class="n">label</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+    <span class="n">label</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;flow&quot;</span><span class="p">]</span> <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; / &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;cap&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">node_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">)</span> <span class="c1"># draw graph</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">edge_labels</span><span class="o">=</span><span class="n">label</span><span class="p">);</span> <span class="c1"># draw labels</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>So this is the input that we want to run the Ford-Fulkerson algorithm on. As a reminder, every iteration of the algorithm works as follows:</p>
+<ul class="simple">
+<li><p>Create the residual graph <span class="math notranslate nohighlight">\(G_f\)</span> based on the current flow</p></li>
+<li><p>Find a path in <span class="math notranslate nohighlight">\(G_f\)</span> from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> (here from 1 to 6)</p>
+<ul>
+<li><p>If a path exists, update the flow</p></li>
+<li><p>Otherwise, you have found a maximum flow</p></li>
+</ul>
+</li>
+</ul>
+<p>So first we want to create the residual graph <span class="math notranslate nohighlight">\(G_f\)</span>. Recall that we create this graph by adding forward edges with residual capacity equal to the remaining capacity of the edge on which flow could be pushed and backward edges with residual capacity equal to the flow on that edge.</p>
+<p><strong>Q:</strong> Assume we have a feasible flow. Consider an edge with capacity <span class="math notranslate nohighlight">\(c\)</span> and flow <span class="math notranslate nohighlight">\(f\)</span>. What inequality must hold true for <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(f\)</span>? Why?</p>
+<p><strong>Q:</strong> Now, assume <span class="math notranslate nohighlight">\(f &gt; 0\)</span>. What residual edges will be created? For each residual edge created, state whether the edge is a forward or backward edge, and give its residual capacity in terms of <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>The following code implements the logic you just described.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">residualGraph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span> <span class="c1"># blank graph</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="p">][</span><span class="s1">&#39;cap&#39;</span><span class="p">]</span> <span class="c1"># capacity on edge (i,j)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="c1"># flow on edge (i,j)</span>
+    
+    <span class="c1"># If there is leftover capacity</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">f</span> <span class="p">):</span>
+        <span class="n">residualGraph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+        <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;residual capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">-</span><span class="n">f</span>
+        <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;forward edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> 
+     
+    <span class="c1"># If there is nonzero flow</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">f</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">):</span>
+        <span class="n">residualGraph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;residual capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;forward edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, the code below plots the residual graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">residualGraph</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">node_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;limegreen&#39;</span><span class="p">,</span><span class="n">connectionstyle</span><span class="o">=</span><span class="s1">&#39;arc3, rad=0.1&#39;</span><span class="p">)</span>
+<span class="n">residualcap</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">residualGraph</span><span class="p">,</span> <span class="s1">&#39;residual capacity&#39;</span><span class="p">)</span>        
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">residualGraph</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">edge_labels</span><span class="o">=</span><span class="n">residualcap</span><span class="p">,</span><span class="n">label_pos</span><span class="o">=</span><span class="mf">0.66</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The nodes are drawn in green as a visual reminder that we are looking at the residual graph. Also, the edges are drawn with a slight bend because we know there will often be both an arc <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\((j,i)\)</span> in the residual graph. The residual capacities are given closer to the tail of the edges.</p>
+<p>Let’s now do an iteration of Ford-Fulkerson.</p>
+<p><strong>Q:</strong> Find a path from 1 to 6 in the residual graph, and define delta to be the minimum residual capacity of the edges in this path.</p>
+<p>You can define a path in Python by listing the edges in the path as follows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">flowpath</span> <span class="pre">=</span> <span class="pre">[(1,2),(2,3)]</span></code></p>
+<p>defines the variable “flowpath” as the path with edges (1,2) and (2,3).</p>
+<div class="cell tag_web-only docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO</span>
+<span class="n">flowpath</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">delta</span> <span class="o">=</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Q:</strong> How will the flow change on the edges in the original graph with a corresponding forward edge in the s-t path in the residual graph? What about those with a corresponding backward edge in the s-t path in the residual graph?</p>
+<p>The following code implements the logic you just described.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">flowpath</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;forward edge&#39;</span><span class="p">]:</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we plot the new flow!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define edge labels</span>
+<span class="n">label</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+    <span class="n">label</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;flow&quot;</span><span class="p">]</span> <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; / &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;cap&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">node_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">)</span> <span class="c1"># draw graph</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">edge_labels</span><span class="o">=</span><span class="n">label</span><span class="p">);</span> <span class="c1"># draw labels</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This concludes the first iteration of the Ford-Fulkerson algorithm! Let’s do this again! Did you notice we used the same code to plot the flow graph? When we have code we want to reuse, we should make a “function”. You can do this in Python using the keyword <code class="docutils literal notranslate"><span class="pre">def</span></code>. As an example, let’s define a function to plot the graph with the current flow, called <code class="docutils literal notranslate"><span class="pre">plot_flow</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_flow</span><span class="p">():</span>
+    <span class="c1"># Define edge labels</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+        <span class="n">label</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;flow&quot;</span><span class="p">]</span> <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; / &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;cap&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">node_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">)</span> <span class="c1"># draw graph</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">edge_labels</span><span class="o">=</span><span class="n">label</span><span class="p">);</span> <span class="c1"># draw labels</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>After running the code in the cell above, it now suffices to just type <code class="docutils literal notranslate"><span class="pre">plot_flow()</span></code> to see the current flow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great! Let’s do the same thing for plotting the residual graph. (The <code class="docutils literal notranslate"><span class="pre">global</span></code> keyword ensures the variable <code class="docutils literal notranslate"><span class="pre">residualGraph</span></code> has a scope outside this function. Speaking of scope, this is outside the scope of this course).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_residual_graph</span><span class="p">():</span>
+
+    <span class="k">global</span> <span class="n">residualGraph</span>
+    
+    <span class="n">residualGraph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span> <span class="c1"># blank graph</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="p">][</span><span class="s1">&#39;cap&#39;</span><span class="p">]</span> <span class="c1"># capacity on edge (i,j)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="c1"># flow on edge (i,j)</span>
+
+        <span class="c1"># If there is leftover capacity</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">f</span> <span class="p">):</span>
+            <span class="n">residualGraph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+            <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;residual capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">-</span><span class="n">f</span>
+            <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;forward edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> 
+
+        <span class="c1"># If there is nonzero flow</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">f</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">):</span>
+            <span class="n">residualGraph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;residual capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
+            <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;forward edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span> 
+            
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">residualGraph</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">node_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;limegreen&#39;</span><span class="p">,</span><span class="n">connectionstyle</span><span class="o">=</span><span class="s1">&#39;arc3, rad=0.1&#39;</span><span class="p">)</span>
+    <span class="n">residualcap</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">residualGraph</span><span class="p">,</span> <span class="s1">&#39;residual capacity&#39;</span><span class="p">)</span>        
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">residualGraph</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">edge_labels</span><span class="o">=</span><span class="n">residualcap</span><span class="p">,</span><span class="n">label_pos</span><span class="o">=</span><span class="mf">0.66</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we can now plot the residual graph using <code class="docutils literal notranslate"><span class="pre">plot_residual_graph()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_residual_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>The residual capacities are given closer to the tail of the edges than the head, again, because there will often be two edges between a pair of nodes.</p>
+</div>
+<p><strong>Q:</strong> Find another 1 to 6 path in the residual graph, and find the minimum residual capacity of the edges on this path.</p>
+<div class="cell tag_web-only docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO</span>
+<span class="n">flowpath</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">delta</span> <span class="o">=</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s update the flow again. But first, we will reduce repeated code by introducing a function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_flow</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">flowpath</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;forward edge&#39;</span><span class="p">]:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run this cell to update the flow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">update_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And run this cell to view the new flow graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s do another iteration! Here is the updated residual graph:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_residual_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Q:</strong> Find another path.</p>
+<div class="cell tag_web-only docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO</span>
+<span class="n">flowpath</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">delta</span> <span class="o">=</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">update_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_residual_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Did we find an optimal flow?  If you did the previous iterations correctly, there is no longer a path from 1 to 6 in the residual graph. Recall, this means that the flow is optimal, and you can show this by providing a cut that has capacity equal to the flow value. This cut can be found using a “labeling algorithm” that maintains a list of checked nodes that it still needs to process.</p>
+<section id="labeling-algorithm">
+<h2>Labeling Algorithm<a class="headerlink" href="#labeling-algorithm" title="Permalink to this headline">#</a></h2>
+<p>Labeling algorithm</p>
+<ul class="simple">
+<li><p>Mark <span class="math notranslate nohighlight">\(s\)</span> with a <span class="math notranslate nohighlight">\(\checkmark\)</span>. Let the list initially contain only node <span class="math notranslate nohighlight">\(s\)</span>.</p></li>
+<li><p>Until the list is empty:</p>
+<ul>
+<li><p>Take any node (e.g., the first one) off of the list. Suppose that <span class="math notranslate nohighlight">\(i\)</span> is the name of this node. For each arc leaving <span class="math notranslate nohighlight">\(i\)</span>, that is, each <span class="math notranslate nohighlight">\((i,j) \in E_f\)</span>, if <span class="math notranslate nohighlight">\(j\)</span> is unchecked, check it and add it to the list.</p></li>
+</ul>
+</li>
+</ul>
+<p>The nodes that have been checked are those nodes that are reachable from <span class="math notranslate nohighlight">\(s\)</span> by a path in <span class="math notranslate nohighlight">\(G_f\)</span>. Note that the labeling algorithm is extremely similar to Dijkstra’s shortest path algorithm. However, it does not care about distance, only if a node is reachable.</p>
+<p>We implement the labeling algorithm below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncheck all nodes except for 1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># Initialize the list of checked nodes that we still need to process</span>
+<span class="nb">list</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span> <span class="p">}</span>
+
+<span class="c1"># Until the list is empty</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span> <span class="nb">list</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="c1"># Take any node off of the list</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">list</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> 
+    
+    <span class="c1"># For each arc in the residual graph leaving i</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">residualGraph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="c1"># If j is unchecked        </span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># check it</span>
+            <span class="nb">list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">j</span> <span class="p">)</span>  <span class="c1"># and add it to the list</span>
+
+<span class="c1"># Output the checked nodes</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Q:</strong> What is the cut that the labeling algorithm finds? What is the capacity of the cut?</p>
+<p>We can modify the code to find a path in the residual graph if there is one by keeping track of the node <span class="math notranslate nohighlight">\(i\)</span> we came from when we first check a node <span class="math notranslate nohighlight">\(j\)</span>. We can do this by adding another attribute to the nodes, called “prev”, and defining this in the algorithm. As soon as we encounter node 6 we can backtrack using “prev” to find the path.</p>
+<p>We implement this idea below. Look for the slight change in implementation from the previous one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">labeling_algorithm</span><span class="p">():</span>
+    <span class="c1"># Uncheck all nodes except for 1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Initialize the list of checked nodes that we still need to process</span>
+    <span class="nb">list</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span> <span class="p">}</span>
+
+    <span class="c1"># Until the list is empty</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="nb">len</span><span class="p">(</span> <span class="nb">list</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">):</span>
+        <span class="c1"># Take any node off of the list</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">list</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> 
+
+        <span class="c1"># For each arc in the residual graph leaving i</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">residualGraph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="c1"># If j is unchecked        </span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]:</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># check it</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;prev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>  <span class="c1"># set prev</span>
+                <span class="nb">list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">j</span> <span class="p">)</span>  <span class="c1"># and add it to the list</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s restart with the same graph again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>  <span class="c1"># blank directed graph</span>
+<span class="n">edgeList</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># create edges / capacities</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span> <span class="n">edgeList</span><span class="p">,</span> <span class="s1">&#39;cap&#39;</span> <span class="p">)</span>  <span class="c1"># add edges / capacities to graph</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># set flows to zero</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the flow and the residual graphs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_residual_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before using our function <code class="docutils literal notranslate"><span class="pre">labeling_algorithm</span></code> to run the labeling algorithm on this instance, we will use a visual and interactive implementation.</p>
+<div class="cell tag_web-only docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="s1">&#39;https://engri-1101.github.io/textbook/modules/max_flow.py&#39;</span><span class="p">,</span> <span class="s2">&quot;max_flow.py&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">max_flow</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">pos</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">),(</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">),(</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">40</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">):</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<span class="n">ex</span> <span class="o">=</span> <span class="n">max_flow</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s use our implementation!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labeling_algorithm</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use the attribute “check” to see whether node 6 is reachable from node 1 in the residual graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">6</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Q:</strong> Is node 6 reachable from node 1 in the residual graph? Why?</p>
+<p>Let’s use the “prev” attribute to find a path from 1 to 6 in the residual graph. Run the cell to generate the augmenting path in the residual graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">j</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">flowpath</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="n">j</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;prev&quot;</span><span class="p">]</span>
+    <span class="n">flowpath</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">flowpath</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And let’s find the minimum residual capacity on this path. First, we can get a list of the residual capacities for every edge in the path. Then, we use <code class="docutils literal notranslate"><span class="pre">min</span></code> to find the smallest which we call delta.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path_capacities</span> <span class="o">=</span> <span class="p">[</span><span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;residual capacity&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">flowpath</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path_capacities</span><span class="p">)</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">path_capacities</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can use the function defined earlier to update the flow!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">update_flow</span><span class="p">()</span>
+<span class="n">plot_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_residual_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run the labeling algorithm again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labeling_algorithm</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s define a new function to find and print an <span class="math notranslate nohighlight">\(s-t\)</span> path in the residual graph and its corresponding delta.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_path_and_delta</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">flowpath</span><span class="p">,</span> <span class="n">delta</span>
+    
+    <span class="n">j</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">flowpath</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">j</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;prev&quot;</span><span class="p">]</span>
+        <span class="n">flowpath</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">flowpath</span><span class="p">)</span>
+    
+    <span class="n">path_capacities</span> <span class="o">=</span> <span class="p">[</span><span class="n">residualGraph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;residual capacity&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">flowpath</span><span class="p">]</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">path_capacities</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run this cell to make sure your function works as expected.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_path_and_delta</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s update the flow again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">update_flow</span><span class="p">()</span>
+<span class="n">plot_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_path_and_delta</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="putting-everything-together">
+<h2>Putting Everything Together<a class="headerlink" href="#putting-everything-together" title="Permalink to this headline">#</a></h2>
+<p>You’re probably getting a bit sick from running each cell every time. Let’s automate the procedure!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">ford_fulkerson</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;flow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">plot_residual_graph</span><span class="p">()</span> <span class="c1"># plot the residual graph</span>
+    <span class="n">labeling_algorithm</span><span class="p">()</span> <span class="c1"># run the labeling algorithm to find a s-t path in the residual graph</span>
+    <span class="k">while</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">6</span><span class="p">][</span><span class="s2">&quot;check&quot;</span><span class="p">]:</span> <span class="c1"># while there is an s-t path in the residual graph</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">print_path_and_delta</span><span class="p">()</span> <span class="c1"># show it</span>
+        <span class="n">update_flow</span><span class="p">()</span> <span class="c1"># update the flow</span>
+        <span class="n">plot_residual_graph</span><span class="p">()</span> <span class="c1"># plot the new residual graph</span>
+        <span class="n">labeling_algorithm</span><span class="p">()</span> <span class="c1"># run the labeling algorithm to find a s-t path in the new residual graph</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the input graph</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span> 
+<span class="n">edgeList</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span><span class="n">edgeList</span><span class="p">,</span> <span class="s1">&#39;cap&#39;</span><span class="p">)</span>
+
+<span class="c1"># Run Ford-Fulkerson</span>
+<span class="n">ford_fulkerson</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at the maximum flow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use the visual/interactive labeling algorithm to identify the checked nodes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pos</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">),(</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">),(</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">40</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">):</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<span class="n">ex</span> <span class="o">=</span> <span class="n">max_flow</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">ford_fulkerson</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Q:</strong> Which nodes were checked in the last run of the labeling algorithm? Use this to give a minimum cut. What is its capacity? How does it relate to the value of the optimal flow?</p>
+<p>We have now implemented the Ford-Fulkerson algorithm in Python! With a few more tweaks, you could use this on any graph.</p>
+<p><strong>Bonus:</strong> You have seen all the ingredients necessary to also implement Dijkstra’s algorithm for the shortest path problem. Implement this algorithm in Python.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "engri-1101/textbook",
+            ref: "textbook",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\max_flow"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="algorithms_web.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">2.4. </span>Algorithms</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By David B. Shmoys, Samuel C. Gutekunst, Frans Schalekamp, and David P. Williamson<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

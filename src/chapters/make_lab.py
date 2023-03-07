@@ -1,5 +1,6 @@
 import re
 import argparse
+import nbformat
 import numpy as np
 import json
 
@@ -32,6 +33,24 @@ def delete(string, index_pairs):
         index_pairs = index_pairs - (j-i)
     return string
 
+def remove_cell(nb_string):
+    """Return notebook with cells tagged 'key-only' removed."""
+    nb = nbformat.read(nb_string, 4)
+
+    # Find and remove cells with tag 'key-only'
+    indices_to_pop = []
+    for i, c in enumerate(nb.cells):
+        cell_tags = c.metadata.get('tags')
+        if cell_tags:
+            if 'key-only' in cell_tags:
+                indices_to_pop.append(i)
+    indices_to_pop.reverse()
+    for i in indices_to_pop:
+        nb.cells.pop(i)
+
+    # Save the new notebook
+    nbformat.write(nb, nb_string)
+
 
 def main(key):
     """Make a student version of the given lab key in the same directory."""
@@ -51,6 +70,8 @@ def main(key):
     student = key.replace("_key", "")
     with open(student, "w") as f:
         json.dump(nb, f)
+
+    remove_cell(student)
 
 
 if __name__ == "__main__":

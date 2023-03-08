@@ -1,6 +1,6 @@
 bokeh==3.0.3
 cycler==0.11.0
-decorator==5.5.1
+decorator==5.1.1
 gilp==2.1.0
 vinal==0.0.4
 imageio==2.26.0

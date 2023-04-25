@@ -13,14 +13,34 @@ the standard for pre-lab/lab handouts. Archives of distribution files
 The archive currently includes the Fall 2020 and Spring 2022 semesters. If you
 need access to this archive, please email Ricky (rls499@cornell.edu).
 
+## GitHub Large File Storage
+
+This repository currently has source files that are larger than the 100MB
+file size limit. In order to version control these files, we use
+[GitHub Large File Storage](https://git-lfs.github.com). You will need to have
+this tool installed before cloning the repository. On macOS, the recommended
+way to do this is using [Homebrew](https://brew.sh), a package manager for
+macOS. If you do not have it installed, see the installation instructions
+[here](https://brew.sh). After installing, install LFS with this command.
+
+```
+brew install git-lfs
+git lfs install
+```
+
+For Windows installation instructions or to install on macOS
+*without Homebrew*, see these
+[instructions](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage).
+
 ## Installation
 
+See [GitHub Large File Storage](#GitHub-Large-File-Storage) before cloning.
 To clone the repo and create distribution files for the latest versions of
 these labs, run the following commands. Be aware this takes a moment.
 
 ```
 git clone git@github.com:engri-1101/textbook.git
-cd engri-1101-labs/labs
+cd labs
 make all
 ```
 
@@ -30,13 +50,13 @@ pre-lab or lab handouts.
 
 ## Development
 
+See [GitHub Large File Storage](#GitHub-Large-File-Storage) before cloning.
 To work on developing these labs, you will need to run an additional command
 after cloning the repository. If you are new to using Git, see the
 [Git Tutorial](tutorials/git/git.md).
 
 ```
 git clone git@github.com:engri-1101/textbook.git
-cd engri-1101-labs
 git config --local include.path ../.gitconfig
 ```
 

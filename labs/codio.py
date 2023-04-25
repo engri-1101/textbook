@@ -1,28 +1,29 @@
 import sys
 import json
+import glob
 
 lab_name = sys.argv[1]
 
 # get auto-generated id from .guides_tmp
-with open(".guides_tmp/metadata.json") as f:
-  sections = json.load(f)["sections"]
-  id = sections[0]["id"]
+filename = glob.glob(".guides_tmp/content/Page-1*.json")[0]
 
-# update guides to have the id
-with open(".guides/metadata.json", "r") as f:
+#need to first get the filename since now has randomness on it.
+with open(filename) as f:
+  id = json.load(f)["id"]
+
+# update guides content to have the id
+with open(".guides/content/Using-Jupyter-Notebooks.json", "r") as f:
   metadata = json.load(f)
-  metadata["sections"][0]["id"] = id
-  metadata["sections"][0]["files"][0]["path"] = "{lab_name}_lab_key.ipynb".format(lab_name = lab_name)
+  metadata["id"] = id
+  metadata["files"][0]["path"] = "{lab_name}_lab.ipynb".format(lab_name = lab_name)
 
-with open(".guides/metadata.json", "w") as f:
+with open(".guides/content/Using-Jupyter-Notebooks.json", "w") as f:
   json.dump(metadata, f, indent=2)
 
-with open(".guides/book.json", "r") as f:
-  book = json.load(f)
-  book["children"][0]["id"] = id
-  book["children"][0]["pageId"] = id
-  book["name"] = lab_name
+with open(".guides/content/index.json", "r") as f:
+  index = json.load(f)
+  index["title"] = lab_name
 
-with open(".guides/book.json", "w") as f:
-  json.dump(book, f, indent=2)
+with open(".guides/content/index.json", "w") as f:
+  json.dump(index, f, indent=2)
 

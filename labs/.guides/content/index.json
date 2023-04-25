@@ -1,0 +1,20 @@
+{
+	"allowGuideClose": false,
+	"collapsedOnStart": true,
+	"hideBackToDashboard": true,
+	"hideMenu": false,
+	"hideSectionsToggle": true,
+	"lexikonTopic": "",
+	"order": [
+		"Using-Jupyter-Notebooks"
+	],
+	"protectLayout": true,
+	"scripts": [
+		".guides/load.js"
+	],
+	"suppressPageNumbering": true,
+	"theme": "light",
+	"title": "lab_name",
+	"useMarkAsComplete": true,
+	"useSubmitButtons": true
+}

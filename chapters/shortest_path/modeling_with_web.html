@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.4. Modeling with Shortest Paths &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/shortest_path/modeling_with_web';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. The Maximum Flow Problem" href="../max_flow/intro_web.html" />
+    <link rel="prev" title="2.3. Verifying a Solution" href="verify_web.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../cover.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/what_is_or.html">What is Operations Research?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/python_intro.html">Introduction to Python and Mathematical Syntax</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Textbook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tsp/intro_web.html">1. The Traveling Salesman Problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/model_web.html">1.1. Mathematical Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/algorithms_web.html">1.2. Solving a Problem – Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/tsp_modeling_web.html">1.3. Modeling with the Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/vlsi_web.html">1.4. Etching VLSI Computer Chips</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro_web.html">2. The Shortest Path Problem</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="model_web.html">2.1. Mathematical Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm_web.html">2.2. Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verify_web.html">2.3. Verifying a Solution</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.4. Modeling with Shortest Paths</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../max_flow/intro_web.html">3. The Maximum Flow Problem</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/model_web.html">3.1. Mathematical Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/verify_web.html">3.2. Verifying a Solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/towards_algorithm_web.html">3.3. Towards an Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/algorithms_web.html">3.4. Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/algorithms_python_web.html">3.5. Ford-Fulkerson in Python</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/engri-1101/textbook/textbook?urlpath=tree/src/chapters/shortest_path/modeling_with_web.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/engri-1101/textbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/engri-1101/textbook/edit/textbook/src/chapters/shortest_path/modeling_with_web.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/engri-1101/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/shortest_path/modeling_with_web.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/shortest_path/modeling_with_web.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Modeling with Shortest Paths</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="modeling-with-shortest-paths">
+<h1><span class="section-number">2.4. </span>Modeling with Shortest Paths<a class="headerlink" href="#modeling-with-shortest-paths" title="Permalink to this heading">#</a></h1>
+<p>In the Traveling Salesman Problem handout, we saw that the VLSI problem was a special case of the TSP: for any input to the VLSI problem, we could construct a TSP input such that the cheapest TSP tour gave an optimal VLSI solution.</p>
+<p>We will next consider a problem from inventory management. At first glance, it might not seem  like a shortest path problem.  We will, however, make an analogous argument: for any input to the inventory problem, we can construct an input to the shortest path problem such that finding a shortest path in the graph constructed will allow us to find an optimal solution to the original inventory problem.</p>
+<p>In this inventory problem, a company plans to sell steel beams.  Beams come in several sizes, and the company wants to choose which beams they should stock. More specifically, steel beams come in <span class="math notranslate nohighlight">\(n\)</span> different types.  All beam types have the same cross-sectional area, but different beam types have different heights.  We say that beams are of type <span class="math notranslate nohighlight">\(i\)</span>, for <span class="math notranslate nohighlight">\(i=1, 2, ..., n\)</span>.  For each beam type <span class="math notranslate nohighlight">\(i\)</span>, we have the following parameters:</p>
+<ul class="simple">
+<li><p>Beams of type <span class="math notranslate nohighlight">\(i\)</span> have height <span class="math notranslate nohighlight">\(h(i)&gt;0\)</span>.  We assume that the beam types are ordered in increasing height, so that $<span class="math notranslate nohighlight">\(h(1)&lt;h(2)&lt;\cdots &lt; h(n-1)&lt;h(n).\)</span>$</p></li>
+<li><p>There is a known demand <span class="math notranslate nohighlight">\(d(i)&gt;0\)</span> for beams of height <span class="math notranslate nohighlight">\(h(i)\)</span>.</p></li>
+<li><p>We pay an acquisition cost <span class="math notranslate nohighlight">\(c(i)&gt;0\)</span> for each type <span class="math notranslate nohighlight">\(i\)</span> beam we stock. Taller beams cost more: $<span class="math notranslate nohighlight">\(c(1)&lt;c(2)&lt;\cdots &lt;c(n-1)&lt;c(n).\)</span>$</p></li>
+<li><p>There is a fixed cost <span class="math notranslate nohighlight">\(k(i)&gt;0\)</span> if we choose to stock any beams of type <span class="math notranslate nohighlight">\(i\)</span>. This cost covers all of the setup necessary to sell beams of type <span class="math notranslate nohighlight">\(i\)</span> (e.g., configuring warehouse and sales space).</p></li>
+</ul>
+<p>Because the beams all have the same cross-section, we can do two things to supply a beam of height <span class="math notranslate nohighlight">\(h(i)\)</span>: we can either supply a beam of type <span class="math notranslate nohighlight">\(i\)</span>, or we can cut down a taller beam of height <span class="math notranslate nohighlight">\(h(j)\)</span> to height <span class="math notranslate nohighlight">\(h(i)\)</span> (where <span class="math notranslate nohighlight">\(j&gt;i\)</span>).  When we cut down a larger beam, we throw out any leftover material.</p>
+<p>Our goal is to figure out which beams to stock so as to minimize our total cost.  For example, suppose we have only beams of <span class="math notranslate nohighlight">\(n=2\)</span> types.  We could stock beams of type 1 and 2, in which case we must pay the fixed costs for both beam types 1 and 2.  We also  pay <span class="math notranslate nohighlight">\(c(1)\)</span> for each of the  <span class="math notranslate nohighlight">\(d(1)\)</span> type-1 beams we must acquire, and we  pay <span class="math notranslate nohighlight">\(c(2)\)</span> for each of the <span class="math notranslate nohighlight">\(d(2)\)</span> type-2 beams we must acquire. In total, doing so costs</p>
+<div class="math notranslate nohighlight">
+\[k(1)+k(2)+c(1) \cdot d(1)+c(2) \cdot d(2).\]</div>
+<p>It might be cheaper to instead only stock beams of type 2 and to cut them down anytime we need to supply a beam of height <span class="math notranslate nohighlight">\(h(1)\)</span>.  In this case, the only fixed cost we pay is <span class="math notranslate nohighlight">\(k(2)\)</span>.  However, we now need to acquire <span class="math notranslate nohighlight">\(d(1)+d(2)\)</span> type-2 beams to meet the demand for beams of heights <span class="math notranslate nohighlight">\(h(1)\)</span> and <span class="math notranslate nohighlight">\(h(2)\)</span>.  The total cost of this second option is thus</p>
+<div class="math notranslate nohighlight">
+\[k(2)+c(2)\left(d(1)+d(2)\right).\]</div>
+<p>In this second option, fixed storage cost is reduced, but since <span class="math notranslate nohighlight">\(c(1)&lt;c(2)\)</span>, the total acquisition cost is greater.  This problem, then, requires finding the optimal way to balance the fixed storage cost with the per-beam acquisition cost.</p>
+<p>Moving back to the general problem with <span class="math notranslate nohighlight">\(n\)</span> different beam heights, notice that we must always stock the beam of type <span class="math notranslate nohighlight">\(n\)</span>: these are the only beams that can be used to supply the <span class="math notranslate nohighlight">\(d(n)\)</span> necessary beams of height <span class="math notranslate nohighlight">\(h(n).\)</span>  One way to express a solution to the inventory problem is to first specify the smallest type of beam we choose to stock.  We then specify the next smallest beam type we chose to stock, and continue doing so until we specify beams of type <span class="math notranslate nohighlight">\(n\)</span>.<br />
+For example, suppose that <span class="math notranslate nohighlight">\(n=7\)</span> and we choose to first stock beams of type 2, next stock beams of type 6, and finally stock beams of type 7.  Our total cost would be</p>
+<div class="math notranslate nohighlight">
+\[\left[k(2) + c(2)\left(d(1)+d(2)\right)\right] + \left[k(6) + c(6)\left(d(3)+d(4)+d(5)+d(6)\right)\right] + \left[k(7) + c(7)\left(d(7)\right)\right].\]</div>
+<p>More succinctly, the total cost is:</p>
+<div class="math notranslate nohighlight">
+\[\left[k(2) + c(2)\sum_{i=1}^2 d(i)\right] + \left[k(6) + c(6)\sum_{i=3}^6 d(i)\right] + \left[k(7) + c(7)\sum_{i=7}^7 d(i)\right].\]</div>
+<p>Notice that these terms account for our costs in the exact same order as our sequential decisions!  If the first beam we supply is of type 2, then we pay exactly <span class="math notranslate nohighlight">\(k(2) + c(2)\sum_{i=1}^2 d(i)\)</span> for stocking type-2 beams (or, in other words, supplying beams of height at most <span class="math notranslate nohighlight">\(h(2)\)</span>).  If the next-smallest beam we store is of type 6, then we pay exactly <span class="math notranslate nohighlight">\(k(6) + c(6)\sum_{i=3}^6 d(i)\)</span> to stock type-6 beams – that is, to supply beams of heights from <span class="math notranslate nohighlight">\(h(3)\)</span> through <span class="math notranslate nohighlight">\(h(6).\)</span>  We finally pay <span class="math notranslate nohighlight">\(k(7) + c(7)\sum_{i=7}^7 d(i)\)</span> to stock height <span class="math notranslate nohighlight">\(h(7)\)</span> beams.</p>
+<p>We now use this intuition to specify how to take any input to the inventory problem with <span class="math notranslate nohighlight">\(n\)</span> beam types and construct an input to the shortest path problem.  Our shortest path instance will have <span class="math notranslate nohighlight">\(n+1\)</span> nodes: nodes <span class="math notranslate nohighlight">\(1, 2, ..., n\)</span> and an extra node 0.  Node 0 will be our source node.  Arcs will encode sequential inventory decisions. Our shortest path will begin with some arc <span class="math notranslate nohighlight">\((0, i)\)</span>, and this arc will represent that beams of type <span class="math notranslate nohighlight">\(i\)</span> is the smallest beam type we stock.  If  we traverse an arc <span class="math notranslate nohighlight">\((i, j)\)</span> in the path, then this represents the decision that “we have chosen to stock beams of type <span class="math notranslate nohighlight">\(i\)</span>, and the next-smallest-beam-type we choose to stock is of type <span class="math notranslate nohighlight">\(j\)</span>.”  In the preceding example, we would encode the decision to “first stock beams of type 2, then of type 6, and then of type 7” as a path <span class="math notranslate nohighlight">\((0, 2), (2, 6), (6, 7).\)</span>  The length <span class="math notranslate nohighlight">\(\ell(i, j)\)</span> should encode the cost of the decision to “stock beams of type <span class="math notranslate nohighlight">\(i\)</span> followed by type <span class="math notranslate nohighlight">\(j\)</span>.”  That is,</p>
+<div class="math notranslate nohighlight">
+\[\ell(i, j)=k(j)+c(j)\sum_{r=i+1}^j d(r).\]</div>
+<p>Our full input to the shortest path problem is:</p>
+<ul class="simple">
+<li><p>A directed graph <span class="math notranslate nohighlight">\(G=(N, A)\)</span> where <span class="math notranslate nohighlight">\(N=\{0, 1, ..., n\}.\)</span>   <span class="math notranslate nohighlight">\(A=\{(i, j): 0\leq i&lt;j\leq n\},\)</span> representing any possible decision to “stock beams of type <span class="math notranslate nohighlight">\(i\)</span>, and then the next-smallest-beam-type we stock is of type <span class="math notranslate nohighlight">\(j\)</span>.”</p></li>
+<li><p>Our source is <span class="math notranslate nohighlight">\(s=0\)</span>, and our destination is <span class="math notranslate nohighlight">\(t=n.\)</span></p></li>
+<li><p>The length of arc <span class="math notranslate nohighlight">\((i, j)\)</span> is <span class="math notranslate nohighlight">\(k(j)+c(j)\sum_{r=i+1}^j d(r)\)</span>, for <span class="math notranslate nohighlight">\( 0\leq i&lt;j\leq n.\)</span></p></li>
+</ul>
+<p>Given a shortest path in this instance, we readily attain a solution to the original inventory problem.  We do so by stocking exactly those beams whose corresponding nodes are visited in the shortest path.  For example, if <span class="math notranslate nohighlight">\(n=7\)</span> and found the shortest 0-7 path to be <span class="math notranslate nohighlight">\((0, 2), (2, 6), (6, 7),\)</span> we’d exactly have the solution and cost discussed above: stock beams of type 2, 6, and 7!</p>
+<p>We have shown that we can model the inventory stocking problem as a shortest path problem. Note that there were several steps along the way in showing that this is a correct formulation. First, we had to explain how to map any input to the inventory problem into an input for the shortest path problem - that is, how to construct the graph, how to determine the arc lengths, and what source (and destination) node captured the decisions needed to be made. Then, we showed how to interpret any output from the shortest path problem, that is, a path from node 0 to node <span class="math notranslate nohighlight">\(n\)</span> as a sequence of decisions. What we actually showed was a precise correspondence - for each sequence of decisions there was a corresponding path, and vice versa - each path from node 0 to node <span class="math notranslate nohighlight">\(n\)</span> could be interpreted as the decisions about which beam types to store in inventory (and which ones not to store). And finally, we argued that the length of each path was exactly equal to the cost of the corresponding inventory decisions. Consequently, solving the shortest path input that was constructed in this way, precisely solved the inventory management problem.</p>
+<p>This completes the explanation that the inventory problem can be modeled by the shortest path problem.  We have established Dijkstra’s algorithm to solve shortest path problems.  Hence, we now have a way to solve this inventory problem:  convert it to a shortest path problem and solve it using Dijkstra’s algorithm.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "engri-1101/textbook",
+            ref: "textbook",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-engri_1101-py"
+        },
+        kernelOptions: {
+            name: "conda-env-engri_1101-py",
+            path: "./chapters\shortest_path"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-engri_1101-py'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="verify_web.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.3. </span>Verifying a Solution</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../max_flow/intro_web.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>The Maximum Flow Problem</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By David B. Shmoys, Samuel C. Gutekunst, Frans Schalekamp, and David P. Williamson
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

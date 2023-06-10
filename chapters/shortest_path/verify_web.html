@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.3. Verifying a Solution &#8212; Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/shortest_path/verify_web';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. Modeling with Shortest Paths" href="modeling_with_web.html" />
+    <link rel="prev" title="2.2. Algorithm" href="algorithm_web.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../cover.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Data Science and Decision Making: An Elementary Introduction to Modeling and Optimization</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/what_is_or.html">What is Operations Research?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/python_intro.html">Introduction to Python and Mathematical Syntax</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Textbook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tsp/intro_web.html">1. The Traveling Salesman Problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/model_web.html">1.1. Mathematical Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/algorithms_web.html">1.2. Solving a Problem – Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/tsp_modeling_web.html">1.3. Modeling with the Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tsp/vlsi_web.html">1.4. Etching VLSI Computer Chips</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro_web.html">2. The Shortest Path Problem</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="model_web.html">2.1. Mathematical Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm_web.html">2.2. Algorithm</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.3. Verifying a Solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_with_web.html">2.4. Modeling with Shortest Paths</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../max_flow/intro_web.html">3. The Maximum Flow Problem</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/model_web.html">3.1. Mathematical Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/verify_web.html">3.2. Verifying a Solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/towards_algorithm_web.html">3.3. Towards an Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/algorithms_web.html">3.4. Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../max_flow/algorithms_python_web.html">3.5. Ford-Fulkerson in Python</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/engri-1101/textbook/textbook?urlpath=tree/src/chapters/shortest_path/verify_web.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/engri-1101/textbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/engri-1101/textbook/edit/textbook/src/chapters/shortest_path/verify_web.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/engri-1101/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/shortest_path/verify_web.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/shortest_path/verify_web.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Verifying a Solution</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="verifying-a-solution">
+<h1><span class="section-number">2.3. </span>Verifying a Solution<a class="headerlink" href="#verifying-a-solution" title="Permalink to this heading">#</a></h1>
+<p>In this section we shall explain a simple way to verify that you have computed correctly the shortest path between two nodes in a given graph, without having to rerun the entire algorithm. Suppose that the input is a directed graph <span class="math notranslate nohighlight">\(G=(N,A)\)</span>, where each arc <span class="math notranslate nohighlight">\((i,j) \in A\)</span> (the <span class="math notranslate nohighlight">\(\in\)</span> symbol means “is an element of”) has a given length <span class="math notranslate nohighlight">\(\ell (i,j) \ge 0\)</span>, and you wish to compute the shortest path from a given node <span class="math notranslate nohighlight">\(s\)</span> to each other node in the graph. In fact, you have run Dijkstra’s algorithm and computed that the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to one node <span class="math notranslate nohighlight">\(w\)</span> consists of the the <span class="math notranslate nohighlight">\(k+1\)</span> arcs <span class="math notranslate nohighlight">\((s,i_1), (i_1,i_2), \ldots, (i_{k-1},i_k), (i_k,w)\)</span>. You want to know some easy way to verify that you have computed the correct path, other than just running the algorithm again to see that you did each step correctly.</p>
+<p>Consider the input in Figure 2.6. Can you give a convincing argument that you know that shortest path from node 1 to each other node? (Think about this before reading on!!)</p>
+<figure class="align-default" id="example-with-shortest-path-0">
+<a class="reference internal image-reference" href="../../_images/easy_input.png"><img alt="../../_images/easy_input.png" src="../../_images/easy_input.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.6 </span><span class="caption-text">An easy shortest path input</span><a class="headerlink" href="#example-with-shortest-path-0" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Since each arc length is nonnegative, then the length of any path is nonnegative. However, for each node <span class="math notranslate nohighlight">\(i\)</span> in Figure 2.6, it is quite easy to identify a path of total length 0 from the source to node <span class="math notranslate nohighlight">\(i\)</span>. Since all path lengths are non-negative, then certainly a path of length 0 is a shortest path (because no path of negative length exists!) Of course, as in the example above, if the length of the whole path is 0, then the length of each arc in it must also be 0. (Because, once again, there are no negative length arcs.) This seems like a very special case, but the end conclusion will be that it is still a very useful and powerful idea.</p>
+<p>The next step will be to consider a rather peculiar variant of the shortest path problem. In this new problem, we are given a graph as in the usual shortest path problem, plus each node <span class="math notranslate nohighlight">\(i \in N\)</span> has a special price <span class="math notranslate nohighlight">\(p(i)\)</span>. In this new problem, we view the nodes as representing cities and the arcs as roads connecting them. When we travel along an arc <span class="math notranslate nohighlight">\((i,j) \in A\)</span>, we incur a cost equal to its length <span class="math notranslate nohighlight">\(\ell (i,j)\)</span>; in addition, whenever we enter a city we are given a present meant to entice us to stay in that city of value <span class="math notranslate nohighlight">\(p(i)\)</span>. If we leave that city, we must pay that amount back. Once again, we return to our original input, as given in Figure 2.4, and add such <span class="math notranslate nohighlight">\(p\)</span> values, where each node’s value is specified in a box right next to it.</p>
+<figure class="align-default" id="figure-2-4-with-p-values">
+<a class="reference internal image-reference" href="../../_images/node_enticements.png"><img alt="../../_images/node_enticements.png" src="../../_images/node_enticements.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.7 </span><span class="caption-text">A graph with node enticements</span><a class="headerlink" href="#figure-2-4-with-p-values" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In general, what is the cost of our path from the source node <span class="math notranslate nohighlight">\(s\)</span> to node <span class="math notranslate nohighlight">\(w\)</span> (for our new problem)? Well, we must pay <span class="math notranslate nohighlight">\(p(s)\)</span> to leave the source, and we will get <span class="math notranslate nohighlight">\(p(w)\)</span> when we finally enter node <span class="math notranslate nohighlight">\(w\)</span>. All of the other presents acquired en route must be paid back, so the total cost is</p>
+<div class="math notranslate nohighlight">
+\[\ell (s,i_1) + \ell(i_1,i_2)+ \cdots+ \ell(i_{k-1},i_k) + \ell(i_k,w)+p(s)-p(w).\]</div>
+<p>A shorthand notation for this is to write it as</p>
+<div class="math notranslate nohighlight">
+\[\ell (s,i_1) + \sum_{j=2}^{k} \ell(i_{j-1},i_j) \ \ + \ell(i_k,w) + p(s)-p(w).\]</div>
+<p>So we can think of the total cost of this path as its total length with respect to the original length function <span class="math notranslate nohighlight">\(\ell\)</span> plus <span class="math notranslate nohighlight">\((p(s)-p(w))\)</span>. But this is true no matter which path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(w\)</span> we consider! Therefore, the cheapest path in this new setting is exactly the same as the shortest path for the original lengths. (Make sure you understand exactly why this is!) We have obtained an equivalent problem to solve; a path that is shortest for this new variant must be a shortest path in original sense, and vice versa. (Make sure you understand this; thinking about the specific example given in Figure 2.7 is probably helpful.)</p>
+<p>Here is another view of the new problem, however. We would like to get rid of the fact that there are these two types of costs, arc lengths and “node enticements”, but still leave the problem unchanged, even in computing the cost of any path correctly. Here is a simple idea that might be seem a bit odd at first. Think about using an arc <span class="math notranslate nohighlight">\((i,j)\)</span>. To use it, one must first leave node <span class="math notranslate nohighlight">\(i\)</span>, then traverse arc <span class="math notranslate nohighlight">\((i,j)\)</span>, and then enter node <span class="math notranslate nohighlight">\(j\)</span>. All are required if we are to use arc <span class="math notranslate nohighlight">\((i,j)\)</span> at all. So the effective cost of traversing this arc is <span class="math notranslate nohighlight">\(p(i)+\ell(i,j)-p(j)\)</span>. We define the <em>adjusted</em> length of an arc <span class="math notranslate nohighlight">\((i,j)\)</span> of the graph to be</p>
+<div class="math notranslate nohighlight">
+\[\bar \ell (i,j) = \ell(i,j) +p(i)-p(j).\]</div>
+<p>The total adjusted length of a path is the sum of the adjusted lengths of arcs in that path. It should be clear that the adjusted length of any path is exactly the quantity that we wanted to minimize in the node enticement version of the shortest path problem. Just to double check, let’s compute the total adjusted length of our given path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(w\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{eqnarray*}
+\mbox{Total adjusted length} &amp; = &amp;  
+\bar \ell (s,i_1) + \bar \ell(i_1,i_2)+ \cdots+ \bar \ell(i_{k-1},i_k) + \bar 
+\ell(i_k,w) \\
+&amp; = &amp;
+[p(s) +\ell (s,i_1) -p(i_1)] + [p(i_1)+ \ell(i_1,i_2) - p(i_2)] + \cdots
+\\ &amp; &amp; 
+\mbox{}
++ [p(i_{k-1}) + \ell(i_{k-1},i_k) -p(i_k)] + [p(i_k) +\ell(i_k,w) -p(w)] \\
+&amp; = &amp; 
+\ell (s,i_1) + \ell(i_1,i_2)+ \cdots+ \ell(i_{k-1},i_k) + \ell(i_k,w)+p(s)
+-p(w) \\
+\end{eqnarray*}\]</div>
+<p>which is exactly what we wanted the total adjusted length to be. The adjusted lengths for the example given in Figure 2.7 are given in the figure below.</p>
+<figure class="align-default" id="figure-2-7-with-adjusted-lengths">
+<a class="reference internal image-reference" href="../../_images/adjusted_len.png"><img alt="../../_images/adjusted_len.png" src="../../_images/adjusted_len.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.8 </span><span class="caption-text">Adjusted arc lengths</span><a class="headerlink" href="#figure-2-7-with-adjusted-lengths" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>But what does this have to do with verifying that we got the correct answer for the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(w\)</span> in our original problem? First, let’s summarize what we just figured out. We give each node <span class="math notranslate nohighlight">\(i\)</span> a value <span class="math notranslate nohighlight">\(p(i)\)</span> (any value is possible). If we consider the problem where we try to find a shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(w\)</span> with respect to the adjusted arc lengths <span class="math notranslate nohighlight">\(\bar \ell(i,j) = \ell(i,j) +p(i)-p(j)\)</span> (for each <span class="math notranslate nohighlight">\((i,j) \in A\)</span>) instead of the original ones <span class="math notranslate nohighlight">\(\ell(i,j)\)</span>, then the shortest path found is also a shortest path for the original lengths. So we could solve the adjusted problem instead of the original one, if that turns out to be easier.</p>
+<p>But how do we set the values <span class="math notranslate nohighlight">\(p(i)\)</span> for each node <span class="math notranslate nohighlight">\(i \in N\)</span>? Suppose we let <span class="math notranslate nohighlight">\(p(i)=\)</span> length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(i\)</span>. (If we have run Dijkstra’s algorithm correctly, we presumably know these.) Do this for the graph in Figure 2.4; after all, we have already run Dijkstra’s algorithm for this graph, and the output from the algorithm gives us the proposed <span class="math notranslate nohighlight">\(p\)</span> value for each node. I claim that in computing the adjusted costs with these <span class="math notranslate nohighlight">\(p\)</span> values, you will rederive one of the figures given above. Which one is it? Do this exercise before continuing to read.</p>
+<p>Next we will show that some of the properties of the adjusted lengths that you have just computed are not at all coincidental and hold when you perform this procedure for any graph whatsoever.</p>
+<p><strong>Claim 1</strong>. If, for each <span class="math notranslate nohighlight">\(i \in N\)</span>, <span class="math notranslate nohighlight">\(p(i)\)</span> is set to the length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(i\)</span> (with respect to the original length function <span class="math notranslate nohighlight">\(\ell\)</span>), then, for each arc <span class="math notranslate nohighlight">\((i,j) \in A\)</span>, <span class="math notranslate nohighlight">\(\bar \ell (i,j) \ge 0\)</span>.</p>
+<p>Proof. First observe that for each arc <span class="math notranslate nohighlight">\((i,j) \in A\)</span>, the length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(j\)</span> is at most the length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(i\)</span> plus <span class="math notranslate nohighlight">\(\ell(i,j)\)</span> (since we can build a path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(j\)</span> by first going to <span class="math notranslate nohighlight">\(i\)</span> and then taking arc <span class="math notranslate nohighlight">\((i,j)\)</span>). By the way that we set the <span class="math notranslate nohighlight">\(p\)</span> values, this means that <span class="math notranslate nohighlight">\(p(j) \le p(i) + \ell (i,j)\)</span>, and hence <span class="math notranslate nohighlight">\( p(i) + \ell (i,j) -p(j) \ge 0\)</span>. Finally, <span class="math notranslate nohighlight">\(\bar \ell (i,j) =  p(i) + \ell (i,j) -p(j) \ge 0\)</span>.</p>
+<p><strong>Claim 2</strong>. If, for each <span class="math notranslate nohighlight">\(i \in N\)</span>, <span class="math notranslate nohighlight">\(p(i)\)</span> is set to the length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(i\)</span> (with respect to the original length function <span class="math notranslate nohighlight">\(\ell\)</span>), then, for each node <span class="math notranslate nohighlight">\(v \in N\)</span>, the total adjusted length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span> is 0.</p>
+<p>Proof. Recall that this shortest path is shortest with respect to both <span class="math notranslate nohighlight">\(\ell\)</span> and <span class="math notranslate nohighlight">\(\bar \ell\)</span>. We know that the total adjusted length of <em>any</em> path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span> is its total length with respect to the original lengths <span class="math notranslate nohighlight">\( \ell\)</span> plus <span class="math notranslate nohighlight">\((p(s)-p(v))\)</span>. But <span class="math notranslate nohighlight">\(p(s)=0\)</span> and <span class="math notranslate nohighlight">\(p(v)\)</span> is the length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span> (with respect to the original lengths <span class="math notranslate nohighlight">\(\ell\)</span>). So the total adjusted length of any shortest path is 0.</p>
+<p><strong>Claim 3</strong>. If, for each <span class="math notranslate nohighlight">\(i \in N\)</span>, <span class="math notranslate nohighlight">\(p(i)\)</span> is set to the length of the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(i\)</span> (with respect to the original length function <span class="math notranslate nohighlight">\(\ell\)</span>), then, for each arc <span class="math notranslate nohighlight">\((i,j)\)</span> in a shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span>, <span class="math notranslate nohighlight">\(\bar \ell(i,j)=0\)</span>.</p>
+<p>Proof. Claim 1 showed that each adjusted length is non-negative. Claim 2 showed that the total adjusted length of any shortest path is equal to 0. The only way these two can both happen is that <em>every</em> arc in a shortest path must have adjusted length equal to 0.</p>
+<p>These claims have the following nice consequences. Suppose that you run Dijkstra’s algorithm. Now, if you compute <span class="math notranslate nohighlight">\(\bar \ell\)</span> where each <span class="math notranslate nohighlight">\(p(i)\)</span> is the shortest path length from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(i\)</span>, we get an equivalent input in which each arc has adjusted length that is non-negative, and each arc in a shortest path has adjusted length 0. Then by the simple special case that we discussed at the start (as in Figure 2.6), we know that we have the shortest path with respect to the adjusted lengths, and thus have the shortest path with respect to the original lengths.</p>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>To summarize: we can check if our path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(w\)</span> is indeed shortest by</p>
+<ol class="arabic simple">
+<li><p>computing <span class="math notranslate nohighlight">\(\bar \ell (i,j)\)</span> for each arc in the graph for <span class="math notranslate nohighlight">\(p\)</span> values set by the shortest path lengths just found by Dijkstra’s algorithm;</p></li>
+<li><p>for each <span class="math notranslate nohighlight">\((i,j) \in A\)</span>, check that <span class="math notranslate nohighlight">\(\bar \ell (i,j) \ge 0\)</span>;</p></li>
+<li><p>for each arc <span class="math notranslate nohighlight">\((i,j)\)</span> in the path, check that <span class="math notranslate nohighlight">\(\bar \ell (i,j) = 0\)</span>.</p></li>
+</ol>
+<p>If this holds, then you have computed a correct shortest path.</p>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "engri-1101/textbook",
+            ref: "textbook",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-engri_1101-py"
+        },
+        kernelOptions: {
+            name: "conda-env-engri_1101-py",
+            path: "./chapters\shortest_path"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-engri_1101-py'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="algorithm_web.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Algorithm</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="modeling_with_web.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>Modeling with Shortest Paths</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By David B. Shmoys, Samuel C. Gutekunst, Frans Schalekamp, and David P. Williamson
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

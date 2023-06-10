@@ -21,6 +21,8 @@ sphinx:
     # This is included to render gilp Plotly visualizations
     html_js_files:
     - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+  extra_extensions:
+    - sphinx_proof
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -63,7 +65,7 @@ html:
 
 parse:
   myst_enable_extensions:
-    # - amsmath
+    - amsmath
     - colon_fence
     # - deflist
     - dollarmath

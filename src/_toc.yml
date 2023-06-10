@@ -16,6 +16,13 @@ parts:
       - file: chapters/tsp/tsp_modeling_web.ipynb
       - file: chapters/tsp/vlsi_web.ipynb
 
+    - file: chapters/shortest_path/intro_web.ipynb
+      sections:
+      - file: chapters/shortest_path/model_web.ipynb
+      - file: chapters/shortest_path/algorithm_web.ipynb
+      - file: chapters/shortest_path/verify_web.ipynb
+      - file: chapters/shortest_path/modeling_with_web.ipynb
+
     - file: chapters/max_flow/intro_web.ipynb
       sections:
       - file: chapters/max_flow/model_web.ipynb

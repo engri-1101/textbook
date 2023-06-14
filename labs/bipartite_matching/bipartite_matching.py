@@ -760,7 +760,7 @@ def plot_stats(og_taxi_stats, opt_taxi_stats):
                    x_label='Total Trip Time (hr)', i=1, j=1)
     plt.show(fig)
 
-def get_day_dist(og_paths, opt_paths, times):
+def get_day_dist(og_paths, opt_paths, times_df):
     """ 
     Distribution of the orignal taxi fleets and the minimum taxi fleets over one day
     Return a dictionary where keys are seconds and values are the list of taxi data
@@ -792,7 +792,7 @@ def get_day_dist(og_paths, opt_paths, times):
                         if comp[2]:
                             with_pass += 1
                         else: 
-                            start_wait_time = comp[0][1] + times[(comp[0][0], comp[1][0])]
+                            start_wait_time = comp[0][1] + times_df.at[(comp[0][0], comp[1][0])]
                             if time < start_wait_time:
                                 do2pu += 1
                             else:

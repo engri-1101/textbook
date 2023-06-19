@@ -1,5 +1,6 @@
 import pickle
 import networkx as nx
+import vinal
 from vinal.plot import _blank_plot
 from vinal.algorithms import tour_cost
 from ortools.constraint_solver import pywrapcp
@@ -10,7 +11,26 @@ from bokeh.models.renderers import GlyphRenderer
 from bokeh.layouts import row, gridplot, GridBox
 from bokeh.models import (HoverTool, TapTool, ColumnDataSource, LabelSet,
                           Button, CustomJS)
+from PIL import Image
+import numpy as np
 
+def new_add_image(plot:figure, image:str):
+    im = Image.open(image).convert('RGBA')
+    xdim, ydim = im.size
+
+    img = np.empty((ydim, xdim), dtype=np.uint32)
+    view = img.view(dtype=np.uint8).reshape((ydim, xdim, 4))
+
+    view[:,:,:] = np.flipud(np.asarray(im))
+
+    plot.image_rgba(image=[img],
+                    x=plot.x_range.start,
+                    y=plot.y_range.start,
+                    dw=plot.x_range.end - plot.x_range.start,
+                    dh=plot.y_range.end - plot.y_range.start,
+                    level="image")
+
+vinal.plot._add_image = new_add_image
 
 def optimal_tour(name):
     """Return an optimal tour for some instance name."""
@@ -106,3 +126,5 @@ def etching_tour_plot(G, tour, **kw):
                     toolbar_options={'logo': None})
 
     return grid
+
+

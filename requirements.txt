@@ -32,3 +32,4 @@ typing==3.7.4.3
 typing-extensions==4.4.0
 descartes==1.1.0
 geopandas==0.12.2
+jupyter-bokeh==2.0.2

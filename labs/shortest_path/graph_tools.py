@@ -14,7 +14,6 @@ import networkx as nx # tool for graphs and graph algorithms
 # interactive plotting tools
 from bokeh.plotting import figure, show
 from bokeh.io import output_notebook
-from bokeh.tile_providers import get_provider, Vendors
 from bokeh.models import (GraphRenderer, Circle, MultiLine, StaticLayoutProvider,
                           HoverTool, TapTool, EdgesAndLinkedNodes, NodesAndLinkedEdges,
                           ColumnDataSource, LabelSet, NodesOnly
@@ -88,7 +87,7 @@ def plotNetworkTompkins(nodes, links):
     
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   title="A simple graph of Tomkins County",
-                  plot_width=800, plot_height=420
+                  width=800, height=420
                  )
     
     graph = GraphRenderer()
@@ -147,7 +146,7 @@ def plotTreeTompkins(dfn, dfl):
     min_y, max_y = min(dfn.y)-1, max(dfn.y)+1
 
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
-                  title="A simple graph of Tompkins County", plot_width=800, plot_height=420) 
+                  title="A simple graph of Tompkins County", width=800, height=420) 
 
     graph = GraphRenderer()
 
@@ -217,7 +216,7 @@ def plotNetwork(nodes, links, title='Plot of Graph', targets=None, on_map=False)
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   x_axis_type="mercator", y_axis_type="mercator",
                   title=title,
-                  plot_width=600, plot_height=470,
+                  width=600, height=470,
                   toolbar_location=None, tools=[]
                  )
     
@@ -225,7 +224,7 @@ def plotNetwork(nodes, links, title='Plot of Graph', targets=None, on_map=False)
     
     if on_map == True:
         # add map tile
-        plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+        plot.add_tile("CARTODBPOSITRON_RETINA")
     
     # define nodes
     graph.node_renderer.data_source.add(node_ids, 'index')
@@ -282,13 +281,13 @@ def plotShortestPathTree(dfn, dfl, out, targets=None):
     # define plot
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   x_axis_type="mercator", y_axis_type="mercator",
-                  title="The NYC road network", plot_width=600, plot_height=470,
+                  title="The NYC road network", width=600, height=470,
                   toolbar_location=None, tools=[]) 
 
     graph = GraphRenderer()
 
     # load background tile
-    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+    plot.add_tile("CARTODBPOSITRON_RETINA")
 
     # define categorical mappers for 0-1 variable
     o_map = {1:1, 0:0.6}
@@ -325,10 +324,4 @@ def plotShortestPathTree(dfn, dfl, out, targets=None):
         plot.add_glyph(source, pois)
 
     show(plot)
-
-
-# In[ ]:
-
-
-
 

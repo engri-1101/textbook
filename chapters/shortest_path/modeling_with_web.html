@@ -484,11 +484,22 @@ For example, suppose that <span class="math notranslate nohighlight">\(n=7\)</sp
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
-<span class="n">IFrame</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;https://engri-1101.github.io/textbook/other/inventory_345_demo.html&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">910</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">750</span><span class="p">)</span>
+<span class="n">IFrame</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;https://engri-1101.github.io/textbook/other/inventory_345_demo.html&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">750</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output text_html">
+        <iframe
+            width="900"
+            height="750"
+            src="https://engri-1101.github.io/textbook/other/inventory_345_demo.html"
+            frameborder="0"
+            allowfullscreen
+            
+        ></iframe>
+        </div></div>
 </div>
 <hr class="docutils" />
 <p>We have shown that we can model the inventory stocking problem as a shortest path problem. Note that there were several steps along the way in showing that this is a correct formulation. First, we had to explain how to map any input to the inventory problem into an input for the shortest path problem - that is, how to construct the graph, how to determine the arc lengths, and what source (and destination) node captured the decisions needed to be made. Then, we showed how to interpret any output from the shortest path problem, that is, a path from node 0 to node <span class="math notranslate nohighlight">\(n\)</span> as a sequence of decisions. What we actually showed was a precise correspondence - for each sequence of decisions there was a corresponding path, and vice versa - each path from node 0 to node <span class="math notranslate nohighlight">\(n\)</span> could be interpreted as the decisions about which beam types to store in inventory (and which ones not to store). And finally, we argued that the length of each path was exactly equal to the cost of the corresponding inventory decisions. Consequently, solving the shortest path input that was constructed in this way, precisely solved the inventory management problem.</p>

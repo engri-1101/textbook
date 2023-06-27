@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.left {
+  width: 15.5%;
+}
+
+.right {
+  width: 84.5%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+</head>
+<body>
+
+<h2>The Inventory Problem - 345 Example</h2>
+
+<div class="row">
+  <!-- Left column -->
+  <div class="column left" style="background-color:#eeeeee;">
+    <p style="margin-bottom:3.5cm;font-size:20px">Inputs:</p>
+    <p style="margin-bottom:4cm;font-size:20px">Graph:</p>
+    <p style="margin-bottom:0.7cm;font-size:20px">Feasible Solution:</p>
+
+    <!-- Toggle button -->
+    <p style="font-size:14px">Stock Length 3 Beams
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round" id="len3" onclick="lengthThree()"></span>
+      </label>
+    </p>
+    <p style="font-size:14px">Stock Length 4 Beams
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round" id="len4" onclick="lengthFour()"></span>
+      </label>
+    </p>
+    <p style="margin-bottom:1.1cm;font-size:14px">Must Stock Length 5 Beams</p>
+    
+    <p style="font-size:20px">Total Cost:</p>
+  </div>
+
+  <!-- Right column -->
+  <div class="column right" style="background-color:#ffffff;">
+    <!-- Static inputs -->
+    <canvas id="inputCanvas" width="750" height="165"></canvas>
+
+    <script>
+      const c = document.getElementById("inputCanvas");
+      const ctx = c.getContext("2d");
+
+      ctx.fillStyle = "orange";
+      ctx.beginPath();
+      ctx.fillRect(10, 75, 20, 70);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.fillRect(40, 75, 20, 70);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.fillRect(70, 75, 20, 70);
+      ctx.stroke();
+
+      ctx.fillStyle = "black";
+      ctx.font = "16px serif";
+      ctx.fillText("Demand:", 10, 65);
+      ctx.fillText("Length: 3 feet", 100, 90);
+      ctx.fillText("Storage Cost: $5.00", 100, 115);
+      ctx.fillText("Beam Cost: $4.00", 100, 140);
+
+      ctx.fillStyle = "orange";
+      ctx.beginPath();
+      ctx.fillRect(270, 50, 20, 95);
+      ctx.stroke();
+
+      ctx.fillStyle = "black";
+      ctx.font = "16px serif";
+      ctx.fillText("Demand:", 270, 40);
+      ctx.fillText("Length: 4 feet", 330, 90);
+      ctx.fillText("Storage Cost: $11.00", 330, 115);
+      ctx.fillText("Beam Cost: $7.00", 330, 140);
+
+      ctx.fillStyle = "orange";
+      ctx.beginPath();
+      ctx.fillRect(500, 25, 20, 120);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.fillRect(530, 25, 20, 120);
+      ctx.stroke();
+
+      ctx.fillStyle = "black";
+      ctx.font = "16px serif";
+      ctx.fillText("Demand:", 500, 15);
+      ctx.fillText("Length: 5 feet", 560, 90);
+      ctx.fillText("Storage Cost: $15.00", 560, 115);
+      ctx.fillText("Beam Cost: $8.00", 560, 140);
+
+      ctx.beginPath();
+      ctx.lineWidth = 0.3;
+      ctx.moveTo(0, 160);
+      ctx.lineTo(750, 160)
+      ctx.stroke();
+    </script> 
+
+    <!-- Dynamic -->
+    <canvas id="canvas005" width="750" height="380"></canvas>
+    <canvas id="canvas305" width="750" height="380"></canvas>
+    <canvas id="canvas045" width="750" height="380"></canvas>
+    <canvas id="canvas345" width="750" height="380"></canvas>
+
+    <!-- Stock only 5 -->
+    <script>
+      const c5 = document.getElementById("canvas005");
+      const c5tx = c5.getContext("2d");
+
+      // Nodes
+      c5tx.fillStyle = "yellow";
+      c5tx.beginPath();
+      c5tx.arc(30, 30, 17, 0, 2 * Math.PI);
+      c5tx.fill();
+      c5tx.stroke();
+      c5tx.fillStyle = "black";
+      c5tx.font = "13px serif";
+      c5tx.fillText("Start", 17, 34);
+
+      c5tx.fillStyle = "orange";
+      c5tx.beginPath();
+      c5tx.arc(230, 30, 17, 0, 2 * Math.PI);
+      c5tx.fill();
+      c5tx.stroke();
+      c5tx.fillStyle = "black";
+      c5tx.fillText("3", 227, 34);
+
+      c5tx.fillStyle = "orange";
+      c5tx.beginPath();
+      c5tx.arc(430, 30, 17, 0, 2 * Math.PI);
+      c5tx.fill();
+      c5tx.stroke();
+      c5tx.fillStyle = "black";
+      c5tx.fillText("4", 427, 34);
+
+      c5tx.fillStyle = "yellow";
+      c5tx.beginPath();
+      c5tx.arc(630, 30, 17, 0, 2 * Math.PI);
+      c5tx.fill();
+      c5tx.stroke();
+      c5tx.fillStyle = "black";
+      c5tx.fillText("5", 627, 34);
+
+      // Edges
+      c5tx.beginPath();
+      c5tx.lineWidth = 0.8;
+      c5tx.moveTo(47, 30);
+      c5tx.lineTo(213, 30)
+      c5tx.stroke();
+      c5tx.font = "15px serif";
+      c5tx.fillText("5 + 4(3) = 17", 90, 20);
+
+      c5tx.beginPath();
+      c5tx.moveTo(247, 30);
+      c5tx.lineTo(413, 30)
+      c5tx.stroke();
+      c5tx.fillText("11 + 7(1) = 18", 290, 20);
+
+      c5tx.beginPath();
+      c5tx.moveTo(447, 30);
+      c5tx.lineTo(613, 30)
+      c5tx.stroke();
+      c5tx.fillText("15 + 8(2) = 31", 490, 20);
+
+      c5tx.beginPath();
+      c5tx.moveTo(30, 47);
+      c5tx.bezierCurveTo(30, 120, 430, 120, 430, 47);
+      c5tx.stroke();
+      c5tx.fillText("11 + 7(4) = 39", 160, 90);
+
+      c5tx.beginPath();
+      c5tx.moveTo(230, 47);
+      c5tx.bezierCurveTo(230, 120, 630, 120, 630, 47);
+      c5tx.stroke();
+      c5tx.fillText("15 + 8(3) = 39", 420, 90);
+
+      c5tx.strokeStyle = "red";
+      c5tx.lineWidth = 2;
+      c5tx.beginPath();
+      c5tx.moveTo(30, 47);
+      c5tx.bezierCurveTo(30, 190, 630, 190, 630, 47);
+      c5tx.stroke();
+      c5tx.fillText("15 + 8(6) = 63", 290, 145);
+
+      // Horizontal line
+      c5tx.strokeStyle = "black";
+      c5tx.beginPath();
+      c5tx.lineWidth = 0.3;
+      c5tx.moveTo(0, 170);
+      c5tx.lineTo(750, 170)
+      c5tx.stroke();
+
+      c5tx.beginPath();
+      c5tx.lineWidth = 0.3;
+      c5tx.moveTo(0, 340);
+      c5tx.lineTo(750, 340)
+      c5tx.stroke();
+
+      // Feasible solution
+      c5tx.fillStyle = "orange";
+      c5tx.beginPath();
+      c5tx.fillRect(500, 205, 20, 120);
+      c5tx.stroke();
+      c5tx.beginPath();
+      c5tx.fillRect(530, 205, 20, 120);
+      c5tx.stroke();
+      c5tx.beginPath();
+      c5tx.fillRect(560, 205, 20, 120);
+      c5tx.stroke();
+      c5tx.beginPath();
+      c5tx.fillRect(590, 205, 20, 120);
+      c5tx.stroke();
+      c5tx.beginPath();
+      c5tx.fillRect(620, 205, 20, 120);
+      c5tx.stroke();
+      c5tx.beginPath();
+      c5tx.fillRect(650, 205, 20, 120);
+      c5tx.stroke();
+
+      // Cost
+      c5tx.fillStyle = "black";
+      c5tx.font = "18px serif";
+      c5tx.fillText("$0", 40, 370);
+      c5tx.fillText("+", 163, 370);
+      c5tx.fillText("$0", 285, 370);
+      c5tx.fillText("+", 408, 370);
+      c5tx.fillText("$63", 530, 370);
+      c5tx.fillText("=", 675, 370);
+      c5tx.fillText("$63", 700, 370);
+    </script>
+    <!-- Stock 3 and 5 -->
+    <script>
+      const c35 = document.getElementById("canvas305");
+      const c35tx = c35.getContext("2d");
+
+      // Nodes
+      c35tx.fillStyle = "yellow";
+      c35tx.beginPath();
+      c35tx.arc(30, 30, 17, 0, 2 * Math.PI);
+      c35tx.fill();
+      c35tx.stroke();
+      c35tx.fillStyle = "black";
+      c35tx.font = "13px serif";
+      c35tx.fillText("Start", 17, 34);
+
+      c35tx.fillStyle = "yellow";
+      c35tx.beginPath();
+      c35tx.arc(230, 30, 17, 0, 2 * Math.PI);
+      c35tx.fill();
+      c35tx.stroke();
+      c35tx.fillStyle = "black";
+      c35tx.fillText("3", 227, 34);
+
+      c35tx.fillStyle = "orange";
+      c35tx.beginPath();
+      c35tx.arc(430, 30, 17, 0, 2 * Math.PI);
+      c35tx.fill();
+      c35tx.stroke();
+      c35tx.fillStyle = "black";
+      c35tx.fillText("4", 427, 34);
+
+      c35tx.fillStyle = "yellow";
+      c35tx.beginPath();
+      c35tx.arc(630, 30, 17, 0, 2 * Math.PI);
+      c35tx.fill();
+      c35tx.stroke();
+      c35tx.fillStyle = "black";
+      c35tx.fillText("5", 627, 34);
+
+      // Edges
+      c35tx.strokeStyle = "red";
+      c35tx.lineWidth = 2;
+      c35tx.beginPath();
+      c35tx.moveTo(47, 30);
+      c35tx.lineTo(213, 30)
+      c35tx.stroke();
+      c35tx.font = "15px serif";
+      c35tx.fillText("5 + 4(3) = 17", 90, 20);
+
+      c35tx.strokeStyle = "black";
+      c35tx.lineWidth = 0.8;
+      c35tx.beginPath();
+      c35tx.moveTo(247, 30);
+      c35tx.lineTo(413, 30)
+      c35tx.stroke();
+      c35tx.fillText("11 + 7(1) = 18", 290, 20);
+
+      c35tx.beginPath();
+      c35tx.moveTo(447, 30);
+      c35tx.lineTo(613, 30)
+      c35tx.stroke();
+      c35tx.fillText("15 + 8(2) = 31", 490, 20);
+
+      c35tx.beginPath();
+      c35tx.moveTo(30, 47);
+      c35tx.bezierCurveTo(30, 120, 430, 120, 430, 47);
+      c35tx.stroke();
+      c35tx.fillText("11 + 7(4) = 39", 160, 90);
+
+      c35tx.strokeStyle = "red";
+      c35tx.lineWidth = 2;
+      c35tx.beginPath();
+      c35tx.moveTo(230, 47);
+      c35tx.bezierCurveTo(230, 120, 630, 120, 630, 47);
+      c35tx.stroke();
+      c35tx.fillText("15 + 8(3) = 39", 420, 90);
+
+      c35tx.strokeStyle = "black";
+      c35tx.lineWidth = 0.8;
+      c35tx.beginPath();
+      c35tx.moveTo(30, 47);
+      c35tx.bezierCurveTo(30, 190, 630, 190, 630, 47);
+      c35tx.stroke();
+      c35tx.fillText("15 + 8(6) = 63", 290, 145);
+
+      // Horizontal line
+      c35tx.strokeStyle = "black";
+      c35tx.beginPath();
+      c35tx.lineWidth = 0.3;
+      c35tx.moveTo(0, 170);
+      c35tx.lineTo(750, 170)
+      c35tx.stroke();
+
+      c35tx.beginPath();
+      c35tx.lineWidth = 0.3;
+      c35tx.moveTo(0, 340);
+      c35tx.lineTo(750, 340)
+      c35tx.stroke();
+
+      // Feasible solution
+      c35tx.fillStyle = "orange";
+      c35tx.beginPath();
+      c35tx.fillRect(10, 255, 20, 70);
+      c35tx.stroke();
+      c35tx.beginPath();
+      c35tx.fillRect(40, 255, 20, 70);
+      c35tx.stroke();
+      c35tx.beginPath();
+      c35tx.fillRect(70, 255, 20, 70);
+      c35tx.stroke();
+
+      c35tx.beginPath();
+      c35tx.fillRect(500, 205, 20, 120);
+      c35tx.stroke();
+      c35tx.beginPath();
+      c35tx.fillRect(530, 205, 20, 120);
+      c35tx.stroke();
+      c35tx.beginPath();
+      c35tx.fillRect(560, 205, 20, 120);
+      c35tx.stroke();
+
+      // Cost
+      c35tx.fillStyle = "black";
+      c35tx.font = "18px serif";
+      c35tx.fillText("$17", 40, 370);
+      c35tx.fillText("+", 163, 370);
+      c35tx.fillText("$0", 285, 370);
+      c35tx.fillText("+", 408, 370);
+      c35tx.fillText("$39", 530, 370);
+      c35tx.fillText("=", 675, 370);
+      c35tx.fillText("$56", 700, 370);
+    </script>
+    <!-- Stock 4 and 5 -->
+    <script>
+      const c45 = document.getElementById("canvas045");
+      const c45tx = c45.getContext("2d");
+
+      // Nodes
+      c45tx.fillStyle = "yellow";
+      c45tx.beginPath();
+      c45tx.arc(30, 30, 17, 0, 2 * Math.PI);
+      c45tx.fill();
+      c45tx.stroke();
+      c45tx.fillStyle = "black";
+      c45tx.font = "13px serif";
+      c45tx.fillText("Start", 17, 34);
+
+      c45tx.fillStyle = "orange";
+      c45tx.beginPath();
+      c45tx.arc(230, 30, 17, 0, 2 * Math.PI);
+      c45tx.fill();
+      c45tx.stroke();
+      c45tx.fillStyle = "black";
+      c45tx.fillText("3", 227, 34);
+
+      c45tx.fillStyle = "yellow";
+      c45tx.beginPath();
+      c45tx.arc(430, 30, 17, 0, 2 * Math.PI);
+      c45tx.fill();
+      c45tx.stroke();
+      c45tx.fillStyle = "black";
+      c45tx.fillText("4", 427, 34);
+
+      c45tx.fillStyle = "yellow";
+      c45tx.beginPath();
+      c45tx.arc(630, 30, 17, 0, 2 * Math.PI);
+      c45tx.fill();
+      c45tx.stroke();
+      c45tx.fillStyle = "black";
+      c45tx.fillText("5", 627, 34);
+
+      // Edges
+      c45tx.beginPath();
+      c45tx.lineWidth = 0.8;
+      c45tx.moveTo(47, 30);
+      c45tx.lineTo(213, 30)
+      c45tx.stroke();
+      c45tx.font = "15px serif";
+      c45tx.fillText("5 + 4(3) = 17", 90, 20);
+
+      c45tx.beginPath();
+      c45tx.moveTo(247, 30);
+      c45tx.lineTo(413, 30)
+      c45tx.stroke();
+      c45tx.fillText("11 + 7(1) = 18", 290, 20);
+
+      c45tx.strokeStyle = "red";
+      c45tx.lineWidth = 2;
+      c45tx.beginPath();
+      c45tx.moveTo(447, 30);
+      c45tx.lineTo(613, 30)
+      c45tx.stroke();
+      c45tx.fillText("15 + 8(2) = 31", 490, 20);
+
+      c45tx.beginPath();
+      c45tx.moveTo(30, 47);
+      c45tx.bezierCurveTo(30, 120, 430, 120, 430, 47);
+      c45tx.stroke();
+      c45tx.fillText("11 + 7(4) = 39", 160, 90);
+
+      c45tx.strokeStyle = "black";
+      c45tx.lineWidth = 0.8;
+      c45tx.beginPath();
+      c45tx.moveTo(230, 47);
+      c45tx.bezierCurveTo(230, 120, 630, 120, 630, 47);
+      c45tx.stroke();
+      c45tx.fillText("15 + 8(3) = 39", 420, 90);
+
+      c45tx.beginPath();
+      c45tx.moveTo(30, 47);
+      c45tx.bezierCurveTo(30, 190, 630, 190, 630, 47);
+      c45tx.stroke();
+      c45tx.fillText("15 + 8(6) = 63", 290, 145);
+
+      // Horizontal line
+      c45tx.strokeStyle = "black";
+      c45tx.beginPath();
+      c45tx.lineWidth = 0.3;
+      c45tx.moveTo(0, 170);
+      c45tx.lineTo(750, 170)
+      c45tx.stroke();
+
+      c45tx.beginPath();
+      c45tx.lineWidth = 0.3;
+      c45tx.moveTo(0, 340);
+      c45tx.lineTo(750, 340)
+      c45tx.stroke();
+
+      // Feasible solution
+      c45tx.fillStyle = "orange";
+      c45tx.beginPath();
+      c45tx.fillRect(270, 230, 20, 95);
+      c45tx.stroke();
+      c45tx.beginPath();
+      c45tx.fillRect(300, 230, 20, 95);
+      c45tx.stroke();
+      c45tx.beginPath();
+      c45tx.fillRect(330, 230, 20, 95);
+      c45tx.stroke();
+      c45tx.beginPath();
+      c45tx.fillRect(360, 230, 20, 95);
+      c45tx.stroke();
+
+      c45tx.beginPath();
+      c45tx.fillRect(500, 205, 20, 120);
+      c45tx.stroke();
+      c45tx.beginPath();
+      c45tx.fillRect(530, 205, 20, 120);
+      c45tx.stroke();
+
+      // Cost
+      c45tx.fillStyle = "black";
+      c45tx.font = "18px serif";
+      c45tx.fillText("$0", 40, 370);
+      c45tx.fillText("+", 163, 370);
+      c45tx.fillText("$39", 285, 370);
+      c45tx.fillText("+", 408, 370);
+      c45tx.fillText("$31", 530, 370);
+      c45tx.fillText("=", 675, 370);
+      c45tx.fillText("$70", 700, 370);
+    </script>
+    <!-- Stock 3, 4, and 5 -->
+    <script>
+      const c345 = document.getElementById("canvas345");
+      const c345tx = c345.getContext("2d");
+
+      // Nodes
+      c345tx.fillStyle = "yellow";
+      c345tx.beginPath();
+      c345tx.arc(30, 30, 17, 0, 2 * Math.PI);
+      c345tx.fill();
+      c345tx.stroke();
+      c345tx.fillStyle = "black";
+      c345tx.font = "13px serif";
+      c345tx.fillText("Start", 17, 34);
+
+      c345tx.fillStyle = "yellow";
+      c345tx.beginPath();
+      c345tx.arc(230, 30, 17, 0, 2 * Math.PI);
+      c345tx.fill();
+      c345tx.stroke();
+      c345tx.fillStyle = "black";
+      c345tx.fillText("3", 227, 34);
+
+      c345tx.fillStyle = "yellow";
+      c345tx.beginPath();
+      c345tx.arc(430, 30, 17, 0, 2 * Math.PI);
+      c345tx.fill();
+      c345tx.stroke();
+      c345tx.fillStyle = "black";
+      c345tx.fillText("4", 427, 34);
+
+      c345tx.fillStyle = "yellow";
+      c345tx.beginPath();
+      c345tx.arc(630, 30, 17, 0, 2 * Math.PI);
+      c345tx.fill();
+      c345tx.stroke();
+      c345tx.fillStyle = "black";
+      c345tx.fillText("5", 627, 34);
+
+      // Edges
+      c345tx.strokeStyle = "red";
+      c345tx.lineWidth = 2;
+      c345tx.beginPath();
+      c345tx.moveTo(47, 30);
+      c345tx.lineTo(213, 30)
+      c345tx.stroke();
+      c345tx.font = "15px serif";
+      c345tx.fillText("5 + 4(3) = 17", 90, 20);
+
+      c345tx.beginPath();
+      c345tx.moveTo(247, 30);
+      c345tx.lineTo(413, 30)
+      c345tx.stroke();
+      c345tx.fillText("11 + 7(1) = 18", 290, 20);
+
+      c345tx.beginPath();
+      c345tx.moveTo(447, 30);
+      c345tx.lineTo(613, 30)
+      c345tx.stroke();
+      c345tx.fillText("15 + 8(2) = 31", 490, 20);
+
+      c345tx.strokeStyle = "black";
+      c345tx.lineWidth = 0.8;
+      c345tx.beginPath();
+      c345tx.moveTo(30, 47);
+      c345tx.bezierCurveTo(30, 120, 430, 120, 430, 47);
+      c345tx.stroke();
+      c345tx.fillText("11 + 7(4) = 39", 160, 90);
+
+      c345tx.beginPath();
+      c345tx.moveTo(230, 47);
+      c345tx.bezierCurveTo(230, 120, 630, 120, 630, 47);
+      c345tx.stroke();
+      c345tx.fillText("15 + 8(3) = 39", 420, 90);
+
+      c345tx.beginPath();
+      c345tx.moveTo(30, 47);
+      c345tx.bezierCurveTo(30, 190, 630, 190, 630, 47);
+      c345tx.stroke();
+      c345tx.fillText("15 + 8(6) = 63", 290, 145);
+
+      // Horizontal line
+      c345tx.strokeStyle = "black";
+      c345tx.beginPath();
+      c345tx.lineWidth = 0.3;
+      c345tx.moveTo(0, 170);
+      c345tx.lineTo(750, 170)
+      c345tx.stroke();
+
+      c345tx.beginPath();
+      c345tx.lineWidth = 0.3;
+      c345tx.moveTo(0, 340);
+      c345tx.lineTo(750, 340)
+      c345tx.stroke();
+
+      // Feasible solution
+      c345tx.fillStyle = "orange";
+      c345tx.beginPath();
+      c345tx.fillRect(10, 255, 20, 70);
+      c345tx.stroke();
+      c345tx.beginPath();
+      c345tx.fillRect(40, 255, 20, 70);
+      c345tx.stroke();
+      c345tx.beginPath();
+      c345tx.fillRect(70, 255, 20, 70);
+      c345tx.stroke();
+
+      c345tx.beginPath();
+      c345tx.fillRect(270, 230, 20, 95);
+      c345tx.stroke();
+
+      c345tx.beginPath();
+      c345tx.fillRect(590, 205, 20, 120);
+      c345tx.stroke();
+      c345tx.beginPath();
+      c345tx.fillRect(620, 205, 20, 120);
+      c345tx.stroke();
+
+      // Cost
+      c345tx.fillStyle = "black";
+      c345tx.font = "18px serif";
+      c345tx.fillText("$17", 40, 370);
+      c345tx.fillText("+", 163, 370);
+      c345tx.fillText("$18", 285, 370);
+      c345tx.fillText("+", 408, 370);
+      c345tx.fillText("$31", 530, 370);
+      c345tx.fillText("=", 675, 370);
+      c345tx.fillText("$66", 700, 370);
+    </script>
+  </div>
+</div>
+
+<!-- Functions -->
+<script>
+document.getElementById("canvas005").style.display = "block";
+document.getElementById("canvas305").style.display = "none";
+document.getElementById("canvas045").style.display = "none";
+document.getElementById("canvas345").style.display = "none";
+
+var clicked3 = false;
+function lengthThree() {
+    clicked3 = !clicked3;
+    const c5 = document.getElementById("canvas005");
+    const c35 = document.getElementById("canvas305");
+    const c45 = document.getElementById("canvas045");
+    const c345 = document.getElementById("canvas345");
+    if (clicked3 && clicked4) {
+        c5.style.display = "none";
+        c35.style.display = "none";
+        c45.style.display = "none";
+        c345.style.display = "block";
+    } else if (clicked3) {
+        c5.style.display = "none";
+        c35.style.display = "block";
+        c45.style.display = "none";
+        c345.style.display = "none";
+    } else if (clicked4) {
+        c5.style.display = "none";
+        c35.style.display = "none";
+        c45.style.display = "block";
+        c345.style.display = "none";
+    } else {
+        c5.style.display = "block";
+        c35.style.display = "none";
+        c45.style.display = "none";
+        c345.style.display = "none";
+    }
+}
+
+var clicked4 = false;
+function lengthFour() {
+    clicked4 = !clicked4;
+    const c5 = document.getElementById("canvas005");
+    const c35 = document.getElementById("canvas305");
+    const c45 = document.getElementById("canvas045");
+    const c345 = document.getElementById("canvas345");
+    if (clicked3 && clicked4) {
+        c5.style.display = "none";
+        c35.style.display = "none";
+        c45.style.display = "none";
+        c345.style.display = "block";
+    } else if (clicked3) {
+        c5.style.display = "none";
+        c35.style.display = "block";
+        c45.style.display = "none";
+        c345.style.display = "none";
+    } else if (clicked4) {
+        c5.style.display = "none";
+        c35.style.display = "none";
+        c45.style.display = "block";
+        c345.style.display = "none";
+    } else {
+        c5.style.display = "block";
+        c35.style.display = "none";
+        c45.style.display = "none";
+        c345.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>

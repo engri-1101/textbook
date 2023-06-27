@@ -439,7 +439,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="modeling-with-shortest-paths">
 <h1><span class="section-number">2.4. </span>Modeling with Shortest Paths<a class="headerlink" href="#modeling-with-shortest-paths" title="Permalink to this heading">#</a></h1>
-<p>In the Traveling Salesman Problem handout, we saw that the VLSI problem was a special case of the TSP: for any input to the VLSI problem, we could construct a TSP input such that the cheapest TSP tour gave an optimal VLSI solution.</p>
+<p>In The Traveling Salesman Problem chapter, we saw that the VLSI problem was a special case of the TSP: for any input to the VLSI problem, we could construct a TSP input such that the cheapest TSP tour gave an optimal VLSI solution.</p>
 <p>We will next consider a problem from inventory management. At first glance, it might not seem  like a shortest path problem.  We will, however, make an analogous argument: for any input to the inventory problem, we can construct an input to the shortest path problem such that finding a shortest path in the graph constructed will allow us to find an optimal solution to the original inventory problem.</p>
 <p>In this inventory problem, a company plans to sell steel beams.  Beams come in several sizes, and the company wants to choose which beams they should stock. More specifically, steel beams come in <span class="math notranslate nohighlight">\(n\)</span> different types.  All beam types have the same cross-sectional area, but different beam types have different heights.  We say that beams are of type <span class="math notranslate nohighlight">\(i\)</span>, for <span class="math notranslate nohighlight">\(i=1, 2, ..., n\)</span>.  For each beam type <span class="math notranslate nohighlight">\(i\)</span>, we have the following parameters:</p>
 <ul class="simple">
@@ -474,6 +474,23 @@ For example, suppose that <span class="math notranslate nohighlight">\(n=7\)</sp
 <li><p>The length of arc <span class="math notranslate nohighlight">\((i, j)\)</span> is <span class="math notranslate nohighlight">\(k(j)+c(j)\sum_{r=i+1}^j d(r)\)</span>, for <span class="math notranslate nohighlight">\( 0\leq i&lt;j\leq n.\)</span></p></li>
 </ul>
 <p>Given a shortest path in this instance, we readily attain a solution to the original inventory problem.  We do so by stocking exactly those beams whose corresponding nodes are visited in the shortest path.  For example, if <span class="math notranslate nohighlight">\(n=7\)</span> and found the shortest 0-7 path to be <span class="math notranslate nohighlight">\((0, 2), (2, 6), (6, 7),\)</span> we’d exactly have the solution and cost discussed above: stock beams of type 2, 6, and 7!</p>
+<hr class="docutils" />
+<p>💡<strong>Demo</strong></p>
+<div class="cell tag_thebe-init tag_hide-input tag_web-only docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
+<span class="n">IFrame</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;https://engri-1101.github.io/textbook/other/inventory_345_demo.html&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">910</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">750</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<hr class="docutils" />
 <p>We have shown that we can model the inventory stocking problem as a shortest path problem. Note that there were several steps along the way in showing that this is a correct formulation. First, we had to explain how to map any input to the inventory problem into an input for the shortest path problem - that is, how to construct the graph, how to determine the arc lengths, and what source (and destination) node captured the decisions needed to be made. Then, we showed how to interpret any output from the shortest path problem, that is, a path from node 0 to node <span class="math notranslate nohighlight">\(n\)</span> as a sequence of decisions. What we actually showed was a precise correspondence - for each sequence of decisions there was a corresponding path, and vice versa - each path from node 0 to node <span class="math notranslate nohighlight">\(n\)</span> could be interpreted as the decisions about which beam types to store in inventory (and which ones not to store). And finally, we argued that the length of each path was exactly equal to the cost of the corresponding inventory decisions. Consequently, solving the shortest path input that was constructed in this way, precisely solved the inventory management problem.</p>
 <p>This completes the explanation that the inventory problem can be modeled by the shortest path problem.  We have established Dijkstra’s algorithm to solve shortest path problems.  Hence, we now have a way to solve this inventory problem:  convert it to a shortest path problem and solve it using Dijkstra’s algorithm.</p>
 </section>

@@ -121,7 +121,7 @@ def etching_tour_plot(G, tour, **kw):
 
     # create layout
     grid = gridplot([[plot],[cost]],
-                    plot_width=plot.plot_width, plot_height=plot.plot_height,
+                    plot_width=plot.width, plot_height=plot.height,
                     toolbar_location=None,
                     toolbar_options={'logo': None})
 

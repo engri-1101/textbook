@@ -1,16 +1,14 @@
 import pickle
 import networkx as nx
 import vinal
+import pandas as pd
 from vinal.plot import _blank_plot
 from vinal.algorithms import tour_cost
+from vinal.build import distance_matrix
 from ortools.constraint_solver import pywrapcp
 from bokeh.plotting import figure
 from bokeh.models.widgets.markups import Div
-from bokeh.models.widgets.tables import TableColumn, DataTable
-from bokeh.models.renderers import GlyphRenderer
-from bokeh.layouts import row, gridplot, GridBox
-from bokeh.models import (HoverTool, TapTool, ColumnDataSource, LabelSet,
-                          Button, CustomJS)
+from bokeh.layouts import row, gridplot
 from PIL import Image
 import numpy as np
 
@@ -77,6 +75,27 @@ def solve_tsp(G):
     return get_routes(solution, routing, manager)[0]
 
 
+def create_etching_network(nodes:pd.DataFrame, **kw) -> nx.DiGraph:
+    """Return networkx graph derived from the list of nodes.
+
+    Return the graph representing the etching problem with
+
+    Args:
+        nodes (pd.DataFrame): Dataframe of nodes with positional columns
+        (x_start, e_end, y_start, y_end).
+
+    Returns:
+        nx.DiGraph: A directed graph.
+    """
+    A = distance_matrix(nodes,
+                        x_i='x_start', x_j='x_end',
+                        y_i='y_start', y_j='y_end')
+    G = nx.from_numpy_array(A=A, create_using=nx.DiGraph)
+    for attr in nodes.columns:
+        nx.set_node_attributes(G, pd.Series(nodes[attr]).to_dict(), attr)
+    return G
+
+
 def etching_tour_plot(G, tour, **kw):
     """Return plot of the tour on the etching problem.
 
@@ -99,7 +118,7 @@ def etching_tour_plot(G, tour, **kw):
     for i in range(len(tour)-1):
         xs.append((G.nodes[tour[i]]['x_end'], G.nodes[tour[i+1]]['x_start']))
         ys.append((G.nodes[tour[i]]['y_end'], G.nodes[tour[i+1]]['y_start']))
-        
+
     x = x_start + x_end
     x_margin = (max(x) - min(x))*0.085
     x_range = (min(x) - x_margin, max(x) + x_margin)
@@ -110,7 +129,7 @@ def etching_tour_plot(G, tour, **kw):
     plot = _blank_plot(G, x_range=x_range, y_range=y_range, **kw)
 
     cost_text = '%.1f' % tour_cost(G, tour)
-    cost = Div(text=cost_text, width=plot.plot_width, align='center')
+    cost = Div(text=cost_text, width=plot.width, align='center')
     plot.multi_line(xs=node_xs, ys=node_ys, line_color='black', line_width=2)
     plot.multi_line(xs=xs, ys=ys, line_color='black', line_width=2,
                     line_dash='dashed')
@@ -120,11 +139,8 @@ def etching_tour_plot(G, tour, **kw):
                 fill_color='#DC0000')
 
     # create layout
-    grid = gridplot([[plot],[cost]],
-                    plot_width=plot.plot_width, plot_height=plot.plot_height,
+    grid = gridplot([[plot],[row(cost)]],
                     toolbar_location=None,
                     toolbar_options={'logo': None})
 
     return grid
-
-

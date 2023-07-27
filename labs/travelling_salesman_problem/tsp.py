@@ -99,7 +99,7 @@ def etching_tour_plot(G, tour, **kw):
     for i in range(len(tour)-1):
         xs.append((G.nodes[tour[i]]['x_end'], G.nodes[tour[i+1]]['x_start']))
         ys.append((G.nodes[tour[i]]['y_end'], G.nodes[tour[i+1]]['y_start']))
-        
+
     x = x_start + x_end
     x_margin = (max(x) - min(x))*0.085
     x_range = (min(x) - x_margin, max(x) + x_margin)
@@ -121,7 +121,7 @@ def etching_tour_plot(G, tour, **kw):
 
     # create layout
     grid = gridplot([[plot],[cost]],
-                    plot_width=plot.width, plot_height=plot.height,
+                    plot_width=plot.plot_width, plot_height=plot.plot_height,
                     toolbar_location=None,
                     toolbar_options={'logo': None})
 

@@ -278,8 +278,8 @@ def blank_grid_plot(n,m, box_size=30):
     plt = figure(x_range=(0, m), 
                  y_range=(0, n), 
                  title="", 
-                 plot_width=box_size*m,
-                 plot_height=box_size*n)
+                 width=box_size*m,
+                 height=box_size*n)
     plt.toolbar.logo = None
     plt.toolbar_location = None
     plt.xgrid.grid_line_color = None

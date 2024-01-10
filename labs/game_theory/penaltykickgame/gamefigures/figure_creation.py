@@ -128,7 +128,7 @@ def make_fig(fig_configs):
     fig = figure(
         tools=fig_configs.base_tools, toolbar_location=fig_configs.toolbar_loc,
         toolbar_sticky=fig_configs.toolbar_sticky, title=fig_configs.title,
-        plot_width=fig_configs.width, plot_height=fig_configs.height,
+        width=fig_configs.width, height=fig_configs.height,
         x_range=fig_configs.x_range, y_range=fig_configs.y_range,
         visible=fig_configs.visibility, sizing_mode=fig_configs.sizing_mode,
         outline_line_color=fig_configs.outline_line_color,

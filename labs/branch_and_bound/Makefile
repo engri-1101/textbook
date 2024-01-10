@@ -12,6 +12,11 @@ lab: $(KEY).ipynb $(DATA) $(LAB_IMAGES)
 	python3 ../distribute.py --key $(KEY).ipynb
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(LAB_IMAGES)
 
+jhub-labs: lab ../../../jhub-labs
+	rm -rf ../../../jhub-labs/$(LAB)
+	mkdir ../../../jhub-labs/$(LAB)
+	unzip $(LAB).zip -d ../../../jhub-labs/$(LAB)
+
 demo: $(DEMO).ipynb $(DEMO_IMAGES)
 	zip -r $(DEMO).zip $(DEMO).ipynb $(DEMO_IMAGES)
 

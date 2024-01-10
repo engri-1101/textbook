@@ -23,6 +23,11 @@ all:
 		make -C $$lab all; \
 	done
 
+jhub-labs:
+	for lab in $(LABS); do \
+		make -C $$lab jhub-labs; \
+	done
+
 clean:
 	for lab in $(LABS); do \
 		make -C $$lab clean; \

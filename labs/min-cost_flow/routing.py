@@ -375,7 +375,7 @@ class TaxiRouting(object):
 
         plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                       x_axis_type="mercator", y_axis_type="mercator",
-                      title='Taxi Routes', plot_width=600, plot_height=470)
+                      title='Taxi Routes', width=600, height=470)
         plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
 
         graph = GraphRenderer()

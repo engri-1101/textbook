@@ -227,7 +227,7 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
 
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   x_axis_type="mercator", y_axis_type="mercator",
-                  title= title, plot_width=600, plot_height=470)
+                  title= title, width=600, height=470)
     plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
 
     graph = GraphRenderer()

@@ -130,7 +130,7 @@ def __create_grid(figs_col, interactables_col, config):
     """
     grid1 = gridplot(
         [[figs_col, interactables_col]], sizing_mode="stretch_width",
-        plot_width=config.plot_width, plot_height=config.plot_height
+        width=config.plot_width, height=config.plot_height
     )
     return grid1
 #</editor-fold>

@@ -13,7 +13,7 @@ LABS = baseball_elimination \
 	   shortest_path \
 	   simplex \
 	   transportation \
-	   travelling_salesman_problem \
+	   traveling_salesman_problem \
 	   tsp_integer_programming \
 	   minimum_cut \
 	   project_selection

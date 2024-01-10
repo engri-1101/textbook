@@ -1,4 +1,4 @@
-MAIN = travelling_salesman_problem
+MAIN = traveling_salesman_problem
 LAB = $(MAIN)_lab
 KEY = $(LAB)_key
 DEMO = radio_telescope_demo

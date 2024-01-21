@@ -16,7 +16,8 @@ LABS = baseball_elimination \
 	   traveling_salesman_problem \
 	   tsp_integer_programming \
 	   minimum_cut \
-	   project_selection
+	   project_selection \
+	   python_intro
 
 all:
 	for lab in $(LABS); do \

@@ -603,8 +603,8 @@ class MainGame:
             figs_col_min_width=600, figs_col_max_width=600,
             figs_col_sizing_mode="stretch_width",
             interactables_col_min_width=350, interactables_col_max_width=350,
-            interactables_col_sizing_mode="stretch_width", width=950,
-            height=480
+            interactables_col_sizing_mode="stretch_width", plot_width=950,
+            plot_height=480
         )
         #</editor-fold>
     #</editor-fold>

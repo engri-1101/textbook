@@ -13,9 +13,9 @@ lab: $(KEY).ipynb $(DATA) $(LAB_IMAGES)
 	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(LAB_IMAGES)
 
 jhub-labs: lab ../../../jhub-labs
-	rm -rf ../../../jhub-labs/$(LAB)
-	mkdir ../../../jhub-labs/$(LAB)
-	unzip $(LAB).zip -d ../../../jhub-labs/$(LAB)
+	rm -rf ../../../jhub-labs/$(MAIN)
+	mkdir ../../../jhub-labs/$(MAIN)
+	unzip $(LAB).zip -d ../../../jhub-labs/$(MAIN)
 
 demo: $(DEMO).ipynb $(DEMO_IMAGES)
 	zip -r $(DEMO).zip $(DEMO).ipynb $(DEMO_IMAGES)

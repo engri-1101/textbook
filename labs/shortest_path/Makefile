@@ -3,13 +3,14 @@ LAB = $(MAIN)_lab
 KEY = $(LAB)_key
 DEMO = $(MAIN)_demo
 DATA = data/*
+IMAGES = images/*
 SRC = graph_tools.py
 
 all: lab demo
 
-lab: $(KEY).ipynb $(DATA) $(SRC)
+lab: $(KEY).ipynb $(DATA) $(IMAGES) $(SRC)
 	python3 ../distribute.py --key $(KEY).ipynb
-	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(SRC)
+	zip -r $(LAB).zip $(LAB).ipynb $(DATA) $(IMAGES) $(SRC)
 
 jhub-labs: lab ../../../jhub-labs
 	rm -rf ../../../jhub-labs/$(MAIN)

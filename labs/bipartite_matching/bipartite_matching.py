@@ -10,13 +10,10 @@ import pickle
 from bokeh import palettes
 from bokeh.plotting import figure, show
 from bokeh.io import output_notebook
-from bokeh.tile_providers import get_provider, Vendors
 from bokeh.models import (GraphRenderer, Circle, MultiLine, Rect, Text, StaticLayoutProvider,
                           HoverTool, TapTool, EdgesAndLinkedNodes, NodesAndLinkedEdges,
-                          ColumnDataSource, CustomJSTransform, LabelSet, NodesOnly)
-from bokeh.models.markers import Triangle
+                          ColumnDataSource, CustomJSTransform, LabelSet, NodesOnly, Scatter)
 from bokeh.transform import transform
-
 
 def pu_do_nodes(trips):
     # Intialize nodes and edges
@@ -228,14 +225,14 @@ def plot_taxi_route(G, paths, nodes_df, title = 'Taxi Routes'):
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   x_axis_type="mercator", y_axis_type="mercator",
                   title= title, width=600, height=470)
-    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+    plot.add_tile("CartoDB Positron retina")
 
     graph = GraphRenderer()
 
     # define initial location nodes
     graph.node_renderer.data_source.add(start_nodes, 'index')
     graph.node_renderer.data_source.add(start_colors, 'start_colors')
-    graph.node_renderer.glyph = Triangle(size= 10,line_width=2,fill_alpha=1, fill_color='start_colors',line_color='black')
+    graph.node_renderer.glyph = Scatter(marker="triangle",size= 10,line_width=2,fill_alpha=1, fill_color='start_colors',line_color='black')
 
     # define network edges
     graph.edge_renderer.data_source.data = dict(start=list(start),
@@ -331,7 +328,7 @@ def plot_bipartite_graph2(B, match, paths, G, nodes_df, title = 'Taxi Routes'):
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   x_axis_type="mercator", y_axis_type="mercator",
                   title= title, plot_width=600, plot_height=470)
-    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+    plot.add_tile("CartoDB Positron retina")
 
     graph = GraphRenderer()
 
@@ -459,7 +456,7 @@ def plot_bipartite_graph2(B, match, paths, G, nodes_df, title = 'Taxi Routes'):
     # define initial location nodes
     graph3.node_renderer.data_source.add(start_nodes, 'index')
     graph3.node_renderer.data_source.add(start_colors, 'start_colors')
-    graph3.node_renderer.glyph = Triangle(size= 10 ,line_width=1,fill_alpha=1, fill_color='start_colors',line_color='black')
+    graph3.node_renderer.glyph = Scatter(marker="triangle",size= 10,line_width=1,fill_alpha=1, fill_color='start_colors',line_color='black')
     graph3.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
     plot.renderers.append(graph3)
 
@@ -519,7 +516,7 @@ def plot_pairwise_incompatible(B, match, paths, G, nodes_df, incomp_trips, title
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   x_axis_type="mercator", y_axis_type="mercator",
                   title= title, plot_width=600, plot_height=470)
-    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+    plot.add_tile("CartoDB Positron retina")
 
     graph = GraphRenderer()
 
@@ -587,7 +584,7 @@ def plot_pairwise_incompatible(B, match, paths, G, nodes_df, incomp_trips, title
     # define initial location nodes
     graph3.node_renderer.data_source.add(start_nodes, 'index')
     graph3.node_renderer.data_source.add(start_colors, 'start_colors')
-    graph3.node_renderer.glyph = Triangle(size= 10 ,line_width=1,fill_alpha=1, fill_color='blue',line_color='black')
+    graph3.node_renderer.glyph = Scatter(marker="triangle",size=10,line_width=1,fill_alpha=1, fill_color='blue',line_color='black')
     graph3.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
     plot.renderers.append(graph3)
 
@@ -647,7 +644,7 @@ def plot_bipartite_route(G, paths, nodes_df, title = 'Taxi Routes'):
     plot = figure(x_range=(min_x, max_x), y_range=(min_y, max_y),
                   x_axis_type="mercator", y_axis_type="mercator",
                   title= title, plot_width=600, plot_height=470)
-    plot.add_tile(get_provider(Vendors.CARTODBPOSITRON_RETINA))
+    plot.add_tile("CartoDB Positron retina")
 
     graph = GraphRenderer()
 
@@ -718,7 +715,7 @@ def plot_bipartite_route(G, paths, nodes_df, title = 'Taxi Routes'):
     # define initial location nodes
     graph3.node_renderer.data_source.add(start_nodes, 'index')
     graph3.node_renderer.data_source.add(start_colors, 'start_colors')
-    graph3.node_renderer.glyph = Triangle(size= 10,line_width=2,fill_alpha=1, fill_color='start_colors',line_color='black')
+    graph3.node_renderer.glyph = Scatter(marker="triangle",size= 10,line_width=2,fill_alpha=1, fill_color='start_colors',line_color='black')
     graph3.layout_provider = StaticLayoutProvider(graph_layout=graph_layout)
     plot.renderers.append(graph3)
 

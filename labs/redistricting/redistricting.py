@@ -58,7 +58,9 @@ def load_district_shapes():
 
 
 def load_graph():
-    return nx.read_gpickle(os.path.join(OPT_DATA_PATH, 'G.p'))
+    with open(os.path.join(OPT_DATA_PATH, 'G.p'), 'rb') as f:
+        G = pickle.load(f)
+    return G
 
 
 # --------------------------------
@@ -150,7 +152,7 @@ def draw_adjacency_graph(gdf, G, figsize=(200, 150)):
     edge_colors = ['green' if G[u][v].get('inferred', False) else 'red'
                    for u, v in G.edges]
     pos = {i: (geo.centroid.x, geo.centroid.y)
-           for i, geo in gdf.geometry.iteritems()}
+           for i, geo in gdf.geometry.items()}
     if len(G) == len(gdf) + 1:  # If adj graph with dummy node
         pos[len(gdf)] = (min(gdf.centroid.x), min(gdf.centroid.y))
     nx.draw_networkx(G,

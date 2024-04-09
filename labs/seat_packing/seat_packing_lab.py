@@ -5,7 +5,7 @@ import math, itertools
 import matplotlib.pyplot as plt
 import networkx as nx
 from ortools.linear_solver import pywraplp as OR
-import shapely
+import shapely, shapley.affinity
 from shapely.geometry import Polygon, Point
 
 # example 1 visualization
